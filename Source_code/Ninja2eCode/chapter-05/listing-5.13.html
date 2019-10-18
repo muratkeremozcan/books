@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Using a closure in a timer interval callback</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+  <style>
+  	#box1, #box2 {
+  		width: 200px;
+  		height: 200px;
+  		position: relative;
+  		margin:5;
+  		color: white;
+  		font-weight: bolder;
+  	}
+
+  	#box1{
+  		background-color:blue;
+  	}
+  	#box2{
+  		background-color: red;
+      margin-bottom: 100px;
+  	}
+  </style>
+</head>
+
+<body>
+	<div id="box1">First Box</div>
+  <div id="box2">Second Box</div>
+  <script>
+    function animateIt(elementId) {
+      var elem = document.getElementById(elementId);
+      var tick = 0;
+      var timer = setInterval(function(){
+        if (tick < 100) {
+          elem.style.left = elem.style.top = tick + "px";
+          tick++;
+        }
+        else {
+          clearInterval(timer);
+          assert(tick === 100,
+                 "Tick accessed via a closure.");
+          assert(elem,
+                 "Element also accessed via a closure.");
+          assert(timer,
+                 "Timer reference also obtained via a closure." );
+        }
+      }, 10);
+    }
+    animateIt("box1");
+    animateIt("box2");
+  </script>
+</body>
+</html>

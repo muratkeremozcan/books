@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Importing a default export</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+		<script src="traceur.js"></script>
+		<script src="es6-module-loader.js"></script>
+	</head>
+	<body>
+		<script type="module">
+			import ImportedNinja from "NinjaModule.js";
+			import {compareNinjas} from "NinjaModule.js";
+
+			const ninja1 = new ImportedNinja("Yoshi");
+			const ninja2 = new ImportedNinja("Hattori");
+
+			assert(ninja1 !== null && ninja2 !== null, "We can create a couple of Ninjas");
+
+			assert(!compareNinjas(ninja1, ninja2),
+			      "We can compare ninjas");
+		</script>
+		<p>Has to be executed on a server!</p>
+	</body>
+</html>

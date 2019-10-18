@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <input id="first" />
+  <input id="second" />
+  <div id="firstElement"></div>
+  <div id="secondElement"></div>
+  <script>
+    const map = new Map();
+    const currentLocation = location.href; // using location.href property to get the current page URL
+
+    const firstLink = new URL(currentLocation); // create 2 links to the current page
+    const secondLink = new URL(currentLocation);
+
+    map.set(firstLink, {description: "firstLink"}); // map.set(key, {value}), to create key-value pairs (add mappings to the links)
+    map.set(secondLink, {description: "secondLink"}); // associating description objects with each link
+
+    console.log(map.get(firstLink)); // IMPORTANT: even if they point to the same URL, each link gets its own mapping (key-value pair)
+    console.log(map.get(secondLink));
+    console.log(map.size);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Anticipating upcoming API change</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			function bindEvent(element, type, handle) {
+	  			if (element.addEventListener) {
+	    			element.addEventListener(type, handle, false);
+	  			}
+	  			else if (element.attachEvent) {
+	    			element.attachEvent("on" + type, handle);
+	  			}
+			}
+
+			const body = document.querySelector("body");
+
+			bindEvent(body, "click", function(){
+				report("Body has been clicked");
+			});
+		</script>
+		<p>Click on the page</p>
+	</body>
+</html>

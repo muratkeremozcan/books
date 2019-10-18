@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Defining getters and setters in object literals</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			const ninjaCollection = {
+			  ninjas: ["Yoshi", "Kuma", "Hattori"],
+			  get firstNinja() {
+			    report("Getting firstNinja");
+			    return this.ninjas[0];
+			  },
+			  set firstNinja(value){
+			    report("Setting firstNinja");
+			    this.ninjas[0] = value;
+			  }
+			};
+
+			assert(ninjaCollection.firstNinja === "Yoshi",
+			       "Yoshi is the first ninja");
+
+			ninjaCollection.firstNinja = "Hachi";
+				
+			assert(ninjaCollection.firstNinja === "Hachi"
+			    && ninjaCollection.ninjas[0] ===  "Hachi",
+			       "Now Hachi is the first ninja");
+		</script>
+	</body>
+</html>

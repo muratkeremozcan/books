@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>A small web application with a GUI reacting to events</title>
+    <style>
+      #first { color: green;}
+      #second { color: red;}
+    </style>
+  </head>
+  <body>
+    <ul id="first"></ul>
+
+    <script>
+      function addMessage(element, message){			          //#A
+        var messageElement = document.createElement("li");	//#A
+        messageElement.textContent = message;			          //#A
+        element.appendChild(messageElement);			          //#A
+      }								                                      //#A
+
+      var first = document.getElementById("first");
+      addMessage(first, "Page loading");
+    </script>
+
+    <ul id="second"></ul>
+
+    <script>
+      document.body.addEventListener("mousemove", function() {	//#B
+        var second = document.getElementById("second");
+        addMessage(second, "Event: mousemove");
+      });
+
+      document.body.addEventListener("click", function(){		   //#C
+        var second = document.getElementById("second");
+        addMessage(second, "Event: click");
+      });
+    </script>
+  </body>
+</html>
+<!--#A – Define a function that adds a message to an element
+#B – Attach a mouse move event handler to body
+#C – Attach a mouse click event handler to body-->

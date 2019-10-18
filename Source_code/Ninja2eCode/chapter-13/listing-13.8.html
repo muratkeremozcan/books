@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Capturing vs Bubbling</title>
+		<style>
+      #outerContainer {width:100px; height:100px; background-color: blue;}
+      #innerContainer {width:50px; height:50px; background-color: red;}
+    </style>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<div id="outerContainer">
+      <div id="innerContainer"></div>
+    </div>
+    <script>
+        const outerContainer = document.getElementById("outerContainer");
+	    const innerContainer = document.getElementById("innerContainer");
+
+	    document.addEventListener("click", () => {
+		  report("Document click");
+	    });
+
+		outerContainer.addEventListener("click", () => {
+		  report("Outer container click");
+		}, true);
+
+		innerContainer.addEventListener("click", () => {
+		  report("Inner container click");
+		}, false);
+    </script>
+    <p>Click on the square</p>
+	</body>
+</html>

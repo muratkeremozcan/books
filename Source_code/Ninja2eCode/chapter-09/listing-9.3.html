@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Naive item removal</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			const ninjas = ["Yagyu", "Kumawakamaru", "Hattori", "Fuma"];
+
+			delete ninjas[1];
+
+			assert(ninjas.length === 4, "Length still reports that there are 4 items");
+
+			assert(ninjas[0] === "Yagyu", "First item is Yagyu");
+			assert(ninjas[1] === undefined, "We've simply created a hole");
+			assert(ninjas[2] === "Hattori", "Hattori is still the third item");
+			assert(ninjas[3] === "Fuma", "And Fuma is the last item");
+		</script>
+	</body>
+</html>

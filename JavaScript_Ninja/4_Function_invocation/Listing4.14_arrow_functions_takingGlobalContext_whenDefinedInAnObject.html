@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Arrow functions and object literals</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+<body>
+  <button id="test">Click Me!</button>
+  <script type="text/javascript">
+    assert(this == window, "this == window");
+    var button = {
+      clicked: false,
+      click: () => {
+        this.clicked = true; // IMPORTANT: if an arrow function is defined within an object literal...
+        assert(button.clicked,"this functional context is global code, not the object"); // ... it takes the function context of the global code the object literal is defined in instead
+        assert(this == window, "In arrow function this == window");
+        assert(window.clicked, "clicked is stored in window");
+      }
+    }
+
+    var elem = document.getElementById("test");
+    elem.addEventListener("click", button.click);
+  </script>
+</body>
+</html>

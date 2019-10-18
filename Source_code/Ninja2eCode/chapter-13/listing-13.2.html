@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Event loop with tasks and microtasks</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<button id="firstButton">First button</button>
+		<button id="secondButton">Second button</button>
+		<script>
+		  const firstButton = document.getElementById("firstButton");
+		  const secondButton = document.getElementById("secondButton");
+		  firstButton.addEventListener("click", function firstHandler(){
+		    Promise.resolve().then(function(){
+		      /*Some promise handling code that runs for 4 ms*/
+		    });
+
+		    /*Some click handle code that runs for 8 ms*/
+		  });
+
+		  secondButton.addEventListener("click", function secondHandler(){
+		    /*Click handle code that runs for 5ms*/
+		  });
+		/*Code that runs for 15ms*/
+		</script>
+		<p>This code doesn't output anything</p>
+	</body>
+</html>

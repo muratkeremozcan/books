@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Registering event handlers</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<button id="myButton">Click</button>
+		<script>
+		  const myButton = document.getElementById("myButton");
+		  myButton.addEventListener("click", function myHandler(event){
+		    assert(event.target === myButton,
+		          "The target of the event is also myButton");
+		    assert(this === myButton,
+		           "The handler is registered on myButton");
+		  });
+		</script>
+		<p>Click on the button</p>
+	</body>
+</html>

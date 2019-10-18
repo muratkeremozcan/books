@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Objects have access to properties that weren't explicitly defined</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<div id="firstElement"></div>
+  		<div id="secondElement"></div>
+  		<script>
+    		const dictionary = {
+          "ja": {
+            "Ninjas for hire": "レンタル用の忍者"
+          },
+          "zh": {
+            "Ninjas for hire": "忍者出租"
+          },
+          "ko": {
+            "Ninjas for hire":"고용 닌자"
+             }
+        };
+
+        assert(dictionary.ja["Ninjas for hire"] === "レンタル用の忍者", "We know how to say 'Ninjas for hire' in Japanese!");
+        assert(typeof dictionary.ja["constructor"] === "undefined", dictionary.ja["constructor"]);
+  		</script>
+	</body>
+</html>

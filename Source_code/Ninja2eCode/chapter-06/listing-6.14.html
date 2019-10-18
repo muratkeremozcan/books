@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Exceptions explicitly reject a promise</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			const promise = new Promise((resolve, reject) => {
+				undeclaredVariable++;
+			});
+
+			promise.then(() => fail("Happy path, won't be called!"))
+				   .catch(error => pass("The promise was rejected because an exception was thrown!"));
+		</script>
+	</body>
+</html>

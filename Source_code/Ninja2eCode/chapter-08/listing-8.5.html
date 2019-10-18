@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Validating property value assignments with setters</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			"use strict";
+			
+			function Ninja() {							
+			    let _skillLevel = 0;						
+
+			    Object.defineProperty(this, 'skillLevel', {
+			      get: () => _skillLevel,
+			      set: (value) => {
+			        if(!Number.isInteger(value)){
+			          throw new TypeError("Skill level should be a number");
+			        }
+			        _skillLevel = value;						
+			      }
+			    });
+			}
+
+		  const ninja = new Ninja();
+
+		  ninja.skillLevel = 10;
+		  assert(ninja.skillLevel === 10, "The value was updated");
+
+		  try {
+		    ninja.skillLevel = "Great";
+		    fail("Should not be here");
+		  } catch(e) {
+		    pass("Setting a non-integer value throws an exception");
+		  }
+		</script>
+	</body>
+</html>

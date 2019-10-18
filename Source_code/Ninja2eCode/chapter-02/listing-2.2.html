@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Different types of JavaScript code – global and function code</title>
+    <style>
+      #first { color: green;}
+      #second { color: red;}
+    </style>
+  </head>
+  <body>
+    <ul id="first"></ul>
+
+    <script>
+      function addMessage(element, message){
+        var messageElement = document.createElement("li");	//#A
+        messageElement.textContent = message;			          //#A
+        element.appendChild(messageElement);			          //#A
+      }
+
+      var first = document.getElementById("first");		      //#B
+      addMessage(first, "Page loading");				            //#B
+    </script>
+    <!--#A – function code is the code contained within a function
+        #B – global code is the code outside functions -->
+    <ul id="second"></ul>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Referencing previous parameters</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+  <script src="../assert.js"></script>
+</head>
+
+<body>
+  <script>
+    function performAction(ninja, action = "skulking",
+                           message = ninja + " " + action) {
+      return message;
+    }
+
+    assert(performAction("Yoshi") === "Yoshi skulking", "Yoshi is skulking");
+  </script>
+  <p>February 2016, Works in Firefox</p>
+</body>
+</html>

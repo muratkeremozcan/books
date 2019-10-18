@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Simulating array-like methods</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		  <input id="first"/>
+		  <input id="second"/>
+		  <script>
+		    const elems = {
+		      length: 0,
+		      add: function(elem){
+		        Array.prototype.push.call(this, elem);
+		      },
+		      gather: function(id){
+		        this.add(document.getElementById(id));
+		      },
+		      find: function(callback){
+		        return Array.prototype.find.call(this, callback);
+		      }
+		    };
+
+		    elems.gather("first");
+		    assert(elems.length === 1 && elems[0].nodeType,
+		           "Verify that we have an element in our stash");
+
+		    elems.gather("second");
+		    assert(elems.length === 2 && elems[1].nodeType,
+		           "Verify the other insertion");
+
+		    const found = elems.find(elem => elem.id === "second");
+		    assert(found && found.id === "second",
+		           "We’ve found our element");
+		</script>
+	</body>
+</html>

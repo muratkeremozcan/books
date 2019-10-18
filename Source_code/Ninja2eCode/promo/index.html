@@ -1,0 +1,280 @@
+<html>
+<head>
+	<style>
+		#mainContainer{
+			width: 800px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.CodeMirror {
+        	border: 1px solid #eee;
+      	}
+
+      	.bx-viewport{ cursor: pointer; }
+
+      	#execution-context-stack-slider
+      	{
+      		max-width: 500px;
+      	}
+
+      	img {
+      		max-width: 500px;
+      	}
+	</style>
+	<link rel="stylesheet" href="codemirror/lib/codemirror.css">
+	<link rel="stylesheet" href="styles/jquery.bxslider.min.css">
+</head>
+
+<body>
+	<div id="mainContainer">
+		<h2>1. Code execution</h2>
+		<p>In JavaScript, the fundamental unit of execution is a function. You use them all the time, to calculate something, perform side-effects such as changing the UI, to achieve code reuse, or simply to make your code a bit easier to understand. In order to fulfill its purpose, a function can call another function, which can in turn call another function, and so on. And when a function does its thing, it has to return back to the position from which it was called. But have you ever wondered how the JavaScript engine keeps track of all these executing functions and return positions?</p>
+
+		<p>In JavaScript, there are two different kinds of code: global code, placed outside of all functions, and function code, contained in functions. When you code is being executed by the JavaScript engine, each statement is executed in a certain execution context. And just as we have two different types of code, so do we have two different types of execution contexts: a global execution context and a function execution context. A significant difference between them is that there is only one global execution context, created when our JavaScript program starts, while a new function execution context is created on each function invocation. For example, consider the following figure in which we log the activity of a couple of sneaky ninjas.</p>
+
+		<img src="images/GlobalFunctionExecutionContext.png">
+
+		<p>When the JavaScript engine starts executing your JavaScript code, it creates a global execution context in which all your global JavaScript code will be executed in, even if it's spread across different script elements. In our example, even though there are two script elements, their global code is executed in the same global execution context, which is created before any JavaScript code is executed.</p>
+
+		<p>On the other hand, every time your code invokes a function, a new function execution context is created. In this case, this means that there is one execution context created when executing the skulk function with the argument <kbd>Kumawakamaru</kbd>, one when executing it with the argument <kbd>Muneyoshi</kbd>, and one when executing it with the argument <kbd>Goemon</kbd> - three different function execution contexts, one for each function invocation.</p>
+
+		<p>The mechanism of execution contexts is used by the JavaScript engine for two reasons: it allows us to keep track of the position in the application execution where the program flow is currently at, and it helps us deal with identifier resolution. Let's start by exploring how execution contexts are used to keep track of the application execution.</p>
+
+		<h3>1.1 Tracking application execution with execution contexts</h3>
+
+		<p>JavaScript is based on a single threaded execution model, which means that at a certain point in time, only one piece of code can be executing. You also know that when your JavaScript application starts, a global execution context is created in which all your global JavaScript code is evaluated.</p>
+
+		<p> Now, let's continue. During the course of program execution, we call a lot of functions. And each time a function is invoked, since only once piece of code can be executed at a time, we have to stop the current execution context, and create a new function execution context in which the function code will be evaluated. Once the function performs its task, its function execution context is discarded, and the caller execution context restored. So we have this need to keep track of all these execution context, both the one that is currently executing, as well as the ones that are patiently waiting. The easiest way to do this is by using a stack, the so called Execution Context stack.</p>
+
+		<div class="callout">
+			<h4>NOTE</h4>
+			<p>A stack is one of the fundamental data structures in which you can put new items only to the top, and when you want to take existing items you also have to do it from the top. Think of a stack of trays in a cafeteria: when you want to take one for yourself, you simply pick the one from the top, and when the cafeteria staff have a new clean one, they simply put it on the top.</p>
+		</div>
+		<p>Let's take a look at the following code, where we report the activity of two skulking ninjas.</p>
+
+		<textarea class="executable-code">
+<script>
+  function skulk(ninja) {		//A function that calls another function
+    report(ninja + " skulking");
+  }
+
+  function report(message) {		//A function that reports a message
+    console.log(message);
+  }
+
+  skulk("Kuma");			//call from global code
+  skulk("Yoshi");			//call from global code
+</script></textarea>
+
+		<p>The code in the previous listing is straightforward, we define a <kbd>skulk</kbd> function that calls the <kbd>report</kbd> function, which outputs a message. Then, from global code, we make two separate calls to the <kbd>skulk</kbd> function. Now, by using this code as a basis, we'll explore the creation of execution contexts, see the following animation.</p>
+
+		<ul class="bxslider" id="execution-context-stack-slider">
+  			<li><img src="animations/execution-context-stack/0.png" /></li>
+  			<li><img src="animations/execution-context-stack/1.png" /></li>
+  			<li><img src="animations/execution-context-stack/2.png" /></li>
+  			<li><img src="animations/execution-context-stack/3.png" /></li>
+  			<li><img src="animations/execution-context-stack/4.png" /></li>
+  			<li><img src="animations/execution-context-stack/5.png" /></li>
+  			<li><img src="animations/execution-context-stack/6.png" /></li>
+  			<li><img src="animations/execution-context-stack/7.png" /></li>
+  			<li><img src="animations/execution-context-stack/8.png" /></li>
+  			<li><img src="animations/execution-context-stack/9.png" /></li>
+  			<li><img src="animations/execution-context-stack/10.png" /></li>
+  			<li><img src="animations/execution-context-stack/11.png" /></li>
+  			<li><img src="animations/execution-context-stack/12.png" /></li>
+  			<li><img src="animations/execution-context-stack/13.png" /></li>
+  			<li><img src="animations/execution-context-stack/14.png" /></li>
+		</ul>
+
+		<p>In the beginning, the execution context stack starts with the global execution context, which is the active execution context when executing global code. In the global code, the program first defines two functions: <kbd>skulk</kbd> and <kbd>report</kbd>, and then it calls the <kbd>skulk</kbd> function.</p>
+
+		<p>Since only one piece of code can be executed at once, the JavaScript engine pauses the execution of the global code, and goes to execute the skulk function code with <kbd>"Kuma"</kbd> as an argument. This is done by creating a new function execution context and pushing it on top of the execution context stack. The <kbd>skulk</kbd> function, in turn, calls the <kbd>report</kbd> function with the argument <kbd>"Kuma skulking"</kbd>. Again, since only one piece of code can be executed at once, the <kbd>skulk</kbd> execution context is paused, and a new function execution context for the <kbd>report</kbd> function, with the argument <kbd>"Kuma skulking"</kbd>, is created and pushed on to the stack.</p> 
+
+		<p>Once the <kbd>report</kbd> function logs the message and finishes its execution, we have to go back to the <kbd>skulk</kbd> function. This is done by simply popping the <kbd>report</kbd> function execution context from the execution context stack. When this has been done, the <kbd>skulk</kbd> function execution context is reactivated, and the execution of the <kbd>skulk</kbd> function continues. A similar thing happens when the <kbd>skulk</kbd> function finishes its execution - the function execution context of the <kbd>skulk</kbd> function is removed from the execution context stack, and the global execution context, that has been patiently waiting this whole time, is restored as the active execution context. With this, the execution of global JavaScript code is restored.</p>
+
+		<p>This whole process is repeated in a similar way for the second call to the skulk function, now with the argument <kbd>"Yoshi"</kbd>: two new function execution contexts are created and pushed to the stack: <kbd>skulk("Yoshi")</kbd> and <kbd>report("Yoshi skulking")</kbd>, when the respected functions are called. These execution contexts are also popped off the stack, when the program returns from the matching function. The following figure shows the state of the execution context stack when logging <kbd>"Yoshi skulking"</kbd>.</p>
+
+		<img src="images/ExecutionContextStackPushingAndPopping2.png">
+
+		<p>Even though the execution context stack is an internal JavaScript concept, you can explore it in any JavaScript debugger, see the following figure for how it looks like in Chrome's dev tools.</p>
+
+		<img src="images/ChromeExecutionContextStackMarked.PNG">
+
+		<p>Besides keeping track of the position in the application execution, the execution contexts are vital for identifier resolution. The execution context does this via another internal JavaScript engine concept called the <em>Lexical Environment</em>.</p>
+
+		<h2>2. Keeping track of identifiers with lexical environments</h2>
+
+		<p>A <em>Lexical environment</em> is an internal JavaScript engine construct used to keep track of the mapping from identifiers to specific values. For example, in the following code:</p>
+
+		<pre>
+			var ninja = "Hatori";
+  			console.log(ninja);
+  		</pre>
+
+  		<p>The lexical environment is consulted when our code is accessing the <kbd>ninja</kbd> variable in the <kbd>console.log</kbd> statement.</p>
+
+  		<div class="callout">
+			<h4>Note</h4>
+			<p>You're probably familiar with the concept of scopes(just in case, a scope refers to the visibility of identifiers in certain parts of a program). You can think of lexical environments as an internal implementation of the JavaScript scoping mechanism.</p>
+		</div>
+
+		<p>Usually, a lexical environment is associated with a specific structure of JavaScript code. It can be associated with a function, a block of code, or the catch part of a try-catch statement. This means that each of these structures: functions, blocks, and catch parts can have their own separate identifier bindings.</p>
+
+		<div class="callout">
+			<h4>Note</h4>
+			<p>In earlier versions of JavaScript (pre-ES6), a lexical environment could only be associated with a function. This meant that variables could only be function scoped. This was a source of many confusions. Since JavaScript is a C-like language, people coming from other C-like languages (such as C++, C#, or Java) are naturally expecting that some low level concepts, such as the existence of block scopes, will be the same. With ES6 this is finally fixed.</p>
+		</div>
+
+		<h3>2.1 Code nesting</h3>
+		<p>
+			Lexical environments are heavily based on the idea of code nesting, that one code structure can be contained within another code structure. For example, let's take a look at the following figure that shows different types of code nesting.
+		</p>
+
+		<img src="images/CodeNesting.png">
+
+		<p>The <kbd>for</kbd> loop is nested within the <kbd>report</kbd> function, the <kbd>report</kbd> function within the <kbd>skulk</kbd> function, and the <kbd>skulk</kbd> function within the global code. In terms of scopes, each of these code structures gets an associated lexical environment every time such code is evaluated. For example, on every invocation of the <kbd>skulk</kbd> function, a new function lexical environment is created, and on each <kbd>for</kbd> loop iteration, a new block lexical environment is created. If you're wondering, in this case, there will be three different block lexical environments created while looping to the <kbd>reportNum</kbd> (don't worry, we'll see a more detailed example later on).</p>
+		
+		<p>Now let's go through the implications of code nesting for identifier resolution. Consider a similar example in the following listing.</p>
+		<textarea class="executable-code">
+<script>
+  var ninja = "Muneyoshi";
+
+  function skulk() {
+    var action = "skulking";
+    
+    function report() { //The report function is defined within the skulk function
+     assert(ninja == "Muneyoshi", "Muneyoshi, we can see you!"); //Check if we can see the global ninja variable
+     assert(action == "skulking", "We know that you're skulking!");#C //Check if we can see the outer action variable, defined in the skulk function
+    }
+
+    report();
+  }
+
+   skulk();
+</script>		
+		</textarea>
+
+		<p>The previous listing shows an example in which a function report is defined within a function <kbd>skulk</kbd>. The interesting thing happens in the body of the <kbd>report</kbd> function. In the first assert statement we access the global <kbd>ninja</kbd> variable. This isn't anything weird, you can do the exact same thing in almost any other programming language. But now comes the interesting part. Consider the second test, where we access the variable <kbd>action</kbd>. If you look closely, you'll notice that the <kbd>action</kbd> variable is neither the variable of the <kbd>report</kbd> function (there is no variable declaration nor a function parameter with that name within the <kbd>report</kbd> function), nor a global variable. It is in fact, a variable of the <kbd>skulk</kbd> function. In JavaScript, variables that are accessed in the body of a function but that are neither local variables, nor function parameters are called <em>free</em> variables.</p>
+
+		<p>
+		In terms of nesting, the code of the skulk function is nested within the global code, while the code of the report function is nested within the code of the skulk function. Since all of our code is nested within global code, from that perspective, it makes perfect sense to allow access to global variables from any part of code – that makes them global. But consider the case of the relationship: the report function contained within the skulk function. Just as we can access global variables from any part of the code, so it makes perfect sense to be able to access variables from outer functions within inner functions, regardless of the depth of nesting, since these variables are in effect “global” from the perspective of inner functions. There's nothing special about it, we've all probably written code such as this.</p>
+		
+		<p>But how does the JavaScript engine keep track of all these variables, and what's accessible from where?</p>
+		
+		<p>This is where lexical environments jump in.</p>
+
+		<h4>Code nesting and lexical environments</h4>
+		<p>In addition to keeping track of local variables, function declarations, and function parameters, since in inner functions we can access the variables of outer functions, the lexical environment also has to keep track of its outer (parent) lexical environment. The idea being that if the identifier cannot be found in the current lexical environment that the outer lexical environment is searched for. This stops either when the matching variable is found in this chain of lexical environments, or with a reference error if we've reached the global lexical environment and the identifier hasn't been found. Let's see an example in the following animation.</p>
+
+
+		<p>In addition to keeping track of local variables, function declarations, and function parameters, since in inner functions we can access the variables of outer functions, the lexical environment also has to keep track of its outer (parent) lexical environment. The idea being that if the identifier cannot be found in the current lexical environment that the outer lexical environment is searched for. This stops either when the matching variable is found in this chain of lexical environments, or with a reference error if we've reached the global lexical environment and the identifier hasn't been found. Let's see an example in the following figure.</p>
+
+    <p>We'll examine how identifiers <kbd>intro</kbd>, <kbd>action</kbd>, and <kbd>ninja</kbd> are resolved when executing the <kbd>report</kbd> function. The <kbd>report</kbd> function is called by the <kbd>skulk</kbd> function, which is in turn called by global code. Each of those execution contexts has a lexical environment associated with it that contains the mapping for all identifiers defined directly in that context. For example, the global environment holds the mapping for identifiers <kbd>ninja</kbd> and <kbd>skulk</kbd>, the environment associated with the execution of the <kbd>skulk</kbd> function, mapping for the identifiers <kbd>action</kbd> and <kbd>report</kbd>, and the environment associated with the execution of the <kbd>report</kbd> function, mapping for the <kbd>intro</kbd> identifier (the left-hand side of the figure).</p>
+
+    <p>In a particular execution context, besides accessing identifiers defined directly in the matching lexical environment, our programs often access other variables defined in outer lexical environments. For example, in the body of the <kbd>report</kbd> function, we access the variable <kbd>action</kbd> of the outer, <kbd>skulk</kbd> function, as well as the global <kbd>ninja</kbd> variable. To do this we have to somehow keep track of these outer environments. JavaScript does this by taking advantage of functions as first-class objects.</p>
+
+    <p>Whenever a function is created, a reference to the lexical environment in which the function was created is stored in an internal (meaning that you cannot access or manipulate it directly) property named <kbd>[[Environment]]</kbd> (this is the notation that we'll use to mark these internal properties). In our case, the <kbd>skulk</kbd> function will keep a reference to the global environment, and the <kbd>report</kbd> function to the <kbd>skulk</kbd> environment.</p>
+
+    <p>Note This might seem a bit odd at first – why don't we just traverse the whole stack of execution contexts and search their matching environments for identifier mappings? Technically, this would work in our current example, but remember, in JavaScript, functions can be passed around as any other objects, which means that the position of function definition and the position from where the function is executed, are generally not related. We'll look into this case with all the benefits and shortcomings later in this chapter.</p>
+
+    <p>Whenever a function is called, a new function execution context is created and pushed onto the execution context stack. With it a new associated lexical environment is created. Now comes the crucial part, as the outer environment of the newly created lexical environment, the JavaScript engine, puts the environment referenced by the called function's internal [[Environment]] property – the environment in which the now called function was created! In our case, when the skulk function is called, the outer environment of the newly created skulk lexical environment becomes the global environment, since this was the environment in which the skulk function was created in. Similarly, when calling the report function, the outer environment of the newly created report lexical environment is set to the skulk environment.</p>
+
+    <p>Now take a look at the report function. When the first assert statement is being evaluated, we have to resolve the identifier intro. To do this, the JavaScript engine starts by checking the environment of the currently running execution context – the report environment. Since the report environment contains the intro binding, the identifier is resolved. Next, the second assert statement has to resolve the binding for the action identifier. Again, the environment of the currently running execution context is checked. However, this time around, the report environment does not contain the binding for the action identifier, so the JavaScript engine checks the outer environment of the report environment – the skulk environment. The binding exists and the identifier is resolved. A similar process is followed when trying to resolve the ninja identifier (a little hint, the binding can be found in the global environment).</p>
+
+    <h2>Closures</h2>
+
+    <p>Succinctly put, a closure is a mechanism that allows a function to access all variables, as well as other functions, that are in scope when the function itself is created.</p>
+
+    <p>That may seem rather intuitive until you remember that a declared function can be called at any later time, even after the scope in which it was declared has gone away.</p>
+
+    <p>This concept is probably best explained through code, so let's start small with the following listing.</p>
+
+    <textarea>
+<script type="text/javascript">
+  var outerValue = 'ninja';//Defines a value in global scope
+  function outerFunction() {
+    assert(outerValue == "ninja","I can see the ninja."); //Declares a function in global scope
+  }
+  outerFunction();//Executes the function
+</script>
+    </textarea>
+
+    <p>In this code example, we declare a variable and a function in the same scope—in this case, the global scope. Afterwards, we cause the function to execute.</p>
+
+    <p>As can be seen in figure 5.11, the function is able to "see" and access the <kbd>outerValue</kbd> variable. You've likely written code such as this hundreds of times without realizing that you were creating a closure!</p>
+
+    <p>Not impressed? Guess that's not surprising. Because both the outerValue and the outerFunction are declared in global scope, that scope (which is actually a closure) never goes away (as long as the page is loaded), and it's not surprising that the function can access the variable because it's still in scope and viable. Even though the closure exists, its benefits aren't yet clear.</p>
+
+    <p>Let's spice it up a little in the next listing.</p>
+
+    <textarea>
+<script type="text/javascript">
+  var outerValue = 'ninja';
+  var later;      //Declares an empty variable that we'll use later.
+  function outerFunction() {
+    var innerValue = 'samurai';//Declares a value inside the function. This variable's scope is limited to the function and cannot be accessed from outside the function.
+    function innerFunction() {     //Declares an inner function within the outer function. Note that innerValue is in scope when we create this function.
+      assert(outerValue,"I can see the ninja.");
+      assert(innerValue,"I can see the samurai.");
+    }                                                             //Declares an inner function within the outer function. Note that innerValue is in scope when we create this function.
+    later = innerFunction;                                       //Stores a reference to the inner function in the later variable. Because later is in the global scope, it will allow us to call the function later.
+  }
+  outerFunction();                                                 //Invokes the outer function, which causes the inner function to be created and its reference assigned to later.
+  later();                                                         //Invokes the inner function through later. We can't invoke it directly because its scope (along with innerValue) is limited to within outerFunction().
+</script>
+</textarea>
+
+  <p>Let's over-analyze the code in <kbd>innerFunction()</kbd> and see if we can predict what might happen.</p>
+
+  <p>The first assert is certain to pass: <kbd>outerValue</kbd> is in the global scope and is visible to everything. But what about the second?</p>
+
+  <p>We're executing the inner function after the outer function has been executed via the trick of copying a reference to the function to a global reference (<kbd>later</kbd>). When the inner function executes, the scope inside the outer function is long gone and not visible at the point at which we're invoking the function through later.</p>
+
+  <p>So we could very well expect the assert to fail, as <kbd>innerValue</kbd> is sure to be undefined. Right?</p>
+
+  <p>How can that be? What magic allows the innerValue variable to still be "alive" when we execute the inner function, long after the scope in which it was created has gone away? The answer, of course, is <em>closures</em>.</p>
+
+  <p>When we declared <kbd>innerFunction()</kbd> inside the outer function, not only was the function declaration defined, but a closure was also created that encompasses not only the function declaration, but also all variables that are in scope at the point of function definition.</p>
+
+  <p>When <kbd>innerFunction()</kbd> eventually executes, even if it's executed after the scope in which it was declared goes away, it has access to the original scope in which it was declared through its closure.</p>
+
+  <p>Let's take a deep look at what exactly is going on during the execution of the program in the next figure.</p>
+
+  <p>Every time when a JavaScript application starts its execution, a global execution context, in which all global code will be executed is created. With it, the JavaScript engine creates the matching global environment, which keeps track of global identifiers. In this case, we have three global identifiers: two standard variables outerValue and later, and a function called <kbd>outerFunction</kbd>. Figure 5.13, shows the values of these identifiers before calling the <kbd>outerFunction</kbd>. The <kbd>outerValue</kbd> variable references a string "ninja", the <kbd>later</kbd> variable is undefined, and the <kbd>outerFunction</kbd> identifier references the function <kbd>outerFunction</kbd>. </p>
+
+  <p>We've already discussed how every created function has an internal <kbd>[[Environment]]</kbd> property that references the lexical environment in which it was created. So in global code, we've defined the <kbd>outerFunction</kbd>, which as its environment has the global environment.</p>
+
+
+  <p>Whenever a function is called, a new function execution context is created and pushed to the top of the execution context stack. With it, a new function lexical environment that keeps track of function's local identifiers: <kbd>innerValue</kbd> and <kbd>innerFunction</kbd>, is also created - the <kbd>outerFunction</kbd> environment. As we've already mentioned, every function lexical environment has a reference to its outer environment (to implement nesting), and the reference to the outer environment is obtained by checking the <kbd>[[Environment]]</kbd> property of the called function. In this case, we are calling the <kbd>outerFunction</kbd>, so its internal <kbd>[[Environment]]</kbd> property is used as the outer environment of the <kbd>outerFunction</kbd> environment. Nothing special to it, yet.</p>
+
+  <p>During the execution of the <kbd>outerFunction</kbd>, a new <kbd>innerFunction</kbd> is created, and its <kbd>[[Environment]]<kbd> is set to the <kbd>outerFunction</kbd> environment (since this is the environment in which the function was created). The last assignment in the <kbd>outerFunction</kbd>, assigns the <kbd>innerFunction</kbd> to the variable <kbd>later</kbd>. Referencing the variable <kbd>later</kbd>, triggers the search for it. First the current lexical environment - <kbd>outerFunction</kbd> environment is searched. Since this environment doesn't have a mapping for that environment, its outer lexical environment is checked - the global environment. The global environment has a mapping for the <kbd>later</kbd> identifier and a reference to the <kbd>innerFunction</kbd> is stored in it (see figure 14).</p>
+
+  <p>An interesting thing happens when we exit the outerFunction, see the following figure.</p>
+
+  <p>Every time when the program flow exits a function, the execution context of that function is popped from the execution context stack, so that the execution of the caller function can be continued. Normally, this also leads to the removal of the matching lexical environment. In our case, the removal of the <kbd>outerFunction</kbd> execution context would lead to the removal of the <kbd>outerFunction</kbd> environment. However, this will not happen, because the <kbd>outerFunction</kbd> environment is kept alive because it is the environment of the <kbd>innerFunction</kbd>, and the <kbd>innerFunction</kbd> is kept alive because it is referenced by the global <kbd>later</kbd> variable.</p>
+
+  <p>Another interesting thing happens when we call the function referenced by the later global variable - the <kbd>innerFunction</kbd>, see the following figure.</p>
+
+  <p>Figure 5.16 The state of the application when executing the <kbd>innerFunction</kbd> (through the <kbd>later()</kbd> call).</p>
+
+  <p>When we call the <kbd>innerFunction</kbd> through the reference to the variable <kbd>later</kbd>, a new function execution context is created and pushed to the top of the execution context stack, the <kbd>innerFunction</kbd> execution context. With it, a new lexical environment, the <kbd>innerFunction</kbd> environment is created. Since we are calling the <kbd>innerFunction</kbd>, as the outer environment of the new <kbd>innerFunction</kbd> environment, we set the environment in which the <kbd>innerFunction</kbd> was created - the <kbd>outerFunction</kbd> environment. </p>
+
+  <p>Now we have everything we need to perform identifier resolution within the body of the <kbd>innerFunction</kbd>. The first identifier is the <kbd>outerValue</kbd> identifier. Since there is no identifier with that name in the <kbd>innerFunction</kbd> environment, first its outer environment is searched – the <kbd>outerFunction</kbd> environment. This environment also doesn't have a mapping to the identifier <kbd>outerValue</kbd>, so its outer environment - the global environment - is also searched. This time around, the global environment does contain the mapping to the <kbd>outerValue</kbd> and the value "ninja" is returned. The next referenced identifier is the <kbd>innerValue</kbd> identifier. Again, first we check the current environment - the <kbd>innerFunction</kbd> environment. Since it doesn't contain the mapping, its outer environment is searched and the mapping for the <kbd>innerValue</kbd> identifier and the value "samurai" is found in the <kbd>outerFunction</kbd> environment.</p>
+
+  <p>And that's all there is to the concept of closures - they are a mechanism that make sure that a function can access all variables that are in scope in the moment the function is created. Since in JavaScript, scoping is implemented through lexical environments, a closure simply means that a lexical environment, and all variables defined in it is kept alive as long as someone references it, either another environment through its outer reference, or a function created in the lexical environment through its internal <kbd>[[Envirnonment]]</kbd> property.</p>
+
+  <p>In the next chapter we'll take a closer look to all wonderful, practical usages of closures, but for now we would like you to notice one downside of closures. With closures, the whole environment accessible at the moment when a function is created (yes, that even includes the environments accessible by following the outer references) is kept alive for as long as the function itself is alive! Sure, some JavaScript engines could optimize a bit and save only the variables explicitly referenced by the function, and not the whole environment; but that's not something to count on. For example, figure 5.14 also shows the state of the application when the program flow exits the <kbd>innerFunction</kbd>. Notice how the <kbd>outerFunction</kbd> environment is kept alive even after we've exited the <kbd>innerFunction</kbd>, because the <kbd>innerFunction</kbd> is still accessible through the global variable <kbd>later</kbd>. The only way to allow the JavaScript engine to free up the memory reserved for the <kbd>outerFunction</kbd> environment is to remove the reference to the <kbd>innerFunction</kbd> by reassigning (or deleting) the global variable <kbd>later</kbd>. This is something that you should keep in mind when developing complex JavaScript applications.</p>
+	</div>
+
+	<script src="codemirror/lib/codemirror.js"></script>
+	<script src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
+	<script src="codemirror/mode/xml/xml.js"></script>
+	<script src="codemirror/mode/javascript/javascript.js"></script>
+	<script src="codemirror/mode/css/css.js"></script>
+	<script src="scripts/jquery-2.1.4.min.js"></script>
+	<script src="scripts/jquery.bxslider.min.js"></script>
+	<script src="scripts/mustache.js"></script>
+	<script src="scripts/main.js"></script>
+</body>
+</html>

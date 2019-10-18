@@ -1,0 +1,24 @@
+extends layout.pug
+
+block title
+  title Messages
+
+block style
+  link(rel="stylesheet", href=baseUrl+"themes/flick/jquery-ui.css")
+
+block scripts
+  script(src=baseUrl+"jquery-ui.js")
+
+block content
+  - count = 0
+  each message in messages
+    - count = count + 1
+    script.
+      $(() => {
+        $("#message_#{count}").dialog({
+          height: 140,
+          modal: true
+        });
+      });
+    != '<div id="message_' + count + '">' + message + '</div>'
+

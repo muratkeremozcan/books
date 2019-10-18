@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "build-my-js": "browserify main.js -o compiled.js"
+  },
+  "dependencies": {
+    "browserify": "^7.0.0",
+    "random-color": "^0.0.1"
+  }
+}

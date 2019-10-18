@@ -1,0 +1,21 @@
+{
+  "name": "code",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/**/*.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/sinon": "^5.0.1",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^6.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "sinon": "^4.0.0",
+    "sinon-chai": "^3.1.0",
+    "xml2js": "^0.4.17"
+  }
+}

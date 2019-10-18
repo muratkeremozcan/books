@@ -1,0 +1,13 @@
+{
+  "name": "my-fun-project",
+  "author": "Murat",
+  "private": "true",
+  "version": "0.2.0",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^5.0.0-alpha.2",
+    "mustache": "^3.0.0"
+  }
+}

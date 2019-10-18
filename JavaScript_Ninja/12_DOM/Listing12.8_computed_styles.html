@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>fetching computed styles</title>
+  <link rel="stylesheet" href="../assert.css">
+  <script src="../assert.js"></script>
+  <style>
+    div {
+      background-color: #ffc;
+      display: inline;
+      font-size: 1.8em;
+      border: 1px solid crimson;
+      color: green;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="color:crimson; font-size:70px;" id="testSubject" title="Ninja power!">
+    忍者パワー
+  </div>
+  <script>
+    // TOP: (2nd prio) style sheet / CSS
+    // BOTTOM: (1st prio) style property/attribute. IMPORTANT: styles specified by elements style property/attribute take precedence over style sheet
+    // NOTE: (3rd prio) you also have browser built-in styles
+
+    function fetchComputedStyle(element, property) {
+      const computedStyles = getComputedStyle(element); // getComputedStyle computes the style of an element based on above priorities
+      if (computedStyles) {
+        property = property.replace(/([A-Z])/g, '-$1').toLowerCase(); // insert a hyphen before every uppercase letter and lowercase the whole thing
+        // $1 is the first group captured in the regular expression ([A-Z]), -$1 would mean replace A with -A , ex: fontSize to font-size, borderTopColor to border-top-color
+        return computedStyles.getPropertyValue(property); // get elementStyle.property:value
+      }
+    }
+    document.addEventListener("DOMContentLoaded", () => { // to ensure that the DOM has successfully built
+      const div = document.querySelector("div"); // obtain reference to the div element
+      report("background-color: " + fetchComputedStyle(div, 'background-color')); // element, elementStyle.property:value
+      report("display: " + fetchComputedStyle(div, 'display'));
+      report("font-size: " + fetchComputedStyle(div, 'fontSize'));
+      report("color: " + fetchComputedStyle(div, 'color'));
+      report("border-top-color: " + fetchComputedStyle(div, 'borderTopColor'));
+      report("border-top-width: " + fetchComputedStyle(div, 'border-top-width'));
+    });
+  </script>
+</body>
+
+</html>

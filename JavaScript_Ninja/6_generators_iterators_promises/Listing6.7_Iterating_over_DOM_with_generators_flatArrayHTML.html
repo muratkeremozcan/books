@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Generator DOM traversal</title>
+    <link rel="stylesheet" href="../assert.css">
+    <script src="../assert.js"></script>
+  </head>
+<body>
+  <div id="subTree">
+    <form>
+      <input type="text" />
+    </form>
+    <p>Paragraph</p>
+    <span>Span</span>
+  </div>
+  <script>
+    function* DomTraversal(element) {
+      yield element; // produce the element
+      element = element.firstElementChild; // set element to the first child of itself
+      while (element) { // while there is a child element, produce the element, set element to the first child, if there is no child set to the next sibling
+        yield* DomTraversal(element); // yield* keyword is used to yield the iteration control to another instance of the DomTraversal generator
+        element = element.nextElementSibling; // traverses the siblings of DOM elements
+      }
+    }
+    const subTree = document.getElementById('subTree');
+    for (let element of DomTraversal(subTree)) { // DomTraversal(subTree) creates a flat array of all DOM elements
+      assert(element !== null, element.nodeName);
+    }
+  // SHOULD OUTPUT :
+  // div
+  // form
+  // input
+  // p
+  // span
+
+    // OLD WAY : recursive DOM traversal with callbacks
+    // function traverseDOM(element, callback) {
+    //   callback(element); // Process the current node with the callback
+    //   element = element.firstElementChild; // returns the object's first child element
+    //   while (element) { // Traverse the DOM of each child element, while there is a child
+    //     traverseDOM(element, callback); // if there is no child element, falls to the next sibling
+    //     element = element.nextElementSibling; // returns the element after the current child (of the parent DOM element)
+    //   }
+    // }
+    // var subTree = document.getElementById("subTree");
+    // traverseDOM(subTree, function (element) { // Start the whole process by calling the traverseDOM function for our root element.
+    //   assert(element !== null, element.nodeName);
+    // });
+  </script>
+</body>
+
+</html>

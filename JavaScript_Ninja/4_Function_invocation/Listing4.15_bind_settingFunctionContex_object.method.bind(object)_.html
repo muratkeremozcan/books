@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Arrow functions and object literals</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+
+<body>
+  <button id="test">Click Me!</button>
+  <script>
+    // https://stackoverflow.com/questions/4597926/what-is-the-difference-between-new-object-and-object-literal-notation
+    var button = { // we create an object literal with some properties  .  new object vs object literal {} -> let's you assign properties
+      clicked: false,
+      click: function () { // Arrow function gets the context of the window object if defined in an object literal. That's why we need to use regular function declaration
+        this.clicked = true; // but, without bind, the function context THIS refers to the element on which the eventHandler has been registered to, which is <button></button>
+        console.log(this); // we use BIND object.method.bind(object)  button.click.bind(button), to set the function context THIS as the button variable instead of the button element
+        assert(button.clicked,"The button has been clicked"); // output the button state
+      }
+    }
+    var elem = document.getElementById("test"); // element is the button with test as id
+    // BIND method (available to all functions, similar to apply and call) creates a new function (same body) but the context is bound to a certain Object
+    // BIND:   object.method.bind(object)
+    // CALL:   function.call(object, args)
+    // APPLY:  function.apply(objects, [args])
+    elem.addEventListener("click", button.click.bind(button)); // NEW: uses the bind function to create a new function BOUND TO THE BUTTON OBJECT
+
+  </script>
+</body>
+
+</html>

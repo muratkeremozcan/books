@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Importing from the ninja.js module</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+		<script src="traceur.js"></script>
+		<script src="es6-module-loader.js"></script>
+	</head>
+	<body>
+		<script type="module">
+			import { message, sayHiToNinja} from "ninja.js";
+
+			assert(message === "Hello",
+			      "We can access the imported variable");
+			assert(sayHiToNinja() === "Hello Yoshi",
+			      "We can say hi to Yoshi from outside the module");
+
+			assert(typeof ninja === "undefined",
+			      "But we cannot access Yoshi directly");
+		</script>
+		<p>Has to be executed on a server.</p>
+	</body>
+</html>

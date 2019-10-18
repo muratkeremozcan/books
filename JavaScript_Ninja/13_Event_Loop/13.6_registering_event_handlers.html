@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Registering event handlers</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<button id="myButton">Click</button>
+		<script>
+      const myButton = document.getElementById("myButton"); // fetch the above button
+      myButton.addEventListener("click", function myHandler(event) { // register event handler by using addEventListener method
+        assert(event.target === myButton, "The target of the event is also myButton"); // access the element that the event has occurred on with .target property
+        assert(this === myButton, "The handler is registered on myButton"); // the THIS keyword refers to the element on which the eventHandler has been registered
+        // in most cases the element on which the eventHandler has been registered is the element on which the event has occurred
+      })
+		</script>
+		<p>Click on the button</p>
+	</body>
+</html>

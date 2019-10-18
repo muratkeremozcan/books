@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Recursive DOM traversal</title>
+    <link rel="stylesheet" href="../assert.css">
+    <script src="../assert.js"></script>
+  </head>
+  <body>
+    <div id="subTree">
+    <form>
+      <input type="text"/>
+    </form>
+    <p>Paragraph</p>
+    <span>Span</span>
+  </div>
+  <script>
+    "use strict";
+    
+    function traverseDOM(element, callback) {
+      callback(element);
+      element = element.firstElementChild;
+      while (element) {
+        traverseDOM(element, callback);
+        element = element.nextElementSibling;
+      }
+    }
+    
+    const subTree = document.getElementById("subTree");
+    traverseDOM(subTree, function(element) {
+      assert(element !== null, element.nodeName);
+    });
+  </script>
+  </body>
+</html>

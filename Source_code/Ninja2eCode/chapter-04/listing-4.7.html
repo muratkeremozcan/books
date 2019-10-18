@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Using a constructor to set up common objects</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+<body>
+	<script type="text/javascript">
+    function Ninja() {
+      this.skulk = function() {
+        return this;
+      };
+    }
+
+    var ninja1 = new Ninja();
+    var ninja2 = new Ninja();
+
+    assert(ninja1.skulk() === ninja1,
+      "The 1st ninja is skulking");
+    assert(ninja2.skulk() === ninja2,
+      "The 2nd ninja is skulking");
+	</script>
+</body>
+</html>

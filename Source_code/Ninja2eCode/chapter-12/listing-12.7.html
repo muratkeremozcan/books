@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>A simple method for accessing styles</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<div style="color:red;font-size:10px;background-color:#eee;"></div>
+		<script>
+		  function style(element,name,value) {
+		    name = name.replace(/-([a-z])/ig, (all,letter) => {
+		      return letter.toUpperCase();
+		    });
+		    if (typeof value !== 'undefined') {
+		      element.style[name] = value;
+		    }
+		    return element.style[name];
+		  }
+		  document.addEventListener("DOMContentLoaded", () => {
+		    const div = document.querySelector("div");
+		    assert(style(div,'color') === "red", style(div,'color'));
+		    assert(style(div,'font-size') === "10px", style(div,'font-size'));
+		    assert(style(div,'background-color') === 
+		    "rgb(238, 238, 238)",style(div,'background-color'));
+		  });
+		</script>
+	</body>
+</html>

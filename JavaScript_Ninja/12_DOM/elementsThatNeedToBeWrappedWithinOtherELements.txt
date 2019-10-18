@@ -1,0 +1,19 @@
+ELEMENT NAME             ->    ANCESTOR ELEMENT
+// list of elements that need to be contained within other elements
+
+<option>, <optgroup>     ->    <select multiple>...</select>
+
+<legend>                 ->    <fieldset>...</fieldset>
+
+<thead>,<tbody>,<tfoot>, ->    <table>...</table>
+<colgroup>,<caption>
+
+<tr>                     ->    <table><thead>...</thead></table>
+                               <table><tbody>...</tbody></table>
+                               <table><tfoot>...</tfoot></table>
+<td>,<th>                ->    <table><tobody><tr>...</tr></tobody></table>
+
+<col>                    ->    <table>
+                                <tbody></tbody>
+                                <colgroup>...</colgroup>
+                               </table>

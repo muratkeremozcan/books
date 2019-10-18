@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Iterating over maps</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			"use strict";
+			const directory = new Map();
+
+			directory.set("Yoshi", "+81 26 6462");
+			directory.set("Kuma", "+81 52 2378 6462");
+			directory.set("Hiro", "+81 76 277 46");
+
+			for(let item of directory){
+  				assert(item[0] !== null, "Key:" + item[0]);
+  				assert(item[1] !== null, "Value:" + item[1]);
+			}
+
+			for(let key of directory.keys()){
+  				assert(key !== null, "Key:" + key);
+  				assert(directory.get(key) !== null, "Value:" + directory.get(key));
+			}
+
+			for(let value of directory.values()){
+  				assert(value !== null, "Value:" + value);
+			}
+		</script>
+	</body>
+</html>

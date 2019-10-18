@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Timeouts and intervals</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<button id="myButton">Button</button>
+		<script>
+		  setTimeout(function timeoutHandler(){
+		    /*Some timeout handle code that runs for 6ms*/
+		  }, 10);
+
+		  setInterval(function intervalHandler(){
+		    /*Some interval handle code that runs for 8ms*/
+		  }, 10);
+
+		  const myButton = document.getElementById("myButton");
+		  myButton.addEventListener("click", function clickHandler(){
+		     /*Some click handle code that runs for 10ms*/
+		  });
+
+		  /*Code that runs for 18ms*/
+		</script>
+		<p>This code doesn't output anything</p>
+	</body>
+</html>

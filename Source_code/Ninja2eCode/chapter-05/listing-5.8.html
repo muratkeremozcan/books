@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Using const and let keywords</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+<body>
+	<script>
+    "use strict"
+    const globalNinja = "Yoshi";
+
+    function reportActivity(){
+      const functionActivity = "jumping";
+
+      for(let i = 1; i < 3; i++) {
+          let forMessage = globalNinja + " " + functionActivity;
+          assert(forMessage === "Yoshi jumping",
+                 "Yoshi is jumping within the for block");
+          assert(i, "Current loop counter:" + i);
+      }
+
+      assert(typeof i === "undefined" && typeof forMessage === "undefined",
+            "Loop variables not accessible outside the loop");
+      }
+
+    reportActivity();
+    assert(typeof functionActivity === "undefined"
+        && typeof i === "undefined" && typeof forMessage === "undefined",
+        "We cannot see function variables outside of a function");
+  </script>
+</body>
+</html>

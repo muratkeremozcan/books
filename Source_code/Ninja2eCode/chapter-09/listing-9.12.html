@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Aggregating items with reduce</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			const numbers = [1, 2, 3, 4];
+
+			const sum = numbers.reduce((aggregated, number) => 
+				                        aggregated + number, 0);
+
+			assert(sum === 10, "The sum of first four numbers is 10")
+		</script>
+	</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Grouping without capturing</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+		  const pattern = /((?:ninja-)+)sword/;
+		  const ninjas = "ninja-ninja-sword".match(pattern);
+		  
+		  assert(ninjas.length === 2,"Only one capture was returned.");
+		  assert(ninjas[1] === "ninja-ninja-",
+		         "Matched both words, without any extra capture.");
+		</script>
+	</body>
+</html>

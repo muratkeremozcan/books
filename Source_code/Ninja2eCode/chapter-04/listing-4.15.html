@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Binding a specific context to an event handler</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+<body>
+  <button id="test">Click Me!</button>
+  <script type="text/javascript">
+    var button = {
+      clicked: false,
+      click: function(){
+        this.clicked = true;
+        assert(button.clicked,"The button has been clicked");
+      }
+    };
+    var elem = document.getElementById("test");
+    elem.addEventListener("click", button.click.bind(button));
+
+    var boundFunction = button.click.bind(button);
+    assert(boundFunction !== button.click,
+           "Calling bind creates a completyl new function");
+  </script>
+</body>
+</html>

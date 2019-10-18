@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Custom events</title>
+  <style>
+    #whirlyThing {
+      display: none;
+    }
+  </style>
+  <link rel="stylesheet" href="../assert.css">
+  <script src="../assert.js"></script>
+</head>
+
+<body>
+  <button type="button" id="clickMe">Start</button>
+  <img id="whirlyThing" src="whirly-thing.gif" />
+  <script>
+    function triggerEvent(target, eventType, eventDetail) {
+      const event = new CustomEvent(eventType, { // uses CustomEvent constructor to create a new event
+        detail: eventDetail // passes in information to the event object, through the detail property
+      });
+      target.dispatchEvent(event); // uses the built-in dispatchEvent method to dispatch the event to the specified element
+    }
+    function performAjaxOperation() { // mimics Ajax request with a timer
+      triggerEvent(document, 'ajax-start', {
+        url: 'my-url'
+      }); // at the start of execution, triggers the ajax-start event
+      setTimeout(() => { // after enough time passes, triggers the ajax-complete event. Passes in a url as additional event data
+        triggerEvent(document, 'ajax-complete');
+      }, 5000);
+    }
+
+    const button = document.getElementById('clickMe');
+
+    // these 3 event handlers know nothing about each other
+    button.addEventListener('click', () => {
+      performAjaxOperation(); // when a button is clicked, start the ajax operation
+    });
+    document.addEventListener('ajax-start', e => { // handles the ajax-start event by showing the whirly thing
+      document.getElementById('whirlyThing').style.display = 'inline-block';
+      assert(e.detail.url === 'my-url', 'We can pass in event data'); // checks that we can access additional event data
+    });
+    document.addEventListener('ajax-complete', e => { // handles the ajax-complete event by hiding the whirly thing
+      document.getElementById('whirlyThing').style.display = 'none';
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Waiting for a number of promises with Promise.all</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+		<script src="getJSON.js"></script>
+		<script>
+			Promise.all([getJSON("data/ninjas.json"),
+			             getJSON("data/mapInfo.json"),
+			             getJSON("data/plan.json")]).then(results => {
+			  const ninjas = results[0], mapInfo = results[1], plan = results[2];
+
+			  assert(ninjas !== undefined && mapInfo !== undefined 
+			  		&& plan !== undefined,
+			        "The plan is ready to be set in motion!");
+			}).catch(error => fail("A problem in carrying out our plan!"));
+		</script>
+	</head>
+	<body>
+		<p>Has to be executed on a server (e.g MAMP, WAMP)</p>
+	</body>
+</html>

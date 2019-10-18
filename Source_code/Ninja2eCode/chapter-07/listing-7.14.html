@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Static methods</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			"use strict"
+			class Ninja{
+			  constructor(name, level){
+			    this.name = name;
+			    this.level = level;
+			  }
+
+			  swingSword() {
+			    return true;
+			  }
+
+			  static compare(ninja1, ninja2){
+			    return ninja1.level - ninja2.level;
+			  }
+			}
+
+			const ninja1 = new Ninja("Yoshi", 4);
+			const ninja2 = new Ninja("Hatori", 3);
+
+			assert(typeof ninja1.compare === "undefined"
+			    && typeof ninja2.compare === "undefined",
+			       "The ninja instance doesn’t know how to compare");
+
+			assert(Ninja.compare(ninja1, ninja2) > 0,
+			      "The Ninja class can do the comparison!");
+
+			assert(typeof Ninja.swingSword === "undefined",
+			      "The Ninja class can not swing a sword");
+		</script>
+	</body>
+</html>

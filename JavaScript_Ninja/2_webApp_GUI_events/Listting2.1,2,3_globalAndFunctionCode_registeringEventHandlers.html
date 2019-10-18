@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web app lifecycle</title>
+    <style>
+      #first {
+        color: green;
+      }
+      #second {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="first"></ul>
+    <script>
+        // the browser exposes the WINDOW object to JS. The WINDOW object has a property DOCUMENT, which represents the DOM
+        // the DOCUMENT object can be used to manipulate page content
+        function addMessage(element, message) { // adds a message to an element
+          var messageElement = document.createElement("li"); // create an li element
+          messageElement.textContent = message; // set textContent, with the passed in message
+          element.appendChild(messageElement); // append to the li element previously created
+        }
+        // This is GLOBAL CODE. It is executed automatically. The rest of them are FUNCTION CODE has to be called
+        // .. by other code or the browser when an event occurs
+        var first = document.getElementById("first"); // get the element by id
+        addMessage(first, 'Page Loading'); // add message to the element, addMessage function code being called by global code
+    </script>
+    <ul id="second"></ul>
+    <script>
+        // addEventListener method enables us to register as many event-handler functions as we need
+        // instead if we added an event handler to an element property, we could only register 1 event per property.  ex: window.onload, document,body.onclick
+        document.body.addEventListener("mousemove", function() { // attach an event listener for mousemove
+          var second = document.getElementById("21"); // get the 2nd element
+          addMessage(second, "Event: mouse move"); // add message to the element for mouse move, addMessage being called by browser/event handler
+        });
+        document.body.addEventListener("click", function() { // attach an event listener to mouse click
+          var second = document.getElementById("second"); // get the 2nd element
+          addMessage(second, "Event: click"); // add message for mouse click
+        });
+    </script>
+  </body>
+</html>

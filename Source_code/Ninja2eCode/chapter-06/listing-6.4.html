@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Using yield* to generate to another generator</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			"use strict";
+			
+			function* WarriorGenerator(){
+			  yield "Sun Tzu";
+			  yield* NinjaGenerator();
+			  yield "Genghis Khan";
+			}
+
+			function* NinjaGenerator(){
+			  yield "Hatori";
+			  yield "Yoshi";
+			}
+
+			for(let warrior of WarriorGenerator()){
+			  assert(warrior !== null, warrior);
+			}
+		</script>
+	</body>
+</html>

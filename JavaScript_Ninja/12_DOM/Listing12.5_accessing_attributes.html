@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Accessing attribute values via DOM methods and properties</title>
+  <link rel="stylesheet" href="../assert.css">
+  <script src="../assert.js"></script>
+</head>
+
+<body>
+  <div></div>
+  <script>
+    // 2 ways to get id:
+    // element.getAttribute('id')
+    // element.id
+
+    // 2 ways to set id:
+    // element.setAttribute('id')
+    // element.id = "something"
+
+    document.addEventListener("DOMContentLoaded", () => { // to ensure that the DOM has successfully built
+      const div = document.querySelector("div"); // obtain a reference to the above the div
+
+      div.setAttribute("id", "ninja-1"); // element.setAttribute('id'). Becomes <div id="ninja-1"></div>
+      assert(div.getAttribute('id') === "ninja-1", "Attribute successfully changed"); // get the value of the attribute
+
+      // IMPORTANT: id property (div.id) and attribute (div.get/setAttribute) are linked together
+      div.id = "ninja-2"; // element.id = "something"
+      assert(div.id === "ninja-2", "Property successfully changed"); // element.id
+      assert(div.getAttribute('id') === "ninja-2", "Attribute successfully changed via property"); // element.getAttribute('id')
+
+      // IMPORTANT: id property (div.id) and attribute (div.get/setAttribute) are linked together
+      div.setAttribute("id", "ninja-3"); // element.setAttribute('id')
+      assert(div.id === "ninja-3", "Property successfully changed via attribute"); // element.id
+      assert(div.getAttribute('id') === "ninja-3", "Attribute successfully changed"); // element.getAttribute('id')
+
+      // IMPORTANT: if you're not sure whether a property for an attribute exists, you can test for it and fall back to DOM methods if it doesn't exist
+      // const value = element.someValue ? element.someValue : element.getAttribute('someValue');
+    });
+  </script>
+
+</body>
+
+</html>

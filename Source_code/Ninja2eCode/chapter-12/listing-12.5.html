@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Accessing attribute values via DOM methods and properties</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<div></div>
+		<script>
+		  document.addEventListener("DOMContentLoaded", () => {
+		    const div = document.querySelector("div");
+		    div.setAttribute("id","ninja-1");
+		    assert(div.getAttribute('id') === "ninja-1",
+		           "Attribute successfully changed");
+		    div.id = "ninja-2";
+		    assert(div.id === "ninja-2",
+		           "Property successfully changed");
+		    
+		    assert(div.getAttribute('id') === "ninja-2",
+		           "Attribute successfully changed via property");
+		    div.setAttribute("id","ninja-3");
+		    assert(div.id === "ninja-3",
+		           "Property successfully changed via attribute");
+		    assert(div.getAttribute('id') === "ninja-3",
+		           "Attribute successfully changed");
+		  });
+		</script>
+
+	</body>
+</html>

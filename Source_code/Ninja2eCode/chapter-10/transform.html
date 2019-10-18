@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="../assert.css">
+		<style>
+			#square {
+				width: 100px;
+				height: 100px;
+				background-color: blue;
+			}
+		</style>
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<div id="square" style="transform:translateY(15px);"></div>
+		<script>
+			function getTranslateY(elem){
+				const transformValue = elem.style.transform;
+
+				if(transformValue){
+					const match = transformValue.match(/translateY\(([^\)]+)\)/);
+
+					return match ? match[1] : "";
+				}
+
+				return "";
+			}
+
+			const square = document.getElementById("square");
+			
+			assert(getTranslateY(square) === "15px", 
+				  "We've extracted the translateY value");
+		</script>
+	</body>
+</html>

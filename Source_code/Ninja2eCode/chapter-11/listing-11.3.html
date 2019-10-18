@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Expanding the getNodes functions with fragments</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+		<script src="../require.js"></script>
+	</head>
+	<body>
+		<script>
+			"use strict";
+			
+			requirejs.config({
+			    paths: {
+			        "jquery": "../jquery"
+			    }
+			});
+			
+			define('MouseCounterModule',['jquery'], $ => {
+			  let numClicks = 0;
+			  const handleClick = () => {
+			    alert(++numClicks);
+			  };
+			  
+			  return {
+			    countClicks: () => {
+			      $(document).on("click", handleClick);
+			    }
+			  };
+			});
+
+			require(['MouseCounterModule'], MouseCounterModule => {
+				MouseCounterModule.countClicks();
+			});
+		</script>
+		<p>Has to be executed on a server. Click on the page!</p>
+	</body>
+</html>

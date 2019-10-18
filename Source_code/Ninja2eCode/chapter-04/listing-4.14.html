@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Arrow functions and object literals</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+<body>
+  <button id="test">Click Me!</button>
+  <script type="text/javascript">
+    assert(this == window, "this == window");
+    var button = {
+      clicked: false,
+      click: () => {
+        this.clicked = true;
+        assert(button.clicked,"The button has been clicked");
+        assert(this == window, "In arrow function this == window");
+        assert(window.clicked, "clicked is stored in window");
+      }
+    }
+
+    var elem = document.getElementById("test");
+    elem.addEventListener("click", button.click);
+  </script>
+</body>
+</html>

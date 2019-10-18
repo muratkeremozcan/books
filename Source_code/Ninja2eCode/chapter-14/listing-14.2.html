@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Polyfilling</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			if (!Array.prototype.find) {
+			  Array.prototype.find = function(predicate) {
+			    if (this === null) {
+			      throw new TypeError('find called on null or undefined');
+			    }
+			    if (typeof predicate !== 'function') {
+			      throw new TypeError('predicate must be a function');
+			    }
+			    var list = Object(this);
+			    var length = list.length >>> 0;
+			    var thisArg = arguments[1];
+			    var value;
+
+			    for (var i = 0; i < length; i++) {
+			      value = list[i];
+			      if (predicate.call(thisArg, value, i, list)) {
+			        return value;
+			      }
+			    }
+			    return undefined;
+			  };
+			}
+
+			const array = [1,2,3];
+			const item = array.find(function(num){ return num % 2 == 0});
+
+			assert(item == 2, "We can find items in an array");
+		</script>
+	</body>
+</html>

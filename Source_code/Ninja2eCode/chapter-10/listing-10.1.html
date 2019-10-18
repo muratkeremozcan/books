@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Testing for a specific pattern in string</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+      "use strict";
+			
+      function isThisAZipCode(candidate) {
+        if (typeof candidate !== "string" || candidate.length != 10) { 
+          return false; 
+        }
+        
+        for (let n = 0; n < candidate.length; n++) {
+          let c = candidate[n];
+          switch (n) {
+            case 0: case 1: case 2: case 3: case 4:
+            case 6: case 7: case 8: case 9:
+              if (c < '0' || c > '9') return false;
+              break;
+            case 5:
+              if (c != '-') return false;
+              break;
+          }
+        }
+        return true;
+      }
+
+      assert(isThisAZipCode("99999-9999"), "99999-9999 is a zip code");
+      assert(!isThisAZipCode("98-ZIP"), "98-ZIP isn't a zip code");
+		</script>
+	</body>
+</html>

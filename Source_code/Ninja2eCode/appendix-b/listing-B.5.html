@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test Suite</title>
+    <script>
+      function assert(value, desc) {                           //#A
+        var li = document.createElement("li");                 //#A
+        li.className = value ? "pass" : "fail";                //#A
+        li.appendChild(document.createTextNode(desc));         //#A
+        document.getElementById("results").appendChild(li);    //#A
+      }                                                        //#A
+      window.onload = function() {
+        assert(true, "The test suite is running.");     //#B
+        assert(false, "Fail!");                         //#B
+      };
+    </script>
+    <style>
+      #results li.pass { color: green; }
+      #results li.fail { color: red; }
+    </style>
+  </head>
+  <body>
+    <ul id="results"></ul>
+  </body>
+</html>

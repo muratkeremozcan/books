@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Overriding function identifiers</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+<body>
+	<script>
+	  assert(typeof fun === "function", "We access the function");
+
+    var fun = 3;
+
+    assert(typeof fun === "number", "Now we access the number");
+
+    function fun(){}
+
+    assert(typeof fun == "number", "Still a number");
+	</script>
+</body>
+</html>

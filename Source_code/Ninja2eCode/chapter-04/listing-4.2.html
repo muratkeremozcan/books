@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>The arguments object allows access to all parameters</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+
+<body>
+  <script>
+    function sum() {
+      var sum = 0;
+      for(var i = 0; i < arguments.length; i++){
+        sum += arguments[i];
+      }
+      return sum;
+    }
+
+    assert(sum(1, 2) === 3, "We can add two numbers");
+    assert(sum(1, 2, 3) === 6, "We can add three numbers");
+    assert(sum(1, 2, 3, 4) === 10, "We can add four numbers");
+  </script>
+</body>
+</html>

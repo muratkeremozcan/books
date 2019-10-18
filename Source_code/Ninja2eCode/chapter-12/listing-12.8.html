@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Fetching computed style values</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+		<style type="text/css">						
+		  div {
+		    background-color: #ffc; display: inline; font-size: 1.8em;
+		    border: 1px solid crimson; color: green;
+		  }
+		</style>
+	</head>
+	<body>
+		<div style="color:crimson;" id="testSubject" title="Ninja power!"> 
+	  		忍者パワー
+		</div>
+		<script>
+		  function fetchComputedStyle(element,property) {
+		    const computedStyles = window.getComputedStyle(element);
+		    if (computedStyles) {
+		      property = property.replace(/([A-Z])/g,'-$1').toLowerCase();
+		      return computedStyles.getPropertyValue(property);
+		    }
+		  }
+		  document.addEventListener("DOMContentLoaded", () => {
+		    const div = document.querySelector("div");
+		    report("background-color: " +
+		           fetchComputedStyle(div,'background-color'));
+		    report("display: " +
+		           fetchComputedStyle(div,'display'));
+		    report("font-size: " +
+		           fetchComputedStyle(div,'fontSize'));
+		    report("color: " +
+		           fetchComputedStyle(div,'color'));
+		    report("border-top-color: " +
+		           fetchComputedStyle(div,'borderTopColor'));
+		    report("border-top-width: " +
+		           fetchComputedStyle(div,'border-top-width'));
+		  });
+		</script>
+	</body>
+</html>

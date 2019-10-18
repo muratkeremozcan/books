@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Making sure that self-closing elements are interpreted correctly</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			const tags = /^(area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)$/i; 
+			
+			function convert(html) {                                               
+			  return html.replace(/(<(\w+)[^>]*?)\/>/g, (all, front, tag) => {
+			      return tags.test(tag) ? all :
+			                            front + "></" + tag + ">";
+			    });
+			}
+			assert(convert("<a/>") === "<a></a>", "Check anchor conversion.");
+			assert(convert("<hr/>") === "<hr/>", "Check hr conversion.");
+		</script>
+	</body>
+</html>

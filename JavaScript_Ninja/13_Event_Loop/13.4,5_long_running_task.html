@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Long running task broken up with timers</title>
+  <link rel="stylesheet" href="../assert.css">
+  <script src="../assert.js"></script>
+</head>
+
+<body>
+  <table>
+    <tbody></tbody>
+  </table>
+  <script>
+    "use strict";
+
+    // 13.5
+    // IMPORTANT: This can hang the browser for a long time, we need to introduce timers to create breaks
+    // const tbody = document.querySelector("tbody"); // find the table body element that we will create rows for
+    // for (let i = 0; i < 60000; i++) { // 60k rows
+    //   let tr = document.createElement("tr"); // create a row
+    //   for (let t = 0; t < 6; t++) { // for 6 cells
+    //     const td = document.createElement("td"); // each cell
+    //     td.appendChild(document.createTextNode(i + "," + t)); // for each cell create a text node with row number and cell number
+    //     tr.appendChild(td); // attach the cell to its parent tr row
+    //   }
+    //   tbody.appendChild(tr); // attach the row to its parent tbody
+    // }
+
+    // 13.6
+    // instead of creating 60000 rows all at once, this will create rows in 60000 row chunks
+    // from the user perspective, this will be 4 updates of the page instead of waiting for it all to load
+    const tbody = document.querySelector("tbody"); // find the table body element that we will create rows for
+    const rowCount = 60000;
+    const divideInto = 4;
+    const chunkSize = rowCount / divideInto;
+    let iteration = 0;
+
+    const table = document.getElementsByTagName("tbody")[0];
+    setTimeout(function generateRows() {
+      const base = chunkSize * iteration; // computes where we left off last time, 15k, 30k, 45k
+      for (let i = 0; i < chunkSize; i++) { // do what you do in chunkSizes of 15k
+        const tr = document.createElement("tr"); // creating table rows
+        for (let t = 0; t < 6; t++) {
+          const td = document.createElement("td"); // creating table cells
+          td.appendChild(document.createTextNode((i + base) + "," + t + "," + iteration)); // create a cell
+          tr.appendChild(td); // attach the cell to its parent tr row
+        }
+        table.appendChild(tr); // attach the row to its parent table
+      }
+      iteration++;
+      if (iteration < divideInto) // checking if we created enough rows
+        setTimeout(generateRows, 0);
+    }, 0); // setting timeout delay to 0 to indicate the next iteration should execute as soon as possible, but this tells the browser it is allowed to do rendering in between
+  </script>
+  <p>JS code creates a large table</p>
+</body>
+
+</html>

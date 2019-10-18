@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Auto-populating properties with proxies</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+		  function Folder() {
+		  return new Proxy({}, {
+		    get: (target, property) => {
+		       report("Reading " + property);
+		       
+		       if(!(property in target)) {
+		          target[property] = new Folder();
+		       }
+
+		       return target[property];
+		    }
+		  });
+		}
+
+		const rootFolder = new Folder();
+
+		try {
+		  rootFolder.ninjasDir.firstNinjaDir.ninjaFile = "yoshi.txt";
+		  pass("An exception wasn’t raised");
+		}
+		catch(e){
+		  fail("An exception has occurred");
+		}
+		</script>
+		<p>February 2016, Works in Firefox</p>
+	</body>
+</html>

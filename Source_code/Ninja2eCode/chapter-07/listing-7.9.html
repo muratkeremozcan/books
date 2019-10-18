@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Configuring properties</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			"use strict";
+			
+			const ninja = {};
+			ninja.name = "Yoshi";
+			ninja.weapon = "kusarigama";
+
+			Object.defineProperty(ninja, "sneaky", {
+			  configurable: false,
+			  enumerable: false,
+			  value: true,
+			  writable: true
+			});
+
+			assert("sneaky" in ninja, "We can access the new property");
+
+			for(let prop in ninja){
+			  assert(prop !== undefined, "An enumerated property: " + prop);
+			}
+		</script>
+	</body>
+</html>

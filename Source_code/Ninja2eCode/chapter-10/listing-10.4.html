@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>A simple function for capturing an embedded value</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<div id="square" style="transform:translateY(15px);"></div>
+		<script>
+		  function getTranslateY(elem){
+		    const transformValue = elem.style.transform;
+
+			if(transformValue){
+			  	const match = transformValue.match(/translateY\(([^\)]+)\)/);
+			  	return match ? match[1] : "";
+			}
+
+			return "";
+		  }
+
+		  const square = document.getElementById("square");
+
+		  assert(getTranslateY(square) === "15px",
+		         "We've extracted the translateY value");
+		</script>
+	</body>
+</html>

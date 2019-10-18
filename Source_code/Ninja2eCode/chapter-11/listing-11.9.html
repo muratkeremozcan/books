@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>A default export from Ninja.js</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+		<script src="traceur.js"></script>
+		<script src="es6-module-loader.js"></script>
+	</head>
+	<body>
+		<script type="module">		
+			export default class Ninja {
+			  constructor(name) {
+			    this.name = name;
+			  }
+			}
+
+			export function compareNinjas(ninja1, ninja2){
+			  return ninja1.name === ninja2.name;
+			}
+
+			report("Ninja module");
+		</script>
+	</body>
+</html>

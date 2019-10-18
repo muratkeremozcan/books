@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Chaining a catch method</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+		<script src="getJSON.js"></script>
+	</head>
+	<body>
+		<script>
+			const promise = new Promise((resolve, reject) => {
+			  reject("Explicitly reject a promise!");
+			});
+
+			promise.then(() => fail("Happy path, won't be called!"))
+				   .catch(() => pass("Third promise was also rejected"));
+		</script>
+	</body>
+</html>

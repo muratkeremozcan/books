@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Doing consecutive series of reads and writes causes layout trashing</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<div id="ninja">I’m a ninja</div>
+		<div id="samurai">I’m a samurai</div>
+		<div id="ronin">I’m a ronin</div>
+		<script>
+		  const ninja = document.getElementById("ninja");
+		  const samurai = document.getElementById("samurai");
+		  const ronin = document.getElementById("ronin");
+			
+		  const ninjaWidth = ninja.clientWidth;
+		  ninja.style.width = ninjaWidth/2 + "px";
+		  
+		  const samuraiWidth = samurai.clientWidth;
+		  samurai.style.width = samuraiWidth/2 + "px";
+
+		  const roninWidth = ronin.clientWidth;
+		  ronin.style.width = roninWidth/2 + "px";
+		</script>
+	</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The creation of execution contexts</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+<body>
+	<script type="text/javascript">
+	  function skulk(ninja) {
+      report(ninja + " skulking");
+    }
+
+    function report(message) {
+      console.log(message);
+    }
+
+    skulk("Kuma");
+    skulk("Yoshi");
+	</script>
+  <p>Outputs to the console (press F12)</p>
+</body>
+</html>

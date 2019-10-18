@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>A simple method for accessing styles</title>
+  <link rel="stylesheet" href="../assert.css">
+  <script src="../assert.js"></script>
+</head>
+
+<body>
+  <div style="color:red;font-size:10px;background-color:#eee;"></div>
+  <script>
+    function style(element, name, value) { // assign a value to element.style[name] if a value is provided. If a value is not provided, return the value of the element.style[name]
+      name = name.replace(/-([a-z])/ig, (all, letter) => { // convert name to camel case :  font-size to fontSize, background-color to backgroundColor
+        return letter.toUpperCase(); // replaces -s with S, -c with C
+      });
+      if (typeof value !== 'undefined') { // if setting, we use a value. If getting there will not be value
+        element.style[name] = value; // set the value if it's being passed in
+      }
+      return element.style[name];
+    }
+    document.addEventListener("DOMContentLoaded", () => { // to ensure that the DOM has successfully built
+      const div = document.querySelector("div");  // obtain reference to the div element
+      assert(style(div, 'color') === "red", style(div, 'color')); // test if color is red, if so then get the color and output it with assert
+      assert(style(div, 'font-size') === "10px", style(div, 'font-size')); // test and if it passes, get the value and output it with assert
+      assert(style(div, 'background-color') === "rgb(238, 238, 238)", style(div, 'background-color'));  // test and if it passes, get the value and output it with assert
+
+      console.log(style(div, 'font-size', '20px')); // test setting to 20px
+      console.log(style(div, 'font-size')); // test getting the updated value
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Logging without proxies</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			"use strict"; 
+			
+			function Ninja() {				
+			    let _skillLevel = 0;				
+
+			    Object.defineProperty(this, 'skillLevel', {		
+			      get: () => {					
+			        report("skillLevel get method is called");
+			        return _skillLevel;
+			      },							
+			      set: (value) => {					       
+			        report("skillLevel set method is called");
+			        _skillLevel = value;
+			      }									
+			    });
+			  }
+			  
+			  const ninja = new Ninja();
+			  ninja.skillLevel;
+			  ninja.skillLevel = 4;
+		</script>
+	</body>
+</html>

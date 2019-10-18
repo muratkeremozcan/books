@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Chaining promises with then</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+		<script src="getJSON.js"></script>
+		<script>
+			getJSON("data/ninjas.json")
+			.then(ninjas => getJSON(ninjas[0].missionsUrl))
+			.then(missions => getJSON(missions[0].detailsUrl))
+			.then(mission => assert(mission !== null, "Ninja mission obtained!"))
+			.catch(error => fail("An error has occured"));
+		</script>
+	</head>
+	<body>
+			<p>Has to be executed on a server (e.g MAMP, WAMP)</p>
+	</body>
+</html>

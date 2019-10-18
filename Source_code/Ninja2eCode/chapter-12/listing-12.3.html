@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Expanding the getNodes functions with fragments</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+		 "use strict";
+		  function getNodes(htmlString, doc, fragment){
+		    const map = {                                                      
+		      "<td":[3,"<table><tbody><tr>","</tr></tbody></table>"],         
+		      "<th":[3,"<table><tbody><tr>","</tr></tbody></table>"],         
+		      "<tr":[2,"<table><thead>","</thead></table>"],                  
+		      "<option":[1,"<select multiple='multiple'>","</select>"],       
+		      "<optgroup":[1,"<select multiple='multiple'>","</select>"],
+		      "<legend":[1,"<fieldset>","</fieldset>"], 
+		      "<thead":[1,"<table>","</table>"], 
+		      "<tbody":[1,"<table>","</table>"],
+		      "<tfoot":[1,"<table>","</table>"],
+		      "<colgroup":[1,"<table>","</table>"],
+		      "<caption":[1,"<table>","</table>"], 
+		      "<col":[2,"<table><tbody></tbody><colgroup>","</colgroup></table>"],
+		      "<link":[3,"<div></div><div>","</div>"]
+		    };
+		    
+		    const tagName = htmlString.match(/<\w+/);
+		    let mapEntry = tagName ? map[tagName[0]] : null;
+		    
+		    if  (!mapEntry) { mapEntry = [0, " "," " ];}
+		    
+		    const div = (doc || document).createElement("div");
+		    
+		    div.innerHTML = mapEntry[1] + htmlString + mapEntry[2];
+		    
+		    while (mapEntry[0]--) { div = div.lastChild;}
+		    
+		    if (fragment) {
+		      while (div.firstChild) {
+		        fragment.appendChild(div.firstChild);
+		      }
+		    }
+
+		    return div.childNodes;
+		  }
+		</script>
+		<p>Doesn't output anything</p>
+	</body>
+</html>

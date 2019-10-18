@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>The behavior of constant variable</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+<body>
+	<script>
+    "use strict"
+
+	  const firstConst = "samurai";
+    assert(firstConst === "samurai", "firstConst is a samurai");
+
+    try{
+      firstConst = "ninja";
+      fail("Shouldn't be here");
+    } catch(e){
+      pass("An exception has occured");
+    }
+    
+    assert(firstConst === "samurai", "firstConst is still a samurai!");
+
+    const secondConst = {};
+    secondConst.weapon = "wakizashi";
+    assert(secondConst.weapon === "wakizashi", "We can add new properties");
+
+    const thirdConst = [];
+    assert(thirdConst.length === 0, "No items in our array");  
+    
+    thirdConst.push("Yoshi");
+
+    assert(thirdConst.length === 1, "The array has changed");
+	</script>
+</body>
+</html>

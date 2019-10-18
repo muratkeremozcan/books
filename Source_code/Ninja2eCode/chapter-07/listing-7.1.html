@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>With prototypes objects can access properties of other objects</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			const yoshi = { skulk: true };
+			const hatori = { sneak: true };
+			const kuma = { creep: true };
+
+			assert("skulk" in yoshi, "Yoshi can skulk");
+			assert(!("sneak" in yoshi), "Yoshi cannot sneak");
+			assert(!("creep" in yoshi), "Yoshi cannot creep");
+
+			Object.setPrototypeOf(yoshi, hatori);
+
+			assert("sneak" in yoshi, "Yoshi can now sneak");
+
+			assert(!("creep" in hatori), "Hatori cannot creep");
+
+			Object.setPrototypeOf(hatori, kuma);
+			assert("creep" in hatori, "Hatori can now creep");
+			assert("creep" in yoshi, "Yoshi can also creep");
+		</script>
+	</body>
+</html>

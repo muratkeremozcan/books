@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Using a closure in a timer interval callback</title>
+    <meta charset="utf-8">
+    <script src="../assert.js"></script>
+    <link rel="stylesheet" type="text/css" href="../assert.css">
+    <style>
+  	#box1{
+  		width: 100px;
+  		height: 100px;
+  		position: relative;
+  		margin:5;
+  		color: white;
+  		font-weight: bolder;
+      background-color:blue;
+      margin-bottom: 100px;
+  	}
+    #box2{
+  		width: 100px;
+  		height: 100px;
+  		position: relative;
+  		margin:5;
+  		color: white;
+  		font-weight: bolder;
+      background-color:red;
+      margin-bottom: 200px;
+  	}
+  </style>
+  </head>
+  <body>
+    <div id="box1">First Box</div>
+    <div id="box2">Second Box</div>
+    <script>
+      function animateIt(elementId){
+        // CLOSURE: this environment is kept alive until there are no functions that work with these variables: until the clearInterval method is called
+        var elem = document.getElementById(elementId); // create a reference to the element we want to animate
+        var tick = 0; // counter to track animation ticks
+        var timer = setInterval(function () { // setInterval is a built-in function that creates and starts an interval timer, given a callback
+          if (tick < 100) { // the timer callback is invoked every 10 ms. Every 100 ticks (1sec), adjust the position of the element
+            elem.style.left = elem.style.top = tick + "px";
+            tick++;
+          }
+          else { // once 1 second, 1000ms has passed
+            clearInterval(timer);
+            assert(tick === 100, "Tick accessed via a closure.");
+            assert(elem, "Element also accessed via a closure.");
+            assert(timer, "Timer reference also obtained via a closure." );
+          }
+        }, 10); // the setInterval duration: callback called every 10 ms
+      }
+      // IMPORTANT: CLOSURES : the closure environment is kept alive as long as there's a function that works with its variables, until we are on a different page and/or things get garbage collected
+      animateIt('box1'); // animate the div First Box
+      animateIt('box2'); // every time we call animateIt, a new lexical environment (scope) is created
+    </script>
+  </body>
+</html>

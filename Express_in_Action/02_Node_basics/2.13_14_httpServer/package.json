@@ -1,0 +1,15 @@
+{
+  "name": "2.13_14_httpServer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "socket.io": "~0.9.6"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

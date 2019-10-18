@@ -1,0 +1,12 @@
+[
+	{
+		"name": "Hatori",
+		"location": "http://localhost:8080/data/hatori.json",
+		"missionsUrl": "http://localhost:8080/data/missions.json"
+	},
+	{
+		"name": "Yoshi",
+		"location": "http://localhost:8080/data/yoshi.json",
+		"missionsUrl": "http://localhost:8080/data/missions.json"
+	}
+]

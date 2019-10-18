@@ -1,0 +1,24 @@
+{
+  "name": "chapter-10-code",
+  "description": "Chapter 10 sample code",
+  "scripts": {
+    "e2e": "protractor",
+    "tsc": "tsc",
+    "webdriver-circle": "webdriver-manager update --gecko false --standalone false --versions.chrome=2.40",
+    "webdriver-update": "webdriver-manager update --gecko false --standalone false"
+  },
+  "author": "Craig Nishina <craig.nishina@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "jasmine": "^2.7.0",
+    "jasmine-reporters": "^2.2.1",
+    "protractor": "^5.1.2",
+    "ts-node": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/jasminewd2": "2.0.2",
+    "@types/selenium-webdriver": "2.53.42",
+    "tslint": "^5.5.0",
+    "typescript": "^2.4.2"
+  }
+}

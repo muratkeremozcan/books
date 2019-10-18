@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Long running task</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<table><tbody></tbody></table>
+		<script>
+		  "use strict";
+		  const tbody = document.querySelector("tbody");
+		  for (let i = 0; i < 60000; i++) {
+		    let tr = document.createElement("tr");
+		    for (let t = 0; t < 6; t++) {
+		      const td = document.createElement("td");
+		      td.appendChild(document.createTextNode(i + "," + t));
+		      tr.appendChild(td);
+		    }
+		    tbody.appendChild(tr);
+		  }
+		</script>
+		<p>JS code creates a large table</p>
+	</body>
+</html>

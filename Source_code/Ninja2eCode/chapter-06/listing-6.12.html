@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Explicitly rejecting promises</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+		<script src="getJSON.js"></script>
+	</head>
+	<body>
+		<script>
+			"use script";
+			
+			const promise = new Promise((resolve, reject) => {
+			  reject("Explicitly reject a promise!");
+			});
+
+			promise.then(
+			  () => fail("Happy path, won't be called!"),
+			  error => pass("A promise was explicitly rejected!")
+			);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Function declarations and function expressions</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+  <script src="../assert.js"></script>
+</head>
+<body>
+  <script>
+    function myFunctionDeclaration(){ 
+      function innerFunction() {}
+    }
+
+    var myFunc = function(){};
+    myFunc(function(){
+      return function(){};
+    });
+
+    (function namedFunctionExpression () {
+    })();
+
+    +function(){}();
+    -function(){}();
+    !function(){}();
+    ~function(){}();
+  </script>
+  <p>No output</p>
+</body>
+</html>

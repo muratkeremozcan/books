@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Using getters and setters to guard private properties</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			"use strict"; 
+			function Ninja () {
+			  let skillLevel;
+
+			  this.getSkillLevel = () => skillLevel;
+
+			  this.setSkillLevel = value => {
+			    skillLevel = value;
+			  };
+			}
+
+			const ninja = new Ninja();
+			ninja.setSkillLevel(100);
+			assert(ninja.getSkillLevel() === 100,
+			      "Our ninja is at level 100!");
+		</script>
+	</body>
+</html>

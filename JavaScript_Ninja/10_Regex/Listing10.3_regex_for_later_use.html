@@ -1,0 +1,23 @@
+<div class="samurai ninja"></div>
+<div class="ninja samurai"></div>
+<div></div>
+<span class="samurai ninja ronin"></span>
+<script>
+  function findClassElements(className, type) {
+    const elems = document.getElementsByTagName(type || "*"); // collects elements by type
+    const regex = new RegExp("(^|\\s)" + className + "(\\s|$)"); // compile regex based on the className passed in. This is an instance we cannot use regex literal because the class name is not known in advance
+    // match the beginning of the string ^ OR | whitespace character \s + className + whitespace character \s or | the end of the string $
+    const results = []; // to store the results
+    for (let i = 0, length = elems.length; i < length; i++) {
+      if (regex.text(elems[i].className)) { // test for regex matches
+        results.push(elems[i]);
+      }
+      return results;
+    }
+  }
+  console.log(findClassElements("ninja", "div"));
+  console.log(findClassElements("ninja", "div").length);
+  console.log(findClassElements("ninja", "span"));
+  console.log(findClassElements("ninja", "span").length);
+  console.log(findClassElements("ninja").length)
+</script>

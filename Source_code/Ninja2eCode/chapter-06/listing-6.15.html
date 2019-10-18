@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Creating a JSON promise</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+		<script>
+			function getJSON(url) {
+  			return new Promise((resolve, reject) => {
+    			const request = new XMLHttpRequest();
+			    request.open("GET", url);
+
+			    request.onload = function() {
+					try {
+						if(this.status === 200 ){
+							resolve(JSON.parse(this.response));
+						} else{
+							reject(this.status + " " + this.statusText);
+						}
+			      	} catch(e){
+						reject(e.message);
+			      	}
+			    };
+
+			    request.onerror = function() {
+					reject(this.status + " " + this.statusText);
+			    };
+
+			    request.send();
+			  });
+			}
+
+			getJSON("data/ninjas.json").then((ninjas) => {
+			  assert(ninjas !== null, "Ninjas obtained!");
+			}).catch(e => fail("Shouldn’t be here:" + e));
+		</script>
+	</head>
+	<body>
+		<p>Has to be executed on a server (e.g MAMP, WAMP)</p>
+	</body>
+</html>

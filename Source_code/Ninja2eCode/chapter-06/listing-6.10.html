@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Creating a simple promise</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			"use script";
+			
+			const ninjaPromise = new Promise((resolve, reject) => {
+			  resolve("Hatori");
+			  //reject("An error resolving a promise!");
+			});
+
+			ninjaPromise.then(ninja => {
+			  assert(ninja === "Hatori", "We were promised Hatori!");
+			}, err => {
+			  fail("There shouldn’t be an error");
+			});
+		</script>
+	</body>
+</html>

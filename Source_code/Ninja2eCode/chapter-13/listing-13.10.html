@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Custom events</title>
+		<style>
+  		#whirlyThing { display: none; }
+		</style>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<button type="button" id="clickMe">Start</button>
+		<img id="whirlyThing" src="whirly-thing.gif" />
+
+		<script>
+		  function triggerEvent(target, eventType, eventDetail){
+		    const event = new CustomEvent(eventType, {
+		      detail: eventDetail
+		    });
+		    target.dispatchEvent(event);
+		  }
+
+		  function performAjaxOperation() {
+		    triggerEvent(document, 'ajax-start', { url: 'my-url'});
+		    setTimeout(() => {
+		      triggerEvent(document, 'ajax-complete');
+		    },5000);
+		  }
+
+		  const button = document.getElementById('clickMe');
+		  button.addEventListener('click', () => {
+		    performAjaxOperation();
+		  });
+
+		  document.addEventListener('ajax-start', e => {
+		    document.getElementById('whirlyThing').style.display = 'inline-block';
+		    assert(e.detail.url === 'my-url', 'We can pass in event data');
+		  });
+
+		  document.addEventListener('ajax-complete', e => {
+		      document.getElementById('whirlyThing').style.display = 'none';
+		  });
+		</script>
+	</body>
+</html>

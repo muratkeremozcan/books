@@ -1,0 +1,15 @@
+<div id="square" style="transform:translateY(15px);"></div>
+<script>
+  function getTranslateY(elem) {
+    const transformValue = elem.style.transform; // does the element have a style class and transform property exist on it
+  if(transformValue){ // if so, start regex matching
+    const match = transformValue.match(/translateY\(([^\)]+)\)/);
+    // translateY matches the characters translateY literally (case sensitive), \( matches ( literally, match anything [^\)] that's not ) until it reaches )
+    return match ? match[1] : ""; // the array returned by match matches the entire string 'translateY(15px)'  match[0] is translateY, match[1] is (15px)
+  }
+  return "";
+}
+const square = document.getElementById("square");
+console.log(getTranslateY(square));
+
+</script>

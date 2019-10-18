@@ -1,0 +1,121 @@
+{
+  "UrlNavigation": {
+      "siteListUrl": "https://app-boic-dev.horizon-int.siemens.io/main/sites",
+      "sitePagePartialUrl": "/main/sites/",
+      "devicePagePartialUrl": "/devices/",
+      "pointsPagePartialUrl": "/points/",
+      "siteEditPagePartialUrl": "/edit",
+      "siteAddPageUrl": "https://app-boic-dev.horizon-int.siemens.io/main/sites/add",
+      "noSitesUrl": "https://app-boic-dev.horizon-int.siemens.io/main/sites/no-sites"
+  },
+  "LoginInfo": {
+      "url": "https://app-boic-dev.horizon-int.siemens.io",
+      "username": "murat.ozcan@siemens.com",
+      "password": "Password-1",
+      "landingUrl": "https://app-boic-dev.horizon-int.siemens.io/landing"
+  },
+  "siteInfo": {
+    "siteName": "Buffalo Grove",
+    "siteReference": "1f7ee6be-932d57d6",
+    "siteTunnelId": "2c4d5442fbda",
+    "nthTunnelRegion": "1",
+    "nthViewPreference": "0",
+    "siteFullAddress": "1000 Deerfield Parkway, Buffalo Grove, IL, United States"
+  },
+  "secondSiteInfo": {
+    "siteName": "SW House",
+    "siteReference": "1f7ee6be-932d57d6",
+    "siteTunnelId": "2c4d5442fbda",
+    "nthTunnelRegion": "2",
+    "nthViewPreference": "1",
+    "siteFullAddress": "20 West Kinzie Street, Chicago, IL, United States"
+  },
+  "thirdSiteInfo": {
+    "siteName": "Siemens Schweiz AG",
+    "siteReference": "1f7ee6be-932d57d6",
+    "siteTunnelId": "2c4d5442fbda",
+    "nthTunnelRegion": "2",
+    "nthViewPreference": "1",
+    "siteFullAddress": "Gubelstrasse 22, Zug, Switzerland"
+  },
+  "dupeStateCityBuffaloGrove": {
+    "siteName": "Buffalo Grove High School",
+    "siteReference": "",
+    "siteTunnelId": "2c4d5442fbda",
+    "nthTunnelRegion": "1",
+    "nthViewPreference": "0",
+    "siteFullAddress": "1100 West Dundee Road, Buffalo Grove, IL, United States"
+  },
+  "dupeStreetCountrySiteSWHouseInfo": {
+    "siteName": "DupeStreetCountrySWHouse",
+    "siteReference": "",
+    "siteTunnelId": "2c4d5442fbda",
+    "nthTunnelRegion": "1",
+    "nthViewPreference": "0",
+    "siteFullAddress": "20 West Kinzie Street, Chicago, IL, United States"
+  },
+  "dupeStreetStateCountrySchweizAGInfo": {
+    "siteName": "DupeStreetStateCountrySchweizAG",
+    "siteReference": "",
+    "siteTunnelId": "2c4d5442fbda",
+    "nthTunnelRegion": "2",
+    "nthViewPreference": "1",
+    "siteFullAddress": "Gubelstrasse 22, Zürich, Switzerland"
+  },
+  "dupeState": {
+    "siteName": "DupeStateGeorgiaTech",
+    "siteReference": "",
+    "siteTunnelId": "2c4d5442fbda",
+    "nthTunnelRegion": "1",
+    "nthViewPreference": "0",
+    "siteFullAddress": "220 Ferst Dr NW, Atlanta, GA, USA"
+  },
+  "EditSiteInfo": {
+    "siteName": "Murat's House",
+    "siteReference": "aaabbbccccdddd",
+    "siteTunnelId": "2c4d5442fbda",
+    "nthTunnelRegion": "2",
+    "nthViewPreference": "1",
+    "siteFullAddress": "2767 Crawford Ave, Evanston, IL, United States"
+  },
+  "FilterByText": {
+    "searchString": "dupe",
+    "siteStreet": "Gubelstrasse",
+    "siteCity": "Buffalo Grove",
+    "streetNumber": "1000",
+    "siteState": "GA",
+    "siteCountry": "Switzerland"
+  },
+  "PointInfo": {
+    "deviceThePointsAreOn": "DXR-VAV",
+    "digitalPoint": "CMF BTN",
+    "multiStatePoint": "RM OP MODE",
+    "analogPoint": "CMF CLG STPT",
+    "doTag1": "cmd",
+    "doTag2": "writable",
+    "doTag3": "Add to checkItHasTags function if you need more tags",
+    "moTag1": "cmd",
+    "moTag2": "writable",
+    "moTag3": "Add to checkItHasTags function if you need more tags",
+    "aoTag1": "cmd",
+    "aoTag2": "writable",
+    "aoTag3": "Add to checkItHasTags function if you need more tags",
+    "invalidTag": "MuratKillsThis"
+  },
+  "BoundaryValueAnalysis": {
+    "upperLimit": "120",
+    "lowerLimit": "32",
+    "upperBoundary": "150",
+    "lowerBoundary": "-150",
+    "middleValue": "70"
+  },
+  "tunnelRegionDropdownText": {
+    "default": "Select your Tunnel Region",
+    "region1": "EastUS",
+    "region2": "WestEurope"
+  },
+  "viewPreferenceDropdownText": {
+    "name": "Name",
+    "description": "Description"
+  }
+}

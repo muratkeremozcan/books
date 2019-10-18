@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Testing arrays with every and some</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			const ninjas = [
+				{name: "Yagyu", weapon: "shuriken"},
+			    {name: "Yoshi" },
+			    {name: "Kuma", weapon: "wakizashi"}
+			];
+
+			const allNinjasAreNamed = ninjas.every(ninja => "name" in ninja);
+			const allNinjasAreArmed = ninjas.every(ninja => "weapon" in ninja);
+
+			assert(allNinjasAreNamed, "Every ninja has a name");
+			assert(!allNinjasAreArmed, "But not every ninja is armed");
+
+			const someNinjasAreArmed = ninjas.some(ninja => "weapon" in ninja);
+
+			assert(someNinjasAreArmed, "But some ninjas are armed");
+		</script>
+	</body>
+</html>

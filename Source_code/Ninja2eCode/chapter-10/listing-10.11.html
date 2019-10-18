@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Matching all characters, including newlines</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			"use strict";
+			
+			const html = "<b>Hello</b>\n<i>world!</i>";
+  			assert(/.*/.exec(html)[0] === "<b>Hello</b>", 
+  				  "A normal capture doesn't handle endlines.");
+  		 	assert(/[\S\s]*/.exec(html)[0] === "<b>Hello</b>\n<i>world!</i>", 
+  		 		 "Matching everything with a character set.");
+  		 	assert(/(?:.|\s)*/.exec(html)[0] === "<b>Hello</b>\n<i>world!</i>", 
+  		 		 "Using a non-capturing group to match everything.");
+		</script>
+	</body>
+</html>

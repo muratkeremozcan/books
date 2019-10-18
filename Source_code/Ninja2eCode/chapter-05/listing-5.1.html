@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>A simple closure</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+
+<body>
+	<script>
+	  var outerValue = "ninja";
+    function outerFunction() {
+      assert(outerValue === "ninja","I can see the ninja.");
+    }
+    outerFunction();
+  </script>
+</body>
+</html>

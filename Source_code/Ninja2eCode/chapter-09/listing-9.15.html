@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Simple prototypes</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<div id="firstElement"></div>
+  		<div id="secondElement"></div>
+  		<script>
+    		const firstElement = document.getElementById("firstElement");
+    		const secondElement = document.getElementById("secondElement");
+
+    		const map = {};
+
+    		map[firstElement] = { data: "firstElement"};
+    		assert(map[firstElement].data === "firstElement", "The first element is correctly mapped");
+
+    		map[secondElement] = { data: "secondElement"};
+    		assert(map[secondElement].data === "secondElement", "The second element is correctly mapped");
+
+    		assert(map[firstElement].data === "firstElement", "But now the firstElement is overriden!");
+  		</script>
+	</body>
+</html>

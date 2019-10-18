@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Accessing a function before its declaration</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+<body>
+ 	<script>
+    assert(typeof fun === "function",
+          "fun is a function even though its definition isn’t reached yet!");
+
+    assert(typeof myFunExp === "undefined",
+          "But we cannot access function expressions");
+
+    assert(typeof myLamda === "undefined",
+           "Nor lambda functions");
+
+    function fun(){}
+
+    var myFunExpr = function(){};
+    var myLambda = (x) => x;
+   </script>
+</body>
+</html>

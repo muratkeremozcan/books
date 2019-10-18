@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Instantiating a new object using a reference to a constructor</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+			function Ninja(){}
+			const ninja = new Ninja();
+			const ninja2 = new ninja.constructor();
+
+			assert(ninja2 instanceof Ninja, "It's a Ninja!");
+			assert(ninja !== ninja2, "But not the same Ninja!");
+		</script>
+	</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Using the exec method to do both capturing and a global search</title>
+		<link rel="stylesheet" href="../assert.css">
+		<script src="../assert.js"></script>
+	</head>
+	<body>
+		<script>
+		  "use strict";
+		  
+		  const html = "<div class='test'><b>Hello</b> <i>world!</i></div>";
+		  const tag = /<(\/?)(\w+)([^>]*?)>/g; 
+		  let match, num = 0;
+		  while ((match = tag.exec(html)) !== null) {
+		    assert(match.length === 4,
+		          "Every match finds each tag and 3 captures.");
+		    num++;
+		  }
+		  
+		  assert(num === 6, "3 opening and 3 closing tags found.");
+		</script>
+	</body>
+</html>

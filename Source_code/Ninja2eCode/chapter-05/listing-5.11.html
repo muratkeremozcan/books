@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Approximate private variables with closure</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+
+<body>
+	<script>
+	  function Ninja() {
+      var feints = 0;
+      this.getFeints = function(){
+        return feints;
+      };
+      this.feint = function(){
+        feints++;
+      };
+    }
+    var ninja1 = new Ninja();
+    assert(ninja1.feints === undefined,
+           "And the private data is inaccessible to us.");
+    ninja1.feint();
+    assert(ninja1.getFeints() === 1,
+           "We're able to access the internal feint count.");
+
+    var ninja2 = new Ninja();
+    assert(ninja2.getFeints() === 0,
+           "The second ninja object gets it’s own feints variable.");
+	</script>
+</body>
+</html>

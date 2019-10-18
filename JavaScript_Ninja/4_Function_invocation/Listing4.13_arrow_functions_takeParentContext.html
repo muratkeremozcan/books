@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Using arrow functions to work around callback function contexts</title>
+  <meta charset="utf-8">
+  <script src="../assert.js"></script>
+  <link rel="stylesheet" type="text/css" href="../assert.css">
+</head>
+
+<body>
+  <button id="test">Click Me!</button>
+  <script>
+    function Button() { // a constructor function that creates objects that retains the button state
+      this.clicked = false;
+      this.click = () => { // the arrow function takes the context of the function it got created in
+        this.clicked = true; // the function context THIS here is the same as the this above outside the arrow function
+        assert(button.clicked, "The button has been clicked"); // output the button state
+      };
+    }
+    var button = new Button(); // instantiate a button object
+    var elem = document.getElementById("test"); // element is the button with test as id
+    elem.addEventListener("click", button.click); // event listener/handler on button object's click function
+  </script>
+</body>
+
+</html>
