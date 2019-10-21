@@ -2,7 +2,7 @@
  //An error/exception is on a per-Promise basis, which means it’s possible to catch such an error at any point in the chain,
  // and that catching acts to sort of “reset” the chain back to normal operation at that point:
 
-// When the error occurs in step 2, the rejection handler in step 3 catches it. T
+// When the error occurs in step 2, the rejection handler in step 3 catches it. 
 // The return value (42 in this snippet), if any, from that rejection handler fulfills the promise for the next step (4),
 //  such that the chain is now back in a fulfillment state.
 
@@ -31,7 +31,7 @@ request("http://some.url.1/")
       console.log(err);
       // `TypeError` from `foo.bar()` error
       return 42;
-    } 
+    }) 
 
   // step 4:
   .then(function (msg) { // rejection handler passed in 42

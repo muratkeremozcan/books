@@ -2,7 +2,7 @@
 // when multiple fulfillment values are needed,
 // the typical advice is to construct a values wrapper (such as an object or array) to contain these multiple messages.
 
-// it is preferred to wrap each value into its own promise and put them in an array||object, (letting the calling decide what to do with the promises)
+// it is preferred to wrap each value into its own promise and put them in an array||object, (letting the calling code decide what to do with the promises)
   // then use one promise to transport the values in an array||object (hiding the abstraction)
 
 function getY(x) {

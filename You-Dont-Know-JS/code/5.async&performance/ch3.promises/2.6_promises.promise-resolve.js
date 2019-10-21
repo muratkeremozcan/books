@@ -80,4 +80,3 @@ Promise.resolve(p5).then(
 // Another beneficial side effect of wrapping Promise.resolve(..) around any function’s return value (thenable or not) 
   // is that it’s an easy way to normalize that function call into a well-behaving async task. 
   // If foo(42) returns an immediate value sometimes, or a Promise other times, Promise.resolve( foo(42) ) makes sure it’s always a Promise result.
-

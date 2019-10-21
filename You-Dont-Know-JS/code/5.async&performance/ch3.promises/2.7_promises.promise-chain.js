@@ -28,7 +28,6 @@ p.then(function (v) {
 
 // What if we want step 2 to wait for step 1 to do something asynchronous? 
 // We’re using an immediate return statement, which immediately fulfills the chained promise.
-// The key to making a Promise sequence truly async capable at every step is to recall how Promise.resolve(..) operates
 
 p.then(function (v) {
   console.log(v);
@@ -48,6 +47,7 @@ p.then(function (v) {
   console.log(v);
 });
 
+//////////
 // introduce asynchrony 
 p.then(function (v) {
   console.log(v);
@@ -58,6 +58,7 @@ p.then(function (v) {
     }, 100)
   });
 }).then(function (v) {
+
   console.log(v);
 
   return Promise.resolve().then(function () {

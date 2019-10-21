@@ -6,8 +6,7 @@
 // example: Promise.all([..])
 function add(xPromise, yPromise) {
   // `Promise.all([ .. ])` takes an array of promises,
-  // and returns a new promise that waits on them
-  // all to finish
+  // and returns a new promise that waits on them all to finish
   return Promise.all([xPromise, yPromise])
 
     // when that promise is resolved, let's take the

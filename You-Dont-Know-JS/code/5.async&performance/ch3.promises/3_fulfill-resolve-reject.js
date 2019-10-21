@@ -50,7 +50,6 @@ rejectedPr.then(
   },
   function rejected(e) {
     console.log(e);
-    console.log('haha');
   }
 )
 .catch(

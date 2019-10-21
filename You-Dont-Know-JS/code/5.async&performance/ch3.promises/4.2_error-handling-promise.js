@@ -13,8 +13,7 @@ p.then(
 
 ////////////
 
-
-// what is you have errors like these? no lowercase for numbers
+// what if you have errors like these? no lowercase for numbers
 var pr = Promise.resolve(42);
 
 pr.then(
@@ -27,7 +26,7 @@ pr.then(
     // never gets here. Our promise rejection does not get triggered!
     // this is because this error handler is for the Promise, which resolves without issues
   }
-) // some suggest to end it with catch, so tht errors propagate  down here
+) // some suggest to end it with catch, so that errors propagate down here
   .catch(
     function (err) {
       // error propagated

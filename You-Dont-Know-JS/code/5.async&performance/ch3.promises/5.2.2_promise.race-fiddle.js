@@ -22,7 +22,7 @@ Promise.race([prom1, prom2, prom3])
       console.log(promisedValue)
     },
     function onRejected(e) {
-      console.log(e);
+      console.log(e)
     }
   )
   .catch(

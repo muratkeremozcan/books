@@ -11,7 +11,7 @@ var p2 = p.then(
     // never gets here
     console.log('hoi');
   },
-  // BY default, there is an assumed rejection handler, if it is omitted or any other non-function value passed
+  // by default, there is an assumed rejection handler, if it is omitted or any other non-function value passed
     // with or without this function, it will still oops
     // this allows the error to continue propagating along a Promise chain 
     // until an explicitly defined rejection handler is encountered.
@@ -32,7 +32,7 @@ p3.then(
   // assumed fulfillment handler, if omitted or any non-function value passed
     // with or without this function, it will still return what got passed in
   
-    // function (v) {
+  //   function (v) {
   //   console.log('noi');
   //   return v;
   // },

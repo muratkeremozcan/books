@@ -28,7 +28,7 @@ Promise.all([promise1, promise2, promise3])
       // promiseValues is an array of `.then()` values in the same order of their promises in the array passed into Promise.all()
       console.log(promiseValues.join(','));
     },
-    // delete the argument to simulate .catch, delete callback to see it fall to catch
+    // delete the argument to simulate .catch, delete callback to see it falls to catch
     function onRejected(e) { 
       console.log(e);
     }

@@ -19,14 +19,14 @@ function timeoutPromise(delay) {
 // keep rerunning to see different results
 Promise.race([
   makePromises('a promise made'),
-  timeoutPromise(500)
+  timeoutPromise(500)    
 ])
 .then(
   function onFulfilled(){
     console.log('fulfilled in time');
   },
   function onNotFulfilled(err){
-    // look at err to know if it was rejected or not finished
+    // look at err to know if it was rejected or not finished in time
     console.log('rejected or not finished in time:', err);
   }
 ).catch(

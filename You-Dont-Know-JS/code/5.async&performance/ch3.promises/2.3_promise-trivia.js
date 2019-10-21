@@ -9,6 +9,7 @@
 The characteristics of Promises are intentionally designed to provide useful, repeatable answers to all these concerns.
 */
 
+var p = Promise.resolve();
 
 p.then(function () {
   p.then(function () {
@@ -23,17 +24,18 @@ p.then(function () {
 
 
 /////////
-var p1 = new Promise(function (resolve, reject) {
-  resolve(p3);
-});
-
-var p2 = new Promise(function (resolve, reject) {
-  resolve("A");
-});
 
 var p3 = new Promise(function (resolve, reject) {
   resolve("B");
 });
+
+var p1 = new Promise(function (resolve, reject) {
+  resolve(p3);
+});  
+
+var p2 = new Promise(function (resolve, reject) {
+  resolve("A");
+});  
 
 p1.then(function (v) {
   console.log(v);
@@ -44,6 +46,6 @@ p2.then(function (v) {
 });
 
 
-// B A
+// A B
 // p1 is resolved not with an immediate value, but with another promise p3, which is itself resolved with the value "B". 
 // The specified behavior is to unwrap p3 into p1, but asynchronously, so p1’s callback(s) are behind p2’s callback(s) in the asynchronus Job queue

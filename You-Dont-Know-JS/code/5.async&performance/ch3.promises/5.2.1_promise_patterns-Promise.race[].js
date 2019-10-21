@@ -4,8 +4,8 @@
 // Promise.race([ .. ]) also expects a single array argument, containing one or more Promises, thenables, or immediate values.
 // It doesn’t make much practical sense to have a race with immediate values
 
-// A race requires at least one “runner,” so if you pass an empty array, 
-// instead of immediately resolving, the main race([..]) Promise will never resolve.
+// A race requires at least one “runner,” 
+// IMPORTANT: if you pass an empty array, instead of immediately resolving, the main race([..]) Promise will never resolve.
 
 // Because only one promise wins, the fulfillment value is a single message, not an array as it was for Promise.all([ .. ]).
 
