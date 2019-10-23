@@ -5,7 +5,10 @@
 
 
 function *foo(x) {
+  x; //?
   var y = x * (yield 'Hello');
+  x; //?
+  y; //?
   return y;
 }
 
