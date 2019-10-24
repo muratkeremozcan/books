@@ -22,9 +22,10 @@ var val1 = it1.next().value //?
 var val2 = it2.next().value //?
 
 // with these we pass values back to the generator, advance it to the next yield and get a value back
+// mind how 'yield 2' is negated and the value we pass from the iterator (20) is used for yield's result
 val1 = it1.next(val2 * 10).value //?
 val2 = it2.next(val1 * 5).value //?
 
-// with these we pass values back again, and advance to the conclusion
+// // with these we pass values back again, and advance to the conclusion
 it1.next(val2 / 2); //?
 it2.next(val1 / 4); //?

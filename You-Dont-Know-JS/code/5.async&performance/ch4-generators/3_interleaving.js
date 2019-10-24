@@ -18,9 +18,9 @@ function barr() {
 foor(); //?
 barr(); //?
 
+
 /////////////////////
 // with generators, clearly interleaving (even in the middle of statements!) is possible:
-
 
 function* foo() {
   a++;
@@ -40,20 +40,22 @@ function* foo() {
 function *bar() {
   b--;
   yield;
-  a = (yield 8) + b;
+  a; //?
+  b; //?
+  a = (yield 8) + b; //?
   b = a * (yield 2);
 }
 
 // helper to control the iterator
-// initializes a generator to create its it iterator, then returns a function which, when called, advances the iterator by one step.
+// initializes a generator to create its iterator, then returns a function which, when called, advances the iterator by one step.
 function step(gen){
   var it = gen();
   var last;
 
   return function() {
-    // whatever is yielded out, send it back the next time
-    last = it.next(last).value;
-    last; //?
+    // whatever is yielded out of the iterator, send it back the next time 
+    // we pass back to generator with it.next(last), then we store this
+    last = it.next(last).value; //?
   };
 }
 // reset a and b
@@ -63,11 +65,11 @@ b = 2;
 var s1 = step(foo);
 var s2 = step(bar);
 
-s2(); // b--
+s2(); // b-- , last value received is undefined
 s2(); // yield 8 , last value that step received is 8
-s1(); // a++
-s2(); // a = 8 + b, yield 2
-s1(); // b = b * a, yield b
+s1(); // a++, last value = undefined
+s2(); // a = 8 + b (9), at yield 2
+s1(); // b = b * a (9), at yield b
 s1(); // a = b + 3
 s2(); // b = a * 2
 

@@ -20,8 +20,8 @@ var res = it.next(); //?
 res.value; //?
 
 // at this state, the generator is still waiting for a value to be passed to it
-
 // now we pass a value back to the generator via next(<value>)
+
 res = it.next(7); //?
 res.value; //?
 

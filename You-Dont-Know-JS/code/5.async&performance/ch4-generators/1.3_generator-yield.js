@@ -15,10 +15,11 @@ var it = foo(6); //?
 // start `foo(..)` with next(), then it runs into the 'yield' expression
 // and essentially requests the calling code to provide a result value for the yield expression.
 it.next(); //?
+// it.next(); // you can force-skip passing in a value back to the generator
 
 // resume the generator and provide a value by calling next(7)
 var res = it.next(7); //?
 
-res.value; //?
+// res.value; //?
 
 
