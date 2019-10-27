@@ -13,6 +13,7 @@ function *something() {
     else {
       nextVal = (3 * nextVal) + 6;
     }
+    nextVal; //?
     yield nextVal;
   }
 }

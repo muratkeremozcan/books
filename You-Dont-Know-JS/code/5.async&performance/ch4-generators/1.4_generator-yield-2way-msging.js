@@ -6,7 +6,7 @@
 
 function *foo(x) {
   x; //?
-  var y = x * (yield 'Hello');
+  var y = x * (yield 'Hello'); 
   x; //?
   y; //?
   return y;
@@ -16,7 +16,8 @@ var it = foo(6); //?
 
 // the next() call started the generator and the generator yielded a value 
 // also, mind that the next() call did not pass anything back to the generator (as in the previous example)
-var res = it.next(); //?
+  // even if it did, nothing would pass because the first .next() is to start the generator
+var res = it.next(5678); //?
 res.value; //?
 
 // at this state, the generator is still waiting for a value to be passed to it

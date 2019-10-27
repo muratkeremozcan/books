@@ -30,15 +30,15 @@ function* something() {
 var it = something();
 
 for (var v of it) {
+  v; //?
   if (v > 2000) {
     console.log(
       // When we call it.return(..), it immediately terminates the generator, which of course runs the finally clause.
       // Also, it sets the returned value to whatever you passed in to return(..), which is how "Hello World" comes right back out.
       // also the iterator is set to done:true
-
+      
       it.return('Hello World').value
       );
     }
-    console.log(v);
-  // no break or return needed here
+    // no break or return needed here
 }

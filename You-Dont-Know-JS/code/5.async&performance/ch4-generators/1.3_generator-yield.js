@@ -6,6 +6,7 @@
 
 function* foo(x) {
   // requests the calling code to provide a value for the yield expression. only the next(<value>) can provide an answer
+  // yield always accepts a value from next, whether it is passing one back or not
   var y = x * (yield);
   return y;
 }
@@ -15,11 +16,13 @@ var it = foo(6); //?
 // start `foo(..)` with next(), then it runs into the 'yield' expression
 // and essentially requests the calling code to provide a result value for the yield expression.
 it.next(); //?
-// it.next(); // you can force-skip passing in a value back to the generator
 
-// resume the generator and provide a value by calling next(7)
+// you can force-skip passing in a value back to the generator
+// it.next(); //? 
+
+// or you can resume the generator and provide a value by calling next(..) with a value passed in
 var res = it.next(7); //?
+res.value; //?
 
-// res.value; //?
 
 
