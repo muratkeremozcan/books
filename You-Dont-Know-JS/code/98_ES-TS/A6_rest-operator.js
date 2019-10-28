@@ -17,11 +17,11 @@ function calcTaxES5() {
   customers //?
 
   // Example of array.slice.call:
-  // function list() {
-  //   return Array.prototype.slice.call(arguments);
-  // }
+  function list() {
+    return Array.prototype.slice.call(arguments);
+  }
   
-  // var list1 = list(1, 2, 3); // [1, 2, 3]
+  var list1 = list(1, 2, 3); //? [1, 2, 3]
 
   customers.forEach( function (customer) {
     console.log('Processing ', customer);

@@ -1,5 +1,5 @@
 
-function foo(x, y) {
+function foo(x, y) { // note: this can be a promise without changing the generator at all
   ajax("http://some.url.1/?x=" + x + "&y=" + y,
     function (err, data) {
       if (err) {
@@ -14,7 +14,7 @@ function foo(x, y) {
   )
 }
 
-function* main() {
+function *main() {
   try {
     // TL,DR; the yield here stops execution, calls foo.
       // foo returns a value with it.next(data). That data becomes the result of 'yield', gets assigned to text

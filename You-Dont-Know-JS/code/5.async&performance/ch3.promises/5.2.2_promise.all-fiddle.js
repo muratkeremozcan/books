@@ -12,7 +12,7 @@ function makeAPromiseWithValue(value) {
 
       setTimeout(function () {
         reject('rejector kicked in');
-      },  600); // change the value to simulate rejection
+      },  800); // change the value to simulate rejection
 
     });
 }
@@ -38,3 +38,4 @@ Promise.all([promise1, promise2, promise3])
       console.log(err);
     }
   )
+  
