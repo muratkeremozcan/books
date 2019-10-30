@@ -71,11 +71,12 @@ stoleSecretIdentity(); //?
 var boundStoleSecretIdentity = hero.getSecretIdentity.bind(hero);
 boundStoleSecretIdentity(); //?
 
-let secondIdentity = () => hero.getSecretIdentity();
-secondIdentity(); //?
 
 let thirdId =  hero.getSecretIdentity.apply(hero);
 thirdId; //?
 
 let fourthId = hero.getSecretIdentity.call(hero);
 fourthId;
+
+let secondIdentity = () => hero.getSecretIdentity();
+secondIdentity(); //?
