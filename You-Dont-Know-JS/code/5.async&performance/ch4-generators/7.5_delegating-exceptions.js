@@ -40,14 +40,12 @@ function *baz() {
 var it = bar();
 
 console.log('outside:', it.next().value);
-console.log('outside:', it.next().value);
+// first the iterator proceeds, then the message is passed to the previous iterator
+console.log('outside:', it.next(1).value);
 
-// throw instead of next(x) : the value gets passed to the catch instead of yield 'B' line
-// console.log('outside:', it.next(2).value);
-console.log('outside', it.throw(2).value);
-
-// pass 3 to line yield 'C' , but then that throw throws it to bar, because *foo() is the delegate
-console.log('outside:', it.next(3).value);
+console.log('outside:', it.next(2).value);
+// throw instead of next(x) : the value gets passed to the catch in bar , instead of yield 'C' line in foo because *foo() is the delegate
+console.log('outside', it.throw(3).value);
 
 // as soon as we run this, baz() is delegated to, and baz throws back 'F'
 try {

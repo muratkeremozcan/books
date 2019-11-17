@@ -21,7 +21,6 @@ function samplePromise(x) {
 // recursion with generator
 function *foo(val) {
   if (val > 1) {
-    // generator recursion
     val; //?
     // (3) 3 > 1, foo(2) creates another iterator, passes in 2 for val
     // (4) 2> 1, foo(1) creates another iterator, passes in 1 for val

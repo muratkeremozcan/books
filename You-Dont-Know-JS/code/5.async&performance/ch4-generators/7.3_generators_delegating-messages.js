@@ -16,14 +16,16 @@ function *bar() {
 
 var it = bar(); //?
 
+// KEY: first the iteration happens, then the value is passed to the previous yield
+
 // start the generator *bar()
 console.log('outside', it.next().value);
-// passing message to the generator *bar()
+// passing message to the generator *bar() , yielding B from delegate foo
 console.log('outside', it.next(1).value);
-// passing message to the delegate
+// passing message to the delegate, yielding C from the next yield
 console.log('outside', it.next(2).value);
 // as soon as we call next, the delegate *foo() finishes running, returns D to *bar(), 
- // IMPORTANT:  this value doesn’t get returned all the way back to the outside it.next(3) call.
+// IMPORTANT:  this value doesn’t get returned all the way back to the outside it.next(3) call.
 // *bar() moves to the next step and yields E
 console.log('outside', it.next(3).value);
 // *bar() finishes and returns F
