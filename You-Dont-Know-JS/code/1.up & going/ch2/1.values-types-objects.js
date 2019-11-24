@@ -73,3 +73,6 @@ var c = '1,2,3';
 a == c; //?
 b == c; //?
 a == b; //?
+// this last one compares if the arrays are the same array object in memory, therefore it fails
+
+// how do you check for array equality?
