@@ -5,11 +5,12 @@ import awesome from './foo'; // importing default function
 console.log(hello('rhino'));
 console.log(howAreYou());
 
+barAlias.hello('rhino'); //?
+barAlias.howAreYou(); //?
+
 // outputs HUNGRY HIPPO
 awesome(); //? 
 
-barAlias.hello('rhino'); //?
-barAlias.howAreYou(); //?
 
 
 /*

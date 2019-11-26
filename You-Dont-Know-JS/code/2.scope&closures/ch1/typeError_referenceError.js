@@ -6,7 +6,7 @@ function foo(a) {
   console.log(a + b);
   b = a;
 }
-var c = foo(null);
+var c = foo(2);
 
 var b; // you can comment out this line to produce Reference error
 

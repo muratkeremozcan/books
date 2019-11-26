@@ -1,4 +1,5 @@
 // implicit block scoping in ES6
+// this can also be a replacement for IIFEs and arrow IIFEs
 {
   let a = 2;
   console.log( a ); // 2

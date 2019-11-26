@@ -8,10 +8,11 @@ const awesome = require('./foo'); // importing default function seems similar
 console.log(hello('rhino'));
 console.log(howAreYou());
 
-awesome(); //?
-
 barAlias.hello('rhino'); //?
 barAlias.howAreYou(); //?
+
+awesome(); //?
+
 
 
   /*

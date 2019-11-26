@@ -48,11 +48,12 @@ foo2.identify();
 // Another slight but powerful variation on the module pattern is to name the object you are returning as your public API:
 var foo = (function CoolModule(id) {
 
-  
+  // public function
   function identify1() {
     console.log(id);
   }
   
+  // private function
   function identify2() {
     return console.log(id.toUpperCase());
   }
@@ -71,7 +72,7 @@ var foo = (function CoolModule(id) {
   };
 
   return publicAPI;
-})("foo module");
+})("food module");
 
 
 foo.identify();

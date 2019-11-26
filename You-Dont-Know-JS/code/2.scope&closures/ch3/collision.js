@@ -6,7 +6,7 @@ function foo() {
   }
 
   for (var i=0; i<10; i++) { // use let, or rename i to something else either here or above
-      bar( i * 2 ); // oops, inifinite loop ahead!
+      bar( i * 2 ); // oops, infinite loop ahead!
   }
 }
 
