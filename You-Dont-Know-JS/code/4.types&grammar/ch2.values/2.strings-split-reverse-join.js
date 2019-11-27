@@ -26,6 +26,8 @@ b; //?
 
 // we can “borrow” non-mutation array methods against our string:
 var j = Array.prototype.join.call(a, '-'); // ?
+// j = a.join('-'); // you can't do this because a is a string
+
 a === j //?
 var jf = Array.prototype.map.call(a, function(v) {
   return v.toUpperCase() + '.'

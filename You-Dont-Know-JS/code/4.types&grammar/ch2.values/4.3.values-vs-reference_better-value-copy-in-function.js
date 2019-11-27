@@ -13,6 +13,7 @@ function foo(x) {
 
 var a = [1,2,3];
 
+// copying an array with value-copy
 // you can make a copy of the compound value for arrays with slice()
 // slice(..) with no parameters by default makes an entirely new (shallow) copy of the array.
 var b = a.slice();
