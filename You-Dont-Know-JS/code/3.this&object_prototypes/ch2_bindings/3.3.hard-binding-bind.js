@@ -39,9 +39,9 @@ let addThings = function (a, b, c) {
 };
 
 
+console.log( addThings.call(obj10, 1, 4, 6)  );
 console.log(addThings.apply(obj10, [1,4,6])   );
 console.log( addThings.bind(obj10, 1, 4, 6)() );
-
 
 ///////
 // many libraries have a workaround for not having to use bind, ex: forEach

@@ -9,6 +9,7 @@ for(var i = 0; i < myArray.length; i++) {
   console.log(myArray[i]);
 }
 for (var i = myArray.length -1 ; i >= 0; i--) {
+// for (var i = myArray.length; i--;) { // alternative
   console.log(i);
   console.log(myArray[i]);
 }
@@ -18,7 +19,7 @@ for (var i = myArray.length -1 ; i >= 0; i--) {
 myArray.forEach( function(i) {
   console.log(i);
   return 'hello' + i; // ignored
-});
+}); //?
 
 // every tests if all the elements in the array pass the test implemented by the callback function. If it hits false, it breaks . returns boolean
 myArray.every( function(i) {
@@ -56,7 +57,7 @@ myArray[ Math.floor( Math.random() * myArray.length) ]; //?
 myArray.reduce( function(accumulator, i) {
   console.log(i);
   console.log(accumulator);
-  return accumulator + i * 2;
+  return accumulator + i * 2; //? 
 }, 1  /* the optional initial value */); //?
 
 // for of returns the values, not the indices like for in. PREFERRED with ARRAYs. Does not work with Objects because objects are not iterable with [Symbol.iterator]

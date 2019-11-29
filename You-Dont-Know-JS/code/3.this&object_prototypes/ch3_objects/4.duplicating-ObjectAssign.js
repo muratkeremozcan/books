@@ -1,3 +1,4 @@
+// TL, DR; use Object.assign when copying objects
 
 // One subset solution is that objects that are JSON-safe 
   // (that is, can be serialized to a JSON string and then re-parsed to an object with the same structure and values) 
@@ -31,7 +32,7 @@ var myObject = {
 };
 
 // infinite circulation problem 
-anotherArray.push( anotherObject, myObject );
+anotherArray.push( myObject );
 myObject
 
 // objects are Json safe, but you still get converting circular structure to Json error

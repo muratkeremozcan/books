@@ -39,6 +39,7 @@ class Button extends Widget {
 }
 
 // Despite syntactic improvements, these are not real classes, as they still operate on top of the [[Prototype]] mechanism.
+// the end result is the same as OLOO style
 
 ////
 

@@ -15,6 +15,7 @@ var obj = {
 };
 
 var bar = binder( foo, obj );
-
 var b = bar( 3 ); // 2 3
 
+
+var foob = foo.bind(obj, 3)(); //?

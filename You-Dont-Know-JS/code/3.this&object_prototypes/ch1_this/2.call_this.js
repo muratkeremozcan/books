@@ -4,7 +4,7 @@ function identify() {
 
 function speak() {
   var greeting = 'Hello I am ' + identify.call(this);
-  console.log(greeting);
+  return greeting;
 }
 
 var me = {
@@ -19,8 +19,8 @@ var you = {
 identify.call(me); //?
 identify.call(you); //?
 
-speak.call(me);
-speak.call(you);
+speak.call(me); //?
+speak.call(you); //?
 
 // this is neither a reference to the function itself, nor is it a reference to the function’s lexical scope. 
 // this is actually a binding that is made when a function is invoked, 
@@ -34,11 +34,12 @@ speak.call(you);
 function foo() {
   console.log( this.bar );
 }
+
 var bar = "global";
 
 var obj1 = {
   bar: "obj1",
-  foo: foo
+  foo
 };
 
 var obj2 = {
@@ -47,5 +48,5 @@ var obj2 = {
 
 foo();              // "global" in non-strict mode, undefined in strict mode
 obj1.foo();         // "obj1" , sets this to obj1 . Implicit binding. Careful when assigning to a variable or passing it in as a an argument to a function!
-foo.call( obj1 );   // 'obj1" , obj1 specified as this context . There is also apply and bind
-var c = new foo();          // undefined, sets this to a new object
+foo.call( obj1 );   // 'obj1" , obj1 specified as this context . There is also apply and bind and arrow function
+var c = new foo();  // with new, a new object is constructed and the scope of 'this' is set as the new object (undefined here because of global scope,)

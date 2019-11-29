@@ -10,10 +10,19 @@ var anotherObject = {
 // The top end of every normal [[Prototype]] chain is the built-in Object.prototype.
 var myObject = Object.create(anotherObject);
 
+// check out myObject is empty! but can property delegate cool function
+anotherObject; //?
+myObject; //?
+myObject.cool; //?
+
+// create a clear api
 myObject.doCool = function() {
+  // 'this' refers to myObject
   this.cool();
 }
 
-myObject.doCool(); // internal delegation to make the api clearer
+// internal delegation to make the api clearer
+myObject.doCool();
 
-myObject.cool(); // magic
+// OLOO property delegation
+myObject.cool(); 

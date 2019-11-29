@@ -2,6 +2,8 @@ var myArray = ['foo', 42, 'bar'];
 
 // you can add properties to an array, because arrays are objects
 // Notice that adding named properties (regardless of . or [ ] operator syntax) does not change the reported length of the array.
+// TL,DR; don't do this, use slice, push, unshift
+// Use objects to store key/value pairs, and arrays to store values at numeric indices.
 
 myArray.baz = 'baz';
 myArray['foob'] = 'foob'; 
@@ -19,4 +21,4 @@ myArray['abc'] = 'abc';
 myArray;
 myArray.length; //?
 
-// Use objects to store key/value pairs, and arrays to store values at numeric indices.
+

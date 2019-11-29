@@ -5,7 +5,8 @@ function foo(num) {
   // foo.count++;
 
   // a more graceful approach is to embrace 'this' and not rely on named function
-  // this here does not point to the function!! but to the global object, and a count property is created for the global object
+  // this here does not point to the function!! but to the global object, because the function is called from global scope
+  // and a count property is created for the global object
   this.count++;  
 }
 

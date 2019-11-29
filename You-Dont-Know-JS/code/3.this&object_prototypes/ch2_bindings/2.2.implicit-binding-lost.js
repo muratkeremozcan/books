@@ -13,19 +13,17 @@ var obj = {
 }
 
 // careful! Assign the function to a variable, and the binding falls to undefined
-
 var bar = obj.foo; // undefined
 
   // note: if you instead call foo by doing:  obj.foo(), 
   // it will execute the function foo here returning console.log('2'), 
   // and bar will have the called obj.foo() value, which will still be undefined
-
 // this is all because the call site is what matters, and bar is in global space
 
 // here the value of bar is function foo
  bar;
  // however, when calling bar with (), the call site is bar in global space and the binding falls to undefined
- bar();
+ bar(); //?
 
 ////////////////////////////////
 
@@ -52,3 +50,4 @@ setTimeout(obj.foo, 100); // still undefined, setTimeout is just an in-built fun
 setTimeout(function () {  // 2
   return obj.foo();
 }, 100);
+

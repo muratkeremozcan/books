@@ -6,6 +6,7 @@ var anotherObject = {
 // The property access process continues until either a matching property name is found up in the prototype chain, or the [[Prototype]] chain ends. 
 // If no matching property is ever found by the end of the chain, the return result from the [[Get]] operation is undefined.
 // The top end of every normal [[Prototype]] chain is the built-in Object.prototype.
+// calling new is similar to using Object.create
 
 var myObject = Object.create(anotherObject);
 
@@ -51,3 +52,4 @@ Object.getPrototypeOf(thirdObject); //?
 // and also works in the ++ operator situation
 ++thirdObject.a; //?
 thirdObject.a; //?
+anotherObject.a; //?

@@ -16,4 +16,4 @@ Object.getPrototypeOf(a) === Foo.prototype //?
 // In class-oriented languages, multiple copies (aka instances) of a class can be made, like stamping something out from a mold.
 // But in JavaScript, there are no such copy actions performed. You don’t create multiple instances of a class. 
   //You can create multiple objects that are [[Prototype]]-linked to a common object.
-
+  // Object.assign begs to differ

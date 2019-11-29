@@ -19,6 +19,7 @@ strPrimitive.charAt(3); //?
 
 
 // built-in objects/function (complex primitives) can be used as a constructor 
+// recall ch2_bindings_4.new-binding.js  
 var strObject = new String('I am string');
 
 typeof strObject; //?

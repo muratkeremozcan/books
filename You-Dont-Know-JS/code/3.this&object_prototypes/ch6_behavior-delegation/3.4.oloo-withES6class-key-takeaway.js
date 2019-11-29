@@ -19,14 +19,13 @@ var Widget = {
     }
   }
 }
-
+// key difference is separation of concerns: create the new object first and then build it
 var Button = Object.create(Widget);
-
 Button.setup = function (width, height, label) {
   // delegated call
   this.init(width, height);
-  this.label = label || "Default";
 
+  this.label = label || "Default";
   this.$elem = $("<button>").text(this.label);
 };
 Button.build = function ($where) {

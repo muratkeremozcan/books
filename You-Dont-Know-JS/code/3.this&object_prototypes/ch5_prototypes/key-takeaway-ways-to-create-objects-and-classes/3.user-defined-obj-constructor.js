@@ -3,7 +3,7 @@ function movies(name, releaseYear, genre, ratings) {
   this.releaseYear = releaseYear;
   this.genre = genre;
   this.ratings = ratings;
-  this.watch = () => {
+  this.watch = function() {
     console.log("Watch Online");
   };
 }
@@ -21,3 +21,10 @@ let rocky = new movies("Rocky", 1976, ["Drama", "Sports"], {
 console.log(DPS);
 console.log(rocky);
 DPS.watch();
+
+Object.getPrototypeOf(movies); //? 
+movies.hasOwnProperty('name'); //?
+Object.getOwnPropertyNames(rocky); //?
+rocky.__proto__; //?
+rocky.__proto__.__proto__; //?
+rocky.__proto__.__proto__.__proto__; //?

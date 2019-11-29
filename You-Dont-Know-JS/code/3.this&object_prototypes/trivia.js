@@ -47,12 +47,12 @@ console.log(typeof typeof 1);
 
 
 // what's the output
-var hero = {
+var hero = new Object({
   _name: 'John Doe',
   getSecretIdentity: function() {
     return this._name;
   }
-}
+});
 
 // 'this' refers to the call site which is the hero object
 hero.getSecretIdentity(); //?

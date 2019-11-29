@@ -30,4 +30,5 @@ myObject.propertyIsEnumerable('b'); //?
 // Object.keys(..) returns an array of all enumerable properties, whereas Object.getOwnPropertyNames(..) returns an array of all properties, enumerable or not.
 Object.keys(myObject); //?
 Object.getOwnPropertyNames(myObject); //?
+Object.values(myObject); //?
 

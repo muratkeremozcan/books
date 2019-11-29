@@ -1,3 +1,7 @@
+// TL,DR; creating new objects that are prototype linked , using new is ok, using Object.create is ok, using Object.setPrototypeOf is better suited for Kyle's OLOO style
+// __proto__ is super useful
+// in contrast, if you want to avoid prototype linking, use Object.assign
+
 function Foo(name) {
   this.name = name;
 }
@@ -44,11 +48,13 @@ a.myLabel(); //?
 
 var b = new Foo('a');
 b.myName(); //?
+// b.myLabel(); // does not work
 
 // the question 'instanceof' answers is in the entire [[Prototype]] chain of a, does the object arbitrarily pointed to by Foo.prototype ever appear?
 a instanceof Bar; //?
-b instanceof Foo; //?
+a instanceof Foo; //?
 b instanceof Bar; //?
+b instanceof Foo; //?
 
 // The question isPrototypeOf(..) answers is: in the entire [[Prototype]] chain of a, does Foo.prototype ever appear?
 Bar.prototype.isPrototypeOf(a); //?
