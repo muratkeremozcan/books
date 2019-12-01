@@ -27,6 +27,7 @@ parseInt( parseInt, 16 ); //?
 parseInt( "0x10" ); //?
 parseInt( '103', 2); //?   
 
+
 // parsing to Boolean
 
 // truthy values

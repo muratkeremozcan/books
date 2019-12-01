@@ -17,6 +17,7 @@ function foo() {
 
 console.log(foo());
 
+
 // same thing for throw inside a try
 
 function foob() {

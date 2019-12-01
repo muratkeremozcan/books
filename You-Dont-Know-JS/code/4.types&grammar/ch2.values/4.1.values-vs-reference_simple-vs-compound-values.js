@@ -3,8 +3,9 @@
   // In JavaScript, there are no syntactic hints that control value versus reference assignment/passing. 
   // Instead, the type of the value solely controls whether that value will be assigned by value-copy or by reference-copy.
   
+  // TL,DR; after assigning arrays or objects, careful when modifying them in place (push, pop etc) - ok to make new assignments. In meta, use Array.from and Object.assign to make copies
 
-  // Simple values (simple scalar primitives) are always assigned/passed by value-copy: boolean, number, string, null, undefined, ES6’s symbol
+  // Simple values (simple scalar primitives) are always assigned/passed by value-copy: boolean, number, string, null, undefined, ES6’s symbol. 
   var a = 2;
   var b = a; // b is assigned a copy of the value 2
   b++; // when changing b, you are not changing a
@@ -18,7 +19,8 @@
 
   d
   c
-
+  c === d; //?
+  
   ////
   // create a reference copy, and modify it
 

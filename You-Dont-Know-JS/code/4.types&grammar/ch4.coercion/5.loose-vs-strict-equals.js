@@ -44,10 +44,10 @@ if (Boolean( a )) {
   console.log('works');
 }
 
-//////
+////// IMPORTANT conditional logic with coercion
 // with == loose equality , null and undefined are indistinguishable
 
-null == undefined;
+null == undefined; //?
 
 /*
 The coercion between null and undefined is safe and predictable, 

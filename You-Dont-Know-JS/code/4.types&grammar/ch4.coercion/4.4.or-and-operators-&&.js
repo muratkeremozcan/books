@@ -36,6 +36,35 @@ Boolean(c || b); //?
 Boolean(b || c); //? 
 
 
+
+// remember falsy values: false, "", -0, +0, null, undefined, NaN
+
+
+// IMPORTANT! the GUARD operator
+// && , the guard operator. “Selects” the second operand if and only if the first operand tests as truthy,
+
+function foob() {
+  return k;
+  // return a;
+}
+
+var k = 42;
+
+k && foob(); //?
+
+
+"foo" && "bar"; //?
+"bar" && "foo"; //? 
+"foo" && ""; //?
+"" && "foo"; //?
+
+
+// the || operator: selects the first or selects the truthy value no matter the order
+"foo" || "bar"; //?
+"bar" || "foo"; //?
+"foo" || "";   //?
+""    || "foo"; //?
+
 /// || operator vs tertiary
 
 // This || idiom is extremely common, and quite helpful, but you have to use it only in cases where all falsy values should be skipped. 
@@ -53,13 +82,4 @@ foo();                  // "hello world"
 foo("yeah", "yeah!"); // "yeah yeah!"
 foo('That\'s it', ''); // oops
 
-// && , the guard operator. “Selects” the second operand if and only if the first operand tests as truthy,
 
-function foob() {
-  console.log(k);
-  // return a;
-}
-
-var k = 42;
-
-k && foob(); //?

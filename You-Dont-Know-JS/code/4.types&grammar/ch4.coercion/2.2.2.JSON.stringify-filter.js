@@ -47,4 +47,4 @@ JSON.stringify(a, function(k, v) {
 // space can be a positive integer to indicate how many space characters should be used at each indentation level.
 // Or, space can be a string, in which case up to the first 10 characters of its value will be used for each indentation level:
 JSON.stringify(a, null, 3); //?
-JSON.stringify(a, null, '--'); //?
+JSON.stringify(a, null, '-'); //?

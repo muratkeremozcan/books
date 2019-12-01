@@ -1,6 +1,6 @@
 // implicit vs explicit boolean - number example
-
 // return true if only one item is true
+
 function onlyOne() {
   var sum = 0;
   
@@ -8,11 +8,12 @@ function onlyOne() {
 
     // implicit way
     // relying on the 1 for true/truthy coercions, and numerically adding them all up. 
-      // sum += arguments[i] uses implicit coercion to make that happen.
+    // sum += arguments[i] uses implicit coercion to make that happen.
 
     // if(arguments[i]) {
     //   sum += arguments[i];
     // }
+    
     
     // explicit way
     // use !!arguments[i] to force the coercion of the value to true or false

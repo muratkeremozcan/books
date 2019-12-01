@@ -1,3 +1,5 @@
+// TL, DR; use  ( ) to make it behave as you want
+
 var a = 42;
 var b = 'foo';
 var c = [1, 2, 3];

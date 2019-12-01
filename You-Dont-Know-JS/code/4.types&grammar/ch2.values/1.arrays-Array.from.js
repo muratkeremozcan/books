@@ -31,7 +31,7 @@ function foo(){
 foo('bar', 'baz');
 
 
-// MODIYING ARRAYS
+// MODIFYING ARRAYS
 var ar = [1, 2, 3, 4, 5, 6];
 
 // pop : remove from end

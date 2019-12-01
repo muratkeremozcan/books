@@ -1,4 +1,4 @@
-// Number() explicitly coerces anything
+// Number() explicitly coerces anything ( even when there is a function that returns a value )
 // true becomes 1 and false becomes 0. undefined becomes NaN, null becomes 0.
 
 var a = {

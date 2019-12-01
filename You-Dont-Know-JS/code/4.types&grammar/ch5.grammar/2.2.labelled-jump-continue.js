@@ -26,13 +26,13 @@ foo: for (var i = 0; i < 4; i++) {
   }
 }
 
-// without continue, you can use break. However it may look more odd
+// without continue, you can use break
 
 foob: for (var i = 0; i < 4; i++) {
   for (var j = 0; j < 4; j++) {
     if ((i * j) >= 3) {
       console.log("stopping!", i, j);
-      // break foo does not mean “go to the foo labeled position to continue,” but rather, 
+      // break foob does not mean “go to the foob labeled position to continue,” but rather, 
         // “break out of the loop/block that is labeled foo and continue after it.” Not exactly a goto in the traditional sense,
 
       break foob;

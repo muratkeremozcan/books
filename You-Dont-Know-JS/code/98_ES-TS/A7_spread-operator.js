@@ -1,7 +1,10 @@
 // spread operator: turns an array into a list of values or function parameters
 
-// rest operator   ... ===
-//                     === ... spread operator
+// collects all elements into an array
+// rest operator  (LHS)  ... ===
+
+// unpacks collected elements
+//                     === ... spread operator (RHS)
 
 // Say we have two arrays and we need to add the elements of the second array to the end of the first one.
 let array1 = [1, 2, 3];

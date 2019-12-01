@@ -7,10 +7,10 @@ a
 var c = --b;
 c
 
-// the only option is statement series operator.
+// working around the above, an option is statement series operator.
   // This operator allows you to string together multiple standalone expression statements into a single statement:
 
-//  The expression x++, a means that 
+//  The expression (x++, x) a means that 
  // the second x statement expression gets evaluated after the after side effects of the x++ expression, 
  // which means it returns the 43 value for assignment to y.
 
