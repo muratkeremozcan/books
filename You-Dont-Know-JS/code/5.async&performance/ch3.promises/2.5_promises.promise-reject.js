@@ -13,5 +13,3 @@ p.then(
     console.error(err);
   }
 );
-
-

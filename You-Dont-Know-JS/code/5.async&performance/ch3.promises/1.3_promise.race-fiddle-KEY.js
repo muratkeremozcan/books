@@ -7,7 +7,7 @@ function makePromises(val) {
 
     setTimeout(() => resolve(val), Math.random() * 1000);
 
-    setTimeout(() => reject('rejector kicked in'), Math.random() * 2000);
+    setTimeout(() => reject('rejector kicked in'), Math.random() * 4000);
 
   });
 }

@@ -3,7 +3,7 @@ function makePromises(val) {
 
     setTimeout(() => resolve(val), Math.random() * 1000);
 
-    setTimeout(() => reject('cannot keep my promise'), Math.random() * 2000);
+    setTimeout(() => reject('cannot keep my promise'), Math.random() * 4000);
 
   });
 }
@@ -17,13 +17,14 @@ function timeoutPromise(delay) {
 }
 
 // keep rerunning to see different results
-Promise.race([
+Promise.race([  // you can change to Promise.all if you like; play with the timeouts and resolve the timeoutPromise
   makePromises('a promise made'),
-  timeoutPromise(500)    
+  timeoutPromise(100)    
 ])
 .then(
-  function onFulfilled(){
+  function onFulfilled(winningPromise){
     console.log('fulfilled in time');
+    console.log(winningPromise);
   },
   function onNotFulfilled(err){
     // look at err to know if it was rejected or not finished in time
@@ -33,4 +34,4 @@ Promise.race([
   function(err) {
     console.log(err);
   }
-) 
+)

@@ -34,7 +34,9 @@ setTimeout_promiseConstructor('firstVal', 1000)
   )
 
 ///////////////
-// async await, can have try catch
+// async await, can have try catch. 
+// Just put the promise constructor inside the try block. 
+// No need to end the chain with .catch(function(err) { .. }) ; you can take care of it with the catch block
 
 const setTimeout_asyncPromise = async function (value, timeout) {
   try {
@@ -53,5 +55,5 @@ const setTimeout_asyncPromise = async function (value, timeout) {
   }
 }
 
-await setTimeout_asyncPromise('secondVal', 1100); //?
-  
+// increase timeout to simulate rejection
+await setTimeout_asyncPromise('secondVal', 100); //?

@@ -51,7 +51,6 @@ function foo_v2(bar,baz) {
 
 // an array that has 2 promises
 foo_v2(10,20) //?
-
 // unwrap with Promise.all
 Promise.all(foo_v2(10, 20)).then(
   function(msgs) {

@@ -16,10 +16,10 @@ var p2 = p.then(
     // this allows the error to continue propagating along a Promise chain 
     // until an explicitly defined rejection handler is encountered.
 
-  // function rejected(err) {
-  //   console.log('hii')
-  //   throw err;
-  // }
+  function rejected(err) {
+    console.log('hii')
+    throw err;
+  }
 ).catch(function(err) {
   console.log(err);
 })
