@@ -8,20 +8,26 @@
 
 function generatorRunner(gen) {
   // slice method can be called to convert Array-like objects / collections to a new Array.
+  // args here is for optional arguments. The initial value argument at index 0 is the generator
   var args = [].slice.call( arguments, 1), it; //?
-
   // initialize the generator in the current context, with optional arguments
   it = gen.apply( this, args ); //?
 
   // return a promise for the generator completing
   return Promise.resolve()
-    .then(function handleNext(value) {
+  // you could instead do:
+  // return new Promise( function(resolve, reject) { 
+  //   resolve();
+  // })
+    .then(
+      function handleNext(value) {
       value; //?
       // run to the next yielded value
-      var next = it.next(value); //? 
+      var next = it.next(value); //?
 
       // IIFE
-      return (function handleResult(next) {
+      return (
+        function handleResult(next) {
         // generator has completed running?
         if (next.done) {
           return next.value; 
@@ -62,7 +68,7 @@ function foo(x, y) {
 
       setTimeout(function () {
         reject('rejector kicked in');
-      }, 600);
+      }, 1800);
 
     });
 }

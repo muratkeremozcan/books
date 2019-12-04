@@ -20,7 +20,7 @@ function foo(x, y) {
 
       setTimeout(function () {
         reject('rejector kicked in');
-      }, 800);
+      }, 200);
 
     });
 }
@@ -41,18 +41,18 @@ function* main() {
 
 var it = main();
 
-// (1) when starting the generator, foo(11, 31) is called / yielded.
-var p = it.next().value;
+// (1) when starting the generator, promise foo(11, 31) is called / yielded.
+var p = it.next().value; //?
 // (2) what gets yielded is a promise (the code is similar to the callback in 5.1)
 p.then(
-  function (data) {
-    // resume main with received data
+  function onFulfilled(data) {
     data; //?
+    // resume main with received data
     it.next(data); //?
   },
-  function (e) {
-    // throw the error to main
-    e; //?
-    it.throw(e); //?
+  function onRejected(err) { 
+    err; //?
+    // if the promise is rejected, throw the error to main and it gets caught there
+    it.throw(err); //?
   }
 )

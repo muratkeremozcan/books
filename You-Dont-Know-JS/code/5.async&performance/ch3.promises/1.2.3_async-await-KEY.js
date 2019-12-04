@@ -1,3 +1,5 @@
+// same example from Ch4 generators 6.3
+
 // powerful pattern: generators yielding Promises that then control the generator’s iterator to advance it to completion
 // async await in ES7. Replaces the utility we wrote in 6.2
 
@@ -15,7 +17,7 @@ function foo(x, y) {
 
       setTimeout(function () {
         reject('rejector kicked in')
-      }, 600);
+      }, 1600);
 
     });
 }
@@ -32,7 +34,7 @@ async function main() {
   }
 }
 
-main();
+main(); 
 // main();
 // main();
 

@@ -17,8 +17,10 @@ var it = bar();
 
 it.next().value; //?
 it.next().value; //?
+
 it.next().value; //?
 it.next().value; //?
+
 it.next().value; //?
 it.next(); //?
 

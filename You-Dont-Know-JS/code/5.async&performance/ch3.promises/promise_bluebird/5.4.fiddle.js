@@ -49,3 +49,13 @@ Promise.any([
     console.log(err);
   }
 ) 
+
+try {
+  await Promise.any([
+    makePromises('a promise made'),
+    timeoutPromise(500) 
+  ]); //?
+}
+catch (e) {
+  console.log(e);
+}

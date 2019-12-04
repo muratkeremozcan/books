@@ -1,4 +1,4 @@
-// replicate 5.2.2 wit async await
+// replicate 5.2.2h wit async await
 
 async function makeAPromiseWithValue(value) {
   return new Promise(
@@ -10,7 +10,7 @@ async function makeAPromiseWithValue(value) {
 
       setTimeout(function () {
         reject('rejector kicked in hoh');
-      }, 800); // change the value to simulate rejection
+      }, 1800); // change the value to simulate rejection
 
     });
 }
