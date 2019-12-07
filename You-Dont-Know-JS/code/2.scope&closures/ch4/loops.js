@@ -28,3 +28,6 @@ for (var k = 1; k <= 5; k++) {
   }(k));
 }
 
+// let in for loops is great
+// TL, DR; The let i in the for header declares an i not just for the for loop itself, but it re-declares a new i for each iteration of the loop.
+//  That means that closures created inside the loop iteration close over those per-iteration variables the way you’d expect.
