@@ -5,19 +5,39 @@
 }
 
 { // you can destruct sub-object/sub-array property and capture the sub-object/sub-array's value
-  var { a: { x: X, x: Y }, a } = { a: { x: 1 } };
+  var {
+    a: {
+      x: X,
+      x: Y
+    },
+    a
+  } = {
+    a: {
+      x: 1
+    }
+  };
+
   X;
   Y;
-  a; 
+  a;
 }
+
 {
-  ( { a: X, a: Y, a: [ Z ] } = { a: [ 1 ] } );
+  (
+    {
+      a: X,
+      a: Y,
+      a: [Z]
+    } = {
+      a: [1]
+    }
+  );
+
   X;
   Y;
   Z;
-  a;
 
-  Y[0] = 10; 
+  Y[0] = 10;
   X;
   X;
   Z;
