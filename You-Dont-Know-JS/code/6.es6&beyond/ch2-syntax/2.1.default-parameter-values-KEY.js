@@ -1,11 +1,11 @@
 // pre es6
 
 function foo( x, y) { 
-  // (1) problem: gotcha with falsy values
+  // (1) problem: gotcha with falsy values: 0 and null do not act like 0
   x = x || 11; 
   y = y || 31; 
 
-  // workaround to the gotcha
+  // workaround to the gotcha 
   // x = (x !== undefined) ? x : 11;
   // y = (y !== undefined) ? y : 31;
 

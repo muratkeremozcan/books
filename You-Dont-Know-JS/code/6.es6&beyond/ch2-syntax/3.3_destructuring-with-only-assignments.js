@@ -1,4 +1,5 @@
 // The variables can already be declared, and then the destructuring only does assignments, 
+// previous 3.2 example is variable declaration + assignment; this one is only assignment
 
 let a, b, c, x, y, z;
 

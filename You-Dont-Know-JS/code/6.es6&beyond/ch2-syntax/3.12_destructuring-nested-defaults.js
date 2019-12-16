@@ -22,7 +22,7 @@ var config = {
   }
 }
 
-{
+
 // TL, DR; this is better than manual way pre-ES6 but lodash is way better
 // deep cloning: https://lodash.com/docs/4.17.15#cloneDeep
 config.options = config.options || {}; 
@@ -46,17 +46,17 @@ config.log = config.log || {};
   };
 }
 
+/*
+(1: alternative) manually doing this in pre-ES6 was be terrible
+config.options = config.options || {}; 
+config.options.remove = (config.options.remove !== undefined) ? config.options.remove : defaults.options.remove; 
+config.options.enable = (config.options.enable !== undefined) ? config.options.enable : defaults.options.enable;
+config.options.instance = (config.options.instance !== undefined) ? config.options.instance : defaults.options.instance;
+...
 
-// (1: alternative) manually doing this in pre-ES6 was be terrible
-// config.options = config.options || {}; 
-// config.options.remove = (config.options.remove !== undefined) ? config.options.remove : defaults.options.remove; 
-// config.options.enable = (config.options.enable !== undefined) ? config.options.enable : defaults.options.enable;
-// config.options.instance = (config.options.instance !== undefined) ? config.options.instance : defaults.options.instance;
-// ...
-
-// (2: alternative) manually this would be
-// Object.assign would not be that great because it is a shallow copy (1 level) and enable property gets eaten
-  // you would need a JS library that does deep cloning: https://lodash.com/docs/4.17.15#cloneDeep
-// config = Object.assign( {}, defaults, config );
-// config; //?
-
+(2: alternative) manually this would be
+Object.assign would not be that great because it is a shallow copy (1 level) and enable property gets eaten
+  you would need a JS library that does deep cloning: https://lodash.com/docs/4.17.15#cloneDeep
+config = Object.assign( {}, defaults, config );
+config;
+*/

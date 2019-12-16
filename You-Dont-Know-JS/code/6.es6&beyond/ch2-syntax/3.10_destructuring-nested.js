@@ -11,11 +11,13 @@ var o1 = {
 };
 // now, destructure
 var [a, [b, c, d], e] = a1;
-var { x: {
-  y: {
-    z: w
+var {
+  x: {
+    y: {
+      z: w
+    }
   }
-} } = o1
+} = o1
 
 a;
 b;
@@ -27,12 +29,17 @@ w;
 
 
 // Nested destructuring can be a simple way to flatten out object namespaces.
-var App = { 
-  model: { 
-    User: function(){/*..*/ } 
-  } 
+var App = {
+  model: {
+    User: function () {/*..*/ }
+  }
 };
 // instead of:
 // var User = App.model.User;
 // just do:
-var { model: { User } } = App;
+var {
+  model:
+  {
+    User
+  }
+} = App;

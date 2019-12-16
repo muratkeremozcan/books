@@ -1,7 +1,7 @@
 function foo(x, y, z) {
   console.log(x, y, z);
 }
-// (1, spread) When ... is used in front of an array (or any iterable) it acts to “spread” it out into its individual values.
+// (1, spread - FUNCTION CALLS) When ... is used in front of an array (or any iterable) it acts to “spread” it out into its individual values.
 // You’ll typically see this usage when spreading out an array as a set of arguments to a function call.
 foo(...[1, 2, 3]);
 // pre-es6 was not simple
@@ -15,7 +15,7 @@ var b = [1, ...a, 5]; //?
 var c = [1].concat(a, 5); //?
 
 
-// (3, rest) essentially the opposite; instead of spreading a value out, the ... gathers a set of values together into an array
+// (3, rest - FUNCTION DECLARATIONS) essentially the opposite; instead of spreading a value out, the ... gathers a set of values together into an array
 function foof(x, y, ...z) { // “gather the rest of the arguments (if any) into an array called z.”
   console.log(x, y, z);
 }

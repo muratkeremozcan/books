@@ -20,7 +20,7 @@ function bar({ x, y }) {
 bar({ x: 1, y: 2 }); //?
 bar({ x: 15 }); //?
 bar({ y: 42 }); //?
-bar({});
+bar({}); //?
 
 ///////
 
@@ -37,6 +37,7 @@ bar({});
 { // with rest and spread operators (1.1 - 1.2):
   function f2([x, y, ...z], ...w) { // here it is rest (gathering parameters)
     return [[x, y, ...z], w]; // here it is spread (spreading the values out with concat)
+    // can further spread by adding ... before [x,y, ...z] and w in the return
   }
   // here, spread too (function call)
   f2([1, 2, 3, 4, 5, 6, 7], 35, 45, 55); //?

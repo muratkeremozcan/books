@@ -15,4 +15,5 @@ let y = 5;
 foo(); //?
 // the default value expression is only run if needed (lazily evaluated)
 foo(10); //?
+// using default parameter for earlier arguments (usually it's recommended to use them at the end - looking at TS here)
 foo(undefined, 10); //?

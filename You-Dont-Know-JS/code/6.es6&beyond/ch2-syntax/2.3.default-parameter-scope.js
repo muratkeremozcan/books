@@ -2,7 +2,7 @@ let w = 1, z = 2;
 
 // TL, DR; default params have a scope in ( .. )
 function foo( x = w + 1, y = x + 1, z = z + 1 ) {  
-  // therefore you can't use a variable from outer scope inside ( .. )
+  // therefore you can't use a variable (the left hand side variables) from outer scope, inside the ( .. )
   // change the left hand side z to 'a' and this will work
   return { x, y, z };
 }
