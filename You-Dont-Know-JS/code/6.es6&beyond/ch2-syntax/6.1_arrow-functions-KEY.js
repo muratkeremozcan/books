@@ -23,11 +23,11 @@ f3(3, 5); //?
 
 ///////
 // readability gains from = > arrow function conversion are inversely proportional to the length of the function being converted. 
-// The longer the function, the less = > helps; the shorter the function, the more = > can shine.
+// The longer the function, the less => helps; the shorter the function, the more => can shine.
 
 { // example 5.3.2 with arrow function
   var dollabillsyall = (strings, ...values) =>  // you can also remove { here and } at the end, which makes it less readable
-    strings.reduce(function (s, v, idx) { // mind the removal of return 
+    strings.reduce(function (s, v, idx) { // when removing { }, mind the removal of return too
       if (idx > 0) {
         // if a number is encountered in the array, we put " $ " in front of it and format it to 2 decimal places
         // otherwise we let that value pass untouched

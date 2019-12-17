@@ -1,4 +1,3 @@
-
 // Typically, the string literal tag function should compute an appropriate string value and return it, 
 // so that you can use the tagged string literal as a value just like untagged string literals
 

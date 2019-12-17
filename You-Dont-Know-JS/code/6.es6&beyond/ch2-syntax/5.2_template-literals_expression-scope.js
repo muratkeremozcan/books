@@ -1,5 +1,5 @@
 // an interpolated string literal is kind of like an IIFE,
-// just lexically scoped where it appears, not dynamically scoped in any way
+// just lexically scoped where it appears (like arrow functions, call, apply or bind), not dynamically scoped in any way
 
 function bar() {
   var name = 'bar'; // name here is in the scope of bar()
@@ -11,6 +11,7 @@ function foo(str) {
   // when called from foo, the scope is still at bar()!!
   console.log(str);
 }
+
 // neither foo's name or global scope's name matters
 var name = 'global';
 

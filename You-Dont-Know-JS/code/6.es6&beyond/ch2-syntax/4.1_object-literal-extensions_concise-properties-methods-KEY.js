@@ -9,9 +9,9 @@ var x = 2, y = 3,
 // concise methods
 // functions attached to properties in object literals also have a concise form,
 var o = {
-  x() {/* */ },  // x: function() {..}
-  y() {/* */ },   // y: function() {..}
-  *foo() {/* */ } // foo: *function() {..} // generator
+  x() { /* */ },  // x: function() {..}
+  y() { /* */ },   // y: function() {..}
+  *foo() { /* */ } // foo: *function() {..} // generator
 }
 
 

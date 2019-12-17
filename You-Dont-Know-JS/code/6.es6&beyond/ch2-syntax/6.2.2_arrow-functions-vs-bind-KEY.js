@@ -8,19 +8,20 @@
 
 
 
-
 /** fulfillment returns 2, rejection returns 0 */
 let controller_bind = {
   val: 1,
   rollDice: function () {
-
+   
     this.val; //?
     return new Promise(function (resolve, reject) {
       this.val; //?
+
       setTimeout(function () {
         this.val++;
         resolve(this.val);
       }.bind(this), Math.random() * 1000);
+
       setTimeout(function () {
         this.val--;
         reject(this.val);

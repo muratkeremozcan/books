@@ -21,4 +21,4 @@ function bar() {
     console.log(values);
   }
 }
-bar()`all is ${desc}`; //?
+bar()`all is ${desc} `; //?

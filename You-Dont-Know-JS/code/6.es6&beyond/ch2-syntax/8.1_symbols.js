@@ -44,7 +44,7 @@
 
 
 {
-  // Symbo.for can be used to aid with global access to these symbols, you can create symbol values with the global symbol registry.
+  // Symbol.for can be used to aid with global access to these symbols, you can create symbol values with the global symbol registry.
   // Symbol.for(..) looks in the global symbol registry to see if a symbol is already stored with the provided description text, and returns it if so. 
   // If not, it creates one to return. In other words, the global symbol registry treats symbol values, by description text, as singletons themselves.
   // any part of your application can retrieve the symbol from the registry using Symbol.for(..), as long as the matching description name is used.
