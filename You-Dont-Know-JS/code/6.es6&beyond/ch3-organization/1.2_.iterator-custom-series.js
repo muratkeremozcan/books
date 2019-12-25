@@ -58,5 +58,5 @@ it.next(20, 50, 120); //?
 it.next(); //?
 
 
-// if you want a crazy examplean iterator for numbers that by default ranges from 0 up to (or down to, for negative numbers) the number in question, check out page 95...
+// if you want a crazy example an iterator for numbers that by default ranges from 0 up to (or down to, for negative numbers) the number in question, check out page 95...
 

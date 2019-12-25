@@ -20,6 +20,7 @@ function *bar() {
     console.log('never gets here');
   }
   catch (err) {
+    // (3) throw from *foo goes to bar
     console.log(err);
   }
 }
@@ -31,7 +32,7 @@ try {
   it.next(); //?
   // (2) errors can propagate in both directions
   it.throw('e1'); //?
-  // (3) throw from *foo comes back here
+  // (3) throw from *foo goes to bar
   it.next(); //?
 }
 catch (err) {

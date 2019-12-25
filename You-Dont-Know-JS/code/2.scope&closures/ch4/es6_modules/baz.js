@@ -1,6 +1,8 @@
 import { hello, howAreYou } from './bar'; // importing named function
-import * as barAlias from './bar';
+// import { hello as hi } from './bar'; // you can alias here too
+import * as barAlias from './bar'; // this is called namespace binding
 import awesome from './foo'; // importing default function
+// import {default as awesome} from './foo'; // extended default import form
 
 console.log(hello('rhino'));
 console.log(howAreYou());
