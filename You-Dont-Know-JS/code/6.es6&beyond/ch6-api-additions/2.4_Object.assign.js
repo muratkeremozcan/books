@@ -22,7 +22,9 @@ Object.defineProperty(o3, 'f', {
   enumerable: false,
 });
 
+// set up enumerable Symbol
 o3[Symbol('g')] = 7;
+
 // set up non-enumerable symbol
 Object.defineProperty(o3, Symbol('h'), {
   value: 8,
@@ -30,12 +32,10 @@ Object.defineProperty(o3, Symbol('h'), {
 });
 
 o3;
-o3.e; //?
 o3.f; //?
 
 Object.setPrototypeOf(o3, o4);
 
-// non-enumerable, prototype-linked do not get copied. read-only properties get copied
 // Only the properties a, b, c, e, and Symbol(" g") will be copied to target
 // non-enumerable properties and non-owned properties are all excluded from the assignment
 Object.assign(target, o1, o2, o3);

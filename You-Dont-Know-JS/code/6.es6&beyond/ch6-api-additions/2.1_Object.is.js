@@ -13,7 +13,7 @@ y === z; //?
 Object.is(x, x); //?
 Object.is(y, z); //?
 
-// you prefer to use isNaN(x) instead of Object.is(x, NaN) 
+// you may prefer to use isNaN(x) instead of Object.is(x, NaN) 
 isNaN(x); //?
 // but, do not check for -0 like this anymore
 (x == 0 && 1/x === -infinity); //?

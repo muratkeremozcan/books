@@ -6,9 +6,7 @@ var o1 = {
   } 
 };
 var o2 = {
-  bar() {
-    console.log('bar');
-  }
+  bar() {/* */ }
 }
 // prototype delegation
 Object.setPrototypeOf(o2, o1); 

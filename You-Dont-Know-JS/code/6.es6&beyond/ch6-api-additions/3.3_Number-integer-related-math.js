@@ -1,6 +1,6 @@
-// JavaScript number valuess are always floating point (IEE-754). 
+// JavaScript number values are always floating point (IEE-754). 
 // So the notion of determining if a number is an “integer” is not about checking its type, because JS makes no such distinction.
-// Instead, you need to check if there’s any nonzero decimal portion of the value. The easiest way to do that has commonly been:
+// Instead, you need to check if there’s any nonzero decimal portion of the value. The easiest way to do that has commonly been x === Math.floor(x)
 // ES6 adds a Number.isInteger(..) helper utility that potentially can determine this quality slightly more efficiently:
 
 var x = 10.9;
@@ -11,7 +11,7 @@ Math.floor(x); //?
 y === Math.floor(y); //?
 
 
-// ES5
+// ES6
 Number.isInteger(x); //?
 Number.isInteger(y); //?
 
@@ -21,10 +21,11 @@ Number.isInteger(4.0); //?
 
 
 // Number.isInteger() filters out some clearly not-integer values that x === Math.floor( x) could potentially mix up
+// don't want this
+Infinity === Math.floor(Infinity); //?
+// good
 Number.isInteger(NaN); //?
 Number.isInteger(Infinity); //?
-// boo
-Infinity === Math.floor(Infinity); //?
 
 
 // isFloat() utility for JS
@@ -47,7 +48,9 @@ isFloat(Infinity); //?
 // Number.MIN_SAFE_INTEGER-Number.MAX_SAFE_INTEGER (inclusive).
 var x = Math.pow(2, 53);
     y = Math.pow(-2, 53);
+x;
 Number.MAX_SAFE_INTEGER; //?
+y;
 Number.MIN_SAFE_INTEGER; //?
 
 Number.isSafeInteger(x - 1); //?
