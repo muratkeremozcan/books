@@ -49,3 +49,28 @@ palindrome.includes('on', 5); //?
 // empty string by default in the beginning and end
 palindrome.indexOf('', ); //?
 palindrome.lastIndexOf('', ); //?
+
+
+
+// One extremely common task JS developers need to perform is searching for a value inside an array of values.
+
+var vals = ['foo', 'bar', 42, 'baz'];
+
+if (vals.indexOf(42) >= 0) {
+  console.log('found'); 
+}
+
+// The (tilde) ~ operator first “coerces” to a 32-bit number value, and then performs a bitwise negation (flipping each bit’s parity).
+// - (x + 1)  , the only value that results in a false/0 here is -1
+~42; //?
+~-1; //?
+// Using ~ with indexOf() “coerces” (actually just transforms) the value to be appropriately boolean-coercible
+// IMPORTANT: checking index of a string ~ is the meta, takes 1 line to check for indexOf() returning false
+if (~vals.indexOf(42)) {
+  console.log('found');
+}
+
+// ES6 proposal:
+if (vals.includes(42)) {
+  console.log('found');
+}
