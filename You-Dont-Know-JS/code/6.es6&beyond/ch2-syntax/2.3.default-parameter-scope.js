@@ -1,9 +1,9 @@
-let w = 1, z = 2;
+let w = 1, z = 5;
 
 // TL, DR; default params have a scope in ( .. )
 function foo( x = w + 1, y = x + 1, z = z + 1 ) {  
   // therefore you can't use a variable (the left hand side variables) from outer scope, inside the ( .. )
-  // change the left hand side z to 'a' and this will work
+  // change the left hand side z to 'a' and this will work or z = differentVar + 1
   return { x, y, z };
 }
 

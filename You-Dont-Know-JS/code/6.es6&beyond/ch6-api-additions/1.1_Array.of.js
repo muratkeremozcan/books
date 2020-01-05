@@ -19,7 +19,7 @@ b;
 
 
 // When would you use Array.of(..) instead of just creating an array with literal syntax, like c = [1,2,3]?
-// * If you have a callback that’s supposed to wrap argument(s) passed to it in an array, Array.of(..) fits the bill perfectly. This is not very common
+// * If you have a callback that’s supposed to wrap argument(s) passed to it in an array, Array.of(..) - this is not very common
 // * If you create a subclass of Array
 
 class MyCoolArray extends Array {

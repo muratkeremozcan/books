@@ -25,7 +25,7 @@ let controller_arrow = {
       setTimeout(() => {
         this.val--;
         reject(this.val);
-      }, Math.random() * 100);
+      }, Math.random() * 1500); 
     });
   }
 };

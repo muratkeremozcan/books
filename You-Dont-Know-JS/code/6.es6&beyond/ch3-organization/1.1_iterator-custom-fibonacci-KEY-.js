@@ -2,7 +2,7 @@
 // you can make your own custom iterators
 
 // an iterator needs a next() function and a return value
-// The Fib[ Symbol.iterator]() method when called returns the iterator object with next() and return(..) methods on it. 
+// The Fib[Symbol.iterator]() method when called returns the iterator object with next() and return(..) methods on it. 
 // State is maintained via n1 and n2 variables, which are kept by the closure.
 
 var Fib = {

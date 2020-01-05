@@ -1,4 +1,4 @@
-// in JS objects are the primary mechanism for creating unordered key/value-pair data structures,
+// in JS, objects are the primary mechanism for creating unordered key/value-pair data structures,
 // However, the major drawback with objects-as-maps is the inability to use a non-string value as the key.
 // Maps are key-value pairs where the key can be an object instead of just a string/ primitive.
 
@@ -45,7 +45,7 @@ m[y]; //?
   let esMap = new Map();
 
   let x = { id: 1 },
-      y = { id: 2};
+      y = { id: 2 };
   
   // there is no more [ ] syntax for setting and retrieving values
   esMap.set(x, 'foo');

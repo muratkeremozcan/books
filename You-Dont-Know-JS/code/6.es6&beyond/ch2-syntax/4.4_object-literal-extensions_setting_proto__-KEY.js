@@ -10,7 +10,7 @@ var o2 = {
 o2.__proto__; //?
 
 // __proto__ here is being used as a key in an object literal definition. it can also be used in object property form like o.__proto__
-// that form is both a getter and setter and is controversial
+// __proto__ is both a getter and setter and is controversial
 // instead, for setting prototype of an object you can use Object.setPrototypeOf( o2, o1 )
 
 var o3 = {

@@ -40,7 +40,7 @@ function foof(...args) { // gathers arguments (rest)
   args = args.filter(v => v % 2 == 0);
 
   // (2) pass along all of 'args' as arguments to foo()
-  foo(...args); // spreads arguments (rest)
+  foo(...args); // spreads arguments
 }
 
 foof(0, 1, 2, 3);

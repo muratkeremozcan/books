@@ -1,5 +1,5 @@
 // for value comparisons more strict than ===
-// However, in cases where you’re trying to strictly identify a NaN or -0 value, Object.is(..) is now the preferred option.
+// in cases where you’re trying to strictly identify a NaN or -0 value, Object.is(..) is now the preferred option.
 
 var x = NaN,
     y = 0,

@@ -53,8 +53,8 @@
   const INSTANCE = Symbol.for('instance');
   
   const s = Symbol.for( "something cool" ); 
-  // You can retrieve a registered symbol’s description text (key) using Symbol.keyFor(..):
 
+  // You can retrieve a registered symbol’s description text (key) using Symbol.keyFor(..):
   var desc = Symbol.keyFor(s);  //?
   
   const s2 = Symbol.for( desc ); //?

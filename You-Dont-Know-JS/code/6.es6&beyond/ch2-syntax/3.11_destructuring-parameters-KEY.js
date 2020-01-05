@@ -11,7 +11,7 @@ foo([, 2]); //?
 foo([]); //?
 
 
-// with an object (remember when destructuring property name has to match!)
+// with an object (remember when destructuring, property name has to match!)
 // IMPORTANT; the properties on the object map to the destructured parameters of the same names
 // That also means that we get optional parameters (in any position) for free
 function bar({ x, y }) {

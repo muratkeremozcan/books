@@ -1,6 +1,5 @@
 // Symbol.iterator represents the special location (property) on any object 
-// where the language mechanisms automatically look to find a method 
-// that will construct an iterator instance for consuming that object’s values.
+// where the language mechanisms automatically look to find a method that will construct an iterator instance for consuming that object’s values.
 // We can define our own; defining behavior that other parts of JS use 
 
 var arr = [4, 5, 6, 7, 8, 9];

@@ -1,4 +1,4 @@
-// super and extends are used for [[ Prototype]] delegation link between two function prototypes — commonly mislabeled “inheritance” or confusingly labeled “prototype inheritance” —
+// super and extends are used for [[Prototype]] delegation link between two function prototypes — commonly mislabeled “inheritance” or confusingly labeled “prototype inheritance” —
 // there is no super equivalent pre ES6, without hacky trade offs 
 
 
@@ -12,7 +12,7 @@ class Foo {
   }
 }
 
-// Bar extends Foo means to link the [[ Prototype]] of Bar.prototype to Foo.prototype
+// Bar extends Foo means to link the [[Prototype]] of Bar.prototype to Foo.prototype
 class Bar extends Foo {
   constructor(a, b, c) {
     // In the constructor, super automatically refers to the “parent constructor”: super means Foo when used in the Bar constructor.
@@ -30,7 +30,7 @@ let b = new Bar(5, 15, 25);
 b.x; //?
 b.y; //?
 b.z; //?
-b.gimmeXYZ(); //?
+b.gimmeXYZ(); //?>
 b.gimmeXY(); //?
 
 
@@ -43,5 +43,5 @@ b.gimmeXY(); //?
 //   super(... args);
 // }
 // in a constructor of a subclass, you cannot access this until super(..) has been called
-// this is because the parent constructor is actually the one creating/ initializing your instance’s this.
+// this is because the parent constructor is actually the one creating/initializing your instance’s this.
 

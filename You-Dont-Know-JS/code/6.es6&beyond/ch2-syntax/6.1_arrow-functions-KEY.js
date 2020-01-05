@@ -22,7 +22,7 @@ f3(3, 5); //?
 
 
 ///////
-// readability gains from = > arrow function conversion are inversely proportional to the length of the function being converted. 
+// readability gains from => arrow function conversion are inversely proportional to the length of the function being converted. 
 // The longer the function, the less => helps; the shorter the function, the more => can shine.
 
 { // example 5.3.2 with arrow function

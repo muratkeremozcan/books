@@ -20,13 +20,13 @@ o._id; //?
 ///////////
 // ES5
 function o_ES5() {
-  let _id = 10
+  let _id = 10;
   this.getId = function() {
     return _id++; //?
   };
   this.setId = function(v) {
     return _id = v; //?
-  }
+  };
 }
 
 let p = new o_ES5(60);

@@ -3,13 +3,13 @@
 // ES5 Number.isNaN
 
 var a = NaN,
-    b = 'N',
-    c = 42;
+    b = 42,
+    c = 'N';
 
-isNaN(c); //?
 isNaN(a); //?
-// wtf?
 isNaN(b); //?
+// wtf?
+isNaN(c); //?
 
 // good
 Number.isNaN(c); //?

@@ -1,5 +1,5 @@
 // for of loop can consume iterators (arrays, strings, generators, collections/typedArrays), 
-// there are also other structures that can
+// there are also other structures that can like ...
 
 var a = [1, 2, 3, 4, 5];
 function foo(x, y, z, w, p) {

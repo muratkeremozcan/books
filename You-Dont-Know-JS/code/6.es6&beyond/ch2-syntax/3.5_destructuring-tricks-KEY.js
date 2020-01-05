@@ -2,7 +2,7 @@
 
 { // You can use the general assignments to create object mappings/ transformations,
   var o1 = { a: 1, b: 2, c: 3 },
-    o2 = {};
+      o2 = {};
 
   ({ a: o2.x, b: o2.y, c: o2.z } = o1);
   o2.x; //?
@@ -13,7 +13,7 @@
 
 { // can map an object to an array
   var o1 = { a: 1, b: 2, c: 3 },
-    a2 = [];
+      a2 = [];
 
   ({ a: a2[0], b: a2[1], c: a2[2] } = o1);
 

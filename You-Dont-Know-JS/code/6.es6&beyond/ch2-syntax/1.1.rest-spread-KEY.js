@@ -15,7 +15,7 @@ var b = [1, ...a, 5]; //?
 var c = [1].concat(a, 5); //?
 
 
-// (3, rest - FUNCTION DECLARATIONS) essentially the opposite; instead of spreading a value out, the ... gathers a set of values together into an array
+// (3, gather/rest - FUNCTION DECLARATIONS) essentially the opposite; instead of spreading a value out, the ... gathers a set of values together into an array
 function foof(x, y, ...z) { // “gather the rest of the arguments (if any) into an array called z.”
   console.log(x, y, z);
 }

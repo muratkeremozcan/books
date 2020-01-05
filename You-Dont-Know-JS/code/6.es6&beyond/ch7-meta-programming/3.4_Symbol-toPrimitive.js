@@ -1,5 +1,5 @@
 // ToPrimitive abstract coercion operation is used when an object must be coerced to a primitive value for some operation 
-// (such as = = comparison or + addition). Prior to ES6, there was no way to control this behavior.
+// (such as == comparison or + addition). Prior to ES6, there was no way to control this behavior.
 // in ES6 the @@ toPrimitive symbol as a property on any object value can customize that ToPrimitive coercion by specifying a method.
 
 var arr = [1,2, 3, 4, 5];
