@@ -8,10 +8,16 @@
   function baz() {
     return undefined;
   }
+  function foos() {
+    // the result of  ' void <anything> ' is undefined
+    // can be useful if the expression has to return something, even a no-result value 
+    return void 1;
+  }
 
   foo(); //?
   bar(); //?
   baz(); //?
+  foos(); //?
 }
 
 { // if your function needs to return multiple values, your only viable option is to collect them into a compound value like an array or an object:
@@ -26,7 +32,7 @@
   // Collecting multiple values into an array (or object) to return, and subsequently destructuring those values back into distinct
   // assignments, is a way to transparently express multiple outputs for a function.
   var [x, y] = foo(); 
-  // var {retValue1: x, retValue2: y} = foo(); // or toggle this, mind that property and value need to be duplicated if you want to shorten it (can't use x, y, must use retValue1 retValue2)
+  // var {retValue1: x, retValue2: y} = foo(); // or toggle this, mind that property and value need to be duplicated if you want to shorten it (can't use only x, y, must use retValue1 retValue2)
   x;
   y;
 }

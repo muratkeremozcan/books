@@ -42,14 +42,16 @@
   }
 }
 
-// CAREFUL! default parameters , rest/gather operator, passing in an object, confuse arity
+// CAREFUL! default parameters, rest/gather operator, passing in an object all confuse arity
 {
   function foob(x, y = 2) { }
   function barf(x, ...args) { }
   function baz({ a, b }) { }
+  function bazo([ a, b ]) { }
   foob.length; //?
   barf.length; //?
   baz.length; //?
+  bazo.length; //?
 }
 
 // in contrast to arity / number of parameters, you can count the number of arguments 
