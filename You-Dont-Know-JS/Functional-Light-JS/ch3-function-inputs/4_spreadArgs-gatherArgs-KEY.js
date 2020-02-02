@@ -11,16 +11,16 @@
 
 { // sometimes you don't have the ability to change the function declaration to use array destructuring
   // foo expects 2 params, but bar sends 1 argument: [3, 9]
-  // either need to use destructuring: f([x, y])
-  // or have bar call fn with spread operator :  fn(...[3, 9])
+  // need to  have bar call fn with spread operator :  fn(...[3, 9])
   function foo(x, y) {
     console.log(x + y);
   }
 
   function bar(fn) {
-    fn([3, 9])
+    fn([3, 9]);
+    // fn(...[3, 9]); // but, what if you cannot control this?
   }
-  bar(foo); //?
+  // bar(foo);
   
   // in this situation you can use a helper function 
   // that spreads out a single received array as its individual arguments:

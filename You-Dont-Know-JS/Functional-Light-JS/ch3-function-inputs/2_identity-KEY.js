@@ -17,6 +17,7 @@ words.filter(identity); //?
 
 
 // another example
+/** takes the message and returns it, or returns a formatted message  */
 function output(msg, formatFn = identity) {
   msg = formatFn(msg);
   console.log(msg);

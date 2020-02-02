@@ -1,4 +1,5 @@
-import { curryProps, partialProps } from './7.1_order_matters';
+import { curryProps, partialProps } from './7.1_partialProps-curryProps-KEY';
+
 // we can only take advantage of currying with named arguments if we have control over the signature of foo(..) 
 // and define it to destructure its first parameter.
 // What if we wanted to use this technique with a function that had its parameters individually listed (no parameter destructuring!), 

@@ -1,5 +1,5 @@
-import {uncurry} from './6.3_no_curry';
-import {partialRight} from './5.2_partial-add';
+import {uncurry} from '../fp-tool-belt';
+import {partialRight} from './5.2_partial-add_reverseArgs-KEY';
 
 
 // convenience to avoid any potential binding issue with trying to use ` console.log ` as a function
@@ -42,6 +42,7 @@ function when(predicate, fn) {
     }
   };
 }
+
 
 var when_arrow = (predicate, fn) =>
   (...args) => 

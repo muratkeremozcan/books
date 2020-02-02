@@ -3,7 +3,7 @@
 // that is/are directly passed to an inner function call
 
 
-import {unary} from './1_all_to_one-unary-function';
+import {unary} from '../fp-tool-belt';
 
 
 [1, 2, 3, 4, 5].map(function mapper(v) {

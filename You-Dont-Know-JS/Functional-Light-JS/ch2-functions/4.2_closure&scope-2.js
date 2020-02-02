@@ -16,8 +16,8 @@ function makeAdder(x) {
 }
 
 // first inputs
-var addTo10 = makeAdder(10); //?
-var addTo37 = makeAdder(37); //?
+var addTo10 = makeAdder(10); 
+var addTo37 = makeAdder(37);
 
 // second inputs
 addTo10(3); //?
@@ -28,14 +28,11 @@ addTo37(13); //?
 ////
 // since functions are just values in JS, we can remember function values via closure:
 function formatter (formatFn) {
-  formatFn; //?
-
-  return function inner(str) {
-    str; //?
-  
-    return formatFn(str); //?
+  return function inner(value) {
+    return formatFn(value); //?
   };
 }
+// var formatter_arrow = formatFn => value => formatFn(value);
 
 // we create two simple unary functions lower(..) and upperFirst(..), 
 // because those functions will be much easier to wire up to work with other functions in the rest of our program

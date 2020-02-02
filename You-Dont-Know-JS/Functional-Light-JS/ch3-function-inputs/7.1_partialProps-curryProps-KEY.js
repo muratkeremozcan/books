@@ -2,7 +2,13 @@
 // The downside is that they are based on positional arguments. How do we address ordering concerns in partial and curry?
 
 // with these utilities Even with currying or partial application, order doesn’t matter anymore
-// We can now specify which arguments we want in whatever sequence makes sense. No
+// We can now specify which arguments we want in whatever sequence makes sense.
+
+export function partialProps(fn, presetArgsObj) {
+  return function partiallyApplied(laterArgsObj) {
+    return fn(Object.assign({}, presetArgsObj, laterArgsObj));
+  };
+}
 
 export function curryProps(fn, arity = 1) {
   return (function nextCurried(prevArgsObj) {
@@ -19,11 +25,7 @@ export function curryProps(fn, arity = 1) {
   })({});
 }
 
-export function partialProps(fn, presetArgsObj) {
-  return function partiallyApplied(laterArgsObj) {
-    return fn(Object.assign({}, presetArgsObj, laterArgsObj));
-  };
-}
+
 
 // usage
 
@@ -31,8 +33,8 @@ function foo({ x, y, z } = {}) {
   console.log(`x: ${x} y: ${y} z: ${z}`);
 }
 
-var f1 = curryProps(foo, 3);
-var f2 = partialProps(foo, { y: 2 });
+var f1 = partialProps(foo, { y: 2 });
+var f2 = curryProps(foo, 3);
 
-f1({ y: 2 })({ x: 1 })({ z: 3 });
-f2({ z: 3, x: 1 });
+f1({ z: 3, x: 1 });
+f2({ y: 2 })({ x: 1 })({ z: 3 });

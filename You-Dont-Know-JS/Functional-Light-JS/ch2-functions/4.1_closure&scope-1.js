@@ -47,9 +47,8 @@
       // val is remembered!
       increment; //?
       
-      val; //?
-      
       val = val + increment;
+      val; //?
       return val;
     };
   }

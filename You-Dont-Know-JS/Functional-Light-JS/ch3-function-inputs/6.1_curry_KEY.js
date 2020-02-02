@@ -1,8 +1,6 @@
-// function that expects multiple arguments is broken down into successive chained functions 
-// that each take a single argument (arity: 1) and return another function to accept the next argument
+import partial from './5.2_partial-add_reverseArgs-KEY';
 
 // currying unwinds a single higher-arity function into a series of chained unary functions
-import partial from './5.2_partial-add';
 
 // Currying is a special form of partial application where the arity is reduced to 1, 
 // with a chain of successive chained function calls, each which takes one argument. 

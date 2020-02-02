@@ -24,8 +24,6 @@
   function foo(x) {
     var retValue;
 
-    retValue; //?
-
     if (retValue == undefined && x > 10) {
       retValue = x + 1;
     }
