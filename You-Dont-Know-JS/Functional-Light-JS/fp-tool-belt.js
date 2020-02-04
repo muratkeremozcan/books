@@ -211,3 +211,16 @@ export const pipe = (...fns) => result => {
   }
   return result;
 }
+
+/** extract a property by name off of an object */
+export const prop = (name, obj) => obj[name];
+
+/** sets a property by name to an object */
+export const setProp = (name, obj, val) => {
+  let o = Object.assign({}, obj);
+  o[name] = val;
+  return o;
+}
+
+/** wraps a value at an object at a specified property name : objOf in Ramda  */
+export const makeObjProp = (name, value) => setProp(name, {}, value);

@@ -30,4 +30,4 @@ var filterWordsPipe = partial(pipe, words, unique);
 // pipe(words, unique, skipShortWords)(text); //?
 filterWordsPipe(skipShortWords)(text); //?
 
-
+// besides readability, pipe has a performance advantage over compose 

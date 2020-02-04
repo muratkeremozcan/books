@@ -1,5 +1,5 @@
 import { unique, words } from './1.1.words-unique-compose';
-import { partialRight, curry, uncurry, reverseArgs } from '../fp-tool-belt';
+import { partialRight} from '../fp-tool-belt';
 /////
 // general compose
 
