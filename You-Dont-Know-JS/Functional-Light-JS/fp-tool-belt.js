@@ -62,7 +62,7 @@ export const gatherArgs = fn => (...argsArr) => fn(argsArr);
  */
 export const reverseArgs = fn => (...argsArr) => fn(...argsArr.reverse());
 
-/** Reduces expected number of arguments in a function, by creating a new function where later arguments are preset.
+/** Reduces the arguments , but sets up to partially apply the later arguments after the present ones
  * 
  * ex: getPerson function makes an ajax request with data and callback, we do not know what the data and callback will be
  * 

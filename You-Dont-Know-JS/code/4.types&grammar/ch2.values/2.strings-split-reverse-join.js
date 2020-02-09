@@ -46,4 +46,3 @@ var reverse_a = a.split('') // covert string to array: split into an array of ch
 reverse_a; //?
 // This approach doesn’t work for strings with complex (unicode) characters in them
   // use ESrever library for that https://github.com/mathiasbynens/esrever
-

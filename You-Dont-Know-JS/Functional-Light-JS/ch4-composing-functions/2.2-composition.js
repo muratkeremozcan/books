@@ -3,12 +3,13 @@ var getLastOrder = partial(ajax, "http://some.api/order", { id: -1 });
 
 // we want to refactor this
 
-getLastOrder(function orderFound(order) {
-  getPerson({ id: order.personId },
-    function personFound(person) {
-      output(person.name);
-    });
-});
+getLastOrder(
+  function orderFound(order) {
+    getPerson({ id: order.personId },
+      function personFound(person) {
+        output(person.name);
+      });
+  });
 
 /** extract a property by name off of an object */
 function prop(name, obj) {
