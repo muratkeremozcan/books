@@ -1,5 +1,5 @@
 // If the nature of the concerned side causes/effects is with lexical free variables, 
-// and you have the option to modify the surrounding code, you can encapsulate them using scope.
+// and you do not have the option to modify the surrounding code, you can encapsulate them using scope.
 
 var users = {}; // user object is changed when we fetch user data!
 
@@ -21,5 +21,4 @@ function safer_fetchUserData(userId, users) {
   return users;
 }
 
-// The purity of a function is judged from the outside, regardless of what goes on inside. 
-// As long as a function’s usage behaves pure, it is pure.
+// The purity of a function is judged from the outside, regardless of what goes on inside.

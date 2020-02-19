@@ -1,4 +1,4 @@
-// this keyword is problematic for fpers
+// this keyword is problematic for FPers
 // the approach is to create an interface function that forces the this-using function to use a predictable this context
 
 var ids = {

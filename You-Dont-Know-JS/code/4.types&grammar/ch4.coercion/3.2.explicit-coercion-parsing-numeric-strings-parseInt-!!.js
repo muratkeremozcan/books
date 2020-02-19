@@ -1,15 +1,17 @@
-// parsing numeric strings
+// note about parsing numeric strings
+// a number can be parsed out of a string's character contents with parseInt, parseFloat, Number or +
+// parseInt & parseFloat are more tolerant than Number and +, they strips out non-numeric characters
 
-// a number can be parsed out of a string's character contents with parseInt or Number
-// parseInt is more tolerant than Number, it strips out non-numeric characters
-
-// Parse a string as a number when you don’t know/care what other non-numeric characters there may be on the right-hand side. 
-// Coerce a string (to a number) when the only acceptable values are numeric and something like "42px" should be rejected as a number.
+// Coerce a string to a number (with Number(..) or +) when the only acceptable values are numeric and something like "42px" should be rejected as a number.
+// Parse a string as a number (with parseInt or parseFloat) when you don’t know/care what other non-numeric characters there may be on the right-hand side. 
 
 var a = '42';
 var b = '42px';
 Number(a); //?
 Number(b); //?
++a; //?
++b; //?
+// parseInt and parseFloat are more tolerant than Number and +
 parseInt(a); //?
 parseInt(b); //?
 parseFloat(b); //?

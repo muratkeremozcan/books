@@ -35,4 +35,4 @@ specialNumber(1E6); //?
 specialNumber(1E6); //?
 
 // The purpose of reducing side causes/ effects is not per se to have a program where they aren’t observed, 
-// but to design a program where fewer of them are possible,
+// but to design a program where fewer of them are possible

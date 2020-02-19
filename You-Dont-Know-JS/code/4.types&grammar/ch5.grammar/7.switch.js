@@ -30,3 +30,14 @@ switch (true) {
 }
 // !! do not do this with logical operators, use === with that
 // Lastly, the default clause is optional, and it doesn’t necessarily have to come at the end (although that’s the strong convention).
+
+a = 10
+// switch true with return
+switch (true) {
+  case a === 10:
+    return 'ten'; //?
+  case a === 42:
+    return 'forty-two'; //?
+  default:
+    throw new Error('cannot find it');
+}
