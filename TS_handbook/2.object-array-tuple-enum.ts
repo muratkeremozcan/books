@@ -36,15 +36,15 @@
     name: string,
     age: number,
     hobbies: string[],
-    role: [number, string]
+    role: [number, string, boolean]
   } = {
     name: 'Max',
     age: 30,
     hobbies: ['Sports', 'Cooking'],
-    role: [2, 'author']
+    role: [2, 'author', true]
   }
 
-  person.role = [10, 'someRole'];
+  person.role = [10, 'someRole', true];
   person; //?
 }
 

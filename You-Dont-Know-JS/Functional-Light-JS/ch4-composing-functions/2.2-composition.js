@@ -24,7 +24,7 @@ function setProp(name, obj, val) {
 }
 
 /** wraps a value at an object at a specified property name  */
-function makeObjProp, value) {
+function makeObjProp(name, value) {
   return setProp(name, {}, value);
 }
 

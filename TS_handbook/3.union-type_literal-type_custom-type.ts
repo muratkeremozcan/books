@@ -22,8 +22,8 @@
 { // literal type : the explicit possible values for the argument 
   // custom type : typically custom types are used by union types
   
-  type ConversionDescriptor = 'as-number' | 'as-string'; // custom type (literal type)
-  type Combinable = number | string; // custom type (union type)
+  type ConversionDescriptor = 'as-number' | 'as-string'; // custom type with a literal type
+  type Combinable = number | string; // custom type with a union type
 
   function combineAndForceConversion(
     input1: Combinable,
@@ -36,6 +36,8 @@
     if (forceConversion === 'as-number') {
       // you can use either Number(..) or + before the variable to covert the type
       result = Number(input1) + +input2; //?
+      // if you instead use parseInt or parseFloat, you have to use typeCasting, because input can be either string or number
+      // result = parseInt(<string>input1) + +input2; //? 
     } else {
       result = input1.toString() + input2.toString();
     }

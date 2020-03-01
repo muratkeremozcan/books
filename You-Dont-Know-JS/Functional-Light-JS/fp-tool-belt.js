@@ -10,6 +10,9 @@
 */
 export const unary = fn => arg => fn(arg);
 
+/** Creates a function that takes two arguments and ignores subsequent arguments */
+export const binary = fn => (arg1, arg2) => fn(arg1, arg2);
+
 /** Takes a value and returns it 
  * 
  * example: filtering out empty values from an array of words
@@ -224,3 +227,10 @@ export const setProp = (name, obj, val) => {
 
 /** wraps a value at an object at a specified property name : objOf in Ramda  */
 export const makeObjProp = (name, value) => setProp(name, {}, value);
+
+/** As long as a function is returned, the loop keeps going, executing that function and capturing its return, then checking its type. */
+export const trampoline = fn => (...args) => {
+  let result = fn(...args);
+  while (typeof result == 'function') { result = result(); }
+  return result;
+}

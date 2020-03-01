@@ -1,5 +1,5 @@
-import partial from './5.2_partial-add';
-import { curry, curriedSum, sum } from './6.1_one_at_a_time-currying';
+import { partial } from '../fp-tool-belt';
+import { curriedSum, sum } from './6.1_curry_KEY';
 
 // sum(..) is more clear, why curry and partial?
 

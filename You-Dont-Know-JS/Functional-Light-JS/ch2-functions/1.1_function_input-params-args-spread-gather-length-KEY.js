@@ -84,6 +84,6 @@
 // You can use the ... operator in the parameter list even if there’s no other formal parameters declared
 // you can safely use args.length in this form
 { 
-  function foo(... args) { return args.length; }
+  function foo(...args) { return args.length; }
   foo(1, 2, 3); //?
 }

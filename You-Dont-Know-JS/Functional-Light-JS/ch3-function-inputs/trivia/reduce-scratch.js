@@ -1,7 +1,8 @@
 var numbers = [5, 6, 7];
 
 // reduce applies the cb function to every element in the array
-// has an accumulator which keeps the returned value after every iteration (accumulator takes the value of optional initial value in the first iteration)
+// has an accumulator which keeps the returned value after every iteration 
+// (accumulator takes the value of optional initial value in the first iteration)
 // If the optional initial value is not supplied, the first element is used as the initial value
 numbers.reduce( (accumulator, current) => accumulator + current, 2); //? 
 
