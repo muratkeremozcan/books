@@ -234,7 +234,9 @@ export const pipe = (...fns) => result => {
 /** extract a property by name off of an object */
 export const prop = (name, obj) => obj[name];
 
-/** sets a property by name to an object */
+/** Sets a property by name to an object. 
+ * Clones the object before setting the new property, avoiding side effects
+*/
 export const setProp = (name, obj, val) => {
   let o = Object.assign({}, obj);
   o[name] = val;
