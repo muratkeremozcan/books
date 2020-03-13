@@ -1,4 +1,3 @@
-
 // the distinction: relationship: a closure associates a single function with a set of state, 
 // whereas an object holding the same state can have any number of functions to operate on that state.
 
@@ -14,7 +13,6 @@ var person = {
   }
 }
 person.first() + ' ' + person.last(); //?
-
 
 
 // we can represent this using a closure without objects; looks different but same behavior

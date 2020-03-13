@@ -19,7 +19,6 @@ sum(1, 1, 3, 2); //?
 function sum_withPTC(num1, num2, ...nums) {
   num1 = num1 + num2; // pre-calculate the addition of num1 and num2, and pass it along
   if (nums.length == 0) return num1;
-  num1; //?
   return sum_withPTC(num1, ...nums);
 }
 

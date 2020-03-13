@@ -1,5 +1,3 @@
-
-
 var myArray = [5, 6, 7];
 
 // forEach iterates over the values and ignores any callback return values. 

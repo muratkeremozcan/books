@@ -32,14 +32,12 @@ function makeObjProp(name, value) {
 //   return person.name;
 // }
 
-// make a function that’s waiting to extract the "name" property from whatever object we pass into it
+// make a function that’s waiting to extract the property from whatever object we pass into it
 var extractName = partial(prop, 'name');
-
 var extractPersonId = partial(prop, 'personId');
-
 var personData = partial(makeObjProp, 'id');
 
-// output <-- extractName <-- person
+// output <-- person <-- extractName
 var outputPersonName = compose(person, extractName);
 
 var processPerson = partialRight(getPerson, outputPersonName);

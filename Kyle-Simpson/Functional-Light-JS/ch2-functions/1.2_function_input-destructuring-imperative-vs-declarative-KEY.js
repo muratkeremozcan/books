@@ -48,5 +48,5 @@
   // It didn’t matter that the x property wasn’t on the object; it just ended up as a variable with undefined like you’d expect.
   // another benefit of named arguments, by virtue of being specified as object properties, are not fundamentally ordered
   // The call-site is no longer cluttered by ordered-placeholders like undefined to skip a parameter
-  foo( { y: 3} );
+  foo( { y: 3} ); 
 } 

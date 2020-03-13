@@ -44,3 +44,5 @@ const isEven = not(isOdd);
 
 numbers.filter(isOdd); //?
 numbers.filter(isEven); //?
+
+filter(numbers, isOdd); //?

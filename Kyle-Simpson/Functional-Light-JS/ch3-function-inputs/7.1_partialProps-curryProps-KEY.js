@@ -36,5 +36,5 @@ function foo({ x, y, z } = {}) {
 var f1 = partialProps(foo, { y: 2 });
 var f2 = curryProps(foo, 3);
 
-f1({ z: 3, x: 1 });
+// f1({ z: 3, x: 1 });
 f2({ y: 2 })({ x: 1 })({ z: 3 });

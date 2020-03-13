@@ -23,7 +23,6 @@ setInterval(function everySecond() {
 var b = a.map(function double(v) {
   return v * 2;
 });
-/*  */
 b.subscribe(function onValue(v) {
   console.log(v);
 })

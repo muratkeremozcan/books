@@ -7,8 +7,9 @@
 
 var specialNumber = (function memoization() {
   var cache = [];
-
+  
   return function specialNumber(n) {
+    cache; //?
     // if special number already calculated, get it from the cache
     if (cache[n] !== undefined) {
       return cache[n]; //?
@@ -30,9 +31,9 @@ var specialNumber = (function memoization() {
 
 specialNumber(6); //?
 specialNumber(42); //?
-specialNumber(1E6); //?
-// memoized from cache!
-specialNumber(1E6); //?
-
+specialNumber(6);
+// specialNumber(1E6); //?
+// // memoized from cache!
+// specialNumber(1E6); //?
 // The purpose of reducing side causes/ effects is not per se to have a program where they aren’t observed, 
 // but to design a program where fewer of them are possible

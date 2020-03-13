@@ -332,7 +332,7 @@ export const reduce = curry(
   (reducerFn, initialValue, arr) => arr.reduce(reducerFn, initialValue)
 );
 
-/** Used to adapt methods to Stadalones 
+/** Used to adapt methods to Stadalones; utilized for curried list operators
  * 
  * `const filter = unboundMethod('filter', 2);`
  * 

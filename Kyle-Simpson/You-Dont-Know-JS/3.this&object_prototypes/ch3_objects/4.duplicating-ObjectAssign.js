@@ -12,6 +12,8 @@ var dupeObject = JSON.parse(JSON.stringify(object)); //?
   // takes a target object as its first parameter, and one or more source object(s) as its subsequent parameters. 
   // It iterates over all the enumerable, owned keys on the source object(s) and copies them (via = assignment only) to the target
 var dupeObject2 = Object.assign({}, object); //?
+// with ES6
+var dupeObject3 = {...object}; //?
 
 ////
 // why can JSON parse JSON stringify be unsafe? Because of the circulation problem.
