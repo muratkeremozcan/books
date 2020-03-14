@@ -233,7 +233,7 @@ export const pipe = (...fns) => result => {
 
 /** extract a property by name off of an object */
 export const prop = (name, obj) => obj[name];
-
+ 
 /** Sets a property by name to an object. 
  * Clones the object before setting the new property, avoiding side effects
 */
@@ -322,10 +322,34 @@ export const filter = curry(
   (predicateFn, arr) => arr.filter(predicateFn)
 );
 
-/** FP style map. Array is received last. */
+/** FP style map. Array is received last. 
+ * 
+ * `var x = [3]`
+ 
+ * `map( v => [v, v + 1], x)` //? [[3, 4]]
+*/
 export const map = curry(
   (mapperFn, arr) => arr.map(mapperFn)
 );
+
+/** FP style flatMap. Array is received last. 
+ * 
+ * `var x = [3]`
+ 
+ * `map( v => [v, v + 1], x)` //? [3, 4]
+*/
+export const flatMap = curry(
+  (mapperFn, arr) =>
+    arr.reduce((list, v) =>
+      list.concat(mapperFn(v)), []
+    )
+)
+
+var flatMapf = curry(function flatMap(mapperFn, arr) {
+  return arr.reduce(function reducer(list, v) {
+    return list.concat(mapperFn(v));
+  }, []);
+});
 
 /** FP style reduce. Array is received last. */
 export const reduce = curry(
@@ -354,4 +378,52 @@ export const unboundMethod = (methodName, argCount = 2) => curry(
 export const guard = fn => arg =>
   arg != null
     ? fn(arg)
-    : arg; 
+    : arg;
+
+/** Monad Just. a simple monadic wrapper for any regular (aka, non-empty) value.
+  *   
+  * all Just instances have map(..), chain(..) / flatMap(..)), and ap(..) methods.
+  * 
+  * ap(..) takes the value wrapped in a monad and “applies” it to another monad using that other monad’s map(..). 
+ */
+export function Just(val) { // notice that val is never changed
+  return { map, chain, ap, inspect };
+  // ********************* 
+  function map(fn) {
+    return Just(fn(val));
+  }
+  function chain(fn) { // aka: bind, flatMap 
+    return fn(val);
+  }
+  function ap(anotherMonad) {
+    return anotherMonad.map(val);
+  }
+  function inspect() { // included for demo purposes
+    return `Just(${val})`;
+  }
+}
+
+/** Monad Nothing */
+export function Nothing() {
+  return { map: Nothing, chain: Nothing, ap: Nothing, inspect };
+  function inspect() {
+    return "Nothing";
+  }
+}
+
+/** Maybe, if a value is non-empty, it’s represented by an instance of Just(..) 
+ * If it’s empty, it’s represented by an instance of Nothing().
+*/
+export const Maybe = { Just, Nothing, of/* aka: unit, pure */: Just };
+
+/** true if the value is null or undefined */
+export const isEmpty = val => val === null || val === undefined;
+
+/**  
+ * does the empty-check, and selects either a Nothing() monad instance if so, 
+ * or wraps the value in a Just(..) instance (via Maybe.of(..)).
+*/
+export const safeProp = curry( function safeProp(prop,obj){
+  if (isEmpty(obj[prop])) return Maybe.Nothing();
+  return Maybe.of( obj[prop] );
+});

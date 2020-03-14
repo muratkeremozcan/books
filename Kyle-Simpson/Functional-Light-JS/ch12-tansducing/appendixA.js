@@ -1,17 +1,3 @@
-import { uncurry, partialRight, not } from '../fp-tool-belt';
-
-
-// convenience to avoid any potential binding issue with trying to use ` console.log ` as a function
-function output(txt) {
-  console.log(txt);
-}
-
-function printIf(predicate, msg) {
-  if (predicate(msg)) {
-    output(msg);
-  }
-}
-
 function isShortEnough(str) {
   return str.length <= 10;
 }
@@ -51,7 +37,7 @@ words
 
 TRANSDUCERS
 To transduce means to transform with a reduce; a composable reducer.
-Transducers express map(..) s and filter(..) s as reduce(..) s, and then abstracts out the common combination operation,
+Transducers express map(..)s and filter(..)s as reduce(..)s, and then abstracts out the common combination operation,
 to create unary reducer-producing functions that are easily composed.
 
 A transducer takes one reducing function and returns another.
@@ -61,11 +47,10 @@ Transducers don't care about
 - the context of use 
 - the source of inputs
 
+Transducing primarily improves performance, which is especially obvious if used on an observable. Solves issue (1)
 Transducers compose using ordinary function composition. Solves issue (2)
 
 We use transducing to compose adjacent map(..), filter(..), and reduce(..) operations together.
-Transducing primarily improves performance, which is especially obvious if used on an observable.
-
 Transducing is how we express a more declarative composition of functions that would otherwise not be directly composable.
 */
 
@@ -79,7 +64,6 @@ var transformer = transducers.comp(
 )
 
 transducers.transduce(transformer, listCombine, [], words); //?
-
 
 //  Because calling transformer(..) produces a transform object and not a typical binary transduce-reducer function,
 // the library also provides toFn(..) to adapt the transform object to be useable by native array reduce(..): 
