@@ -1,3 +1,6 @@
+// a closure is when a function remembers the variables around it
+// even when that function is executed elsewhere
+
 { // a closure is a poor man's object!
   function outer() {
     // the vars in this scope are being used / closed over by function inner

@@ -5,6 +5,7 @@
   // here the value is not being re-assigned
   const x = [2];
   // x is not reassignable, but the value of x is still mutable!
+  // x cannot be reassigned, however the array it points to can still change!
   x[0] = 3;
   x; //?
 }
@@ -14,7 +15,7 @@ const x = 5; //?
 // const makes efforts to adhere to FP harder
 
 
-// how can you turn a mutable object/ array/ function into an “immutable value”
+// how can you turn a mutable object/ array/ function into an “immutable value”; create an immutable array?
 // The Object.freeze(..) utility goes through all the properties/ indices of an object/ array and marks them as read-only, so they cannot be reassigned
 
 let y = Object.freeze([2]);
