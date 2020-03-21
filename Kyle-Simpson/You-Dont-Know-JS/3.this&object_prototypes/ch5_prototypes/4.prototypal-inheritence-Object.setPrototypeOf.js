@@ -27,7 +27,8 @@ function Bar(name,label) {
 // But, it used the Foo(..) “constructor call” to do it. If that function has any side effects, those side effects happen at the time of this linking
 
 
-// When function Bar() { .. } is declared, Bar, like any other function, has a .prototype link to its default object. 
+// When function Bar() { .. } is declared, Bar, like any other function, has a .prototype link to its default object.
+// Same as var bar = {}  which is another way to create an object 
 // But that object is not linked to Foo.prototype like we want. We want to create a new object that is linked as we want,
 // Object.create(..) creates a “new” object out of thin air, and links that new object’s internal [[Prototype]] to the object you specify
 

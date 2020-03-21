@@ -38,3 +38,11 @@ Object.getOwnPropertyNames(rocky); //?
 rocky.__proto__; //?
 rocky.__proto__.__proto__; //?
 rocky.__proto__.__proto__.__proto__; //?
+
+
+
+let newerMovies = new movies();
+newerMovies.constructor; //?
+newerMovies.constructor === movies; //?
+newerMovies instanceof movies; //?
+movies.prototype.isPrototypeOf(newerMovies); //?

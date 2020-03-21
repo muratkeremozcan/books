@@ -1,11 +1,11 @@
-// interfaces are a powerful way of defining contracts within your code . Sometimes called duck typing or structural typing
-
+// interfaces are a powerful way of defining contracts within your code
+// think of it as a layer over functions, specifying how to use them
+// Sometimes called duck typing or structural typing
 
 let myObj = {
   size: 10,
   label: 'Size 10 Object'
 }
-
 
 function printLabel(labelledObj: { label: string }) {
   return labelledObj.label;
@@ -29,4 +29,5 @@ printLabel2(myObj); //?
 myObj.y = 5; // TS complaining
 
 
-// Note: abstract class is very similar to an interface; the difference is that it is used for classes and can have access modifiers
+// Note: abstract class is very similar to an interface;
+// the difference is that it is used for classes and can have access modifiers

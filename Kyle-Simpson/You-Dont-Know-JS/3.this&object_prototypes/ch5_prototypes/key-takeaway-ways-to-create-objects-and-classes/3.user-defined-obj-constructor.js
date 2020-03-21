@@ -1,3 +1,6 @@
+// this approach is ok. There is linking, there is constructor.
+// the syntax is outdated and verbose. Better to use ES6 class syntax nowadays.
+
 function movies(name, releaseYear, genre, ratings) {
   this.name = name;
   this.releaseYear = releaseYear;
@@ -22,9 +25,17 @@ console.log(DPS);
 console.log(rocky);
 DPS.watch();
 
-Object.getPrototypeOf(movies); //? 
+Object.getPrototypeOf(movies); //?  
 movies.hasOwnProperty('name'); //?
 Object.getOwnPropertyNames(rocky); //?
 rocky.__proto__; //?
 rocky.__proto__.__proto__; //?
 rocky.__proto__.__proto__.__proto__; //?
+
+
+
+let newerMovies = new movies();
+newerMovies.constructor; //?
+newerMovies.constructor === movies; //?
+newerMovies instanceof movies; //?
+movies.prototype.isPrototypeOf(newerMovies); //?

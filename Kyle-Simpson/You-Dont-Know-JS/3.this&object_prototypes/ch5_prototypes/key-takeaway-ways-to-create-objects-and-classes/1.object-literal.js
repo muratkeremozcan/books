@@ -33,8 +33,8 @@ let numbers = {one,two, three}; //?
 numbers.one; //?
 numbers.two; //?
 
-
-Object.getPrototypeOf(shape); //? 
+// limitation: no linking 
+Object.getPrototypeOf(shape); //?  
 shape.hasOwnProperty('size'); //?
 Object.getOwnPropertyNames(shape); //?
 shape.__proto__; //?

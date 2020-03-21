@@ -1,5 +1,5 @@
 // Objects can also be created using the new keyword. With the built-in Object Constructor in Javascript, 
-// IMPORTANT you can use this as long as you're not trying to make new instances under it :  let rocky = new movies() will not work
+// IMPORTANT limitation you can use this as long as you're not trying to make new instances under it :  let rocky = new movies() will not work
 // with this usage, there is no clear advantage over object literal.
 
 const movies = new Object({
@@ -41,6 +41,7 @@ const movies = new Object({
 console.log(movies);
 movies.watch();
 
+// limitation: no linking
 Object.getPrototypeOf(movies); //? 
 movies.hasOwnProperty('name'); //?  
 Object.getOwnPropertyNames(movies); //?

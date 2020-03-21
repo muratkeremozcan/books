@@ -34,6 +34,8 @@ rocky.__proto__; //?
 rocky.__proto__.__proto__; //?
 rocky.__proto__.__proto__.__proto__; //?
 
+
+
 ////////////
 // Let's make a non-prototype linked instance
 
@@ -52,3 +54,4 @@ DPS.hasOwnProperty('ratings'); //?
 Object.getOwnPropertyNames(DPS); //?
 DPS.__proto__; //?
 DPS.__proto__.__proto__; //?
+
