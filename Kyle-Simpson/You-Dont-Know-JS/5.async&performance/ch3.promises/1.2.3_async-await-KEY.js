@@ -27,15 +27,15 @@ async function main() {
   try {
     // IMPORTANT await instead of yield
     var text = await foo(11, 31);
-    console.log(text);
+    return (text);
   }
   catch (error) {
-    console.log(error);
+    return (error);
   }
 }
 
-main(); 
-// main();
-// main();
+main(); //?
+main(); //?
+main(); //?
 
 
