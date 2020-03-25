@@ -46,13 +46,24 @@
 
   person.role = [10, 'someRole', true];
   person; //?
+
+  
+  //////
+  let nameNumber: [string, number]; // tuple type
+  nameNumber = ['Jenny', 8675309];
+
+  let [name, number] = nameNumber;
+  name; //?
+  typeof name; //?
+  number; //?
+  typeof number; //?
 }
 
 
 { // enum type: helps with not having to memorize the appropriate values an argument can have (mapped values)
   
   enum Role {ADMIN, READ_ONLY, AUTHOR}; // uppercase is a convention with enum
-  // enum Role {ADMIN = 5, READ_ONLY = 'readOnly', AUTHOR = 200}; // can have non-default values as well
+  // enum Role {ADMIN = 5, READ_ONLY = 'readOnly', AUTHOR = 200}; // can have default values as well
 
   const person = {
     name: 'Max',

@@ -9,7 +9,7 @@
   function identity<T>(arg: T): T {
     return arg;
   }
-
+  
   // type of output will be 'string', the compiler will figure out `T` based on the value passed in
   let output = identity<string>('myString'); //?
 
@@ -49,8 +49,7 @@ john.FirstName; //?
 
 ////// ex: 3
 
-interface Empty<T> {
-}
+interface Empty<T> {}
 let x: Empty<number>;
 let y: Empty<string>
 

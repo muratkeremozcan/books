@@ -20,7 +20,7 @@
 
 
 { // literal type : the explicit possible values for the argument 
-  // custom type : typically custom types are used by union types
+  // custom type : typically custom types are used by union types. Also called Type Alias.
   
   type ConversionDescriptor = 'as-number' | 'as-string'; // custom type with a literal type
   type Combinable = number | string; // custom type with a union type
@@ -46,6 +46,15 @@
 
   combineAndForceConversion(30, 26, 'as-number'); //?
   combineAndForceConversion(30, 26, 'as-string'); //?
+
+
+  /// other type alias examples
+  type Text = string | { text: string };
+  type Coordinates = [number, number];
+  type Callback = (data: string) => void;
+  // tip: if you need to have hierarchies of Type annotations use an interface. They can be used with implements and extends
+  // tip: Use a type alias for simpler object structures (like Coordinates) just to give them a semantic name. 
+  // Also when you want to give semantic names to Union or Intersection types, a Type alias is the way to go.
 }
 
 
