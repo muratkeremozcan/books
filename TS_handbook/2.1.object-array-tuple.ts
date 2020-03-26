@@ -58,23 +58,3 @@
   number; //?
   typeof number; //?
 }
-
-
-{ // enum type: helps with not having to memorize the appropriate values an argument can have (mapped values)
-  
-  enum Role {ADMIN, READ_ONLY, AUTHOR}; // uppercase is a convention with enum
-  // enum Role {ADMIN = 5, READ_ONLY = 'readOnly', AUTHOR = 200}; // can have default values as well
-
-  const person = {
-    name: 'Max',
-    age: 30,
-    hobbies: ['Sports', 'Cooking'],
-    role: Role.AUTHOR
-  }
-
-  if (person.role === Role.AUTHOR) {
-    console.log('user is author');
-  }
-
-
-}
