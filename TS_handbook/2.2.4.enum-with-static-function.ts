@@ -25,5 +25,3 @@ const sun = Weekday.Sunday;
 
 Weekday.isBusinessDay(mon); //?
 Weekday.isBusinessDay(sun); //?
-
-
