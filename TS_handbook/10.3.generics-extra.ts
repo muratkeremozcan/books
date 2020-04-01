@@ -43,7 +43,6 @@ people.push({ FirstName: 'John' });
 // john is of type Person, the typescript compiler knows this
 // because we've declared the people variable as an array of Person
 let john = people.pop();
-
 john.FirstName; //?
 
 
@@ -63,3 +62,4 @@ let a: NotEmpty<number>;
 let b: NotEmpty<string>;
 
 a = b; // TS will complain because the structure does not match
+
