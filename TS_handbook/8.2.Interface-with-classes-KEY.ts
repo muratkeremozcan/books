@@ -1,6 +1,5 @@
-
 // implements keyword with class example
-// Note: here are default Iterator and IteratorResult, so we make our own 
+// Note: there are default Iterator and IteratorResult types, to be explicit on what they do, in this example we make our own 
 
 interface Iterator_<T> {
   next(value?: any): IteratorResult_<T>;
@@ -13,6 +12,8 @@ interface IteratorResult_<T> {
 }
 
 class Component {
+  // Note: TS provides a shorthand for class constructors where you can prefix the member with an access modifier 
+  // and it is automatically declared on the class and copied from the constructor: no need for this.name = name
   constructor (public name: string) {}
 }
 

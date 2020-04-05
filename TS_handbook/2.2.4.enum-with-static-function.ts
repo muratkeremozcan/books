@@ -8,7 +8,7 @@ enum Weekday {
   Sunday
 }
 
-namespace Weekday { // namespace is optional, but makes things a bit more clear
+// namespace Weekday { // namespace is optional, but makes things a bit more clear
   export function isBusinessDay(day: Weekday) {
     switch (day) {
       case Weekday.Saturday:
@@ -18,10 +18,11 @@ namespace Weekday { // namespace is optional, but makes things a bit more clear
         return true;
     }
   }
-}
+// }
 
 const mon = Weekday.Monday;
 const sun = Weekday.Sunday;
 
-Weekday.isBusinessDay(mon); //?
-Weekday.isBusinessDay(sun); //?
+// would have to use Weekday. notation if we used namespace
+isBusinessDay(mon); //?
+isBusinessDay(sun); //?

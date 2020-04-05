@@ -30,12 +30,9 @@ function handler(event: Event) {
   let elementb = event as any as HTMLElement; // Okay!
   let otherElement = <HTMLElement><any> event;
 }
-// Basically, the assertion from type S to T succeeds if either S is a subtype of T or T is a subtype of S. 
-// This is to provide extra safety when doing type assertions 
-// ...completely wild assertions can be very unsafe and you need to use any to be that unsafe.
 
 
-
+///////////////
 
 // all maintained and strongly typed definitions for nearly the top 90% JavaScript libraries out there exists in an OSS Repository called
 // https://github.com/DefinitelyTyped/DefinitelyTyped

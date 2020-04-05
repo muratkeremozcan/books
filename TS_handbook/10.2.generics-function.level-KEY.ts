@@ -19,12 +19,16 @@ reverseArr([1, 2, 3]); //?
 
 // the reversed array has to match sample's type, TS will complain
 reversed[0] = '1'; 
+reversed[0] = 1; // ok 
+reversed[0] = <number><any>'1'; // ok with type casting
 
 // arguments of reversed array has to match sample's type, TS will complain
-reversed = ['1', '2', '3']; //?
+reversed = ['1', '2', '3'];
+reversed = [1, 2, 3]; // ok
 
 
-/// generics for member funtions 
+
+/// (3) generics for member functions : same thing as (2)
 
 class Utility {
   reverseArr<T>(items: T[]): T[] {
@@ -43,17 +47,3 @@ let reversed2 = util.reverseArr(sample);
 // same deal
 sample2[0] = '1';
 sample2 = ['5', '6', '7'];
-
-
-
-// (unrelated) type inference example
-type Adder = (numbers: { a: number, b: number }) => number;
-
-function iTakeAnAdder(adder: Adder) {
-    return adder({ a: 1, b: 2 });
-}
-
-iTakeAnAdder(({a, b}) => { // Types of `a` and `b` are inferred
-    a = "hello"; // Would Error: cannot assign `string` to a `number`
-    return a + b;
-})

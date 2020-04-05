@@ -2,7 +2,7 @@
 // we want user to inherit from both TimeStamped and Activatable
 
 // instead of a class User extending class Tagged/Timestamped to get its functionality, 
-// function Tagged/Timestamped take class User and returns a new class with this added functionality. Then, Function Tagged/Timestamped are mixins.
+// functions Tagged/Timestamped take class User and return a new class with this added functionality. Then, Function Tagged/Timestamped are mixins.
 
 // [A mixin is] a function that
 // takes a constructor, (1)

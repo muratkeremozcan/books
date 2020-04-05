@@ -6,7 +6,9 @@
 function stringOrNumber(foo: number): number;
 function stringOrNumber(foo: string): string;
 function stringOrNumber(foo: boolean, bar?: number, ...others: string[]): 'string'
-// with the implementation you use type guard, which allow you to narrow down the type of an object within a conditional blocs
+
+// with the implementation you use type guard, which allows you to narrow down the type of an object within a conditional blocs
+
 // Type Guard (1) : using typeof with function argument signatures
 function stringOrNumber(foo: any): any {
   if (typeof foo === 'number') {
@@ -21,7 +23,7 @@ stringOrNumber(11); //?
 stringOrNumber('oi'); //?
 stringOrNumber(true, 0, ''); //?
 
-// using the interface
+// using interface instead of multiple function declarations
 interface Overloaded {
   (foo: string): string,
   (foo: number): number,
@@ -32,7 +34,6 @@ const overloaded: Overloaded = stringOrNumber;
 overloaded(11); //?
 overloaded('oi'); //?
 overloaded(true, 0, ''); //?
-
 
 // can also do type annotation, instead of an interface
 const overloadedTypeAnno: {
@@ -47,12 +48,12 @@ overloadedTypeAnno(11); //?
 //////
 // arrow syntax: a function that takes a number and returns a string
 // Only limitation of the arrow syntax: You can't specify overloads. 
-// For overloads you must use the full bodied { (someArgs): someReturn } syntax
+// For overloads you must use the full bodied function(someArgs): someReturn  syntax
 const simple: (foo: number) => string
   = (foo) => foo.toString();
     
 typeof simple(3); //?
-
+///////
 
 
 // Type Guard (2): using instanceof with classes
@@ -116,7 +117,7 @@ function logOutState(state:TriState) {
 logOutState('yes');
 logOutState('bla');
 
-// strictNullCheck
+// strictNullCheck strict null check !=
 // TypeScript is smart enough to rule out both null and undefined with a == null / != null check
 function notNullOrUndef(a?: number | null) {
   if (a != null) {

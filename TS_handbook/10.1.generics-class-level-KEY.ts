@@ -1,7 +1,7 @@
 // the goal of generics is to document the type dependencies between members:
 // class methods & properties, function arguments and return values
 
-// ex: first in first ou data structure implementation
+// ex: first in first out data structure implementation
 class Queue {
   protected data = [];
   push(item) {
@@ -66,8 +66,3 @@ queueS.push('0');
 queueS.push('1');
 // TS complains
 queueS.push(5);
-
-
-
-////// another example
-function reverse

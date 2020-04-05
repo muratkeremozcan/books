@@ -1,4 +1,4 @@
-// optional variables with parameter annotation, converted to an interface
+// (1) parameter annotation
 
 function padding(a: number, b?: number, c?: number, d?: number) {
   if (b === undefined && c === undefined && d === undefined) {
@@ -22,7 +22,7 @@ padding(1,2,3); //?
 
 
 /////////
-// same example, using interface
+// (2) same example, using interface
 interface PaddingVal {
   a: number;
   b?: number;
@@ -57,11 +57,11 @@ let myPadding = {
 padding_with_I(myPadding); //?
 
 ///////////
-// same example using custom type / type alias
+// (3)same example using custom type / type alias
 
 // tip: if you need to have hierarchies of Type annotations use an interface. They can be used with implements and extends
-// tip: Use a type alias for simpler object structures (like Coordinates) just to give them a semantic name. 
-// Also when you want to give semantic names to Union or Intersection types, a Type alias is the way to go.
+// tip: Use a custom type / type alias for simpler object structures (like Coordinates) just to give them a semantic name. 
+// Also when you want to give semantic names to Union or Intersection types, a custom type / type alias is the way to go.
 
 type PaddingValues = {
   a: number;
