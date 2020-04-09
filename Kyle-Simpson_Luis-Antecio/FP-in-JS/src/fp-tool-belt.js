@@ -101,6 +101,15 @@ export const partialThis = (fn, ...presentArgs) =>
  * `[1,2,3,4,5].map(curry(add)(3));`
  * 
  * `curriedSum_loose(1)(2,3)(4,5,6,7);`
+ * 
+ *  TL,DR; if there are more arguments specified in the function than we currently have, return the fn (in curried state).
+ *  If we got enough args, execute it
+ * 
+ *  ex2: find function expects 2 arguments (db, id)
+ * 
+ * `find(db); //? curried state is returned
+ * 
+ * `find(db)('123'); //? executed
  */
 export function curry(fn, arity = fn.length) {
   return (function nextCurried(prevArgs) {
