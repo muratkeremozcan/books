@@ -1,5 +1,5 @@
 // functional programming refers to the declarative evaluation of pure functions 
-// to create immutable programs by avoiding externally observable side effects. Not
+// to create immutable programs by avoiding externally observable side effects. 
 
 
 
@@ -18,6 +18,7 @@
 { // declarative
   let array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
+  // map is great when trying to avoid mutating data 
   const power2 = arr => arr.map(num => Math.pow(2, num));
   power2(array); //?
 }
@@ -28,13 +29,14 @@
 // impure
 // because return value is dependant on external variable
 var counter = 0;
+
 function increment() {
   return ++counter;
 }
 increment(); //?
 
 // pure
-// to make it pure, pass that variable instead as a function argument
+// when dealing with external variables, to make things pure, pass that variable instead as a function argument
 function increment_pure(counter) {
   return ++counter;
 } 
@@ -42,15 +44,18 @@ increment_pure(0); //?
 
 
 // (3) immutability 
-// in this example, the opposite of it and the major concern with mutating arrays
+// in this example, we see the opposite of it and the major concern with mutating arrays
 
 // sort an array descending
 // Arr.sort function is stateful and causes the effect of sorting the array in place. 
 // In FP, we don't want this, more later
 // https://devdocs.io/javascript/global_objects/array/sort
 
-var sortDesc = arr => arr.sort((a,b) => b-a)
-sortDesc([1,2,3,4]); //?
+var sortDesc = arr => arr.sort((a,b) => b-a);
+var arr = [1, 2, 3, 4]
+sortDesc(arr); //?
+// not good
+arr; //?
 
 
 // (4) avoiding external side effects

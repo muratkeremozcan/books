@@ -1,6 +1,9 @@
 import { compose, identity } from '../fp-tool-belt'
-const R = require('ramda');
-const _ = require('lodash');
+import R from 'ramda';
+import _ from 'lodash';
+// or 
+// const R = require('ramda');
+// const _ = require('lodash');
 
 const printToConsole = str => {
   console.log(str)

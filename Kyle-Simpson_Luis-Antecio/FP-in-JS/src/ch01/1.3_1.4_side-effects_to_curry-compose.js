@@ -1,4 +1,3 @@
-
 const db = require('../helper').db;
 
 {  // many side effects in this function
@@ -10,7 +9,7 @@ const db = require('../helper').db;
       return studentInfo;
     }
     else {
-      throw new Error('Student not'); // (3) can cause the entire program stack to end abrubtly
+      throw new Error('Student not'); // (3) can cause the entire program stack to end abruptly
     }
   }
 
@@ -38,6 +37,7 @@ const find = curry((db, id) => { // add an arg to realize curry magic
 // side note: curry magic;
 //  if there are more arguments specified in the function than we currently have, return the fn (in curried state)
 //  If we got enough args, execute it
+find(); //?
 find(db); //?
 find(db)('444-44-4444'); //?
 
@@ -49,8 +49,7 @@ const csv = student => `${student.ssn}, ${student.firstname}, ${student.lastname
 compose(csv, find(db))('444-44-4444'); //?
 
 // csv is source, find(db)('444-44-4444') is info
-// to display student's details 
-// we are going to get source after the function definition
+// we are going to get source & info arguments in runtime, after having defined thie function
 const append = curry((source, info) => { 
   source(info); // not sure why necessary
   return info;
