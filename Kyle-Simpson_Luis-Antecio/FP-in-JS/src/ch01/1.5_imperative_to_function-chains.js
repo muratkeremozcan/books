@@ -1,11 +1,11 @@
 import _ from 'lodash';
 // const _ = require('lodash'); // or this
 
-// imperative -> function chain
+// imperative code to function chain example
 // A function chain is a lazy evaluated program, which means it defers its execution until needed. 
-// This benefits performance because you can avoid executing entire sequences of code that won’t be used anywhere else,
+// This benefits performance because you can avoid executing entire sequences of code that won’t be used anywhere else
 
-// compute avg grade of students enrolled in more that one class
+// compute avg grade of students enrolled in more than one class
 
 let students = [
 	{ enrolled: 2, grade: 100 },
@@ -29,7 +29,7 @@ var average = totalGrades / totalStudentsFound; //?
 
 
 // declarative approach with function chain / call-by-need principle
-// we can eliminate the need to declare variables, change them, loops and conditionals
+// we can eliminate the need to declare variables, change them, we can avoid loops and conditionals
 // 3 things are needed: identify the right students, extract their grades, take their average
 
 const result =

@@ -49,7 +49,7 @@ const csv = student => `${student.ssn}, ${student.firstname}, ${student.lastname
 compose(csv, find(db))('444-44-4444'); //?
 
 // csv is source, find(db)('444-44-4444') is info
-// we are going to get source & info arguments in runtime, after having defined thie function
+// we are going to get source & info arguments in runtime, after having defined this function
 const append = curry((source, info) => { 
   source(info); // not sure why necessary
   return info;
