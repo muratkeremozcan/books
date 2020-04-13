@@ -25,7 +25,7 @@ for (let i = 0; i < students.length; i++) {
 		totalStudentsFound++;
 	}
 }
-var average = totalGrades / totalStudentsFound; //?
+// var average = totalGrades / totalStudentsFound; //?
 
 
 // declarative approach with function chain / call-by-need principle
@@ -35,9 +35,16 @@ var average = totalGrades / totalStudentsFound; //?
 const result =
 	_.chain(students)
 		.filter(student => student.enrolled > 1) // use filter for conditional logic
-		.map(_.property('grade')) //  use map to 'mutate' data (doesn't mutate)
+		.map(_.property('grade')) //  use map to 'mutate' data (doesn't mutate) . _.property is used to access a path in an object
 		.mean()
 		.value(); // take their average
 
 result; //?
 
+const resulto =
+	_.chain(students)
+		.filter(student => student.enrolled)
+		.map(_.property('grade'))
+		.value();
+
+resulto; //?

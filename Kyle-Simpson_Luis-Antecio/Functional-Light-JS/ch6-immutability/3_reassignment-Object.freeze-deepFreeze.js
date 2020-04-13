@@ -25,12 +25,10 @@ y; //?
 // Object.freeze applies to top level only: shallow immutability
 let z = Object.freeze([2,3,[4,5]]);
 z[0] = 42; //?
-// ok here
+// ok here, z is frozen
 z; //?
 
-z[2][0]; //?
-
-// can reassign!
+// but can reassign deeper!
 z[2][0] = 42; //?
 z
 

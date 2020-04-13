@@ -26,7 +26,7 @@ import { curry, compose } from '../fp-tool-belt';
 const R = require('ramda');
 
 // find function needs a reference to the db and the student id
-// we are using curry because we expect the id to be passed in later as an argument
+// we are using curry because we expect the db and the id to be passed in later as an arguments
 const find = curry((db, id) => { // add an arg to realize curry magic
   let obj = db.find(id);
   if (obj === null) {

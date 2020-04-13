@@ -20,7 +20,11 @@ studentA.studentsInSameCity(friends); //?
 
 
 // FP approach breaks the problem into smaller parts using pure standalone functions vs  classes & methods
-var selector = (city) => student => student.city === city;
+var selector = (city) => student => student.city === city; // this is the filter callback function
 var findStudentsBy = (students, selector) => students.filter(selector); // filter gracefully replaces loop & conditional
 
 findStudentsBy(friends, selector('Chicago')); //?
+
+// you could 1-line this
+var findStudentsBy_1line = (students, city) => students.filter(student => student.city === city);
+findStudentsBy_1line(friends, 'Chicago'); //?
