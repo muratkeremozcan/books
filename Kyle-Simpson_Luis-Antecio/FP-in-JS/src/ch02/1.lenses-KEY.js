@@ -31,6 +31,7 @@ const lastnameLens = R.lensProp('lastname');
 const newPerson = R.set(lastnameLens, 'Mourning', person);
 // you can view the contents of the lensed property, referencing the new object:  R.view(<property>, <newObj>)
 R.view(lastnameLens, newPerson); //?
+R.equals(R.view(lastnameLens, newPerson), 'Mourning'); //?
 
 // the original stays the same
 person.lastname; //?
@@ -44,12 +45,14 @@ student.address = new Address('US', 'NJ', 'Princeton', zipCode('08544','1234'), 
 const zipLens = R.lensPath(['address', 'zip']);
 // gets student.address.zip
 R.view(zipLens, student); //?
+R.equals(R.view(zipLens, student), student.address.zip); //?
 
 // Because lenses implement immutable setters, you can change the nested object and return a new object:
 let newStudent = R.set(zipLens, zipCode('90210', '5678'), student);  // R.set(<property>, <value>, <sourceObj>)
 const newZip = R.view(zipLens, newStudent); //  R.view(<property>, <newObj>)
 const originalZip = R.view(zipLens, student);
 newZip != originalZip; //?
+!R.equals(newZip, originalZip); //?
 
 
 // This is great because now you have getter and setter semantics in a functional way.

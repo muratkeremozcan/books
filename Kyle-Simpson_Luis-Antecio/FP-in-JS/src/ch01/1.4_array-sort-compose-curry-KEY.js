@@ -17,11 +17,11 @@ var ascend = (a, b) => a - b;
 arr.sort(ascend); //?
 arr.sort(descend); //?
 
-// or better:  pass the array as an argument (the predicate) in a function (preferred in FP)
+// or better:  pass the array as an argument (the predicate) in a function - preferred in FP
 var sortAscending = arr => arr.sort(ascend)
-sortAscending(arr); //?
-
 var sortDescending = arr => arr.sort(descend);
+
+sortAscending(arr); //?
 sortDescending(arr); //?
 
 
