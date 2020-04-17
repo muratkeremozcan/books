@@ -42,6 +42,7 @@ _.filter(people, p => p !== null && p !== undefined)
 
 
 // Array.reverse
+
 people
   .filter(p => p !== null && p !== undefined)
   .map(p => p.fullname)
@@ -54,23 +55,32 @@ _.filter(people, p => p !== null && p !== undefined)
   .map(p => p.fullname)
   .reverse() //?
 
-_.chain(people)
+
+// lodash provides a way to manage objects, wrap them in _(object) notation. 
+// Need to end with .value()
+
+
+_(people)
+  .filter(p => p !== null && p !== undefined)
+  .map(p => p.fullname)
+  .value(); //?
+
+_(people)
   .filter(p => p !== null && p !== undefined)
   .map(p => p.fullname)
   .reverse()
   .value(); //?
 
 
-// lodash provides a way to manage objects, wrap them in _(object) notation
-// this did not work for me... come back to it later
-_(people).reverse()
-  .map(p => p.fullname); //?
+// alternatively, start with _.chain
 
-// _(people).
-//   .filter(people, p => p !== null && p !== undefined)
-//   .map(p => p.fullname) //?
+_.chain(people)
+  .filter(p => p !== null && p !== undefined)
+  .map(p => p.fullname)
+  .value(); //?
 
-
-// _(people).reverse().map(
-//   p => (p !== null && p !== undefined) ? p.fullname : ''
-//   ); //?
+_.chain(people)
+  .filter(p => p !== null && p !== undefined)
+  .map(p => p.fullname)
+  .reverse() // reverse can be anywhere in the chain
+  .value(); //?
