@@ -44,21 +44,22 @@ find(db)('444-44-4444'); //?
 
 // instead of assigning to studentInfo, we return what data there is
 // we get Person object and display its properties
-const csv = student => `${student.ssn}, ${student.firstname}, ${student.lastname}`;
+const outPutter = student => `${student.ssn}, ${student.firstname}, ${student.lastname}`;
 // so far
-compose(csv, find(db))('444-44-4444'); //?
+compose(outPutter, find(db))('444-44-4444'); //?
 
-// csv is source, find(db)('444-44-4444') is info
-// we are going to get source & info arguments in runtime, after having defined this function
-const append = curry((source, info) => { 
+// prepend expects 2 arguments. Info is all we need, but we also want to prepend a header
+// this way, we only output when 2 arguments exist: a header + what gets passed in from the compose pipeline
+// we are going to get header & info arguments in runtime, after having defined this function
+const prependHeader = curry((source, info) => { 
   source(info); // not sure why necessary
   return info;
 });
 
 // being able to reduce the arity with curry enables us to compose like this
 const showStudent = compose(
-  append(console.log),
-  csv,
+  prependHeader(console.log),
+  outPutter,
   find(db)
 );
 
