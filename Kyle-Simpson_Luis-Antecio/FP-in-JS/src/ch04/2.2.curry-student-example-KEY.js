@@ -1,4 +1,4 @@
-// similar to the example in ch01/1.3_1.4_side-effects_to_curry-compose-KEY
+// similar to the example in ch01/1.3_1.4_side-effects_to_curry-compose-KEY, just a little more explicit.
 
 import R from 'Ramda';
 const curry = R.curry;
@@ -16,6 +16,7 @@ find()(db)(11); //?
 find()(db, 11); //?
 
 
+/** just an advanced finder */
 const findObject = (db, id) => {
   const obj = find(db,id);
   if (obj === null) {
@@ -29,13 +30,14 @@ findObject(db, 22); //?
 // curry magic: we have 1 function that uses findObject, the next one is specialized to use a certain db
 const findObject_curried = curry(findObject);
 const findStudent = findObject_curried(db);
-
+// this way, we can pass the id argument later...
 findStudent(11); //?
 
 
 /** given an object, outputs the values */
 const outPutter = ({ ssn, firstname, lastname }) => `${ssn}, ${firstname}, ${lastname}`; 
 // const outPutter = student => `${student.ssn}, ${student.firstname}, ${student.lastname}`; // same thing
+
 // so far we can get an object, we can output it, and we can compose the 2 in a pipeline
 findStudent('11'); //?
 outPutter({'ssn': '222-22-222', 'firstname': 'hola', 'lastname':'madre'}); //?
@@ -49,8 +51,11 @@ const prependSimple = (header, info) => {
   console.log(header, info);
   return info;
 };
+// just returns the info also outputs  header + info
 prependSimple('222-22-222', 'hola'); //?
+// we make it so that args can be passed in later
 const prependHeader = curry(prependSimple);
+
 
 // being able to reduce the arity with curry enables us to compose like this
 // with curry, we make it so that the argument can be passed in later
