@@ -1,6 +1,10 @@
 const R = require('ramda');
 const wrap = require('../../model/Wrapper.js').wrap;
 
+// in essence, map, filter, reduce, compose are functors. They are type-preserving which is what enables the chaining pattern.
+// Functors have 2 requirements: side effect free & composable.
+// As a result, they’re prohibited from throwing exceptions, mutating elements, or altering a function’s behavior.
+
 // Functor simple example
 
 const plus = R.curry((a, b) => a + b);
@@ -27,9 +31,6 @@ two.fmap(plus3)
   .fmap(R.tap(console.log))
   .map(R.identity); //?
 
-// in essence, map, filter, reduce, compose are functors. They are type-preserving which is what enables the chaining pattern.
-// Functors have 2 requirements: side effect free & composable.
-// As a result, they’re prohibited from throwing exceptions, mutating elements, or altering a function’s behavior.
 
 
 two.fmap(
