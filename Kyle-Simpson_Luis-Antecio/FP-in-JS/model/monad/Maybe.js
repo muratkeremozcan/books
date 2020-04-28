@@ -3,12 +3,17 @@
  * Author: Luis Atencio
  */ 
 exports.Maybe = class Maybe {
+	/** a container that wraps a defined value */ 
 	static just(a) {
 		return new exports.Just(a);
 	}
+	/** a container that either has no value or a failure that needs no additional info */
 	static nothing() {
 		return new exports.Nothing();
 	}
+	/** builds a maybe from a nullable type. 
+	 * If the value lifted in the monad is null, instantiates a nothing
+	 * Otherwise stores value in Just subtype to handle the presence of a value  */
 	static fromNullable(a) {
 		return a !== null ? Maybe.just(a) : Maybe.nothing();
 	}
@@ -24,7 +29,7 @@ exports.Maybe = class Maybe {
 };
 
 
-// Derived class Just -> Presence of a value
+/** Derived class Just -> handles the presence of a value */
 exports.Just = class Just extends exports.Maybe {
 	constructor(value) {
 		super();
@@ -34,7 +39,7 @@ exports.Just = class Just extends exports.Maybe {
 	get value() {
 		return this._value;
 	}
-	
+	/** maps a function to Just, transforms its value and stores it back into the container */
 	map(f) {
 		return exports.Maybe.fromNullable(f(this._value));
 	}
@@ -42,7 +47,7 @@ exports.Just = class Just extends exports.Maybe {
 	chain(f) {
 		return f(this._value);
 	}
-
+  /** extracts the value from the structure or a provided default monad unity operation */
 	getOrElse() {
 		return this._value;
 	}
@@ -60,7 +65,7 @@ exports.Just = class Just extends exports.Maybe {
 	}
 };
 
-// Derived class Empty -> Abscense of a value
+/**  Derived class Empty -> handles the abscense of a value */
 exports.Nothing = class Nothing extends exports.Maybe {
 	map(f) {
 		return this;
@@ -70,14 +75,20 @@ exports.Nothing = class Nothing extends exports.Maybe {
 		return this;
 	}
 
+	/** attempting to extract a value from Nothing generates an exception 
+	 * indicating a bad use of the monad.
+	 */
 	get value() {
 		throw new TypeError("Can't extract the value of a Nothing.");
 	}
-
+  /** ignores the value and returns the other  */
 	getOrElse(other) {
 		return other;
 	}
-
+	/** if a value is present and matches the given predicate
+	 * returns a Just representing the value
+	 * otherwise returns nothing
+	 */
 	filter() {
 		return this._value;
 	}

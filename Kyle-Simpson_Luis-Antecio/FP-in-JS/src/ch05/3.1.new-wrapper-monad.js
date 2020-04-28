@@ -1,7 +1,7 @@
 // Monad— Provides the abstract interface for monadic operations 
 // Monadic type— A particular concrete implementation of this interface
 
-class Wrapper {
+export class Wrapper {
   /** Type constructor, for creating monadic types. (the constructor).
    * Creates a new wrapped context/container/value */
   constructor(value) {
@@ -26,6 +26,10 @@ class Wrapper {
     }
     return this._value.join();
   }
+  /** used to extract the final value out */
+  get() {
+    return this._value;
+  }
   /** Returns a textual representation of this structure*/
   toString() {
     return `Wrapper (${this._value})`;
@@ -37,9 +41,9 @@ import R from 'ramda';
 const WrapperMonad = Wrapper;
 
 WrapperMonad.of('Hello Monads')
-  .map(R.toUpper) ; //?
-  // .map(R.identity) ; //?
-  // identity doesn't seem to be doing anything, just returns itself
+  .map(R.toUpper)
+  .map(R.identity); //?
 
 // of() is like calling the helper function
 new WrapperMonad('HELLO MONADS!'); //?
+

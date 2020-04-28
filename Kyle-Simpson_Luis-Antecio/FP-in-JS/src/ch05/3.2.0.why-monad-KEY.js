@@ -7,6 +7,7 @@ import R from 'Ramda';
 const db = require('../ch04/student-helper').db;
 const wrap = require('../../model/Wrapper.js').wrap;
 
+
 // from ch04 2.2.curry-student-example.js
 const findStudentById = (db, id) => db.find(id);
 findStudentById(db, 11); //?
@@ -20,7 +21,7 @@ findStudent(db, 11); //?
 
 
 // fmap takes a wrapped context/container/value, applies a function to it, creates & returns a new wrapped context
-// once wrapped, we use fmap (vs map) to make a chainable student 
+// once wrapped, we use fmap (vs map) to make a composable student 
 const getAddress = student =>
   wrap(student.fmap(R.prop('_address')))
 
@@ -59,3 +60,4 @@ R.compose(
   .map(R.identity)
 ; //?
 
+// flatten
