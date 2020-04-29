@@ -1,6 +1,8 @@
-// Maybe monad is used to consolidate null checks
-// it is basically an abstract umbrella object for the concrete monadic structures Just and Nothing
-// it is frequently used in calls that have uncertainty
+// Maybe monad is used to consolidate null checks. Branches to 2.
+// Just : defined value
+// Nothing : no value, or failure, where no additional info is needed. Can still apply function over its nonexistent value.
+
+// Maybe is frequently used in calls that have uncertainty 
 
 const Maybe = require('../../model/monad/Maybe.js').Maybe;
 const R = require('ramda');
