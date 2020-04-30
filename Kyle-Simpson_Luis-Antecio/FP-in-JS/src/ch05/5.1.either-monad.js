@@ -3,8 +3,8 @@
 // Left : possible error or throwable exception
 // Right : successful value (analogous to Just branch of Maybe)
 
-// a common use of Either is to hold the results of a computation that may fail to provide additional information 
-
+// a common use of Either is to hold the results of a computation that may fail to provide additional information
+// the key difference with Maybe: Either allows results to propagate while holding the possible errors. Maybe does not care for errors.
 
 const Either = require('../../model/monad/Either.js').Either;
 const R = require('ramda');
