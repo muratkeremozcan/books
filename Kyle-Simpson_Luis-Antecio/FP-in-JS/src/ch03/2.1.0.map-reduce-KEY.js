@@ -12,9 +12,7 @@ import _ from 'lodash';
 // The final outcome of reduce is always a single value.
 
 
-// find the number of people who live in a particular country; see the following listing.
-
-
+// find the number of people who live in a particular country
 
 // reducerFn(accumulator, current)
 const addressReducer = (stat, person) => {

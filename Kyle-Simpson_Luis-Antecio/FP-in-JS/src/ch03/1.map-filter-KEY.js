@@ -17,7 +17,7 @@ import _ from 'lodash';
       result.push(p.fullname);
     }
   }
-  result; //?
+  // result; //?
 }
 
 
@@ -26,7 +26,7 @@ people.map(p =>
   (p !== null && p !== undefined) ? p.fullname : ''
 ); //?
 
-// using filter eliminates the conditional
+// better: using filter eliminates the conditional
 people
   .filter(p => p !== null && p !== undefined)
   .map(p => p.fullname); //?
@@ -72,7 +72,7 @@ _(people)
   .value(); //?
 
 
-// alternatively, start with _.chain
+// better: start with _.chain
 
 _.chain(people)
   .filter(p => p !== null && p !== undefined)

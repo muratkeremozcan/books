@@ -13,7 +13,7 @@ const isValid = val => !_.isUndefined(val) && !_.isNull(val);
 const fullName = person => `${person.firstname} ${person.lastname}`;
 
 people
-  .filter(isValid)
+  .filter(isValid) 
   .map(fullName) //?
 
 const bornIn1903 = person => person.birthYear === 1903;

@@ -34,6 +34,7 @@ function increment() {
   return ++counter;
 }
 increment(); //?
+counter; //?
 
 // pure
 // when dealing with external variables, to make things pure, pass that variable instead as a function argument
@@ -41,6 +42,7 @@ function increment_pure(counter) {
   return ++counter;
 } 
 increment_pure(0); //?
+counter; //?
 
 
 // (3) immutability 

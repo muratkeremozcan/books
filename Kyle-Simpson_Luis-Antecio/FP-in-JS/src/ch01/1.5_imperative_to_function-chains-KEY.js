@@ -29,7 +29,8 @@ for (let i = 0; i < students.length; i++) {
 
 
 // declarative approach with function chain / call-by-need principle
-// we can eliminate the need to declare variables, change them, we can avoid loops and conditionals
+// we can eliminate the need to declare variables and mutate them, also we can avoid loops and conditionals
+
 // 3 things are needed: identify the right students, extract their grades, take their average
 
 const result =

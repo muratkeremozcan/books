@@ -32,7 +32,7 @@ const statReducer = function (stat, country) {
 
 people
   .map(getCountry)
-  .reduce(statReducer, {});
+  .reduce(statReducer, {}); //?
 
 // build a program that returns the country with the largest number of people in this dataset.
 

@@ -100,19 +100,3 @@ pipe(
   curriedMakeArrNum,
   curriedSortDesc
 )(ages); //?
-
-
-// can we use partial instead of curry? 
-// tackle this when you know more
-const partialSortDesc = partial(
-  sortDescending
-  // arr => arr.sort(descend)
-);
-const partialSortAsc = partial(
-  sortAscending
-  // arr => arr.sort(ascend)
-);
-const partialMakeArrNum = partial(
-  makeArrNum
-  // arr => arr.map(makeNum)
-);

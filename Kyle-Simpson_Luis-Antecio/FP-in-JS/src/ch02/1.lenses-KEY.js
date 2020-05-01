@@ -25,10 +25,13 @@ const R = require('ramda');
 // Using R.lensProp, you can create a lens that wraps over property of an object:
 let person = new Person('1234', 'Alonzo', 'Church', '444-44-4444'); 
 const lastnameLens = R.lensProp('lastname');
+
 // you can set the lensed property with R.set, referencing the object : R.set(<property>, <value>, <sourceObj>)
 // R.set creates and returns a brand-new copy of the object containing the new value 
 // and preserves the original instance state (copy-on-write semantics for free!):
 const newPerson = R.set(lastnameLens, 'Mourning', person);
+newPerson.lastname; //?
+
 // you can view the contents of the lensed property, referencing the new object:  R.view(<property>, <newObj>)
 R.view(lastnameLens, newPerson); //?
 R.equals(R.view(lastnameLens, newPerson), 'Mourning'); //?
@@ -41,8 +44,10 @@ person.lastname; //?
 
 let student = new Student('444-44-4444', 'Joe', 'Smith', 'Princeton University', 1960, address);
 student.address = new Address('US', 'NJ', 'Princeton', zipCode('08544','1234'), 'Alexander St.');
+
 // create a lens for address.zip property, instead of lenProp we use lensPath:  R.lensPath([<property>, <sub.property>, ...])
 const zipLens = R.lensPath(['address', 'zip']);
+
 // gets student.address.zip
 R.view(zipLens, student); //?
 R.equals(R.view(zipLens, student), student.address.zip); //?

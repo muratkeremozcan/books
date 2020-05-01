@@ -4,7 +4,7 @@ const db = require('../helper').db;
   function showStudent(ssn) {
     let student = db.find(ssn); // (1) access object storage db to look up a student by ssn. db is not a parameter
     if (student !== null) {
-      let studentInfo = `<p>${student.ssn},${student.firstname},${student.lastname}</p>`; // (2) reaches outside the function to read values, which can change
+      let studentInfo = `${student.ssn},${student.firstname},${student.lastname}`; // (2) reaches outside the function to read values, which can change
       console.log(studentInfo);
       return studentInfo;
     }
@@ -42,7 +42,7 @@ find(db); //?
 find(db)('444-44-4444'); //?
 
 
-// instead of assigning to studentInfo, we return what data there is
+// instead of assigning to a variable (studentInfo), we return what data there is
 // we get Person object and display its properties
 const outPutter = student => `${student.ssn}, ${student.firstname}, ${student.lastname}`;
 // so far
@@ -55,7 +55,7 @@ const prependSimple = (header, info) => {
   console.log(header, info);
   return info;
 };
-prependSimple('222-22-222', 'hola'); //?
+prependSimple('123456', 'hola'); //?
 const prependHeader = curry(prependSimple);
 
 // being able to reduce the arity with curry enables us to compose like this

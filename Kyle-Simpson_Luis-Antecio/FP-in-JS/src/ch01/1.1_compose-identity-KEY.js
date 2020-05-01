@@ -12,8 +12,14 @@ const toUpperCase = str => str.toUpperCase();
 
 // first we execute: identity('hello world')
 identity('hello world'); //?
-// we get that result and execute toUpperCase :  toUpperCase(identity('hello world'))
-// the we do the same for printToConsole :  printToConsole(toUpperCase(identity('hello world')));
+
+// we get that result and execute toUpperCase :  
+toUpperCase(identity('hello world')); //?
+
+// the we do the same for printToConsole :  
+printToConsole(toUpperCase(identity('hello world'))); //?
+
+
 const printMessage = compose(printToConsole, toUpperCase, identity);
 printMessage('hello world'); //?
 
