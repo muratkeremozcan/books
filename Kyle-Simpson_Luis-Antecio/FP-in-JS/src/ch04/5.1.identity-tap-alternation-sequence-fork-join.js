@@ -18,12 +18,14 @@ R.tap(console.log)('Student printed to the console'); //?
 
 // alternation takes two functions and returns the result of the first one if the value is defined (not false, null, or undefined); 
 // otherwise, it returns the result of the second function.
-const alternate = (func1, func2) => val => func1(val) || func2(val);
-const alt = R.curry((func1, func2, val) => func1(val) || func2(val));
+const alternate = (func1, func2) => val => func1 ? func1(val) : func2(val);
+const alt = R.curry((func1, func2, val) => func1 ? func1(val) : func2(val));
 
-// alternate('undefined', R.identity)(program); // won't return 
 alternate(R.identity, null)(program); //?
+alternate(R.identity, undefined)(program); //?
 alt(R.identity)(null)(program); // nicer curried
+alt(undefined, R.identity)(program); //? 
+alt(null, R.identity)(program); //?
 
 
 // the rest are covered later... Come back with working examples.

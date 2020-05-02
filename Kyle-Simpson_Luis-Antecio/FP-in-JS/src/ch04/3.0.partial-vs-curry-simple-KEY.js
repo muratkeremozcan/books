@@ -37,3 +37,4 @@ const justUseCurryInstead = _.curry(add)(7,3,10); //?
 
 
 // conclusion: partial has a very niche use over curry; if there are arguments that are guaranteed, you can use partial
+

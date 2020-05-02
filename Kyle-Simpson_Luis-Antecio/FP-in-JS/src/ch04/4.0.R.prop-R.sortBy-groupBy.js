@@ -36,6 +36,7 @@ R.path([0, 'first_name'], [{ first_name: 'z', last_name: 'a' }, { first_name: 'y
 
 
 R.prop(0, arrayUsers); //?
+R.prop(1, arrayUsers); //?
 R.path([0, 0], arrayUsers); //?
 R.prop(0, objectUsers); //?
 R.path([0, 'first_name'], objectUsers); //?
@@ -78,3 +79,23 @@ R.sortBy(R.prop(1), testUsers); //?
 
 // no sorting beyond this
 R.sortBy(R.prop(2), testUsers); //?
+
+
+
+// remember groupBy?
+R.groupBy(R.prop('first_name'), objectUsers); //?
+
+/* this
+  { first_name: 'z', last_name: 'a' },
+  { first_name: 'y', last_name: 'b' },
+  { first_name: 'x', last_name: 'c' },
+  { first_name: 'w', last_name: 'd' }
+
+  becomes this
+{ 
+  z: [ { first_name: 'z', last_name: 'a' } ], 
+  y: [ { first_name: 'y', last_name: 'b' } ], 
+  x: [ { first_name: 'x', last_name: 'c' } ], 
+  w: [ { first_name: 'w', last_name: 'd' } ] 
+} 
+*/

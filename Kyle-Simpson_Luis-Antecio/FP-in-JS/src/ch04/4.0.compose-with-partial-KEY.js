@@ -1,5 +1,5 @@
-// The intention of functional programs is to gain the required structure that leads to composition,
-// the backbone of functional programming.
+// The intention of functional programs is to gain the required structure that leads to composition.
+// You can use chains too, but chains are limited to the originating object's available methods
 // In essence, functional composition is a process used to group together complex behavior 
 // that has been broken into simpler tasks.
 // the beauty is in separating the function's description from evaluation; until the final compose nothing is executed
@@ -43,11 +43,11 @@ validLength(14, ssn); //?
 // strLength is being specified first, because this is what we want checkSsnLength to do
 // partial is useful when there are guaranteed arguments like this
 const checkSsnLength = _.partial(validLength, 9);
-// fase, because current ssn not formatted
+// false, because current ssn is not formatted
 checkSsnLength(ssn); //?
 
 // compose makes it so that 
-// cleanInput is already waiting for the arg to be passed in later, so no need for curry)
+// cleanInput is already waiting for the arg to be passed in later
 // checkSsnLength is already setup with partial to have 9 specified string length
 // we use compose to move the argument from function to function
 R.compose(

@@ -6,14 +6,14 @@ const compose = R.compose;
 const db = require('./student-helper').db;
 
 const findStudentById = (db, id) => db.find(id);
-findStudentById(db, 11); //?
+// findStudentById(db, 11); //?
 
 
 // currying a function allows to pass to arguments later
 const find = curry(findStudentById);
-find(); //?
-find()(db)(11); //?
-find()(db, 11); //?
+// find(); //?
+// find()(db)(11); //?
+// find()(db, 11); //?
 
 
 /** just an advanced finder */
@@ -24,14 +24,14 @@ const findObject = (db, id) => {
   }
   return obj;
 };
-findObject(db, 22); //?
+// findObject(db, 22); //?
 
 
 // curry magic: we have 1 function that uses findObject, the next one is specialized to use a certain db
 const findObject_curried = curry(findObject);
 const findStudent = findObject_curried(db);
 // this way, we can pass the id argument later...
-findStudent(11); //?
+// findStudent(11); //?
 
 
 /** given an object, outputs the values */
@@ -85,3 +85,27 @@ const showStudentAdvanced = compose(
   trim
 );
 showStudentAdvanced('33'); //?
+
+
+
+
+
+/// can it be done with partial?
+// partial has a very niche use over curry; if there are arguments that are guaranteed, you can use partial
+
+// Ramda partial is weird; every string char is treated as an argument. Use lodash.
+import _ from 'lodash';
+
+// since we want the header fixed, why not pre-specify it?
+const prependPartialHeader = _.partial(prependSimple, '#student-info:'); //?
+// contrast: prependHeader = curry(prependSimple);
+
+// when the argument comes in, partial outputs them together
+prependPartialHeader({'ssn': '222-22-222', 'firstname': 'hola', 'lastname':'madre'}); //?
+
+compose(
+  prependPartialHeader, // cleaner this way, no need to pass in that header argument
+  outPutter,
+  findStudent
+)(33) ; //?
+

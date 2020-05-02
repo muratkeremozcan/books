@@ -1,6 +1,6 @@
 // Viewing functions as mappings of types is necessary to understand how they can be chained and pipelined:
-// - Chaining methods together (tightly coupled, limited expressiveness) 
-// - Arranging function pipelines (loosely coupled, flexible)
+// - Chaining methods together : tightly coupled to the owning object
+// - Arranging function pipelines (compose/pipe) : flexible, but you have to watch out for arity and type
 
 const isEmpty = s => !s || !s.replace(/\s/g,''); // trim all whitespace
 // const isEmpty = s => !s || !s.trim();
@@ -12,6 +12,7 @@ isEmpty(''); //?
 import _ from 'lodash';
 let names = ['alonzo church', 'Haskell curry', 'stephen_kleene', 'John Von Neumann', 'stephen_kleene'];
 const isValid = val => !_.isUndefined(val) && !_.isNull(val);
+// const isValid = val => val != null; // same thing
 
 
 // Chaining is  a syntactical improvement over imperative code and drastically improves its readability. 
