@@ -4,7 +4,7 @@
 // Right : successful value (analogous to Just branch of Maybe)
 
 // a common use of Either is to hold the results of a computation that may fail to provide additional information
-// the key difference with Maybe: Either allows results to propagate while holding the possible errors. Maybe does not care for errors.
+// KEY difference with Maybe: Either allows results to propagate while holding the possible errors. Maybe does not care for errors.
 
 const Either = require('../../model/monad/Either.js').Either;
 const R = require('ramda');
@@ -14,6 +14,14 @@ const Address = require('../../model/Address.js').Address;
 
 const find = (db, id) => db.find(id);
 // find(db, 11); 
+
+
+// 3 steps of Either monad usage:
+// (1) wrap/containerize the value with .of(). If you want to secure the value against null or undefined, use fromNullable() instead.
+// (2) use Either functions which very similar to Maybe; map, getOrElse etc.
+// (3) specify the error case with Either.left
+// KEY advantage over Wrapper monad: Maybe monad allows to propagate an invalid value up the composition
+
 
 const safeFindObject = R.curry(function (db, id) {
   const obj = find(db, id);

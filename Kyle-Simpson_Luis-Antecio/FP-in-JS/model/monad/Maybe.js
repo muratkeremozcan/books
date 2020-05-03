@@ -11,7 +11,7 @@ exports.Maybe = class Maybe {
 	static nothing() {
 		return new exports.Nothing();
 	}
-	/** builds a maybe from a nullable type. 
+	/** Handles the null-checking on your behalf.
 	 * If the value lifted in the monad is null, instantiates a nothing
 	 * Otherwise stores value in Just subtype to handle the presence of a value  */
 	static fromNullable(a) {
@@ -51,7 +51,10 @@ exports.Just = class Just extends exports.Maybe {
 	getOrElse() {
 		return this._value;
 	}
-
+	/** if a value is present and matches the given predicate
+	 * returns a Just representing the value
+	 * otherwise returns nothing
+	 */
 	filter(f) {
 		exports.Maybe.fromNullable(f(this._value) ? this._value : null);
 	}

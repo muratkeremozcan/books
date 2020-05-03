@@ -3,9 +3,10 @@ const wrap = require('../../model/Wrapper.js').wrap;
 
 // suppose you want to divide a number 2. What happens if it's an odd number?
 // you could return null or throw an exception. Better strategy is to make the function more specialized; data flow-aware.
-// functors only protect values by being side effect free & composable.
-// monads bring data-flow awareness to the table, which is what the have over functors.
-// containers work with these 2, securing potentially unsafe values
+
+// Containers/Wrappers are a functional data-type that secure potentially unsafe values. Both functors and Monads build on them.
+// Functors protect values by being side effect free & composable.
+// This all builds to Monads, which bring data-flow awareness to the table.
 
 
 // empty is another container for potentially unsafe (empty) values

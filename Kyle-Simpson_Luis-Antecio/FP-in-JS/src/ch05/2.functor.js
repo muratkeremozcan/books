@@ -21,8 +21,6 @@ five.map(R.identity); //?
 
 
 // fmaps can be chained, because it wraps the result again into a new container of the same type
-two.fmap(plus3)
-  .fmap((console.log)); //?
 
 two.fmap(plus3)
   .fmap(R.tap(console.log)); //?
@@ -30,7 +28,6 @@ two.fmap(plus3)
 two.fmap(plus3)
   .fmap(R.tap(console.log))
   .map(R.identity); //?
-
 
 
 two.fmap(

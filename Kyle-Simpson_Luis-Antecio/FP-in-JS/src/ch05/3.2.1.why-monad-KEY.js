@@ -1,24 +1,30 @@
 import R from 'Ramda';
-import { Wrapper as WrapperMonad } from './3.1.new-wrapper-monad';
+import { Wrapper } from '../../model/monad/Wrapper';
 const db = require('../ch04/student-helper').db;
-// const WrapperMonad = require('../../model/monad/Wrapper.js').Wrapper;
+// const Wrapper = require('../../model/monad/Wrapper.js').Wrapper;
 
 // from ch04 2.2.curry-student-example.js
 const findStudentById = (db, id) => db.find(id);
 
-// this time we use WrapperMonad instead of wrap (which was instantiated as exported)
-// we have to instantiate WrapperMonad with of()
-const findStudent = R.curry((db, ssn) =>
-  WrapperMonad.of(findStudentById(db, ssn))
-);
-findStudent(db, 11); //?
+// 3 steps of Wrap monad usage:
+// (1) wrap/containerize the value with .of()
+// (2) use map() to apply functions to the value
+// (3) flatten and get the result with join() and get()
 
-// same here; we use WrapperMonad.of to instantiate. Now the student has access to the WrapperMonad's map function.
-// (this map  was fmap before, but we don't need regular map anymore anyway, so simply the naming)
-// map takes a wrapped context/container/value, applies a function to it, creates & returns a new wrapped context.
-// Once student is wrapped, we use map to make a composable student.
+
+// this time we use Wrapper.of instead of wrap (which had to be instantiated as exported)
+// (1)this is the wrapping/containerizing step for the potentially unsafe value.
+const findStudent = R.curry((db, ssn) =>
+  Wrapper.of(findStudentById(db, ssn))
+);
+// findStudent(db, 11); //?
+
+// (1) containerize/wrap with Wrapper.of(). Now the student has access to the monad functions.
+// (2) map takes a wrapped/containerized value, applies a function to it, creates & returns a new wrapped context. 
+// This allows chaining/composing.
 const getAddress = student =>
-  WrapperMonad.of(student.map(R.prop('_address')))
+  Wrapper.of(student.map(R.prop('_address')))
+
 
 const sampleStudentData = {
   _ssn: '111-11-1111',
@@ -27,7 +33,7 @@ const sampleStudentData = {
   _birthYear: 1911,
   _address: 'USA'
 }
-const sampleWrappedStudentData = WrapperMonad.of(sampleStudentData); //?
+const sampleWrappedStudentData = Wrapper.of(sampleStudentData); //?
 
 getAddress(sampleWrappedStudentData); //?
 
@@ -38,12 +44,12 @@ getAddress(sampleWrappedStudentData).join().get(); //?
 
 // composing
 
-// we do not have to rely on .map(R.identity) x2, we just flatten with join() and get() the final value
+// (3) we do not have to rely on .map(R.identity) x2, we just flatten with join() and get() the final value
 getAddress(findStudent(db, 11))
   .join()
   .get() //?
 
-// compose the pro way
+// compose; the pro way
 R.compose(
   getAddress,
   findStudent

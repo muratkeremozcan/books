@@ -47,7 +47,9 @@ exports.Left = class Left extends exports.Either {
 		return f(this._value);
 	}
 	
-	/** Applies a function to the Right and returns that value, does nothing on the Left. */
+	/** Think of .chain as shortcut to avoid using join after map to flatten the layers from combining monad-returning functions.
+	 * Map & auto-flatten 
+	 * Applies a function to the Right and returns that value, does nothing on the Left. */
 	chain(f) {
 		return this;
 	}

@@ -1,6 +1,3 @@
-// Monad— Provides the abstract interface for monadic operations 
-// Monadic type— A particular concrete implementation of this interface
-
 export class Wrapper {
   /** Type constructor, for creating monadic types. (the constructor).
    * Creates a new wrapped context/container/value */
@@ -35,6 +32,10 @@ export class Wrapper {
     return `Wrapper (${this._value})`;
   }
 }
+
+// Containers/Wrappers are a functional data-type that secure potentially unsafe values. Both functors and Monads build on them.
+// Functors protect values by being side effect free & composable.
+// This all builds to Monads, which bring data-flow awareness to the table.
 
 
 import R from 'ramda';

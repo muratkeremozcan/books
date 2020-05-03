@@ -4,15 +4,23 @@ const R = require('ramda');
 const db = require('../ch04/student-helper').db;
 
 
+
+// 3 steps of Either monad usage:
+// (1) wrap/containerize the value with .of(). If you want to secure the value against null or undefined, use fromNullable() instead.
+// (2) use Either functions which very similar to Maybe; map, getOrElse etc. Use chain which is map() + autoFlatten (map+join)
+// (3) specify the error case with Either.left
+// KEY advantage over Wrapper monad: Maybe monad allows to propagate an invalid value up the composition
+
+
 const validLength = (len, str) => str.length === len;
 const find = R.curry((db, id) => db.find(id));
 const safeFindObject = R.curry((db, id) => {
   const val = find(db, id);
-  return val ? Either.right(val) : Either.left(`Object not found with ID: ${id}`);
+  return val ? Either.right(val) : Either.left(`Object not found with ID: ${id}`); // (3)
   // return val ? Maybe.just(val) : Maybe.nothing(`Object not found with ID: ${id}`);
 })
 const checkLengthSsn = ssn => 
-validLength(2, ssn) ? Either.right(ssn) : Either.left('invalid SSN');
+validLength(2, ssn) ? Either.right(ssn) : Either.left('invalid SSN');  // (3)
 // validLength(2, ssn) ? Maybe.just(ssn) : Maybe.nothing('invalid SSN');
 const findStudent = safeFindObject(db);
 const csv = arr => arr.join(','); //?
@@ -31,11 +39,13 @@ const cleanInput = R.compose(normalize, trim);
 // remember:the key difference with Maybe: Either allows results to propagate while holding the possible errors. Maybe does not care for errors.
 // you can replace the Either s with Maybe s and will instead see Nothing s { } for error messages.
 
-// the first step is to make sure the first function to be executed wraps its result in a proper monad: both Maybe and Either work in this case.
-// think of .chain as shortcut to avoid using join after map to flatten the layers from combining monad-returning functions
+
+
+// (1) make sure the first function to be executed wraps its result in a proper monad: both Maybe and Either work in this case.
+// (#)think of .chain as shortcut to avoid using join after map to flatten the layers from combining monad-returning functions
 const showStudent = ssn => Maybe.fromNullable(ssn)
-  .map(cleanInput) // takes care of invalid data format
-  .chain(checkLengthSsn) // takes care of invalid data length
+  .map(cleanInput) // takes care of invalid data format  // (2) ...
+  .chain(checkLengthSsn) // takes care of invalid data length   
   .chain(findStudent) // takes care of errors with finding the data
   .map(R.props(['ssn', 'firstname', 'lastname'])) // this and the rest does the outputting
   .map(csv)
@@ -56,8 +66,9 @@ showStudent('55'); //?
 // why do you want to compose/pipe vs chain?
 // - Chaining methods together (tightly coupled, limited expressiveness). Makes tight connections via an object’s methods, (with Monad, this is not as much of a concern)
 // - Arranging function compose or pipe (loosely coupled, flexible). Provides the flexibility to combine any set of functions, 
-//because it links inputs and outputs of any functions—arriving at loosely coupled components.
+// because it links inputs and outputs of any functions—arriving at loosely coupled components.
 
+// KEY
 /** takes a function and a monad, using the monad.map method, maps the function further*/
 const map = R.curry((f, container) => container.map(f));
 /** Think of chain as map + join (map & auto-flatten). Takes a function and a monad, using the monad.chain method, chain the function further */

@@ -1,6 +1,6 @@
 const R = require('ramda');
 // In functional programming, the notion of boxing the dangerous code still applies, but you throw away the try-catch block. 
-// Instead, walling off impurity is made a first-class citizen in by the use of functional data types.
+// Instead, walling off impurity is made a first-class citizen in by the use of functional data types,
 // this is called wrapping or containerizing
 
 

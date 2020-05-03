@@ -18,18 +18,32 @@ Maybe.of('Hello Maybe').map(R.toUpper); //?
 Maybe.of('Hello Maybe').map(R.toUpper).getOrElse(); //?
 
 // Maybe.fromNullable is useful because it handles the null-checking on your behalf
+// getOrElse is used to extract the value, or output the error message
 Maybe.fromNullable('Hello Maybe').getOrElse(); //?
 Maybe.fromNullable(null); //?
 Maybe.fromNullable(null).getOrElse(); //?
 Maybe.fromNullable(undefined); //?
 Maybe.fromNullable(undefined).getOrElse(); //?
 
+Maybe.fromNullable('Hello Maybe').isNothing; //?
+Maybe.fromNullable('Hello Maybe').isJust; //?
+
+Maybe.fromNullable(null).isNothing; //?
+Maybe.fromNullable(null).isJust; //?
+
+
+// 3 steps of Maybe monad usage:
+// (1) wrap/containerize the value with .of(). If you want to secure the value against null, use fromNullable() instead.
+// (2) use map() to apply functions to the value
+// (3) use getOrElse() & value to get the value out (in contrast to join() and get() with Wrapper monad)
+// KEY advantage over Wrapper monad: Maybe monad allows to propagate an invalid value up the composition
+
 
 // from ch04 2.2.curry-student-example.js
 const findStudentById = (db, id) => db.find(id);
 
 const findStudent = R.curry((db, ssn) =>
-  Maybe.of(findStudentById(db, ssn))
+  Maybe.of(findStudentById(db, ssn)) // can use fromNullable instead of of()
 );
 
 const getAddress = student =>
@@ -50,7 +64,7 @@ R.compose(
   .value //?
 
 
-// maybe allows to propagate an invalid value up the composition
+// KEY: Maybe monad allows to propagate an invalid value up the composition
 const getCountry = student => student
   .map(R.prop('address'))
   .map(R.prop('country'))

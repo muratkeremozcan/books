@@ -2,6 +2,7 @@
 // Among other things, monads can streamline error handling in your code, allowing you to write fluent function compositions.
 // What’s their relationship to functors? Monads are the containers that functors “reach into.”
 
+// in this example we are only using the container/wrapper to show why a monad is needed instead
 
 import R from 'Ramda';
 const db = require('../ch04/student-helper').db;
@@ -10,14 +11,14 @@ const wrap = require('../../model/Wrapper.js').wrap;
 
 // from ch04 2.2.curry-student-example.js
 const findStudentById = (db, id) => db.find(id);
-findStudentById(db, 11); //?
+// findStudentById(db, 11); //?
 
 
-// we use wrap to safeguard against potentially unsafe values
+// we use wrap/container to safeguard against potentially unsafe values
 const findStudent = R.curry((db, ssn) =>
   wrap(findStudentById(db, ssn))
 );
-findStudent(db, 11); //?
+// findStudent(db, 11); //?
 
 
 // fmap takes a wrapped context/container/value, applies a function to it, creates & returns a new wrapped context
@@ -44,7 +45,7 @@ getAddress(sampleWrappedStudentData).map(R.identity).map(R.tap(console.log)); //
 // slowly getting to the point...
 
 // realize the shortcoming: in order to extract the doubly wrapped value, you have to have to apply R.identity 2x.
-// monads try to address this problem by using 'flatten' (coming up) 
+// monads try to address this problem by using 'join/flatten' (coming up) 
 
 // how would we compose it?
 getAddress(findStudent(db, 11))

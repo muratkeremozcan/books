@@ -1,4 +1,4 @@
-// You can’t avoid mutations or fix the problem with side effects, 
+// With IO, you can’t avoid mutations or fix the problem of side effects, 
 // but you can at least work with IO operations as if they were immutable from the application point of view.
 // This can be done by lifting IO operations into monadic chains and letting the monad drive the flow of data.
 // We achieved this in the previous example. What does IO monad bring to the table?
@@ -19,8 +19,8 @@ const safeFindObject = R.curry((db, id) => {
   return val ? Either.right(val) : Either.left(`Object not found with ID: ${id}`);
   // return val ? Maybe.just(val) : Maybe.nothing(`Object not found with ID: ${id}`);
 })
-const checkLengthSsn = ssn => 
-validLength(2, ssn) ? Either.right(ssn) : Either.left('invalid SSN');
+const checkLengthSsn = ssn =>
+  validLength(2, ssn) ? Either.right(ssn) : Either.left('invalid SSN');
 // validLength(2, ssn) ? Maybe.just(ssn) : Maybe.nothing('invalid SSN');
 const findStudent = safeFindObject(db);
 const csv = arr => arr.join(','); //?
@@ -35,6 +35,8 @@ const chain = R.curry((f, container) => container.chain(f));
 const lift = R.curry((f, obj) => Maybe.fromNullable(f(obj)));
 /** used for outputting to console */
 const trace = R.curry((msg, obj) => console.log(msg));
+/** Extracts the Right value. If it doesn't have one, returns the given default. */
+const getOrElse = R.curry((message, container) => container.getOrElse(message));
 
 
 // previous example
@@ -57,13 +59,11 @@ const IO = require('../../model/monad/IO.js').IO;
 /** lifts the function into a monad. Initial requirement for the first function in the composition*/
 const liftIO = val => IO.of(val);
 
-const append = R.curry(function(element, info) {
+const append = R.curry(function (element, info) {
   console.log('Simulating side effect. Appending: ' + info);
   console.log('the element is : ' + element);
   return info;
 });
-/** Extracts the Right value. If it doesn't have one, returns the given default. */
-const getOrElse = R.curry((message, container) => container.getOrElse(message));
 
 
 const showStudentIO = R.compose(
@@ -88,8 +88,8 @@ showStudentIO('222').run(); //?
 
 
 // conclusion:
-// Composition controls program flow (curry enables composition. Composition is better than chaining because of its flexibility)
-// Monads control data flow (takes care of the error handling)
+// Composition controls program flow (curry enables composition. Composition is better than chaining because of its flexibility not depending on the initial object in the chain)
+// Monads control the data flow (takes care of the error handling)
 // With these, once the business logic is done, IO monad delivers the data 
 
 // the non-functional version on the other had is 
