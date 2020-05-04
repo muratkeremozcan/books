@@ -444,3 +444,13 @@ export const safeProp = curry( function safeProp(prop,obj){
  otherwise, it returns the result of the second function.
 */
 export const alternation = (func1, func2) => val => func1(val) || func2(val)
+
+
+// functional combinators
+
+/** takes two functions and returns the result of the first one if the value is defined (not false, null, or undefined); 
+otherwise, it returns the result of the second function. */
+export const alt = curry((func1, func2, val) => func1 ? func1(val) : func2(val));
+
+/** process a single resource (val) in two different ways (f1, f2) and then combine the results */
+export const fork = (join, func1, func2) => (val) => join(func1(val), func2(val));

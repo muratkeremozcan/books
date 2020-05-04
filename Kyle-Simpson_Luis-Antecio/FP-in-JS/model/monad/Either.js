@@ -88,7 +88,7 @@ exports.Right = class Right extends exports.Either {
 	orElse() {
 		return this;
 	}
-	/** Applies a function a Right and returns that value. Does nothing on the Left.*/
+	/** Applies a function to Right and returns that value. Does nothing on the Left.*/
 	chain(f) {		
 		return f(this._value);
 	}

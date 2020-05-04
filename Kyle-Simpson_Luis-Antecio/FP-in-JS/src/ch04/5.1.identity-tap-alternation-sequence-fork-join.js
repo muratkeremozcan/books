@@ -49,7 +49,7 @@ alt(null, R.identity)(program); //?
 // )(1, 2); //?
 
 
-// process a single resource in two different ways (f1, f2) and then combine the results (into join)
+/** process a single resource (val) in two different ways (f1, f2) and then combine the results */
 const fork = (join, func1, func2) => (val) => join(func1(val), func2(val));
 
 // check whether the mean and median of a collection of grades are equal:
