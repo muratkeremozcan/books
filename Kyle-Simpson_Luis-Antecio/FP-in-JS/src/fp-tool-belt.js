@@ -440,12 +440,6 @@ export const safeProp = curry( function safeProp(prop,obj){
 });
 
 
-/** alternation takes two functions and returns the result of the first one if the value is defined (not false, null, or undefined); 
- otherwise, it returns the result of the second function.
-*/
-export const alternation = (func1, func2) => val => func1(val) || func2(val)
-
-
 // functional combinators
 
 /** takes two functions and returns the result of the first one if the value is defined (not false, null, or undefined); 

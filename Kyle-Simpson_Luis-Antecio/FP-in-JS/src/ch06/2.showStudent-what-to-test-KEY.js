@@ -18,7 +18,7 @@ const safeFindObject = R.curry((db, id) => {
   const val = find(db, id);
   return val ? Either.right(val) : Either.left(`Object not found with ID: ${id}`);
 })
-const findStudent = safeFindObject(db);
+export const findStudent = safeFindObject(db);
 const checkLengthSsn = ssn =>
   validLength(2, ssn) ? Either.right(ssn) : Either.left('invalid SSN');
 const csv = arr => arr.join(','); //?
@@ -37,7 +37,7 @@ const trace = R.curry((msg, obj) => console.log(msg));
 const getOrElse = R.curry((message, container) => container.getOrElse(message));
 /** lifts the function into a monad. Initial requirement for the first function in the composition*/
 const liftIO = val => IO.of(val);
-const append = R.curry(function (element, info) {
+export const append = R.curry(function (element, info) {
   console.log('Simulating side effect. Appending: ' + info);
   console.log('the element is : ' + element);
   return info;
@@ -48,7 +48,7 @@ const append = R.curry(function (element, info) {
 // the components that perform IO are impure and cannot be tested reliably because of side effects
 // the rest is testable
 
-const showStudentIO = R.compose(
+export const showStudentIO = R.compose(
   map(append('student info:')), // append is impure, because it outputs to the console. Leave testing DOM apis to browser manufacturers
   liftIO, // FP construct, no need to test
   getOrElse('unable to find student'), // FP construct, no need to test
