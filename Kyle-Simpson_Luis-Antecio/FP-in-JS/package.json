@@ -6,6 +6,7 @@
     "@reactivex/rxjs": "^5.0.0-beta.11",
     "babel-preset-es2015": "^6.13.2",
     "blanket": "1.2.3",
+    "idb": "^5.0.2",
     "jest": "~20.0.4",
     "jscheck": "0.2.0",
     "lodash": "^4.17.15",
@@ -15,7 +16,8 @@
     "rxjs": "^5.0.0-beta.11",
     "rxjs-es": "5.0.0-beta.11",
     "sinon": "1.17.5",
-    "sinon-qunit": "2.0.0"
+    "sinon-qunit": "2.0.0",
+    "winston": "^3.2.1"
   },
   "babel": {
     "presets": [

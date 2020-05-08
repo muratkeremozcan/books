@@ -135,3 +135,19 @@ const testShowStudent = IO.from(start)
 
 testShowStudent.run(); //?
 testShowStudent.run(); //?
+
+
+// recursive function example
+const factorial = (n => (n === 0) ? 1 : (n * factorial(n-1))).memoize();
+factorial(4); //?
+
+const testFactorial = IO.from(start)
+  .map(R.tap(test(factorial, 100)))
+  .map(end)
+  
+// Running the memoized factorial(100) the first time creates 100 stack frames because it needs to compute 100! 
+// by multiplying every single number. On the second call to factorial with 101, via memoization it’s able to reuse the result of factorial(100) 
+// and create only 2 stack frames.
+
+testFactorial.run(); //?
+testFactorial.run(); //?

@@ -244,7 +244,7 @@ export const pipe = (...fns) => result => {
 
 /** extract a property by name off of an object */
 export const prop = (name, obj) => obj[name];
- 
+
 /** Sets a property by name to an object. 
  * Clones the object before setting the new property, avoiding side effects
 */
@@ -434,9 +434,9 @@ export const isEmpty = val => val === null || val === undefined;
  * does the empty-check, and selects either a Nothing() monad instance if so, 
  * or wraps the value in a Just(..) instance (via Maybe.of(..)).
 */
-export const safeProp = curry( function safeProp(prop,obj){
+export const safeProp = curry(function safeProp(prop, obj) {
   if (isEmpty(obj[prop])) return Maybe.Nothing();
-  return Maybe.of( obj[prop] );
+  return Maybe.of(obj[prop]);
 });
 
 
@@ -448,3 +448,19 @@ export const alt = curry((func1, func2, val) => func1 ? func1(val) : func2(val))
 
 /** process a single resource (val) in two different ways (f1, f2) and then combine the results */
 export const fork = (join, func1, func2) => (val) => join(func1(val), func2(val));
+
+/** enables chaining operations on thenable types (objects that implement a then method like Promises)  
+ * 
+ * then :: f -> Thenable -> Thenable
+*/
+const thenCompose = curry(function (f, thenable) {
+  return thenable.then(f);
+});
+
+/** Provides error logic for a promise object 
+* 
+* catchP :: f -> Promise -> Promise
+*/
+const catchP = curry(function (f, promise) {
+  return promise.catch(f);
+});
