@@ -62,3 +62,4 @@ getJSON('/students')
   .then(average) // compute the average grade for the entire class
   .then(grade => IO.of(grade).map(console.log).run()) // use IO monad to write the values to the console
   .catch(error => console.log(error.message))
+

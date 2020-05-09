@@ -60,6 +60,8 @@ const testRot13 = IO.from(start)
 testRot13.run(); //?
 // 2nd one much shorter
 testRot13.run(); //?
+testRot13.run(); //?
+testRot13; //?
 
 
 

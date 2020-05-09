@@ -44,4 +44,22 @@ turing.append(gandy);
 
 let newTree = Tree.map(church, p => p.fullname);
 newTree; //?
-		
+    
+
+// with generator & recursion
+
+/** traverses a binary tree using generator */
+function* TreeTraversal(node) {
+  yield node.value;
+  if (node.hasChildren()) {
+      for(let child of node.children) {
+          yield* TreeTraversal(child);
+      }
+  }
+}
+
+var root = new Node(new Person('Alonzo', 'Church', '111-11-1231'));
+
+for(let person of TreeTraversal(root)) {
+ console.log(person.lastname);
+}
