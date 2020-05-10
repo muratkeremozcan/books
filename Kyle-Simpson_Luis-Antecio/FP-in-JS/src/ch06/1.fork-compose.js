@@ -11,10 +11,12 @@ easily test, only worrying about the business logic
 
 // function combinators are a utility for control flow 
 // they are higher-order functions that can combine primitive artifacts like other functions (or other combinators) and behave as control logic.
+
 /** process a single resource (val) in two different ways (f1, f2) and then combine the results */
 const fork = (join, func1, func2) => val => join(func1(val), func2(val));
 
 fork(R.divide, R.sum, R.length)([80, 90, 100, 110]); //?
+
 const timesTwo = fork(x => 2 * x, R.identity, R.identity);
 timesTwo(3); //?
 

@@ -101,6 +101,15 @@ export const partialThis = (fn, ...presentArgs) =>
  * `[1,2,3,4,5].map(curry(add)(3));`
  * 
  * `curriedSum_loose(1)(2,3)(4,5,6,7);`
+ * 
+ *  TL,DR; if there are more arguments specified in the function than we currently have, return the fn (in curried state).
+ *  If we got enough args, execute it
+ * 
+ *  ex2: find function expects 2 arguments (db, id)
+ * 
+ * `find(db); //? curried state is returned
+ * 
+ * `find(db)('123'); //? executed
  */
 export function curry(fn, arity = fn.length) {
   return (function nextCurried(prevArgs) {
@@ -198,10 +207,12 @@ export const compose2 = (fn2, fn1) => value => fn2(fn1(value));
  * `var biggerWords = compose(skipShortWords, unique, words)`
  * 
  * `biggerWords(text)`
+ * 
+ * instead of `skipShortWords(unique(words('text')))`
 */
 export const compose = (...fns) => result => {
   let list = [...fns]; // copy the array of functions
-  while (list.length > 0) { // take the last function off the end of the list and execute it
+  while (list.length > 0) { // take the last function off the end of the list and execute it with result argument
     result = list.pop()(result);
   }
   return result;
@@ -233,7 +244,7 @@ export const pipe = (...fns) => result => {
 
 /** extract a property by name off of an object */
 export const prop = (name, obj) => obj[name];
- 
+
 /** Sets a property by name to an object. 
  * Clones the object before setting the new property, avoiding side effects
 */
@@ -423,7 +434,33 @@ export const isEmpty = val => val === null || val === undefined;
  * does the empty-check, and selects either a Nothing() monad instance if so, 
  * or wraps the value in a Just(..) instance (via Maybe.of(..)).
 */
-export const safeProp = curry( function safeProp(prop,obj){
+export const safeProp = curry(function safeProp(prop, obj) {
   if (isEmpty(obj[prop])) return Maybe.Nothing();
-  return Maybe.of( obj[prop] );
+  return Maybe.of(obj[prop]);
+});
+
+
+// functional combinators
+
+/** takes two functions and returns the result of the first one if the value is defined (not false, null, or undefined); 
+otherwise, it returns the result of the second function. */
+export const alt = curry((func1, func2, val) => func1 ? func1(val) : func2(val));
+
+/** process a single resource (val) in two different ways (f1, f2) and then combine the results */
+export const fork = (join, func1, func2) => (val) => join(func1(val), func2(val));
+
+/** enables chaining operations on thenable types (objects that implement a then method like Promises)  
+ * 
+ * then :: f -> Thenable -> Thenable
+*/
+const thenCompose = curry(function (f, thenable) {
+  return thenable.then(f);
+});
+
+/** Provides error logic for a promise object 
+* 
+* catchP :: f -> Promise -> Promise
+*/
+const catchP = curry(function (f, promise) {
+  return promise.catch(f);
 });

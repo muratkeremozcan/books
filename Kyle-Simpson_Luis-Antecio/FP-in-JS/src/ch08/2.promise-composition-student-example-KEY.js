@@ -68,6 +68,7 @@ const find = function (db, ssn) {
   });
 };
 
+// the key idea her is to make curried versions of what you were chaining 
 
 // fetchStudentDBAsync :: DB -> String -> Promise(Student)
 /** curies the data store object so you can include this function in to composition */

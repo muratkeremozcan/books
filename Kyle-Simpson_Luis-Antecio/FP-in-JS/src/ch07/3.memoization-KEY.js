@@ -1,6 +1,6 @@
 // how do you avoid computing repetitive values?
 // in OOP systems, this is accomplished by placing a cache or proxy layer that’s checked before a function is called.
-// A cache is an intermediary repository, or memory, that’s queried before an expensive operation. In web applications,
+// A cache is an intermediary repository, or memory, that’s queried before an expensive operation.
 
 // check out the book for the implementation of cachedFn 
 // cachedFn  acts as a proxy between the function execution and its result to ensure that the same function isn’t invoked twice.
@@ -12,7 +12,7 @@
 
 // 2 ways to use memoization
 // by wrapping the function definition :  (someFunction => ...).memoize
-// by invoking a method on a function :    someFunction.memoize() 
+// by invoking a method on a function :    someFunction.memoized() 
 
 require('./memoization');
 
