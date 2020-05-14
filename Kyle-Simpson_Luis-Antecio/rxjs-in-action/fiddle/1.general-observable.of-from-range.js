@@ -30,6 +30,7 @@ Rx.Observable.of(1, 2, 3, 4, 5).subscribe( // Rx.Observable.of(Observable) <arbi
 );
 // note: an Observable wrapper around a multiple synchronous value is overkill
 
+
 // if using arrays, use from
 Rx.Observable.from([1, 2, 3, 4, 5]).subscribe( // Rx.Observable.of(Observable) <arbitrary pipeline>
   val => { // consumer function / Observer
@@ -37,8 +38,10 @@ Rx.Observable.from([1, 2, 3, 4, 5]).subscribe( // Rx.Observable.of(Observable) <
   }
 );
 
+
 // RxJS has the forEach observable method as well, with the exact same semantics as subscribe:
 Rx.Observable.from([6, 7, 8, 9, 10]).forEach(console.log);
+
 
 Rx.Observable.from([1, 2, 3, 4, 5]) // Rx.Observable.of(Observable)
   .filter(num => (num % 2) === 0)  // stream / pipeline                
@@ -48,6 +51,7 @@ Rx.Observable.from([1, 2, 3, 4, 5]) // Rx.Observable.of(Observable)
       console.log(val);
     }
   );
+
 
 Rx.Observable.range(1, 3).subscribe(
   x => console.log(`Next: ${x}`),
@@ -75,30 +79,16 @@ Rx.Observable.range(1, 10) // Observable
 
 
 /* when to use RxJs
-  
+although you’re able to convert anything your heart desires into Observables, it doesn’t always mean that you should.
+In particular, processes that are strictly synchronous and iterative or will only ever deal with a single value do not need to be “Rx-ified”
+
                single value                     multi-value
 sync       char, number..(overkill)       string, array...(overkill)
 
 async       promise (can do)           DOM events, replaces event emitters: clicks, key presses... (great)
 */
 
-// wrapping an Observable with a Promise
-
-const fortyTwo = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve(42);
-  }, 2000)
-});
-fortyTwo; //?
-
-const increment = x => ++x;
-
-Rx.Observable.fromPromise(fortyTwo)
-  .map(increment)
-  .subscribe(console.log) // 43
-  // .subscribe(val => { // same thing
-  //   console.log(val);
-  // })
+// wrapping promisees: 2.2 example
 
 
 // wrapping event emitters
@@ -136,3 +126,4 @@ Rx.Observable.fromEvent(addEmitter, 'add', (a, b) => ({a: a, b: b}))
 addEmitter.emit('add', 2, 3);
 
 */
+
