@@ -19,3 +19,16 @@ const source$ = Rx.Observable.create(observer => {
 
 // Most of the time, you’ll provide the observer object directly into the subscription and use the static create() method 
 const subscription = source$.subscribe(console.log); // with subscribe, the observer logic is executed
+
+
+
+const sourceTimer$ = Rx.Observable.create(observer => {
+  let i = 0;
+  setInterval(() => {
+    observer.next(i++);
+  }, 1000);
+});
+
+// thanks to lazy evaluation, the observable is dormant until subscription
+// in contrast, eager evaluation would want to calculate time to infinity first, then execute
+const sub = sourceTimer$.subscribe(console.log); //?

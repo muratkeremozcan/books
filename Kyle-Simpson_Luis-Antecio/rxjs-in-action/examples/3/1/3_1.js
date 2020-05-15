@@ -21,7 +21,9 @@ const progressBar$ = Rx.Observable.create(observer => {
    };
    timeoutId  = setTimeout(progress, OFFSET);
 
-   return () => { //#A
+   // Function that executes when the unsubscribe method is called. 
+   // Describes how to cancel that timeout upon disposal.
+   return () => { 
       clearTimeout(timeoutId);
     };
 });

@@ -17,7 +17,8 @@ const progressBar$ = Rx.Observable.create(observer => { // observable is created
      else {
        observer.complete(); // if an observable is finite, you can signal its completion with complete()
      }
-   };
+   }
+   // start the whole thing after 3 seconds
    setTimeout(progress, OFFSET);
 });
 
