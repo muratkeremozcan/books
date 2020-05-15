@@ -19,6 +19,7 @@ const subscription$ = promiseObservable$.subscribe(
 // there is an incompatibility and the observer.subscribe() doesn't even run
 // Promises are unbreakable!
 // subscription$.unsubscribe();
-// Most of the time, though, you don’t have to worry about cancelling subscriptions yourself because many RxJS operators do this for you.
+
+// Most of the time, you don’t have to worry about cancelling subscriptions yourself because many RxJS operators do this for you.
 
 
