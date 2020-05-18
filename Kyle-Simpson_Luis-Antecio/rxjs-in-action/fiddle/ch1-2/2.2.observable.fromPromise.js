@@ -18,16 +18,7 @@ Rx.Observable.fromPromise(fortyTwo)
   //   console.log(val);
   // })
 
-
-/////
-
-const computeFutureValue = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve(42);
-  }, 2000)
-});
-
-Rx.Observable.fromPromise(computeFutureValue)
+Rx.Observable.fromPromise(fortyTwo)
   .subscribe(
     val => console.log(val),
     err => console.error(err),

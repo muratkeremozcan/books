@@ -89,7 +89,7 @@ sync       char, number..(overkill)       string, array...(overkill)
 async       promise (can do)           DOM events, replaces event emitters: clicks, key presses... (great)
 */
 
-// wrapping promisees: 2.2 example
+// wrapping promisees: check out 2.2 example
 
 
 // wrapping event emitters

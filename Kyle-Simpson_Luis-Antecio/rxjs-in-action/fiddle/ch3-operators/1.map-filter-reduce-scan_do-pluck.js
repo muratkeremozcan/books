@@ -76,7 +76,7 @@ const isTechnical = candidate => {
 
 const accumulateNames = (acc, candidate) => {
   acc.push(candidate.name);
-  return acc
+  return acc;
 };
 
 // we can re-use candidate$ because each invocation of subscribe() spins off a brand-new pipeline

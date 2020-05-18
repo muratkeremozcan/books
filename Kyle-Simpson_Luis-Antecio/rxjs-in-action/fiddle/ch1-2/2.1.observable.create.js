@@ -17,7 +17,6 @@ const source$ = Rx.Observable.create(observer => {
   observer.complete(); // if an observable is finite, you can signal its completion with complete() . There is also an optional error method                 
 }); // at this point the observable is idle
 
-// Most of the time, you’ll provide the observer object directly into the subscription and use the static create() method 
 const subscription = source$.subscribe(console.log); // with subscribe, the observer logic is executed
 
 

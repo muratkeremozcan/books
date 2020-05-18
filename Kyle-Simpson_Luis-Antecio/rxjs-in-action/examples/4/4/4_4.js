@@ -18,7 +18,7 @@ const Money = function (currency, val) {
   };
 };
 
-const newRandomNumber = () => Math.floor(Math.random() * 100);
+S
 
 const USDMoney = Money.bind(null, 'USD');
 
