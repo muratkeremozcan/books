@@ -19,7 +19,7 @@ const results = document.querySelector('#results');  //-> <ul>
 
 var timeoutId = null;  //#A
 
-searchBox.addEventListener('keyup', function (event) {
+searchBox.addEventListener('keyup', function (event) { // listen for keyup events in search box
 
    clearTimeout(timeoutId); //#B
 
@@ -27,16 +27,16 @@ searchBox.addEventListener('keyup', function (event) {
      console.log('querying...');
      let searchResults = [];
      if(query && query.length > 0) {
-       for(let result of testData) {
-        if(result.startsWith(query)) {
+       for(let result of testData) { // loop through test data and find matches
+        if(result.startsWith(query)) { 
           searchResults.push(result);
         }
        }
      }
-     if(searchResults.length === 0) {
+     if(searchResults.length === 0) { // if no matches are found, clear the results
        clearResults(results);
      }
-     else {
+     else { // otherwise append the items found
        for(let result of searchResults) {
          appendResult(result, results);
        }

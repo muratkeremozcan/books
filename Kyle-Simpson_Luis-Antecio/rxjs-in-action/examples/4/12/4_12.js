@@ -17,21 +17,22 @@ let testData = [
 const searchBox = document.querySelector('#search'); //-> <input>
 const results = document.querySelector('#results');  //-> <ul>
 
+/** helper function to check if a string is not empty */
 const notEmpty = input => !!input && input.trim().length > 0;
 
-const sendRequest = function(arr, query) {
+const sendRequest = function(arr, query) { // helper method to send HTTP
   return arr.filter(item => {
     return query.length > 0 && item.startsWith(query);
   });
 };
 
+// very similar to google address
 Rx.Observable.fromEvent(searchBox, 'keyup')
-  .debounceTime(1000)
+  .debounceTime(1000) // ignore the spam of key-ups for the past 1 second, get the query at the end of 1 sec
   .pluck('target', 'value')
   .filter(notEmpty)
   .do(query => console.log(`Querying for ${query}...`))
-  .map(query =>
-         sendRequest(testData, query))
+  .map(query => sendRequest(testData, query))
   .forEach(result => {
     clearResults(results);
     appendResults(result, results);
