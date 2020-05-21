@@ -1,5 +1,6 @@
 import Rx from 'rxjs/Rx';
 
+// delay() shifts the pipeline by delay amount
 Rx.Observable.timer(1000)
    .delay(2000) // Delays / shifts the entire sequence by a two-second offset
    .timeInterval() 
@@ -7,8 +8,8 @@ Rx.Observable.timer(1000)
    .subscribe(seconds => console.log(`${seconds} seconds`));
    
 
-// delay() shifts the pipeline by delay amount
-// we get 1, 2, 2 secs , 3,4, 2 secs, 5,6, 2 secs. Output happens after 6 secs total.
+
+// we get 1,2, 2 secs , 3,4, 2 secs, 5,6, 2 secs. Output happens after 6 secs total.
 Rx.Observable.from([1, 2])
    .delay(2000) // 2 seconds
    .concat(Rx.Observable.from([3,4]))
@@ -31,9 +32,8 @@ Rx.Observable.fromEvent(document, 'click')
 // throttle time
 /* execute a function at most once every period, ignore the in-between values
 
-
 Rx.Observable.fromEvent(document, 'mousemove')
   .throttleTime(1000) // while the mouse is moving, ignore the spam of in-between events, get values every 1 sec
   subscribe(console.log)
-
 */
+// check out gulp example at 4.13
