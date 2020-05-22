@@ -12,19 +12,20 @@ const count = document.querySelector('#count');  //-> <ul>
 
 const notEmpty = input => !!input && input.trim().length > 0;
 
-// Proxy around CORS -> https://en.wikipedia.org
+// Proxy around CORS -> https://en.wikipedia.org wikipedia's API url
 const URL = '/external/wikipedia/w/api.php?action=query&format=json&list=search&utf8=1&srsearch=';
 
 const search$ = Rx.Observable.fromEvent(searchBox, 'keyup')
-  .pluck('target','value')
+  .pluck('target', 'value')
   .debounceTime(500)
   .filter(notEmpty)
   .do(term => console.log(`Searching with term ${term}`))
   .map(query => URL + query)
+  // mapping an observable-returning function, flattenning and merging it into the source observable
   .mergeMap(query => Rx.Observable.ajax(query)
-		.pluck('response', 'query', 'search')
-		.defaultIfEmpty([]))
-	.map(R.map(R.prop('title')))
+    .pluck('response', 'query', 'search')
+    .defaultIfEmpty([])) // if the result of the request is an empty object, convert to an empty array
+  .map(R.map(R.prop('title'))) // extract all title properties resulting from the response array
   .do(arr => count.innerHTML = `${arr.length} results`)
   .subscribe(arr => {
     clearResults(results);
@@ -33,8 +34,8 @@ const search$ = Rx.Observable.fromEvent(searchBox, 'keyup')
 
 
 function clearResults(container) {
-  while(container.childElementCount > 0) {
-     container.removeChild(container.firstChild);
+  while (container.childElementCount > 0) {
+    container.removeChild(container.firstChild);
   }
 }
 
