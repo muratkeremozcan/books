@@ -7,12 +7,22 @@
  *  @author Luis Atencio
  */
 const panel = document.querySelector('#dragTarget');
+// mousedown events on the target
 const mouseDown$ = Rx.Observable.fromEvent(panel, 'mousedown');
-const mouseUp$ = Rx.Observable.fromEvent(document, 'mouseup');
+// mouse move and up events on the entire page
 const mouseMove$ = Rx.Observable.fromEvent(document, 'mousemove');
+const mouseUp$ = Rx.Observable.fromEvent(document, 'mouseup');
 
 //  Listing 5.8
-const drag$ = mouseDown$.concatMap(() => mouseMove$.takeUntil(mouseUp$));
+const drag$ = mouseDown$
+  .concatMap(() => mouseMove$.takeUntil(mouseUp$));
+
+/* concatMap is the same as map + concatAll
+  const drag$ = mouseDown$
+    .map(() => mouseMove$.takeUntil(mouseUp$))
+    .concatAll()
+*/
+
 
 drag$.forEach(event => {
   panel.style.left = event.clientX + 'px';
