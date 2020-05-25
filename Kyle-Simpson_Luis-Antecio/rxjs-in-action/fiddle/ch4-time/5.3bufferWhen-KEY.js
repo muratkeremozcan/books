@@ -5,7 +5,7 @@ import Rx from 'rxjs/Rx';
 // used for caching events until another observable emits a value.
 
 Rx.Observable.timer(0, 1000)
-  .bufferWhen(() => Rx.Observable.timer(4000)) // will release at 3 secs, and keep releasing
+  .bufferWhen(() => Rx.Observable.timer(5000)) // will release at 5 secs, and keep releasing every 5
   .subscribe(
     function (val) {
       console.log(`bufferWhen releasing: ${val}`);

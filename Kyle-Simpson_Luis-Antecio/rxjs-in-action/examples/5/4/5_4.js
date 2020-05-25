@@ -44,7 +44,7 @@ const requestQuote$ = symbol =>
 
 const twoSecond$ = Rx.Observable.interval(2000);
 
-// requestQuote$ and $ twoSecond$ are 2 streams that need to be combined
+// requestQuote$ and  twoSecond$ are 2 streams that need to be combined
 // mergeMap does the magic: observable1$.mergeMap(() => observable2$)
 const fetchDataInterval$ = symbol => twoSecond$
      .mergeMap(() => requestQuote$(symbol));

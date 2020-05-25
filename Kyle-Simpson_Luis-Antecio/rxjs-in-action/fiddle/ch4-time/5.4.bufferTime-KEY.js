@@ -5,7 +5,7 @@ import Rx from 'rxjs/Rx';
 // buffers source Observable values until a set time, then keeps releasing
 
 Rx.Observable.timer(0, 1000)
-  .bufferTime(3000) // will release at 3 secs, and keep releasing
+  .bufferTime(5000) // will release at 3 secs, and keep releasing
   .subscribe(
     function (val) {
       console.log(`bufferTime releasing: ${val}`);

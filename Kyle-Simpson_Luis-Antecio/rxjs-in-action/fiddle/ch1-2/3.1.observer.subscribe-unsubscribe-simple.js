@@ -19,7 +19,7 @@ const timer$ = Rx.Observable.create(observer => {
 // in contrast, eager evaluation would want to calculate time to infinity first, then execute
 const sub = timer$.subscribe(console.log); 
 
-// observer.unsubscribe() Tears down the stream and frees up any allocated objects
+// observer.unsubscribe() tears down the stream and frees up any allocated objects
 // it also takes care of memory de-allocation for you
 setTimeout(() => {
   sub.unsubscribe();

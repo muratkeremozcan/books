@@ -8,11 +8,11 @@ const Rx = require('rxjs/Rx');
 // Rx.Observable.of(Observable) -> stream / pipeline -> .subscribe(consumerFunc/Observer)
 
 /*
-  Rx.Observable.of(data-source) //  Rx.Observable.of(..) wraps the data source / Observable within a stream
+  Rx.Observable.of(Observable/data-source) //  Rx.Observable.of(..) wraps the data source / Observable within a stream
     .operator(..) // the stream / pipeline is a sequence of operators chained by the dot operator
     .operator(..) 
     .operator(..)
-    .subscribe(consumer) // the consumer function / Observer processes the output
+    .subscribe(Observer/consumer) // the consumer function / Observer processes the output
 */
 
 Rx.Observable.of(42).subscribe( // Rx.Observable.of(Observable) <arbitrary pipeline>

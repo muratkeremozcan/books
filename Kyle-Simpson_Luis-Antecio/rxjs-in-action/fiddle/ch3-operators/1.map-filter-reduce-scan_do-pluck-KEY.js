@@ -37,16 +37,17 @@ const hasJsExperience = bg => bg.toLowerCase().includes('javascript');
 const candidates$ = Rx.Observable.from(candidates);
 
 candidates$
-  .filter(candidate => hasJsExperience(candidate.experience))
-  .do(console.log)
-  .map(filteredPerson => filteredPerson.name)
+  .filter(candidate => hasJsExperience(candidate.experience)) // SELECTs the object in the array
+  .do(console.log) // console logs that object
+  .map(filteredPerson => filteredPerson.name) // TRANSFORMs that object
   .subscribe(console.log)
 
 
 /////
 // reduce
 
-const add = (x, y) => x + y;
+/** used for add reducer */
+const adder = (x, y) => x + y;
 
 Rx.Observable.from([
   {
@@ -63,7 +64,7 @@ Rx.Observable.from([
   }
 ])
   .pluck('amount') // pluck is used to extract the value at property/key
-  .reduce(add, 0) // initial value of 0 is optional
+  .reduce(adder, 0) // initial value of 0 is optional
   .subscribe(console.log)
 
 
@@ -81,6 +82,7 @@ const accumulateNames = (acc, candidate) => {
 
 // we can re-use candidate$ because each invocation of subscribe() spins off a brand-new pipeline
 // that will be independent of any other pipelines that were created by subsequent calls to subscribe().
+// remember: const candidates$ = Rx.Observable.from(candidates);
 
 candidates$
   .filter(isTechnical)

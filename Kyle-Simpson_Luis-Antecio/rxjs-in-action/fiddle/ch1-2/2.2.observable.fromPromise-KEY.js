@@ -2,12 +2,15 @@
 
 import Rx from 'rxjs/Rx';
 
+/** promise that resolve to 42 in 2 seconds */
 const fortyTwo = new Promise((resolve, reject) => {
   setTimeout(() => {
     resolve(42);
   }, 2000)
 });
-fortyTwo; //?
+// fortyTwo; //?
+// outputs it without 'then..'
+// fortyTwo.then(val => val) //? 
 
 const increment = x => ++x;
 
@@ -18,19 +21,24 @@ Rx.Observable.fromPromise(fortyTwo)
   //   console.log(val);
   // })
 
+// subscribe takes as arguments the consumer function, and the optional error and complete functions
 Rx.Observable.fromPromise(fortyTwo)
+  .map(increment)
+  .map(increment)
   .subscribe(
     val => console.log(val),
     err => console.error(err),
     () => console.log('all done')
   );
 
+
 // RxJS not only takes care of error handling for you (without messy, imperative try/catch statements) 
 // but also provides logic that ties in with Promise semantics of resolve/reject.
 
+/** outputs an error in 5 seconds, showcases built-in error handling in RxJs */
 const errorFutureValue = new Promise((resolve, reject) => {
   setTimeout(() => {
-    reject(new Error('some error'));
+    reject(new Error('error in 5 seconds'));
   }, 5000)
 });
 

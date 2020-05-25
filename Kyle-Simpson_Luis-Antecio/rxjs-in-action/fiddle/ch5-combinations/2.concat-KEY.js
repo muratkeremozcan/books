@@ -1,6 +1,6 @@
 import Rx from 'rxjs/Rx';
 
-// concat: useful when a observable stream should come before the other
+// concat: merges as well, useful sequencing
 
 const source1$ = Rx.Observable.interval(1000)
   .map(x => `Source1: ${x}`)
@@ -23,5 +23,6 @@ Rx.Observable.concat(source1$, source2$, source3$)
 const rangeSource$1 = Rx.Observable.range(1, 3).delay(19000);
 const rangeSource$2 = Rx.Observable.of('a', 'b', 'c');
 
+// gets sequenced in order
 const result = Rx.Observable.concat(rangeSource$1, rangeSource$2)
 result.subscribe(console.log);

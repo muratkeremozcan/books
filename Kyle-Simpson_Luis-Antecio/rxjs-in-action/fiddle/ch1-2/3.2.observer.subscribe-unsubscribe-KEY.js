@@ -5,7 +5,7 @@ const progressBar$ = Rx.Observable.create(observer => { // observable is created
   const SPEED = 50; // emits a new progress value every 50 ms
 
   let val = 0;
-  let timeoutId = 0;
+  let timeoutId = 0; // we need this to be able to nicely user clearTimeout at the end.
 
   function progress() {
     if (++val <= 100) {
@@ -18,6 +18,7 @@ const progressBar$ = Rx.Observable.create(observer => { // observable is created
   }
 
   // upon subscription, start the whole thing after 3 seconds
+  // the progress function which we call in 3 secs has its own setTimeout which recursively calls itself, until value reaches 100
   timeoutId = setTimeout(progress, DELAY);
 
   // The function at the end of an observable is needed for the observer to be able to unsubscribe
@@ -29,8 +30,10 @@ const progressBar$ = Rx.Observable.create(observer => { // observable is created
 
 });
 
-// will fill progress up to 100
+// this would will fill progress up to 100
 // const subs = progressBar$.subscribe(console.log);
+
+// instead we want to demo unsubscribe, which we use to unsub before the counter reaches 100
 
 // subscribe takes 3 arguments: value, error, complete 
 const subs = progressBar$.subscribe(

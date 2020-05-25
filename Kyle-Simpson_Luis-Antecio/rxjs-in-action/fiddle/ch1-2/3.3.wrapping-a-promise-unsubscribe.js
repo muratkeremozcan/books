@@ -1,5 +1,10 @@
 import Rx from 'rxjs/Rx';
 
+// showcasing that we cannot cancel a promise / unsubscribe from it
+// note that most of the time, you don’t have to worry about cancelling subscriptions yourself because many RxJS operators do this for you.
+
+
+
 // simple promise that returns 42 after 5 seconds
 const promise = new Promise((resolve, reject) => {
   setTimeout(() => {
@@ -20,7 +25,5 @@ const subscription$ = promiseObservable$.subscribe(
 // Promises are unbreakable!
 
 // subscription$.unsubscribe();
-
-// Most of the time, you don’t have to worry about cancelling subscriptions yourself because many RxJS operators do this for you.
 
 

@@ -1,6 +1,6 @@
 import Rx from 'rxjs/Rx';
 
-// merge: merges observable streams into 1, interleaves events in the order received
+// merge: merges observable streams into 1, useful for interleaving
 
 const source1$ = Rx.Observable.interval(1000)
   .map(x => `Source1: ${x}`)
@@ -24,8 +24,8 @@ Rx.Observable.merge(source1$, source2$, source3$)
 
 // check out 5.1, 5.2 gulp for how mouseup and touchend events can get merged
 // in case of different types in observables
-// instead of forcing observers to use conditional logic to discern between different types of events
-// you should make the stream data conformant before the merge
+// instead of forcing observers to use conditional logic to discern between different types of events (5.1)
+// you should make the stream data conformant before the merge (5.2)
 
 
 // in this case, the data is synchronously available; first come, first served

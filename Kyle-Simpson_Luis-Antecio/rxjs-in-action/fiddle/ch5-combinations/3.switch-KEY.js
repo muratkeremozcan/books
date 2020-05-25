@@ -1,10 +1,10 @@
 import Rx from 'rxjs/Rx';
 
-// switch: 
+// switch: useful when a stream is used to initiate another stream
 // takes another observable that has been mapped to the source observable and fuses it into the source observable
 // each time the source observable emits, switch() immediately unsubscribes from it and begins emitting events from the latest observable that was mapped.
 // in other words, it cancels the first sequence when a new one starts emitting
-// useful when a stream is used to initiate another stream
+
 
 Rx.Observable.of(42)  // when this event occurs...
   .map(forty2 => Rx.Observable.range(1, 3)) // ...it's cancelled wand replaced by this event

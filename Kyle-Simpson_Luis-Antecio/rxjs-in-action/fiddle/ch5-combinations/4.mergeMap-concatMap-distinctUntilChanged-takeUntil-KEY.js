@@ -18,19 +18,18 @@ source.map(value => Array(value).fill(value))
 
 
 // distinctUntilChanged
-// allows the stream to flow down only when a change is detected
+// skips the back to back duplicates
 Rx.Observable.of('a', 'b', 'c', 'c', 'c', 'c', 'b', 'b', 'a', 'a')
-  .distinctUntilChanged()
+  .distinctUntilChanged() 
   .subscribe(console.log)
 
 
 // takeUntil 
-// allows the source observable to emit values 
-// until the provided notifier observable emits a value
+// allows the source observable to emit values until the provided notifier observable emits a value
 // sourceObservable$.takeUntil(notifierObservable$)
 
-const sourceObservable$ = Rx.Observable.interval(1000);
-const notifierObservable$ = Rx.Observable.timer(5000);
+const sourceObservable$ = Rx.Observable.interval(1000); // this can keep going forever
+const notifierObservable$ = Rx.Observable.timer(5000); // bu we stop it with this
 
 sourceObservable$.takeUntil(notifierObservable$)
   .subscribe(
@@ -42,23 +41,23 @@ sourceObservable$.takeUntil(notifierObservable$)
 
 
 
-/* mergeMap: like merge, but has additional logic to flatten nested observables
+/* mergeMap: like merge (merges & interleaves streams), but has additional logic to flatten the nested observable so that the observer only deals with a flat array
  observable1$
     .mergeMap(() => observable2$)
 
 const search$ = Rx.Observable.fromEvent(inputText, 'keyup')
-  // merges the outputs and switches to the observable values emitted from the query results
+  // maps/transforms an observable-returning function, flattens and merges it into the source observable
   // subsribers of this stream will only deal with an Observable<Array>
   .mergeMap(query => Rx.Observable.from(queryResults(query)));
 
-check out 5.3,4,5,6 gulp examples
+check out 5.3,4,6 gulp examples
 
 
-concatMap: similar to mergeMap() with the merging happening serially instead of being interleaved;
+concatMap: like concat (merges & sequentializes the streams), but has additional logic to flatten the nested observable so that the observer only deals with a flat array 
 each observable waits for the previous one to complete.
 a good example is drag & drop: mouse down, mouse move, mouse up
 observable1$
     .concatMap(() => observable2$)
 */
 
-// check out 5.6 example
+// check out 5.7 example

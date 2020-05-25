@@ -20,7 +20,8 @@ const source$ = Rx.Observable.create(observer => {
 const subscription = source$.subscribe(console.log); // with subscribe, the observer logic is executed
 
 
-
+// another example of Observable.create
+/** every second, counts up */
 const sourceTimer$ = Rx.Observable.create(observer => {
   let i = 0;
   setInterval(() => {
