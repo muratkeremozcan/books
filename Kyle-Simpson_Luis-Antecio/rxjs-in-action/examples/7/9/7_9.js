@@ -105,6 +105,9 @@
 
       .map(response => response.replace(/"/g, ''))
       .map(csv)
+      // the only difference here is the catch and finally
+      // Adds catch() to handle the exception potentially thrown from requestQuote$
+      // In the event an error occurs, cancels the twoSecond$ interval observable through its subscription object.
       .catch(() => Rx.Observable.of([new Error('Check again later...'), 0]))
       .finally(() => {
          updateSubscription.unsubscribe();
@@ -145,7 +148,14 @@
       priceElem.innerHTML = new USDMoney(price).toString();
  };
 
+
+//  make a small adjustment to the tick$ observable, so that it knows how to handle an error. 
+// You can use our Try functional data type to handle this, 
+// and if a failure does occur, delegate the exception to the error callback of the observer
+
  ticks$
+ // Before the data is handed down to the subscriber, 
+ // Try can inspect it and decide if the data flowing in is an exception that needs to be thrown.
  .map(([symbol, price]) => [Try.of(symbol).getOrElseThrow(), price])
  .subscribe(
    ([symbol, price]) => {

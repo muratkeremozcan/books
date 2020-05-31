@@ -9,18 +9,22 @@
  const LOGIN = 'o_5l52m15f2e';
  const KEY = 'R_9413bdcbaf224aaa924e7169bd7e5950';
 
+ const GAPI = 'https://www.googleapis.com/urlshortener/v1/url';
+ const GKEY = 'AIzaSyCHECv88DaOLkMmeMKgZyAiDvQshrjgMs8';
+ 
  const example_url = 'https://www.manning.com/books/rxjs-in-action';
 
- const GKEY = 'AIzaSyCHECv88DaOLkMmeMKgZyAiDvQshrjgMs8';
- const GAPI = 'https://www.googleapis.com/urlshortener/v1/url';
+ // many APIs still use callbacks. Callback based APIs can be adapted to RxJS with bindCallback (analogous to fromPromise)
+ // Rx.Observable.bindCallback(callbackFn)
+ // 
 
  const getJSONAsObservable = Rx.Observable.bindCallback($.getJSON);
 
  const bitly$ = url => Rx.Observable.of(url)
     .filter(R.compose(R.not, R.isEmpty))
-    .map(encodeURIComponent)
-    .map(encodedUrl => `${API}/v3/shorten?longUrl=${encodedUrl}&login=${LOGIN}&apiKey=${KEY}`)
-    .switchMap(url => getJSONAsObservable(url).map(R.head))
+    .map(encodeURIComponent) // native function to encode a string as URI
+    .map(encodedUrl => `${API}/v3/shorten?longUrl=${encodedUrl}&login=${LOGIN}&apiKey=${KEY}`) // build API path
+    .switchMap(url => getJSONAsObservable(url).map(R.head)) // switchMap() cancels the first steram .of(url) when a new one starts emitting
     .filter(obj => obj.status_code === 200 && obj.status_txt === 'OK')
     .pluck('data', 'url');
 
@@ -29,10 +33,10 @@
   const goog$ = url => Rx.Observable.of(url)
     .filter(R.compose(R.not, R.isEmpty))
     .switchMap(
-      encodedUri => gAPILoadAsObservable('client')
-        .do(() => gapi.client.setApiKey(GKEY))
-        .switchMap(() => Rx.Observable.fromPromise(gapi.client.load('urlshortener', 'v1')))
-        .switchMap(() => Rx.Observable.fromPromise(
+      encodedUri => gAPILoadAsObservable('client') // loads the client library
+        .do(() => gapi.client.setApiKey(GKEY)) // pass the api key
+        .switchMap(() => Rx.Observable.fromPromise(gapi.client.load('urlshortener', 'v1'))) // load the url shortener API
+        .switchMap(() => Rx.Observable.fromPromise( // shortens the url and inserts it into your personal list of urls
           gapi.client.urlshortener.url.insert({'longUrl': encodedUri}))
         )
     )
