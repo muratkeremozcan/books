@@ -12,7 +12,7 @@ Rx.Observable.of(2, 4, 5, 8, 10)
     }
     return num;
   })
-  .retry(3) // you want to retry before the catch, and catch s last resort
+  .retry(3) // you want to retry before the catch, and catch as the last resort
   .catch(err => Rx.Observable.of(6))
   .map(computeHalf)
   .subscribe(

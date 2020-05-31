@@ -6,7 +6,7 @@ import Rx from 'rxjs/Rx';
 // or taking-1st-stream-Until-2nd-stream-kicks-in
 
 // Generally, causal streams (one depends on the other) are combined using mergeMap(), switchMap(), even takeUntil()
-// whereas independent streams are combined using combineLatest(), forJoin()
+// whereas independent streams are combined using combineLatest(), forkJoin()
 
 
 

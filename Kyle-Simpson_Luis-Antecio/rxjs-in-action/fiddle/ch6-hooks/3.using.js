@@ -37,7 +37,7 @@ class DisposibleResource {
 
 // When an observer subscribes to the observable factory function of using(), 
 // the disposible factory function is invoked to create an instance of the resource
-// then the disposible factory function is passed tot the observable factory function as a parameter
+// then the disposible factory function is passed to the observable factory function as a parameter
 
 
 const source$ = Rx.Observable.using(

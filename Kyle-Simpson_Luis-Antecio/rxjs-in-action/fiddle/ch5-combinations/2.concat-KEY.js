@@ -1,6 +1,6 @@
 import Rx from 'rxjs/Rx';
 
-// concat: merges as well, useful sequencing
+// concat: merges as well, useful for sequencing
 
 const source1$ = Rx.Observable.interval(1000)
   .map(x => `Source1: ${x}`)
