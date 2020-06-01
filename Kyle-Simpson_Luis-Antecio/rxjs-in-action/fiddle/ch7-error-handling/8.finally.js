@@ -1,6 +1,6 @@
 import Rx from 'rxjs/Rx';
 
-// try, catch, finally analogy]
+// try, catch, finally analogy
 // finally() invokes a specified void function after the source observable terminates by invoking the observer’s complete() or error() methods. 
 // So the expectation is that finally() could perform some kind of side effect, if need be, such as cleanup actions.
 
