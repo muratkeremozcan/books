@@ -6,7 +6,7 @@ const http = require('http');
 // Aside from binding to DOM events and AJAX calls, RxJS can bind to WebSockets. 
 // WebSocket (WS) is an asynchronous communication protocol, faster & more efficient than HTTP (which is only request & response)
 // advantage 1: information can be passed back and forth while keeping the connection open
-// advantage 2: servers can send content to the browser without it explicitly requesting it.
+// advantage 2: servers can send content to the browser without the browser explicitly requesting it.
 
 // using websocket APIs the client can send messages to a server and receive event-driven responses (server push) 
 // without having to explicitly poll for data, which is what the client would do with regular HTTP requests.

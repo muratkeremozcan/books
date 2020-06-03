@@ -27,7 +27,7 @@ interval$
   });
 
   
-// Hot observables are those that produce events regardless of the presence of subscribers—they are active.
+// Hot observables are those that produce events regardless of the presence of subscribers
 // They are active; analogy: TV station. Emits whether someone is observing or not
 // typically mouse clicks, mouse movement, touch, any events exposed via event emitters
 
