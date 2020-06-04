@@ -5,7 +5,7 @@ import Rx from 'rxjs'
 
 // share() shares a single subscription to a stream  among multiple subscribers (COLD to HOT)
 // you can place this operator right after a set of operations whose results should be common
-// and the subscribers to each of them will all ge the same instance without replaying the pipeline
+// and the subscribers to each of them will all get the same instance without replaying the pipeline
 // upon the first subscriber subscribing, the underlying stream is also subscribed to, 
 // and when all the subscribers stop listening (either through error or cancellation), the underlying subscription is disposed of as well.
 
@@ -18,6 +18,11 @@ const source$ = Rx.Observable.interval(1000)
 
 // with share() operator, you can convert the cold into a hot observable / unicast to multicast
 const shared$ = source$.share();
+
+// When the number of observers subscribed to a published observable goes from 0 to 1, you connect to the underlying observable sequence.
+shared$.subscribe(createObserver('SourceA'));
+// When the second subscriber is added, no additional subscriptions are added to the underlying observable sequence.
+shared$.subscribe(createObserver('SourceB'));
 
 /** Helper method to create a simple observer for standard out */
 function createObserver(tag) {
@@ -33,11 +38,6 @@ function createObserver(tag) {
     }
   };
 }
-
-// When the number of observers subscribed to a published observable goes from 0 to 1, you connect to the underlying observable sequence.
-shared$.subscribe(createObserver('SourceA'));
-// When the second subscriber is added, no additional subscriptions are added to the underlying observable sequence.
-shared$.subscribe(createObserver('SourceB'));
 
 
 // check out gulp examle 8.5 for the final stock ticker example

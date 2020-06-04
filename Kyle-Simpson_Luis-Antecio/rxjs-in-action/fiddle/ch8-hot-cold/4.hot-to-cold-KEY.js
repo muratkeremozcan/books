@@ -37,6 +37,6 @@ const coldPromise$ = new Rx.Observable(observer => {
   });
 });
 
-// both subscribers independently invoke the internal promis object
+// both subscribers independently invoke the internal promise object
 coldPromise$.subscribe(console.log);    
 coldPromise$.subscribe(console.log);    
