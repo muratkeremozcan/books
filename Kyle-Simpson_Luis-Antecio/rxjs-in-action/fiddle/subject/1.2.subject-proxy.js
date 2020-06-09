@@ -10,7 +10,7 @@ const proxySubject = new Rx.Subject();
 // remember: subject can also act as an observer
 const subA = source$.subscribe(proxySubject);
 
-// note: any next() that happens before a subscription is created is lost. behaviorSubject and replaySubject can cater to this.
+// side note: any next() that happens before a subscription is created is lost. behaviorSubject and replaySubject can cater to this.
 
 
 const subB = proxySubject.subscribe(val => console.log(`subB : ${val}`));

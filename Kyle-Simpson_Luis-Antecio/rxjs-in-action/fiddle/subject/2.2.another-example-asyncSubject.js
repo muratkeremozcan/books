@@ -2,6 +2,8 @@ import Rx from 'rxjs/Rx';
 
 const subjectAsync = new Rx.AsyncSubject();
 
+// subject has access to subscribe()
+// remember: subscribe takes as arguments the consumer function, and the optional error and complete functions
 const subA = subjectAsync.subscribe(
   value => console.log('async subject:', value),
   error => console.error('async error:', error),

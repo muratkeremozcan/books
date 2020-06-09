@@ -1,7 +1,7 @@
 import Rx from 'rxjs/Rx';
 
 // contrast to simple subject: an initial value can be sent, no calling next() necessary with it
-// new subscribers will get the most recent value right before their subscription
+// also, new subscribers will get the most recent value right before their subscription
 
 const behaviorSubject = new Rx.BehaviorSubject('contrast: initial value can be logged with behaviorSubject');
 

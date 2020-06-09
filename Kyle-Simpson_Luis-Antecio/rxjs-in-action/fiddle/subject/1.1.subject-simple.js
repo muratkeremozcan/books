@@ -3,6 +3,16 @@ import Rx from 'rxjs/Rx';
 // Subject is just an Observable with the ability to call next() on itself, and is multicast / hot by default
 // It's a practical event emitter
 
+/* the following operations exist on subject :
+
+next([value])
+error([error message])
+complete()   // these 
+subscribe()
+unsubscribe()
+
+*/
+
 
 const subject = new Rx.Subject();
 
@@ -20,12 +30,3 @@ const subC = subject.subscribe(val => console.log(`subC: new subscribers will on
 
 subject.next('subsequent values are shared with all');
 
-/* the following operations exist on subject :
-
-next([value])
-error([error message])
-complete()
-subscribe()
-unsubscribe()
-
-*/
