@@ -27,4 +27,4 @@ subs    --1--4--9--16--25--36--49--64--81--|
 
 
 // gulp examle 9.9 - 9.12 are worth looking at for unit test
-https://github.com/ReactiveX/RxJS/blob/master/doc/writing-marble-tests.md
+https://rxjs-dev.firebaseapp.com/guide/testing/marble-testing

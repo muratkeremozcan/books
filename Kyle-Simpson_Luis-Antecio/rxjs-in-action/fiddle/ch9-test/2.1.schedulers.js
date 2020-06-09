@@ -34,7 +34,8 @@ var observable = Rx.Observable.create(function (observer) {
   observer.next(3);
   observer.complete();
 })
-.observeOn(Rx.Scheduler.async);
+.observeOn(Rx.Scheduler.async); // use the observeOn() instance operator to transform the emission of events midstream:
+
 
 console.log('just before subscribe');
 
