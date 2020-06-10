@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 import { set } from 'ramda';
 
 // publishReplay() to emit the last x number or all of the most recent values to all subscribers

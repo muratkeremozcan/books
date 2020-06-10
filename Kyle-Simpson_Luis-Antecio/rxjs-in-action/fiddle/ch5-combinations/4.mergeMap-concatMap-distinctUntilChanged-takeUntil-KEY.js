@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // Working with nested observables is analogous to inserting an array into another array 
 // and expecting map() and filter() to work with just the data inside them.

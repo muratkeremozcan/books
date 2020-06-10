@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 let candidates = [
   { name: 'Brendan Eich', experience: 'JavaScript Inventor' },

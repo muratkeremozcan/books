@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // switch: useful when a stream is used to initiate another stream
 // each time the source observable emits, switch() immediately unsubscribes from it and begins emitting events from the latest observable that was mapped.

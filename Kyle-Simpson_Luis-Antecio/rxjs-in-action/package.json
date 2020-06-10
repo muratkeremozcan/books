@@ -38,6 +38,7 @@
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-stream": "^1.19.0",
+    "rxjs-compat": "^6.5.5",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
@@ -52,7 +53,7 @@
     "connect": "^3.7.0",
     "connect-route": "0.1.5",
     "http-proxy-middleware": "0.17.3",
-    "rxjs": "5.0.3",
+    "rxjs": "6.5.5",
     "serve-static": "^1.14.1",
     "websocket": "1.0.23"
   }

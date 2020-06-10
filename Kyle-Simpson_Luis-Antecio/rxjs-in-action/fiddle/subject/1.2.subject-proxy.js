@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // A Subject can act as a proxy, i.e receive values from another stream and add its own values on top
 

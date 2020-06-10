@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // retryWhen with linear delay
 // the stream will attempt to run for a fixed number of times (given by maxRetries), 

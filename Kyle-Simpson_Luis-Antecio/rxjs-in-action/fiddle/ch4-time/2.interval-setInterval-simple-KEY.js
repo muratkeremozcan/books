@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 const simpleInterval$ = Rx.Observable.create(observer => {
   let num = 0;

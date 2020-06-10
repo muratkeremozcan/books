@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // RxJs provides catch() operator in order to recover from mid-stream errors 
 // catch() allows you to insert a default value in place of the event that caused the error; 

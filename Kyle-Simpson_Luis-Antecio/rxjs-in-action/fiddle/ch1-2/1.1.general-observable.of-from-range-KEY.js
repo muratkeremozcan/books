@@ -39,7 +39,7 @@ Rx.Observable.from([1, 2, 3, 4, 5]).subscribe( // Rx.Observable.of(Observable) <
 );
 
 
-// RxJS has the forEach observable method as well, with the exact same semantics as subscribe:
+// alternative to subscribe, RxJS has the forEach observable method as well, with the exact same semantics as subscribe:
 Rx.Observable.from([6, 7, 8, 9, 10]).forEach(console.log);
 
 
@@ -53,7 +53,7 @@ Rx.Observable.from([1, 2, 3, 4, 5]) // Rx.Observable.of(Observable)
   );
 
 
-// subscribe takes as arguments the consumer function, and the optional error and complete functions
+// subscribe takes as arguments the default consumer function, and the optional error and complete functions
 Rx.Observable.range(1, 3).subscribe(
   x => console.log(`Next: ${x}`),
   err => console.log(`Error: ${err}`),
@@ -94,13 +94,14 @@ async       promise (can do)           DOM events, replaces event emitters: clic
 
 // wrapping event emitters
 
-// event emitters have hooks or callbacks to which closures can be passed; in this way it’s very much like the Promise. 
-// But an event emitter doesn’t stop after a single event; instead, it can continue to invoke the registered callbacks for each event that arrives, creating a practically infinite stream of events. 
-// The emitter will fulfill both of your criteria for handling multi-value, asynchronous events. But it’s not without its share of problems.
-//  Though simple to use, event emitters don’t scale well for larger systems, because their simplicity leads to a lack of expressiveness. 
-// The semantics for unsubscribing and disposing of them can be cumbersome, and there’s no native support for error handling.
-//  These deficits can make it difficult to compose and synchronize complex tasks where multiple events from different parts of the system can be in flight simultaneously. 
-// Rather, you can use RxJS to wrap event emitters, with all their benefits and versatility.
+// Event emitters have hooks or callbacks to which closures can be passed; like a promise
+// contrast to promise: event emitter does not stop after a single event; it can continue to invoke the registered callbacks for each event that arrives
+
+// Event emitter problems (why do we need Rxjs?): 
+// - do not scale well for larger systems, 
+// - unsubscribing and disposing of them can be cumbersome,
+// - no native support for error handling
+
 
 /*
 // DOM example

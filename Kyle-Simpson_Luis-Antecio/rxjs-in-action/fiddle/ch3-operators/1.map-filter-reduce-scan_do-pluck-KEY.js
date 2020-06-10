@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 // instead of you controlling what goes on a stream by creating a custom observable and pushing events through observer.next(), 
 // it’s preferable to relinquish that control and react when the time comes using of, from, range, fromPromise etc. to wrap an event source
 

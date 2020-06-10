@@ -1,6 +1,6 @@
 // you can use fromPromise to wrap a Promise with an Observable. Usage is similar to .of, .from, or .range
 
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 /** promise that resolve to 42 in 2 seconds */
 const fortyTwo = new Promise((resolve, reject) => {
@@ -23,8 +23,9 @@ Rx.Observable.fromPromise(fortyTwo)
 
 // subscribe takes as arguments the consumer function, and the optional error and complete functions
 Rx.Observable.fromPromise(fortyTwo)
-  .map(increment)
-  .map(increment)
+  .map(increment) // 43
+  .map(increment) // 44
+  .map(increment) // 45
   .subscribe(
     val => console.log(val),
     err => console.error(err),

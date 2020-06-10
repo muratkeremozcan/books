@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // delay() shifts the pipeline by delay amount
 Rx.Observable.timer(1000)

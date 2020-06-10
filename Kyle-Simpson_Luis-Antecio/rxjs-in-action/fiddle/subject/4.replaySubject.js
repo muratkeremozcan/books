@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // contrast with BehaviorSubject: instead of just the most recent value, new subscribers will get all the past values or an optional number of them
 // there is no initial value like behaviorSubject

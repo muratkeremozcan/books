@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // buffer:  sourceObservable.buffer(notifierObservable)
 // buffers source Observable values until notifier Observable emits a value

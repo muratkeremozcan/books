@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // time from scratch
 const simpleTimer$ = Rx.Observable.create(observer => {

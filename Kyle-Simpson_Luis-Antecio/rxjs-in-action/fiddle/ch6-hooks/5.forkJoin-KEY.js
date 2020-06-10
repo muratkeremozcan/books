@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // In contrast to combineLatest(), forkJoin() emits only the latest values from each of the input observables
 // So if a sequence emits five values, it will sit there and wait for the last one

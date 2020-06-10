@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // Under the hood, the test scheduler parses out the ASCII text, and from this it generates and queues the actions to perform, 
 // which then get published as notifications. 

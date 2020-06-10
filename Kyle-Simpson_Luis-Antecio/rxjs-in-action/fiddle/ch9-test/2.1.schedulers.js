@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // in unit tests, we need to trick time so that they do not take long.
 // we can use a virtual timer / scheduler

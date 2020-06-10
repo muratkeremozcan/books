@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // bufferCount: sourceObservable.bufferCount(numberOfEventsToBuffer)
 // buffers source Observable values until a count of them is reached, then keeps releasing

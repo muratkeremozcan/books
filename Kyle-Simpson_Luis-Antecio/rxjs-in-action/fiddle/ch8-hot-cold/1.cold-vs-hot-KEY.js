@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 import R from 'ramda';
 
 // a cold observable is one that doesn’t begin emitting all of its values until an observer subscribes to it

@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // contrast to simple subject: an initial value can be sent, no calling next() necessary with it
 // also, new subscribers will get the most recent value right before their subscription

@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 /** counts up indefinitely */
 const timer$ = Rx.Observable.create(observer => {

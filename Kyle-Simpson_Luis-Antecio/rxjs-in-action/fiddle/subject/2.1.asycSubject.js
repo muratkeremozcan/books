@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // with AsyncSubject we can keep calling next; only the latest value received upon complete()
 

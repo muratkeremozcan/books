@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // combineLatest: for cases where multiple streams must run in parallel, but only emit when both are ready 
 // (analogus to Promise.all, but we have streams instead of 1 time values)

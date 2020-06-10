@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // retryWhen() - back-off strategy: the goal is to not overload the server with retries
 // 4 different back-off strategies: constant, linear, exponential, jitter (random)

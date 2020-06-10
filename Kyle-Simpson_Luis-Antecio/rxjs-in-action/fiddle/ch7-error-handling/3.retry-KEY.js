@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // catch let's you recover from errors with an alternate path, but stops the stream
 // what if you want the stream to retry?

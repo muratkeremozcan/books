@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 /** simulates stock prices */
 const Money = function (currency, val) {

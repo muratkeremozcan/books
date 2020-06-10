@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // using() : combines logic tied to the start and end of an observable.
 // The idea behind it is that you often have resources that are completely subject to the lifespan of the observable. 

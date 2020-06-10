@@ -1,5 +1,5 @@
 import R from 'ramda';
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // remember zip? Used in FP to merge 2 corresponding arrays
 

@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // Publish creates a hot observable whereby all subscribers begin receiving the events as soon as the call to connect is made. 
 // Otherwise, the source stream behaves like a cold observable, sitting idle until connect() is called.

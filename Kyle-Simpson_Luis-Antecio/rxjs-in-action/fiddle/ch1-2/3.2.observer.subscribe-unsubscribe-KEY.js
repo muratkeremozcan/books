@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 const progressBar$ = Rx.Observable.create(observer => { // observable is created
   const DELAY = 3000;  // starts after 3 seconds

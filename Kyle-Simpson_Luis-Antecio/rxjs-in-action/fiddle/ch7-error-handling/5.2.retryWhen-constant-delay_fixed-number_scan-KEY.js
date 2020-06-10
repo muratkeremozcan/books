@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // You can also use retryWhen() to implement a fixed number of retries 
 // by keeping track of the number of times the source observable has been retried, utilizing scan() operator

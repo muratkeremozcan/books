@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // Subject is just an Observable with the ability to call next() on itself, and is multicast / hot by default
 // It's a practical event emitter

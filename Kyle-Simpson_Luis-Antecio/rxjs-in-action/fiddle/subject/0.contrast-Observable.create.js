@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // contrast to subject: we had to use Rx.Observable.create(observer => { ... }), specify the callback function
 // and configure the emission up front. There is no way to call next() and emit on demand later

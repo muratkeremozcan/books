@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 import moment from 'moment';
 
 // although cold observables are usually ok, resubscribe with a cold observable can be problem if there are side effects

@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 // try, catch, finally analogy
 // finally() invokes a specified void function after the source observable terminates by invoking the observer’s complete() or error() methods. 

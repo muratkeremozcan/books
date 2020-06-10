@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 import moment from 'moment';
 
 // replay vs resubscribe is about whether if the pipeline gets re-executed or not when another observer starts listening.
