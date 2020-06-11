@@ -10,7 +10,7 @@ let candidates = [
 
 const candidates$ = Rx.Observable.from(candidates);
 
-// take : takes a set amount of data fro mthe observable: will take 'Javascript Inventor' and 'Historian'
+// take : takes a set amount of data from the observable: will take 'Javascript Inventor' and 'Historian'
 candidates$
   .pluck('experience')// pluck is used to extract the value at property/key
   .take(2) // take returns a specified count of elements from the Observable stream
@@ -30,7 +30,6 @@ candidates$
   .subscribe(console.log);
 
 // min : takes the alphabetical minimum for the property: 'Alberto Perez'
-candidates$
   .pluck('name')
   .min() // returns the min value in the Observable stream
   .subscribe(console.log);
