@@ -12,7 +12,7 @@ Rx.Observable.timer(1000)
 // we get 1,2, 2 secs , 3,4, 2 secs, 5,6, 2 secs. Output happens after 6 secs total.
 Rx.Observable.from([1, 2])
    .delay(2000) // 2 seconds
-   .concat(Rx.Observable.from([3,4]))
+   .concat(Rx.Observable.from([3,4])) // concat will come up later, it merges Observables and sequences them
    .delay(2000) // 4 seconds
    .concat(Rx.Observable.from([5,6]))
    .delay(2000) // 6 seconds
@@ -37,3 +37,4 @@ Rx.Observable.fromEvent(document, 'mousemove')
   subscribe(console.log)
 */
 // check out gulp example at 4.13
+

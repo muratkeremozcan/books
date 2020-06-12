@@ -24,7 +24,7 @@ setTimeout(function () {  //#E
 // by default, interval() returns array indexes: 0, 1, 2...
 Rx.Observable.interval(2000)
   .skip(1) // skips the first item emitted, which is 0
-  .take(5) // this will go on forever, so just take the first 5items
+  .take(5) // this will go on forever, so just take the first 5 items
   .subscribe(
     console.log,
     error => console.error(error.message),
