@@ -29,7 +29,7 @@ Rx.Observable.of('a', 'b', 'c', 'c', 'c', 'c', 'b', 'b', 'a', 'a')
 // sourceObservable$.takeUntil(notifierObservable$)
 
 const sourceObservable$ = Rx.Observable.interval(1000); // this can keep going forever
-const notifierObservable$ = Rx.Observable.timer(5000); // bu we stop it with this
+const notifierObservable$ = Rx.Observable.timer(5000); // but we stop it with this
 
 sourceObservable$.takeUntil(notifierObservable$)
   .subscribe(

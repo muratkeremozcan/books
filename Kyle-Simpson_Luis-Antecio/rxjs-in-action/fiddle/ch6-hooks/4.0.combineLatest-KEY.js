@@ -1,9 +1,9 @@
 import * as Rx from 'rxjs/Rx';
 
 // combineLatest: for cases where multiple streams must run in parallel, but only emit when both are ready 
-// (analogus to Promise.all, but we have streams instead of 1 time values)
-// contrast: no combining by interleaving-merge, sequencing-concat, cancelling-1st-stream-and-switching...
-// or taking-1st-stream-Until-2nd-stream-kicks-in
+// (analogus to Promise.all, but we have streams instead of one-time values)
+// contrast: no combining by interleaving-merge(), sequencing-concat(), cancelling-1st-stream-and-switch()...
+// or taking-1st-stream-Until-2nd-stream-kicks-in with takeUntil()
 
 // Generally, causal streams (one depends on the other) are combined using mergeMap(), switchMap(), even takeUntil()
 // whereas independent streams are combined using combineLatest(), forkJoin()
@@ -24,11 +24,11 @@ Rx.Observable.combineLatest(source1$, source2$)
 /////
 
 // when source 1 emits, it sends the result with the latest value in source 2 at the time, vice versa
-const letter$ = Rx.Observable.interval(1000)
+const letter$ = Rx.Observable.timer(0, 1000)
   .map(num => String.fromCharCode(65 + num)) // fromCharCode returns a string based on the character code: String.fromCharCode(65, 66, 67);  // returns "ABC"
   .map(letter => `Source 1 -> ${letter}`);
 
-const number$ = Rx.Observable.interval(1000)
+const number$ = Rx.Observable.timer(0, 1000)
   .map(num => `Source 2 -> ${num}`);
 
 Rx.Observable.combineLatest(letter$.take(5), number$.take(5))

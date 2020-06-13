@@ -6,7 +6,7 @@ import * as Rx from 'rxjs/Rx';
 
 
 Rx.Observable.of(42)  // when this event occurs...
-  .map(forty2 => Rx.Observable.range(1, 3)) // ...it's cancelled wand replaced by this event
+  .map(forty2 => Rx.Observable.range(1, 3)) // ...it's cancelled and replaced by this event
   .switch()
   .subscribe(console.log)
 
@@ -16,7 +16,7 @@ Rx.Observable.of(42)  // when this event occurs...
     .switch() // use switch to begin emitting data from projected observable
     .subscribe(console.log)  // prints 1, 2, 3 to the console after the mouse is clicked
 
-  // merge comparison: here the click events are not cancelled, observers will see clicks mixed with 1-3 range
+  // merge comparison: here the click events is not cancelled, observers will see clicks mixed with 1-3 range
   Rx.Observable.fromEvent(document, 'click')
     .merge(Rx.Observable.range(1, 3))
     .subscribe(console.log)

@@ -6,6 +6,8 @@
  *  @author Paul Daniels
  *  @author Luis Atencio
  */
+// drag and drop example drag & drop
+
 const panel = document.querySelector('#dragTarget');
 // mousedown events on the target
 const mouseDown$ = Rx.Observable.fromEvent(panel, 'mousedown');

@@ -16,7 +16,7 @@
 
  // many APIs still use callbacks. Callback based APIs can be adapted to RxJS with bindCallback (analogous to fromPromise)
  // Rx.Observable.bindCallback(callbackFn)
- // 
+ 
 
  const getJSONAsObservable = Rx.Observable.bindCallback($.getJSON);
 

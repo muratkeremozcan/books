@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 // In contrast to combineLatest(), forkJoin() emits only the latest values from each of the input observables
 // So if a sequence emits five values, it will sit there and wait for the last one
 // combineLatest() would instead get the most recent as of for example an interval
-
+// acts more like Promise.all vs combineLatest(), because it does not pulse but gives the final value instead
 
 const source1$ = Rx.Observable.from(['a', 'b', 'c']);
 const source2$ = Rx.Observable.from([1, 2, 3]);
