@@ -1,4 +1,4 @@
-import Rx from 'rxjs'
+import * as Rx from 'rxjs/Rx'
 
 // Cold is unicast
 // Hot is multicast
@@ -20,7 +20,7 @@ promise$.subscribe(console.log);
 promise$.subscribe(console.log);
 
 
-// to make this HOT observable COLD, move the source or the producer of events into the observable context:
+// KEY: to make a HOT/multi-cast observable COLD/uni-cast, move the source or the producer of events into the observable context:
 
 // until now we used this format with Rx.Observable.create(observer => {..})
 const coldPromise$ = new Rx.Observable(observer => {

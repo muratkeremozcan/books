@@ -33,9 +33,9 @@ const myAlgorithm = (lhs) =>
 const actual$ = myAlgorithm(lhs$);
 
 // assert: compare actual$ to the expected
-// he data happened on the correct time frame and that the value on that frame is correct.
+// the data happened on the correct time frame and that the value on that frame is correct.
 testScheduler.expectObservable(actual$).toBe(expected, expectedMap);
 
 
-// to make the test run we need to flush it so that TestScheduler internally can trigger the HotObservable and run an asser
+// to make the test run we need to flush it so that TestScheduler internally can trigger the HotObservable and run an assert
 testScheduler.flush();

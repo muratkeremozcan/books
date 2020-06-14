@@ -15,10 +15,12 @@ const source$ = Rx.Observable.interval(1000)
 const published$ = source$.publish();
 
 // with publish(), you have to call connect() to start the stream - can call it anywhere in the code
-// publish can be called a warm observable; starts called, becomes hot on connect()
-published$.connect();
+// publish can be called a warm observable; starts col, becomes hot on connect()
 
 published$.subscribe(createObserver('SubA'));
+
+// KEY: we control when we conect the 2nd observable
+published$.connect();
 published$.subscribe(createObserver('SubB'));
 // you have to be careful to unsubscribe from a publish()
 

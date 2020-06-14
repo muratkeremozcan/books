@@ -5,10 +5,10 @@ import * as Rx from 'rxjs/Rx';
 
 /* the following operations exist on subject :
 
-next([value])
-error([error message])
-complete()   // these 
-subscribe()
+next([value])  // next, error and complete usually just callbacks in the  Observable.create() function
+error([error message]) // but a subject can use them any time (freedom to emit)
+complete()
+subscribe()  // these are usually for the Observer, and subject can call them as well
 unsubscribe()
 
 */

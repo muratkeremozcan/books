@@ -13,7 +13,8 @@ Rx.Observable.of(2, 4, 5, 8, 10)
     return num;
   })
   .retry(3) // you want to retry before the catch, and catch as the last resort
-  .catch(err => Rx.Observable.of(6))
+  .catch(err => Rx.Observable.of(6)) 
+  // you can insert a finally() here to add something on top of the observer's error or complete callbacks
   .map(computeHalf)
   .subscribe(
     val => { // in case of an error, the rety happens original + retry amount (4)

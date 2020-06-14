@@ -1,6 +1,6 @@
-import Rx from 'rxjs'
+import * as Rx from 'rxjs/Rx'
 
-// you may want to make COLD observables into HOT with the intention of sharing their content 
+// you may want to make COLD/Uni observables into HOT/Multi with the intention of sharing their content 
 // and avoiding not only duplicating your efforts but also duplicating resources.
 
 // share() shares a single subscription to a stream  among multiple subscribers (COLD to HOT)

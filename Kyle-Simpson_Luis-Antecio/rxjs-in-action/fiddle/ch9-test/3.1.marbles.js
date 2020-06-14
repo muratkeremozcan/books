@@ -15,7 +15,7 @@ time; //?
 // the dashes represent frames and the letters events (or notifications) that the stream will publish. Every dash represents 10 frames.
 let result = Rx.TestScheduler.parseMarbles('--a---b---|', { a: 'A', b: 'B' });
 
-// result; //?
+result; //?
 
 
 // map example
@@ -27,4 +27,4 @@ subs    --1--4--9--16--25--36--49--64--81--|
 
 
 // gulp examle 9.9 - 9.12 are worth looking at for unit test
-https://rxjs-dev.firebaseapp.com/guide/testing/marble-testing
+// https://rxjs-dev.firebaseapp.com/guide/testing/marble-testing

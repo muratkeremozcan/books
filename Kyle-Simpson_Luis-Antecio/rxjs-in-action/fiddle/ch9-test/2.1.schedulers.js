@@ -35,7 +35,7 @@ var observable = Rx.Observable.create(function (observer) {
   observer.complete();
 })
 .observeOn(Rx.Scheduler.async); // use the observeOn() instance operator to transform the emission of events midstream:
-
+// here since we make it async, the console.logs will show first. Toggle it to see them come out in synchrounous order instead.
 
 console.log('just before subscribe');
 

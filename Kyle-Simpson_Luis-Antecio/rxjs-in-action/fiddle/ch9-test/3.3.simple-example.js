@@ -24,5 +24,5 @@ const actual$ = myAlgorithm(lhs$);
 
 // assert
 testScheduler.expectObservable(actual$).toBe(expected, expectedMap);
-// run the tst
+// run the test
 testScheduler.flush();

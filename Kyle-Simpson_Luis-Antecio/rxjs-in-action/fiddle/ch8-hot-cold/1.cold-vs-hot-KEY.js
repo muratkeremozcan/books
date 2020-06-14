@@ -1,7 +1,7 @@
 import * as Rx from 'rxjs/Rx';
 import R from 'ramda';
 
-// a cold observable is one that doesn’t begin emitting all of its values until an observer subscribes to it
+// a cold observable (unicast) is one that doesn’t begin emitting all of its values until an observer subscribes to it
 // They are passive; analogy: Netflix. Starts emittiing when someone is observing, every observer gets identical data
 // Typically they are used to wrap bounded data types such as numbers, ranges of numbers, strings, arrays, and HTTP requests
 // ex: of(), from(), timer(), interval()
@@ -27,7 +27,7 @@ interval$
   });
 
   
-// Hot observables are those that produce events regardless of the presence of subscribers
+// Hot observables (multicast) are those that produce events regardless of the presence of subscribers
 // They are active; analogy: TV station. Emits whether someone is observing or not
 // typically mouse clicks, mouse movement, touch, any events exposed via event emitters
 

@@ -24,4 +24,4 @@ Rx.Observable.combineLatest(s1$, s2$); //?
 Rx.Observable.zip(s1$, s2$); //?
 
 // The zip() operator can be very useful in cases when you need to spread out a stream synchronously over time,
-// It’s not recommended when coordinating asynchronous streams that emit at different times—combineLatest() is the operator of choice in these cases.
+// It’s not recommended when coordinating asynchronous streams that emit at different times — combineLatest() is the operator of choice in these cases.

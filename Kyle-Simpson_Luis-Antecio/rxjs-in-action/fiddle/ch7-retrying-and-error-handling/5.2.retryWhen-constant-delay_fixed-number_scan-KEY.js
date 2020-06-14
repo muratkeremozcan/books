@@ -23,9 +23,10 @@ Rx.Observable.of(2, 4, 5, 8, 10)
         }
         return ++errorCount; // increase count by 1
       }, 1) // start accumulator from 1, for the original stream
-      .delay(3000) // can intoduce a delay. It can go before the scan() as well
+      .delay(2000) // can intoduce a delay. It can go before the scan() as well
       
   )
+  .catch(err => Rx.Observable.of(6)) // optionally, can still combo with catch
   .map(computeHalf)
   .subscribe(
     val => {

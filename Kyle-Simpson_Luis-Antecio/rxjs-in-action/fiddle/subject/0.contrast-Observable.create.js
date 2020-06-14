@@ -1,6 +1,6 @@
 import * as Rx from 'rxjs/Rx';
 
-// contrast to subject: we had to use Rx.Observable.create(observer => { ... }), specify the callback function
+// contrast to subject: we had to use Rx.Observable.create(observer => { ... }) , specify the callback function
 // and configure the emission up front. There is no way to call next() and emit on demand later
 // Also, we had to share it so that it is multi-cast / hot. Rx.Subject() does this by default
 

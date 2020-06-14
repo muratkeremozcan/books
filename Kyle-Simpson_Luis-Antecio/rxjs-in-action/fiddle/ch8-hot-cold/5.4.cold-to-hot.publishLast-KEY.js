@@ -5,7 +5,7 @@ import { set } from 'ramda';
 
 
 const source$ = Rx.Observable.interval(1000)
-  .take(10)
+  .take(5)
   .do(num => {
     console.log(`running some code with ${num}`);
   });
@@ -14,10 +14,10 @@ const source$ = Rx.Observable.interval(1000)
 // publishLast() multicasts the last observable value from a sequence to all subscribers.
 const published$ = source$.publishLast();
 
-published$.connect();
 
 published$.subscribe(createObserver('SubA'));
 
+published$.connect();
 setTimeout(() => {
   published$.subscribe(createObserver('SubB'));
 }, 5000);

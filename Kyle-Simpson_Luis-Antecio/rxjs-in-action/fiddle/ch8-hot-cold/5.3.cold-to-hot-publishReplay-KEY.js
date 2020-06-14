@@ -5,7 +5,7 @@ import { set } from 'ramda';
 
 
 const source$ = Rx.Observable.interval(1000)
-  .take(10)
+  .take(5)
   .do(num => {
     console.log(`running some code with ${num}`);
   });
@@ -13,11 +13,11 @@ const source$ = Rx.Observable.interval(1000)
 // an observable that can store two past events and reemit them to any new subscribers
 const published$ = source$.publishReplay(2);
 
-published$.connect();
 
 // Subscriber A connects subscribers immediately, and begins receiving events from count 0.
 published$.subscribe(createObserver('SubA'));
 
+published$.connect(); // KEY: with publish, we can control when we connect to the Observable
 // Subscribing 5 seconds later, subscriber B should begin receiving events starting with the number 4,
 // but because of the replay it will first receive 2 and 3 (right before 4)
 setTimeout(() => {

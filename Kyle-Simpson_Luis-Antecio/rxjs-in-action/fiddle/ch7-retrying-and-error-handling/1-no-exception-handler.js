@@ -1,4 +1,4 @@
-import Rx from 'rxJs';
+import * as Rx from 'rxjs/Rx';
 
 // at the end of an observable stream, subscriber implements 3 methods:
 // next(), error(), complete()
