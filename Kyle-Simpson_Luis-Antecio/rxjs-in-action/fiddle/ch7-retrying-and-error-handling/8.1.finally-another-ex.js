@@ -1,6 +1,5 @@
 import * as Rx from 'rxjs/Rx';
 
-// You can find out if an observable is complete by calling finally(() => ...)
 
 Rx.Observable.timer(2000)
   .finally(() => console.log('first stream done')) // finally indicates the completion of a stream

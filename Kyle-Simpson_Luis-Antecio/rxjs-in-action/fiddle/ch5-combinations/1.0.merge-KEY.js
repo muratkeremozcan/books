@@ -1,6 +1,6 @@
 import * as Rx from 'rxjs/Rx';
 
-// merge: merges observable streams into 1, useful for interleaving
+// merge: Turn multiple observables into a single observable. Interleaves.
 
 const source1$ = Rx.Observable.interval(1000)
   .map(x => `Source1: ${x}`)
@@ -13,6 +13,8 @@ const source2$ = Rx.Observable.interval(1750)
 const source3$ = Rx.Observable.interval(2500)
   .map(y => `Source3: ${y}`)
   .take(3);
+
+// this operator can be used as either a static or instance method!
 
 // static form: creating a stream from the combination
 Rx.Observable.merge(source1$, source2$, source3$) 

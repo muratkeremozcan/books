@@ -1,7 +1,7 @@
 import * as Rx from 'rxjs/Rx';
 
 // concat: merges as well, but instead of interleaving, it sequences
-// if you have a case where a source somehow should be prioritized then this is the operator for you
+// think of concat like a line at a ATM, the next transaction (subscription) cannot start until the previous completes!
 
 const source1$ = Rx.Observable.interval(1000)
   .map(x => `Source1: ${x}`)
