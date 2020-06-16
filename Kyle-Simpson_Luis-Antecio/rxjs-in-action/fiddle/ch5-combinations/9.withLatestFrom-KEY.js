@@ -7,7 +7,7 @@ import { interval } from 'rxjs';
 // withLatestFrom() emits only when the second Observable emits
 // combineLatest() emits the the last emission any time one of the observables emit, 
 
-// combineLatest(observables: ...Observable, project: function): Observable
+// combineLatest(observables: ...Observable, project?: function): Observable
 // withLatestFrom(other: Observable, project?: Function): Observable
 
 // to see a different example, switch the naming of the sources

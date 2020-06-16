@@ -5,9 +5,7 @@ import * as Rx from 'rxjs/Rx';
 // the stream will attempt to run for a fixed number of times (given by maxRetries), 
 // with a linearly incrementing time of 1 second between retries, before finally giving up.
 
-// zip() pairs the events one-to-one, so it’s effective when the asynchronous streams it’s operating over 
-// emit values with similar time intervals, which you can’t control all of the time. For that, use combineLatest
-
+// zip(): After all observables emit, emit values as an array
 
 const computeHalf = x => Math.floor(x / 2);
 let maxRetries = 4;
