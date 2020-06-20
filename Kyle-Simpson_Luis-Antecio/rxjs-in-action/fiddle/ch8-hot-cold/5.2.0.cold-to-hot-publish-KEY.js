@@ -15,7 +15,7 @@ const source$ = Rx.Observable.interval(1000)
 const published$ = source$.publish();
 
 // with publish(), you have to call connect() to start the stream - can call it anywhere in the code
-// publish can be called a warm observable; starts col, becomes hot on connect()
+// publish can be called a warm observable; starts codl, becomes hot on connect()
 
 published$.subscribe(createObserver('SubA'));
 

@@ -54,7 +54,12 @@ Rx.Observable.from([1, 2, 3, 4, 5]) // Rx.Observable.of(Observable)
 
 
 // subscribe takes as arguments the default consumer function, and the optional error and complete functions
-Rx.Observable.range(1, 3).subscribe(
+
+// range() : emit numbers in provided range in sequence.
+// range(start: number, count: number, scheduler: Scheduler): Observable
+// it is like using of with only numbers as in of(1,2, 3, 4, 5), but not specifying each number
+
+Rx.Observable.range(1, 5).subscribe(
   x => console.log(`Next: ${x}`),
   err => console.log(`Error: ${err}`),
   () => console.log('Completed')
@@ -126,6 +131,13 @@ Rx.Observable.fromEvent(addEmitter, 'add', (a, b) => ({a: a, b: b}))
    .subscribe(console.log); //-> 5
 
 addEmitter.emit('add', 2, 3);
+
+
+other examples of fromEvent() which is very popular
+turns event into observable sequence
+signature: fromEvent(target: EventTargetLike, eventName: string, selector: function): Observable
+
+https://www.learnrxjs.io/learn-rxjs/operators/creation/fromevent
 
 */
 

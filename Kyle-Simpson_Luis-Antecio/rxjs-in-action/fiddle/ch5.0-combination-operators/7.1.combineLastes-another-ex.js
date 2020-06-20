@@ -1,5 +1,4 @@
-import { timer } from 'rxjs';
-import { combineAll, combineLatest} from 'rxjs/operators';
+import { timer, combineLatest } from 'rxjs';
 
 let start = new Date();
 
@@ -11,7 +10,7 @@ const timerTwo$ = timer(2000, 4000);
 const timerThree$ = timer(3000, 4000);
 
 // when one timer emits, emit the latest values from each timer as an array
-const stream$ = combineAll(timerOne$, timerTwo$, timerThree$);
+const stream$ = combineLatest(timerOne$, timerTwo$, timerThree$);
 
 stream$.subscribe(
   ([timerOneVal, timerTwoVal, timerThreeVal]) => { // can use array or object destructuring

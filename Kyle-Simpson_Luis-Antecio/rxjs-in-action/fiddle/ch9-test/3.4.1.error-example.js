@@ -20,7 +20,7 @@ const myAlgorithm = lhs =>
     .from(lhs)
 
 
-const actual$ = myAlgorithm(Rx.Observable.throw('error'));
+const actual$ = myAlgorithm(Rx.Observable.throw('error')); // throw = throwErro
 
 
 // assert

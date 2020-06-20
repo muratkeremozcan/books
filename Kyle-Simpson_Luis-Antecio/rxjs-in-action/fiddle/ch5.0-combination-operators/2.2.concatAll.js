@@ -25,18 +25,31 @@ const source3$ = source1$.pipe(
   concatAll()
 );
 
-source3$.subscribe(val =>{
+source3$.subscribe(val => {
   console.log('Example with Promise:', val)
 });
 
 
-////
+////  Delay while inner observables complete. Useful case of sequence. 
+// Real life use case: progress bar https://www.learnrxjs.io/learn-rxjs/recipes/progressbar
 
 const obs1 = interval(1000).pipe(take(5));
 const obs2 = interval(500).pipe(take(2));
 const obs3 = interval(2000).pipe(take(1));
 
-const sourceCombined$ = of(obs1, obs2, obs3).pipe(delay(3000));
+const sourceCombined$ = of(obs1, obs2, obs3).pipe(
+  delay(5000),
+  concatAll()
+);
+
+/*
+  output: 0,1,2,3,4,0,1,0
+  How it works...
+  Subscribes to each inner observable and emits values, when complete subscribe to next
+  obs1: 0,1,2,3,4 (complete)
+  obs2: 0,1 (complete)
+  obs3: 0 (complete)
+*/
 
 sourceCombined$.subscribe(val => {
   console.log('Combined observable:', val);

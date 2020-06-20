@@ -61,3 +61,9 @@ observable1$
 */
 
 // check out 5.7 example
+
+// there is also mergeAll() https://www.learnrxjs.io/learn-rxjs/operators/combination/mergeall
+// but, in many cases you use mergeMap instead
+
+// map(val => myPromise(val)),  // change to mergeMap, remove mergeAll()
+// mergeAll()

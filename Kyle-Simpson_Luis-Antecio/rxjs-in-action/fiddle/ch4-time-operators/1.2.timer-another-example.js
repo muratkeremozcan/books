@@ -20,3 +20,6 @@ timer(2000, 1000)
     take(5)
   )
   .subscribe(console.log)
+
+
+// can be used in HTTP polling https://www.learnrxjs.io/learn-rxjs/recipes/http-polling
