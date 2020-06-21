@@ -1,5 +1,18 @@
 import * as Rx from 'rxjs/Rx';
 
+// take(): emit provided number of values before completing
+// signature: take(count: number): Observable
+
+// when you are interested in only the first emission, you want to use take().
+// Maybe you want to see what the user first clicked on when they entered the page, or you would want to subscribe to the click event and just take the first emission. 
+
+// Another use-case is when you need to take a snapshot of data at a particular point in time but do not require further emissions. 
+// For example, a stream of user token updates, or a route guard based on a stream in an Angular application.
+
+// 💡 If you want to take a variable number of values based on some logic, or another observable, you can use takeUntil or takeWhile!
+// 💡 take is the opposite of skip where take will take the first n number of emissions while skip will skip the first n number of emissions.
+// https://www.learnrxjs.io/learn-rxjs/operators/filtering/take
+
 let candidates = [
   { name: 'Brendan Eich', experience: 'JavaScript Inventor' },
   { name: 'Emmet Brown', experience: 'Historian' },

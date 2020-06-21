@@ -4,7 +4,7 @@ import * as Rx from 'rxjs/Rx';
 Rx.Observable.timer(1000)
    .delay(2000) // Delays / shifts the entire sequence by a two-second offset
    .timeInterval() 
-   .map(int => Math.floor(int.interval / 1000)) // Computes the time elapsed using the interval value from timeInterval()
+   .map(int => Math.floor(int.interval / 1000)) /8/ Computes the time elapsed using the interval value from timeInterval()
    .subscribe(seconds => console.log(`${seconds} seconds`));
    
 
@@ -27,6 +27,7 @@ Rx.Observable.fromEvent(document, 'click')
   subscribe(console.log)
 */
 // note: check out 4.12 gulp example for a google address like search utilizing debounceTime
+// and https://www.learnrxjs.io/learn-rxjs/operators/filtering/debouncetime
 
 
 // throttle time
