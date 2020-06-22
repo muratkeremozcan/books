@@ -22,7 +22,7 @@ debounceExample$.subscribe(console.log)
 const interval$ = interval(1000);
 
 // raise debounce time by 200 ms each second
-const debounceItnerval$ = interval$.pipe(
+const debounceInterval$ = interval$.pipe(
   debounce(val => timer(val * 200))
 );
 
@@ -31,4 +31,4 @@ const debounceItnerval$ = interval$.pipe(
   all future values will be thrown away
   output: 0...1...2...3...4......(debounce time over 1s, no values emitted)
 */
-debounceItnerval$.subscribe(console.log); 
+debounceInterval$.subscribe(console.log); 
