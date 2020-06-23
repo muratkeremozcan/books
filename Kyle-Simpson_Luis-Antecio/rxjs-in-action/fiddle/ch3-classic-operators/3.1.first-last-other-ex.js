@@ -1,5 +1,5 @@
 import { from } from 'rxjs';
-import { first, find } from 'rxjs/operators';
+import { first, find, last } from 'rxjs/operators';
 
 // first(): emit the first value or first to pass provided expression.
 // signature: first(predicate: function, select: function)
