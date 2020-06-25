@@ -1,5 +1,9 @@
-import { timer } from 'rxjs';
-import { take, skip, delay } from 'rxjs/operators';
+import { timer, of, merge } from 'rxjs';
+import { take, skip, delay, mapTo } from 'rxjs/operators';
+
+// delay(): delay emitted values by given time
+// delay(delay: number | Date, scheduler: Scheduler): Observable
+
 
 let start = new Date();
 
@@ -21,3 +25,18 @@ stream$
     null,
     () => console.log('completed')
   );
+
+
+// example: delay for increasing durations
+
+// emit one item
+const example = of(null);
+// delay output of each by an extra second
+const message = merge(
+  example.pipe(mapTo('Hello')),
+  example.pipe(mapTo('World!'), delay(6000)),
+  example.pipe(mapTo('Goodbye'), delay(7000)),
+  example.pipe(mapTo('World!'), delay(8000))
+);
+// output: 'Hello'...'World!'...'Goodbye'...'World!'
+const subscribe = message.subscribe(val => console.log(val));
