@@ -51,3 +51,15 @@ const subscription = evenNumbers$.subscribe(val => console.log(val));
 setTimeout(() => {
   subscription.unsubscribe();
 }, 10000);
+
+
+//////
+
+const basic = Observable.create(observer => {
+  observer.next('A');
+  observer.next('B');
+  observer.complete();
+  observer.next('C'); // never gets called
+});
+
+basic.subscribe(console.log);
