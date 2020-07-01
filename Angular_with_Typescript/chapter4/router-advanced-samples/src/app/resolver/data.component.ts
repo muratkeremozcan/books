@@ -8,7 +8,6 @@ import {ActivatedRoute} from "@angular/router";
 export class DataComponent{
 
   constructor(private route: ActivatedRoute){
-    // access preloaded data
     const someJsonData = route.snapshot.data['loadedJsonData'];
 
     console.log("Got the data");

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';4040214
 import { API_BASE_URL } from '../../app.tokens';
 
 export interface Product {

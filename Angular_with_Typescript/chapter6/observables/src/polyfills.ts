@@ -41,7 +41,8 @@
 
 
 /** Evergreen browsers require these. **/
-import 'core-js/es6/reflect';
+/*import 'core-js/es6/reflect'; blipsman commented out*/
+import 'core-js/es/array';
 
 
 

@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/counter",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -49,6 +50,10 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
             }
@@ -131,5 +136,8 @@
       }
     }
   },
-  "defaultProject": "counter"
+  "defaultProject": "counter",
+  "cli": {
+    "analytics": "0f72c29d-cda5-4e8e-9dba-500c84e7efac"
+  }
 }

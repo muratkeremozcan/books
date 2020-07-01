@@ -10,8 +10,7 @@ const routes: Routes = [
     {path: '',        component: HomeComponent},
     {path: 'login',        component: LoginComponent},
     {path: 'product', component: ProductDetailComponent,
-        canActivate:[LoginGuard], // adding a guard to the product route
-        canDeactivate:[UnsavedChangesGuard]} // adding the UnsavedChangesGuard to product route
+        canActivate:[LoginGuard], canDeactivate:[UnsavedChangesGuard]}
 ];
 
 export const routing = RouterModule.forRoot(routes);

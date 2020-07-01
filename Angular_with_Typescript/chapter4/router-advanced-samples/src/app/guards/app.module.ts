@@ -25,7 +25,7 @@ import {UnsavedChangesGuard} from "./unsaved-changes.guard";
     RouterModule, routing
   ],
   providers:[{provide: LocationStrategy, useClass: HashLocationStrategy},
-             LoginGuard,UnsavedChangesGuard ], // LoginGuard and UnsavedChangesGuard added as providers
+             LoginGuard,UnsavedChangesGuard ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

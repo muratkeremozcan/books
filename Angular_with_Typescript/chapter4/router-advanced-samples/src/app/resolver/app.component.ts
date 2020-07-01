@@ -16,18 +16,16 @@ import {
 })
 export class AppComponent {
 
-  isNavigating = false; // initially set the flag to false
+  isNavigating = false;
 
-  constructor (private router: Router){ // injects the router object
-    this.router.events.subscribe( // subscribes to router events
+  constructor (private router: Router){
+    this.router.events.subscribe(
       (event) => {
-        // sets the flag to true if NavigationStart is triggered
         if (event instanceof NavigationStart){
           this.isNavigating=true;
           console.log("Navigation started");
         }
 
-        // sets the flag to false if NavigationEnd is triggered
         if (event instanceof NavigationEnd) {
           // || event instanceof NavigationError || event instanceof NavigationCancel){
           this.isNavigating=false;

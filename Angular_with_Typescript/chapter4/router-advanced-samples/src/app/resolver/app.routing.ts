@@ -6,13 +6,13 @@ import {HomeComponent} from "./home.component";
 const routes: Routes = [
   {path: '',        component: HomeComponent},
   {path: 'mydata', component: DataComponent,
-    resolve:{ // configure the resolve guard for mydata route
-      loadedJsonData: DataResolver // specifies the class that will preload the data
+    resolve:{
+      loadedJsonData: DataResolver
     },
-    runGuardsAndResolvers:'always'  // requires Angular 5.1 or later
+    runGuardsAndResolvers:'always'  
   }
 ];
 
 export const routing = RouterModule.forRoot(routes,
-  {onSameUrlNavigation: "reload"}   // requires Angular 5.1 or later
+  {onSameUrlNavigation: "reload"}   
   );
