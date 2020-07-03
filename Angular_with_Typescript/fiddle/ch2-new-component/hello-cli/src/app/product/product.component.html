@@ -1,1 +1,25 @@
-<p>product works!</p>
+<h1>All products</h1>
+<ul>
+  <!-- Think of an Angular directive as an HTML enhancer.
+    Structural directive — The directive changes the structure of the component’s template.
+    Attribute directive — The directive changes the behavior or visual representation of an individual component or HTML element. -->
+
+  <!-- structural *ngFor directive can iterate through an array (or other collection) 
+    and render an HTML element for each item of the array -->
+  <li *ngFor="let product of products">
+    {{product.title}}
+  </li>
+
+  <!-- structural *ngIf directive being used to either show or hide the mat-error element 
+  checks whether the value in a form field title has invalid minimum length -->
+  <mat-error *ngIf="formModel.hasError('minlength', 'title')">
+    Enter at least 3 characters
+  </mat-error>
+
+  <!-- ngModel attribute directive being used to bind the value in the <input> element to a class variable, shippingAddress -->
+  <input 
+    type='text' 
+    placeholder="Enter shippping address" 
+    [(ngModel)]="shippingAddress">
+
+</ul>
