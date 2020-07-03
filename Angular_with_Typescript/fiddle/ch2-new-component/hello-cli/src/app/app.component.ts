@@ -31,3 +31,16 @@ in addition to aot, applies uglify and minify to reduce the bundle further
 which reduces runtime warnings given by angular compiler as well increasing performance.
 
 */
+
+/* Anguler CLI commands used:
+
+generate a new app:  ng g application
+
+generate a new component: ng g c <componentName
+generate a component named product with inline
+ng g c product --is --it --spec false
+
+
+
+
+*/

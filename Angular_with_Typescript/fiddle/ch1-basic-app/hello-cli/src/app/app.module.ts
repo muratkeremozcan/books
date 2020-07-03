@@ -20,7 +20,7 @@ import { AppComponent } from './app.component';
     // Such client-side navigation is arranged with the help of the Angular router.
     AppRoutingModule
   ],
-  providers: [], // mystery for now
+  providers: [], // services go in providers
   bootstrap: [AppComponent] // declares that AppComponent is the root component
 })
 export class AppModule { }
