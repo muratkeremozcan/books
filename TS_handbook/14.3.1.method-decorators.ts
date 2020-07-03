@@ -3,7 +3,13 @@
 
 // the target — which is either the constructor function of the class for a static member, or the prototype of the class for an instance member 
 // the key — the method name
-// the descriptor — the property descriptor for the method.
+// the descriptor — the property descriptor for the method which has the signature:
+/*
+{ value: [λ], 
+  writable: true, 
+  enumerable: true, 
+  configurable: true } 
+*/
 
 
 export class IceCreamComponent {
@@ -42,6 +48,7 @@ function Confirmable(message: string) {
     return descriptor;
   };
 }
+
 
 const tops = new IceCreamComponent();
 

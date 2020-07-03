@@ -38,6 +38,7 @@ function logMethod(target: Function, key: string, descriptor: TypedPropertyDescr
   return descriptor;
 }
 
+
 const myHero = new Hero('Robin', 'agile');
 
 
