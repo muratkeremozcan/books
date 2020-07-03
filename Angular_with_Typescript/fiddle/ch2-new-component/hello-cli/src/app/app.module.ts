@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { ProductComponent } from './product/product.component';
 import { ProductService } from './shared/product.service';
 
-// Any component belongs to exactly one module of an app,
+// Any component belongs to exactly one module of an app,g
 // and you have to include the name of the component’s class into the declarations property of the @NgModule() decorator 
 @NgModule({
   // declarations list all the components that belong in this module
