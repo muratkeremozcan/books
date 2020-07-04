@@ -22,4 +22,18 @@
     placeholder="Enter shippping address" 
     [(ngModel)]="shippingAddress">
 
+  <!-- a pipe is a template element that allows you to transform a value -->
+  <p>Your birthday is {{ birthday | date }}</p>
+  <!-- Angular comes in with a number of built in pipes
+    - An UpperCasePipe allows you to convert an input string to uppercase by using | uppercase in the template. 
+    - A LowerCasePipe allows you to convert an input string to lowercase by using | lowercase in the template. 
+    - A DatePipe allows you to display a date in different formats by using | date. 
+    - A CurrencyPipe transforms a number into a desired currency by using | currency. 
+    - An AsyncPipe unwraps the data from the provided Observable stream by using | async -->
+
+  <!-- Pipes can be chained  
+  the below displays the value of the birthday variable in a medium date format and in uppercase (JUN 15, 2001, 9:43:11 PM):-->
+  <p>{{ birthday | date: 'medium' | uppercase}}</p>
+
+
 </ul>

@@ -33,14 +33,7 @@ ng g library — Starting with Angular 6, you can generate a library project
 ng g c product - will generate four files for a new product component in the src/app/product directory
 and add the ProductComponent class to the declarations property of @NgModule
 
-ng g c product -is --it --spec false - will generate a single file, product.component.ts,
-with inlined styles and template and no test in the src/app/product directory
-
 ng g s product - will generate the file product.service.ts containing a class decorated with @Injectable
 and the file product.service.spec.ts in the src/app directory
 
-ng g s product -m app.module - will generate the same files as the preceding command
-and will also add ProductService to the providers property of @NgModule
-
-in this example we used: ng g c product --is --it --spec false
 */
