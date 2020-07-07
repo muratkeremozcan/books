@@ -1,1 +1,49 @@
-<p>navbar works!</p>
+<!-- Navbars require a wrapping .navbar with .navbar-expand{-sm|-md|-lg|-xl} for responsive collapsing and color scheme classes -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <!-- Bootstrap’s navbar-brand denotes your auction brand and routes to the default page on click -->
+  <a class="navbar-brand" [routerLink]="['/']">ngAuction</a>
+
+    <!-- hamburger on the right -->
+    <button class="navbar-toggler" type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>   
+    </button>
+
+    <!-- Bootstrap’s collapsible is rendered as three horizontal bars on small screens. -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto"> 
+
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home 
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        
+        <li class="nav-item"> 
+          <a class="nav-link" href="#">About</a>
+        </li>
+
+        <!-- Services drop-down menu -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" 
+             role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Services  
+          </a>
+
+          <div class="dropdown-menu" aria-labelledBy="navbarDropdown">
+            <a href="#" class="dropdown-item">Find products</a>
+            <!-- Drop-down menu items -->
+            <a href="#" class="dropdown-item">Place order</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">Pay</a>
+          </div>
+
+        </li>    
+
+      </ul>
+
+    </div>
+
+</nav>

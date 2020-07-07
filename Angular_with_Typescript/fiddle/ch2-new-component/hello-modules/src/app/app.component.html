@@ -6,7 +6,7 @@
 <app-shipping></app-shipping>         
 
 
-<!-- Uni-directional binding (from the class variable to the view) -->
+<!-- one-way binding (from the class variable to the view) -->
 
 <!--  to display a value of a class variable in a template’s string, use double curly braces (called interpolation) -->
 <span>span with value: {{spanVal}}</span>
@@ -19,7 +19,7 @@ here we bind the value of the class variable (a boolean) and control it. Toggle 
 
 
 <!-- 
-unidirectional binding from the view to a class method. 
+one-way binding from the view to a class method. 
 
 // If the button is clicked, invoke the method onClickEvent().
 <button (click)="onClickEvent()">Get Products</button>

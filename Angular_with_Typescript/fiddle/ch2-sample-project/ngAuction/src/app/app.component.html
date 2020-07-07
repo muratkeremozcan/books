@@ -5,15 +5,16 @@
 (BS rule 1) Rows must be placed within a .container (fixed-width) or .container-fluid (full-width) for proper alignment and padding
 (BS rule 2) Use rows to create horizontal groups of columns
 
-Out of the box, the Bootstrap grid supports five tiers for different widths of user devices: xs, sm, md, lg, and xl. 
-For example, md stands for medium devices (992 px (pixels) or more), lg is 1200 px or more, and so on. 
-In your app component, you want to allocate three columns in medium or larger viewports to the search component (<nga-search>) 
+Out of the box, the Bootstrap grid supports five tiers for different widths of user devices: xs, sm, md, lg, and xl.
+For example, md stands for medium devices (992 px (pixels) or more), lg is 1200 px or more, and so on.
+In your app component, you want to allocate three columns in medium or larger viewports to the search component (<nga-search>)
 and nine columns to the <router-outlet>.
 -->
 <div class="container">
-  <div class="row"> 
+  <div class="row">
     <!-- (BS rule 3) Content should be placed within columns, and only columns may be immediate children of rows -->
-    <!-- 3 columns of the bootstrap flex grid are given to the search component -->
+    <!-- 3 columns of the bootstrap flex grid are given to the search component
+    i.e. on medium+ take 3 columns, otherwise take the whole width -->
     <div class="col-md-3">
       <!-- renders the search component -->
       <nga-search></nga-search>

@@ -16,7 +16,7 @@ import { ProductService } from './shared/product.service';
   // and you have to include the name of the component’s class into the declarations property of the @NgModule() decorator 
   declarations: [
     AppComponent,
-    ProductComponent
+    ProductComponent // got added after creating a component called Product with CLI command'ng g c product'
   ],
   // these modules are a must for apps that run in browsers
   // all needed modules  go here
@@ -36,7 +36,7 @@ import { ProductService } from './shared/product.service';
   // services go in providers
   // if in the service @Injectable decorator, provideIn: 'root' is used
   // it allows you to skip the step of specifying the service in the providers property of the NgModule() decorator here.
-  providers: [ProductService],
+  providers: [ProductService], // got added after creating a service with CLI command 'ng g s shared/product'
   bootstrap: [AppComponent] // declares that AppComponent is the root component
 })
 export class AppModule { }

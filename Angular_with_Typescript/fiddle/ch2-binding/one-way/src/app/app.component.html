@@ -1,0 +1,17 @@
+<!-- uses a one-way property binding to render the value of the class variables title and name -->
+<h1>{{ title }}</h1>
+<h1>{{ name }}</h1>
+
+<!-- uses one-way event binding to the method changeName().  -->
+<button (click)="changeName()">Change name</button>
+
+<!-- 
+{{  }} displays the value  template <- ts
+
+[ ] denotes property binding; changes class variables:   template -> ts
+
+( ) denotes event binding, calls  class methods and changes the template:   template <- ts  , ex: (click)="someMethod()"
+
+To denote two-way binding:  [( )] 
+
+-->

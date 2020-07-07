@@ -1,0 +1,20 @@
+
+<!-- Using [(ngModel)] to denote the two-way binding. To use [(ngModel)] you have to import FormsModule  -->
+<input type="text"
+       placeholder="Enter shipping address"
+       [(ngModel)]="shippingAddress">
+
+<button (click)="shippingAddress='123 Main Street'">Set Default Address</button>
+
+<p>The shipping address is {{ shippingAddress }}</p>
+
+<!-- 
+{{  }} displays the value  template <- ts
+
+[ ] denotes property binding; changes class variables:   template -> ts
+
+( ) denotes event binding, calls class methods and changes the template:   template <- ts  , ex: (click)="someMethod()"
+
+To denote two-way binding:  [( )] 
+
+-->
