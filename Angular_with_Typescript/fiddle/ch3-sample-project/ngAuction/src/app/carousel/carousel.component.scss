@@ -1,0 +1,11 @@
+// :host applies styles to the carousel component and not to its internals
+:host {
+  // block displays the component as a block element that takes the entire width
+  display: block;
+  margin-bottom: 10px;
+}
+
+img {
+  width: 100%;
+}
+

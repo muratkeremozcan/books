@@ -11,7 +11,7 @@ export class AppComponent {
 
 
 /*
-Anguler CLI commands used:
+Angular CLI commands used:
 
 ng new hello-cli
 

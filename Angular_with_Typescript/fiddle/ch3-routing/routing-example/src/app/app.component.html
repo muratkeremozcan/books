@@ -1,0 +1,20 @@
+<!-- we create the components, and define the routes at app-module.ts
+
+then, all we need is to reference the routes(which are linked to components) at the html
+[routerLink]=['pathValue']
+and use <router-outlet> to display the content of the component linked to that route
+
+[routerLink] binds an element to a path/route
+remember [ ] denotes class property binding;  template -> ts
+
+-->
+
+<!-- &nbsp: non breaking space; tells the browser to create a space between two words w/o going to the next line -->
+<a [routerLink]="['/']">Home</a>&nbsp;
+<a [routerLink]="['product']">Product</a>
+
+<!-- you have to have router-outlet so that you can display the template of the component linked to that route
+default outlet is AppComponent because at app-module.ts we specfied bootstrap" [AppComponent]
+if we are at /product route, then instead we use ProductComponent
+-->
+<router-outlet></router-outlet>
