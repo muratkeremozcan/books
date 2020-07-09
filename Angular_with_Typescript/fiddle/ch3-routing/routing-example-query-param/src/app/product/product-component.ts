@@ -13,7 +13,7 @@ export class ProductComponent implements OnInit {
   constructor(route: ActivatedRoute) {
     // Gets the value of the parameter named id and assigns it to the productID class variable, which is used in the template via {{ }}
     // the 'id' is coming from the path definition in app-routing-module.ts:  path: 'product/:id
-    // Passing Data into Route and extracting it from the route (3): the value of prodctId is defined at app.component.ts
+    // Passing Data into Route (3): the value of prodctId is defined at app.component.ts
     // we need to hook that vale to this route and indicate that when we are at this route this component should be displayed
     // and binding {{ }} should work
     this.productId = route.snapshot.paramMap.get('id');
