@@ -7,18 +7,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  productId = 1234;
+  productCategory = 'super duper category';
 
-  // Angular injects the instance of Router into the router variable
+  // injects the router object
   constructor(private router: Router) { }
 
-  // navigates to configured product route programmatically
-  navigateToProductDetail() {
-    // Passing Data into Routes (2): alternative to template: define the route this data will be at
-    this.router.navigate([`/product/${this.productId}`]);
-
-    // alternative to using it at the template:
-    // if you don't want to show the URL of the current route, use skipLocationChange directive
-    // this.router.navigate([`/product/${this.productId}`], {skipLocationChange: true});
+  // new (2): To pass query parameters using programmatic navigation, you need to have access to the Router object.
+  showSportingProducts() {
+    this.router.navigate(['/product'], { queryParams: {category: 'sports-prog-nav'}});
   }
+  // navigateToProductDetail() {
+  //   this.router.navigate([`/product/${this.productId}`]);
+  // }
+
 }

@@ -1,24 +1,12 @@
-<!-- &nbsp: non breaking space; tells the browser to create a space between two words w/o going to the next line
-
-  remember
-  [ ] denotes class property binding;  template -> ts
-  ( ) denotes event binding,  template <- ts   , ex: (click)="someMethod()"
-
--->
 <a [routerLink]="['/']">Home</a>&nbsp;
 
-<!-- Passing Data into Routes (2): define the route this data will be at 'productId'
-the route will be */product/1234 because productId is the boound class property-->
-<a [routerLink]="['product', productId]">Product Detail</a>&nbsp;
+<!-- new (2): besides routerLink, you can use query param which are not bound to a particular route
+  http://localhost:4200/products/1234
+  http://localhost:4200/products?category=sports -->
+<a [routerLink]="['/product']" [queryParams]="{category: 'sports-template-nav'}">Sports products</a>&nbsp;
+<!-- <a [routerLink]="['product', productId]">Product Detail</a>&nbsp; -->
 
-<!-- if you don't want to show the URL of the current route, use skipLocationChange directive -->
-<!-- <a [routerLink]="['product']" skipLocationChange>Product Details</a>&nbsp; -->
+<button (click)="showSportingProducts()">Product Detail</button>
+<!-- <button (click)="navigateToProductDetail()">Product Detail</button> -->
 
-<!-- this button is an alternative which still uses router configuration but invokes the navigate() method on the Router instance -->
-<button (click)="navigateToProductDetail()">Product Detail</button>
-
-<!-- you have to have router-outlet so that you can display the template of the component linked to that route
-default outlet is AppComponent because at app-module.ts we specfied bootstrap" [AppComponent]
-if we are at /product route, then instead we use ProductComponent
--->
 <router-outlet></router-outlet>

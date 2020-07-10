@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home-component';
 import { ProductComponent } from './product/product-component';
+import { ProductDescriptionComponent } from './product/product-description/product-description.component';
+import { SellerInfoComponent } from './product/seller-info/seller-info.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 
@@ -11,11 +13,9 @@ ng new routing-example
 ng g c home
 ng g c product
 
-we create the components, and define the routes at app-routing-module.ts
-
-then, all we need is to reference the routes(which are linked to components by the below) at the html
-[routerLink]=['pathValue']
-and use <router-outlet> to display the content of the component linked to that route
+under product folder, created 2 child components
+ng g c product-description
+ng g c seller-info
 */
 
 // You configure routes in an array of objects of type Route
@@ -25,7 +25,13 @@ const routes: Routes = [
   },
   { // if the path contains 'product' fragment, render the ProductDetailComponent in <router-outlet>
     // Passing Data into Routes (1) : first we define what the route parameter will be, 'id' in this case
-    path: 'product/:id', component: ProductComponent
+    path: 'product/:idProduct', component: ProductComponent,
+    children: [ // new(1) : children property configures the child routes
+      // productDescription will be at Product Component by default
+      { path: '', component: ProductDescriptionComponent },
+      // from ProductComponent the user will be able to navigate to SellerInfoComponent
+      { path: 'seller/:idSeller', component: SellerInfoComponent }
+    ]
   },
   { // an application component that will be displayed whenever the application can’t find the matching component.
     path: '**', component: NotFoundComponent
@@ -41,7 +47,10 @@ const routes: Routes = [
 
 // adds the route configuration to @NgModule
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(
+    routes,
+    { enableTracing: true } // you can log router events in console for debugging with this
+  )],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
