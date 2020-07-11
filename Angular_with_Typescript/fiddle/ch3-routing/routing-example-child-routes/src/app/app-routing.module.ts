@@ -26,7 +26,7 @@ const routes: Routes = [
   { // if the path contains 'product' fragment, render the ProductDetailComponent in <router-outlet>
     // Passing Data into Routes (1) : first we define what the route parameter will be, 'id' in this case
     path: 'product/:idProduct', component: ProductComponent,
-    children: [ // new(1) : children property configures the child routes
+    children: [ // new (1) : children property configures the child routes
       // productDescription will be at Product Component by default
       { path: '', component: ProductDescriptionComponent },
       // from ProductComponent the user will be able to navigate to SellerInfoComponent

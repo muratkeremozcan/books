@@ -2,11 +2,10 @@
 
 <!-- new (2): besides routerLink, you can use query param which are not bound to a particular route
   http://localhost:4200/products/1234
-  http://localhost:4200/products?category=sports -->
+  http://localhost:4200/products?category=sports-template-nav -->
 <a [routerLink]="['/product']" [queryParams]="{category: 'sports-template-nav'}">Sports products</a>&nbsp;
 <!-- <a [routerLink]="['product', productId]">Product Detail</a>&nbsp; -->
 
 <button (click)="showSportingProducts()">Product Detail</button>
-<!-- <button (click)="navigateToProductDetail()">Product Detail</button> -->
 
 <router-outlet></router-outlet>

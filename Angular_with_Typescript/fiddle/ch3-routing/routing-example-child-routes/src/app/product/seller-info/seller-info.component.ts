@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SellerInfoComponent implements OnInit {
 
-  // (4) Because SellerInfoComponent expects to receive the seller ID,
+  // new (4) Because SellerInfoComponent expects to receive the seller ID,
   // its constructor needs an argument of type ActivatedRoute to get the seller ID
 
   sellerID: string;
