@@ -1,1 +1,23 @@
-<p>product-item works!</p>
+<!-- thumbnail, caption, float-right are bootstrap classes
+  https://www.w3schools.com/bootstrap/bootstrap_images.asp
+  https://getbootstrap.com/docs/4.0/utilities/float/#responsive -->
+<div class="thumbnail">
+  <img src="http://placehold.it/320x150">
+  <div class="caption">
+    <!-- | currency applies the currency pipe for formatting -->
+    <h4 class="float-right">{{productItem.price | currency}}</h4>
+    <h4>
+      <!-- remember [ ] denotes class property binding;  template -> ts
+      [routerLink] is a reference to the route which is defined in app-routing-module.ts
+      here the product.title beomes a link to navigate to the matching product.id route
+      -->
+      <a [routerLink]="['/products', productItem.id]">{{productItem.title}}</a>
+    </h4>
+    <p>{{productItem.description}}</p>
+  </div>
+
+  <div class="ratings">
+    <!-- rating is an @Input from stars component -->
+    <nga-stars [rating]="productItem.rating"></nga-stars>
+  </div>
+</div>

@@ -1,1 +1,8 @@
-<p>stars works!</p>
+<p>
+  <!-- Iterates through the Boolean array stars and applies either the filled or empty star -->
+  <span *ngFor="let isEmpty of stars" class="material-icons">
+    <!-- uses Material Design starts -->
+    {{isEmpty ? 'star_border' : 'star_rate'}}
+  </span>
+  <span>{{ rating }} stars</span>
+</p>
