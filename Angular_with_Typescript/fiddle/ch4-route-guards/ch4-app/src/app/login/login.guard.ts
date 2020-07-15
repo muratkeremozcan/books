@@ -7,6 +7,9 @@ import { Injectable } from '@angular/core'; // needs to be Injectable like a ser
 // If canActivate() of the guard returns true, the user can navigate to the route.
 // (2 CanActivate route) You need to assign this guard to the property canActivate at app.routing.module.ts
 
+// the recommendation is to start small in a small app with single routing file,
+// and refactor to each feature having its own child routing file as app grows
+
 @Injectable()
 export class LoginGuard implements CanActivate {
 

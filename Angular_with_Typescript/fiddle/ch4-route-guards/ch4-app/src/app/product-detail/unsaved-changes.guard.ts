@@ -8,8 +8,8 @@ import { ProductDetailComponent } from './product-detail.component';
 // the relevant component has to be cast as the type <  >
 export class UnsavedChangesGuard implements CanDeactivate<ProductDetailComponent> {
 
-  // contrast to login.guard ; no constructor needed with router: Router because we are not using router.navigate()
   // (2 CanDeactivate route)
+  // contrast to login.guard ; no constructor needed with router: Router because we are not using router.navigate()
   canDeactivate(component: ProductDetailComponent) {
 
     // (3 CanDeactivate) use the FormControl.dirty property to whether the content of the input control has been changed

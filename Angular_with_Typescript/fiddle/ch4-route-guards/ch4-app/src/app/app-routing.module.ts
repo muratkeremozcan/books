@@ -12,7 +12,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {
     path: 'product', component: ProductDetailComponent,
-    // (2 CanActivate route) KEY: the guards need to be assigned to the property canActivate at app.routing.module.ts
+    // (2 CanActivate route) KEY: the guards from .guard.ts files need to be assigned to the property canActivate at app.routing.module.ts
     canActivate: [LoginGuard],
     // (4 CanDeactivate route):
     canDeactivate: [UnsavedChangesGuard]
