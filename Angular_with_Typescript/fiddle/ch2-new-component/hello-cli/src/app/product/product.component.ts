@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   // app- is the default prefix for apps
   // you can change the prefix with: ng g c product -prefix hello
-  selector: 'app-product', 
+  selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
@@ -22,11 +22,13 @@ export class ProductComponent implements OnInit {
 
 /* CLI commands used
 
-ng g c product - will generate four files for a new product component in the src/app/product directory
+(1) ng g c product - will generate four files for a new product component in the src/app/product directory
 and add the ProductComponent class to the declarations property of @NgModule
 
 ng g s product - will generate the file product.service.ts containing a class decorated with @Injectable
 and the file product.service.spec.ts in the src/app directory
+
+(2) ng g s shared/product  - generate it under a folder called shared
 
 
 related Anguler CLI commands

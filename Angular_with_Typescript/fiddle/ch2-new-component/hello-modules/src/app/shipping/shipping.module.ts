@@ -35,5 +35,3 @@ ng g c shipping -m shippping - creates shipping component in shipping module, ad
 // you add the <app-shipping> (specified as the selector in shipping-component.ts) tag to the template of the AppComponent.
 
 export class ShippingModule { }
-
-

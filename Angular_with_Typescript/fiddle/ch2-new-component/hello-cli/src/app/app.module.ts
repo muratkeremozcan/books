@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProductComponent } from './product/product.component';
-import { ProductService } from './shared/product.service';
+// import { ProductService } from './shared/product.service'; // no need with providedIn: 'root' at product.service.ts
 
 // all elements of a small application can be located in one module (the root module),
 // whereas larger apps may have more than one module (feature modules).
@@ -12,8 +12,8 @@ import { ProductService } from './shared/product.service';
 // From a syntax perspective, an Angular module is a class annotated with the @NgModule() decorator.
 @NgModule({
   // declarations list all the components that belong in this module
-  // Any component belongs to exactly one module of an app,g
-  // and you have to include the name of the component’s class into the declarations property of the @NgModule() decorator 
+  // Any component belongs to exactly one module of an app
+  // and you have to include the name of the component’s class into the declarations property of the @NgModule() decorator
   declarations: [
     AppComponent,
     ProductComponent // got added after creating a component called Product with CLI command'ng g c product'
@@ -36,7 +36,7 @@ import { ProductService } from './shared/product.service';
   // services go in providers
   // if in the service @Injectable decorator, provideIn: 'root' is used
   // it allows you to skip the step of specifying the service in the providers property of the NgModule() decorator here.
-  providers: [ProductService], // got added after creating a service with CLI command 'ng g s shared/product'
+  // providers: [ProductService], // got added after creating a service with CLI command 'ng g s shared/product'
   bootstrap: [AppComponent] // declares that AppComponent is the root component
 })
 export class AppModule { }

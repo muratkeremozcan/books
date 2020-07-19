@@ -11,13 +11,13 @@ export class ProductService {
 
   // To have Angular instantiate and inject this service into any component,
   // you have to add the following argument to the component’s constructor:
-  constructor(productService: ProductService) { 
+  constructor(productService: ProductService) {
     // start using the service, e.g. productService.getMyData();
   }
 }
 
-/* generated with Angular CLI command:
+/*:
 
-ng g s shared/product
+(2) ng g s shared/product
 
 */

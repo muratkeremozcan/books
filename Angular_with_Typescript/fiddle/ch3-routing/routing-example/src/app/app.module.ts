@@ -28,4 +28,5 @@ export class AppModule { }
 ng new routing-example
 ng g c home
 ng g c product
+ng g c notFound
 */

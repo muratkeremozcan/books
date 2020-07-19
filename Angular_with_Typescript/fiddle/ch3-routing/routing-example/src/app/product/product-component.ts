@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ProductComponent implements OnInit {
   productId: string; // this is the same variable in the app.component, we need it referred to here so that the activated route can set it
 
-  // the ActivatedRoute object reprsents the destination route that is ProductComponent and is injected into the constructor
+  //  the ActivatedRoute object reprsents the destination route that is ProductComponent and is injected into the constructor
   constructor(route: ActivatedRoute) {
     // Gets the value of the parameter named id and assigns it to the productID class variable.
     // the 'id' is coming from the path definition in app-routing-module.ts:  path: 'product/:id

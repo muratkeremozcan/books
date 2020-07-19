@@ -9,6 +9,7 @@ import { FormControl } from '@angular/forms'; // enables assigning class members
 export class ProductDetailComponent implements OnInit {
 
   name: FormControl = new FormControl();
+
   constructor() { }
 
   ngOnInit() {
