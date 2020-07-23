@@ -4,7 +4,7 @@ import { debounceTime } from 'rxjs/operators';
 
 /*  turn a DOM event into an observable in the previous secition [1]
 [1.1] we got a reference to the DOM object: we used @ViewChild and declared the property myInputField: ElementRef that held a reference,
-[1.2] we gotthen used fromEvent() to make the DOM event into an observable
+[1.2] we hen used fromEvent() to make the DOM event into an observable
 
 @ViewChild('stockSymbol', { static: true })
 myInputField: ElementRef;

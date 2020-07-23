@@ -33,7 +33,8 @@ export class AppComponent implements AfterViewInit {
   // In Angular, you can use the @ViewChild() decorator to get a reference to an element from a component template.
   @ViewChild('stockSymbol', { static: true })
   // Declares the property myInputField that holds a reference to the <input> field
-  myInputField: ElementRef; // the shortcoming: ElementRef is discouraged, because it may present some security vulnerabilities. Instead Use the Forms API
+  // the shortcoming: ElementRef is discouraged, because it may present some security vulnerabilities. Instead Use the Forms API
+  myInputField: ElementRef;
 
   // Places the code in the ngAfterViewInit() component lifecycle method
   ngAfterViewInit() {

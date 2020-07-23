@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
 
   getWeather(city: string): Observable<any> {
     // catchError operator is great for error checking. use .status to access the status code,
-    // and return EMPTY to keep the app running while console
+    // and return EMPTY to keep the app running
     // Imagine a slow typer who enters Lo while trying to find the weather in London.
     // The HTTP request for Lo goes out, a 404 is returned, and you create an empty observable
     // so the subscribe() method will get an empty result, which is not an error.
