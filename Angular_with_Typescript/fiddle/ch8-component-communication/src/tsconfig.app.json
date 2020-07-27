@@ -12,6 +12,9 @@
   "files": [
     "main-input.ts",
     "main-output.ts",
+    "main-mediator-parent.ts",
+    "main-mediator-service.ts",
+    "main-child-api",
     "polyfills.ts"
   ],
   "include": [

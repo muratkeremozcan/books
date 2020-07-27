@@ -16,5 +16,5 @@ const subA = source$.subscribe(proxySubject);
 const subB = proxySubject.subscribe(val => console.log(`subB : ${val}`));
 
 // KEY: proxySubject listens to source$, but can also add its own contribution
-subB.next('0, 1, 2 come from the other stream, new value from here'); 
+subB.next('0, 1, 2 come from the other stream, new value from here');
 

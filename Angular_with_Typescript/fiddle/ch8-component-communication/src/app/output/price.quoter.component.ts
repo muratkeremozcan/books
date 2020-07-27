@@ -7,8 +7,6 @@ import { interval } from 'rxjs';
 // Angular components can dispatch custom events using the EventEmitter object.
 
 // EventEmitter is a subclass of Subject that can serve as both observable and observer,
-// typically you use EventEmitter just for emitting custom events that are handled in the template of the parent component.
-
 
 @Component({
   selector: 'price-quoter',

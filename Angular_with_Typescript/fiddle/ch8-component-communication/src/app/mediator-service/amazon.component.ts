@@ -1,8 +1,3 @@
-// This is a long version of a component that illustrates the use
-// of subscribe, unsubscribe, and ngOnDestroy
-// For a shorter version that uses async pipe see eBayComponent
-// With Async pipe you don't need to unsubscribe (see eBay component)
-
 import {Component, OnDestroy} from '@angular/core';
 import {StateService} from './state.service';
 import {Subscription} from 'rxjs';
@@ -20,13 +15,14 @@ export class AmazonComponent implements OnDestroy{
   searchFor: string;
   subscription: Subscription;
 
+  // if you do not want to use the amazing async pipe
+  // in order to get the state, you subscribe and set a property with the value received from the state
   constructor(private state: StateService){
-
     this.subscription = state.getState()
       .subscribe(event => this.searchFor = event);
   }
-
+  // and then you have to unsubscribe implementing & returning an OnDestroy
   ngOnDestroy() {
-    this.subscription.unsubscribe();  // a must
+    this.subscription.unsubscribe();
   }
 }

@@ -5,7 +5,7 @@ import {PriceQuote} from './iprice.quote';
   selector: 'app-root',
   // (2.3) we are getting an event from the child @Output() lastPrice with a payload of type PriceQuote
   // remember: ( ) denotes event binding, template <- ts , in this case the ts of the child component
-  // to receive this event, we need  (eventName) = someFunction($event) which we handle the event with
+  // to receive this event, we need  (childPropEvent) = parentHandlerFunction($event) which we handle the event with
   template: `
     AppComponent received: {{priceQuote?.stockSymbol}}
                            {{priceQuote?.lastPrice | currency:'USD'}}
