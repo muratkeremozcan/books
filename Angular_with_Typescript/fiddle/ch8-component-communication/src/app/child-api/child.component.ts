@@ -6,9 +6,8 @@ import {Component, Input} from "@angular/core";
 
 })
 export class ChildComponent {
-
+  // matches (5.1)
   @Input() name: string;
-
   greet() {
     console.log(`Hello from ${this.name}`);
   }
