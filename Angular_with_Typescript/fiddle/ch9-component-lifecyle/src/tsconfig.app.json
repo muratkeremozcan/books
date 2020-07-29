@@ -10,7 +10,7 @@
     "types": []
   },
   "files": [
-    "main-input.ts",
+    "main-lifecycle.ts",
     "polyfills.ts"
   ],
   "include": [

@@ -1,5 +1,14 @@
 import {Component} from '@angular/core';
 
+// [6] In some cases, a parent component needs to render arbitrary markup within a child at runtime,
+// you can do that in Angular using projection.
+// You can project a fragment of the parent component’s template onto its child’s template by using the ngContent directive.
+// (not sure how useful this is)
+
+
+
+// [6.1] at parent, define the portion to be projected using the child's selector
+
 @Component({
   selector: 'app-root',
   styles: ['.wrapper {background: deeppink;}'],

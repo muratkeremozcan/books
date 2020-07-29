@@ -1,5 +1,6 @@
 import {Component, ViewEncapsulation} from "@angular/core";
 
+// [6.2]  at child, define the insertion point at the child <ng-content></ng-content>
 @Component({
   selector: 'child',
  styles: ['.wrapper {background: lightgreen;}'],
