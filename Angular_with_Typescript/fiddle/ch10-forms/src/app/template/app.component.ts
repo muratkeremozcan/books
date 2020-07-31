@@ -8,9 +8,8 @@ ngForm: binds a template element (for example, <form>) to NgForm. Typically assi
 NgForm: represents the entire form - (implicitly created Angular directive)
 
 ngModel: used in templates in form elements (for example, <input>) to be included in the form model
-NgModel: marks the HTML element to be included in the form model - (implicitly created Angular directive)
-
 name: Used in templates in form elements to specify its name in the form model
+NgModel: marks the HTML element to be included in the form model - (implicitly created Angular directive)
 
 ngModelGroup: Used in templates to name a part of the form for future reference
 NgModelGroup: represents a part of the form, for example, password and confirm password fields - (implicitly created Angular directive)
