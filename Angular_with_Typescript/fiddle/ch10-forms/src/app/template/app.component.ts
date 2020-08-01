@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-/*
+/* [1]
 Template-driven forms (for basic needs):
 the forms are fully programmed in the component’s template using directives, and the model object is created implicitly by Angular.
 

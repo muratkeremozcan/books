@@ -1,23 +1,24 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from "@angular/forms"; // [1]
+import { FormControl, FormGroup } from "@angular/forms"; // [2.1]
 
 
-/* Reactive forms (meta)
-[1] Import ReactiveFormsModule at app.module, import FormControl, FormGroup at the component
-[2] In TS, create an instance of FormGroup to store the form’s values.
-[3] Create an HTML form template  :    [formGroup]="instanceVarOfFormGroup"
-[4] name : formControlName , ngModelGroup : formGroupName
-[5] at the TS constructor, hook the form to the TS by instantiating FormGroup objects and FormControl properties
+/* Reactive forms [2] (almost meta, but you may want to use [5] FormBuilder to avoid 'new' spam)
+[2.1] Import ReactiveFormsModule at app.module, import FormControl, FormGroup at the component
+[2.2] In TS, create an instance of FormGroup to store the form’s values.
+[2.3] Create an HTML form template  :    [formGroup]="instanceVarOfFormGroup"
+[2.4] name : formControlName , ngModelGroup : formGroupName
+[2.5] at the TS constructor, hook the form to the TS by instantiating FormGroup objects and FormControl properties
 */
 
 
-// [3] : [formGroup]="instanceVarOfFormGroup"
+// [2.3] : [formGroup]="instanceVarOfFormGroup"
 @Component({
   selector: 'app-root',
   template: `
     <form [formGroup]="myFormModel" (ngSubmit)="onSubmit()">
       <div>Username: <input type="text" formControlName="username"></div>
       <div>SSN:      <input type="text" formControlName="ssn"></div>
+
       <div formGroupName="passwordsGroup">
         <div>Password:         <input type="password" formControlName="password"></div>
         <div>Confirm password: <input type="password" formControlName="pconfirm"></div>
@@ -27,7 +28,7 @@ import { FormControl, FormGroup } from "@angular/forms"; // [1]
   `
 })
 export class AppComponent {
-  myFormModel: FormGroup; // [2] create an instance of FormGroup
+  myFormModel: FormGroup; // [2.2] create an instance of FormGroup
 
   constructor() {
     // FormGroup is a collection of FormControl objects and represents either the entire form or its part.
