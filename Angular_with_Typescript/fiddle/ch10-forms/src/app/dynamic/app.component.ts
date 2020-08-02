@@ -13,7 +13,7 @@ FormArray:
 FormGroup represents an entire form or a fixed subset of a form’s fields,
 FormArray has a length property, and usually represents a collection of form controls that can grow or shrink.
 
-let myFormModel = new FormGroup({  // represents the entire form
+let mymyFormModel = new FormGroup({  // represents the entire form
                     emails: new FormArray([ // NEW: form array initially has 1 item
                       new FormControl() // adds an instance of FormControl
                       ])
@@ -33,7 +33,7 @@ let myFormModel = new FormGroup({  // represents the entire form
 @Component({
   selector: 'app-root',
   template: `
-    <form [formGroup]="formModel" (ngSubmit)="onSubmit()">
+    <form [formGroup]="myFormModel" (ngSubmit)="onSubmit()">
       <label>Emails</label>
       <button type="button" (click)="addEmail()">Add Email</button>
       <ul formArrayName="emails">
@@ -49,20 +49,19 @@ let myFormModel = new FormGroup({  // represents the entire form
   `
 })
 export class AppComponent {
-  // [3.2] : same as [2.2] , create an instance of FormGroup
-
-  formModel = new FormGroup({ // [3.3]
+  // [3.2] : no need for [2.2] , instead we create instance implicitly
+  myFormModel = new FormGroup({ // [3.3]
     emails: new FormArray([ // KEY [3.4] at TS: no mapping as in [2.4], instead create a FormArray with FormControl elements
       new FormControl()
     ])
   });
 
   get emailsFormArray() {
-    return this.formModel.get('emails') as FormArray;
+    return this.myFormModel.get('emails') as FormArray;
   }
 
   get value() {
-    return JSON.stringify(this.formModel.value, null, 4); // indent with 4 spaces for readability
+    return JSON.stringify(this.myFormModel.value, null, 4); // indent with 4 spaces for readability
   }
 
   addEmail() {
@@ -71,6 +70,6 @@ export class AppComponent {
   }
 
   onSubmit() {
-    console.log(this.formModel.value);
+    console.log(this.myFormModel.value);
   }
 }

@@ -12,7 +12,7 @@ import { FormGroup, FormControl } from "@angular/forms";
 
 // [4.1] the setup of the form can be for reactive [2] or dynamic [3]. Here it's a reactive example
 
-// [4.3] note have reset is different; no need for implementing it at the TS
+// [4.3] note how reset is different; no need for implementing it at the TS
 // just call it from the template    [formGroup]="instanceVarOfFormGroup"  &  instanceVarOfFormGroup.reset()
  @Component({
   selector: 'app-root',
@@ -39,7 +39,6 @@ export class AppComponent {
   }
 
   // [4.2] KEY: once the instance varible for the form exists, we use setValue({allPropertiesOfTheForm})
-
   updateEntireForm() {
     this.myFormModel.setValue({
       id         : 123,
