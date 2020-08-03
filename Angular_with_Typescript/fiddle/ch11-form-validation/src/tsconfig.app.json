@@ -1,0 +1,24 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+  "lib": [
+    "es2016",
+    "dom"
+  ],
+    "outDir": "../out-tsc/app",
+    "baseUrl": "",
+    "types": []
+  },
+  "files": [
+    "main-three.ts",
+    "main-template.ts",
+    "main-reactive.ts",
+    "main-group.ts",
+    "main-dynamic.ts",
+    "main-async.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}
