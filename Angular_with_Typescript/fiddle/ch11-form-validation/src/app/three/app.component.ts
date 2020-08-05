@@ -16,14 +16,15 @@ max - a value can’t be greater than the specified number; it can be used only 
 */
 // (1.2) defines a local variable #variable="ngModel" to give access to the value of this control
 // (1.3) defines a local class attribute with [class.hasError] to help extrapolate the variable's status (this must come last)
-// (1.4) uses [hidden] attribute after extrapoloting the variable's status with .valid & .pristine properties (there is also .dirty)
+// (1.4) uses [hidden] attribute after extrapoloting the variable's status with .valid & .pristine properties
+// there is also .pristine/.pending .untouched / .dirty , .valid / .invalid
 // also uses [hidden] in conjunction with variable.localClass('validator')  : phone.hasError('minlength')
 // (1.5) uses [disabled] attribute after extrapoloting the form's status
 
 // controlling when the validation is performed
-// change — [ngModelOptions]= "{updateOn:'change'}"  . this is the default mode (you can leave it empty) checks a value as soon as it changes.
-// blur — [ngModelOptions]= "{updateOn:'blur '}"  . checks validity of a value when the control loses focus.
-// submit — [ngModelOptions]= "{updateOn:'submit'}"   . checks validity when the user submits the form. (if you use this, remove 1.5)
+// change — [ngModelOptions]= "{updateOn:'change'}" this is the default mode (you can leave it empty) checks a value as soon as it changes
+// blur — [ngModelOptions]= "{updateOn:'blur '}"  checks validity of a value when the control loses focus.
+// submit — [ngModelOptions]= "{updateOn:'submit'}"   checks validity when the user submits the form. (if you use this, remove 1.5)
 
 @Component({
   selector: 'app-root',

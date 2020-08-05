@@ -645,18 +645,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "dynamicvalidator:build"
+            "browserTarget": "dynamic:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "dynamicvalidator:build:production"
+              "browserTarget": "dynamic:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dynamicvalidator:build"
+            "browserTarget": "dynamic:build"
           }
         },
         "test": {
@@ -688,7 +688,7 @@
         }
       }
     },
-    "dynamicvalidator-e2e": {
+    "dynamic-e2e": {
       "root": "",
       "sourceRoot": "",
       "projectType": "application",
@@ -697,7 +697,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "dynamicvalidator:serve"
+            "devServerTarget": "dynamic:serve"
           }
         },
         "lint": {
