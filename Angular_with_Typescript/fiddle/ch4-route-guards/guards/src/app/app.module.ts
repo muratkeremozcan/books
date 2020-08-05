@@ -24,12 +24,3 @@ import { LoginComponent } from './login/login.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-
-
-/* CLI commands ran
-ng new ch4-app
-ng g c Home
-ng g c ProductDetail
-ng g c Login
-*/

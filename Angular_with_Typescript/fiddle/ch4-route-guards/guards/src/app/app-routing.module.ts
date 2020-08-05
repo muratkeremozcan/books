@@ -6,15 +6,18 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { LoginGuard } from './login/login.guard';
 import { UnsavedChangesGuard } from './product-detail/unsaved-changes.guard';
 
+// [1] route guards canActivate and canDeactivate help mediate navigation to and from a route
+// at a high level:  implement the guards canActivate & canDeactivate (1.1),
+// set them up in routes (1.2)
+// and include them in providers (1.3)
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {
     path: 'product', component: ProductDetailComponent,
-    // (2 CanActivate route) KEY: the guards from .guard.ts files need to be assigned to the property canActivate at app.routing.module.ts
+    // (1.2) set up the routes KEY: the guards from .guard.ts files need to be assigned to the property canActivate at app.routing.module.ts
     canActivate: [LoginGuard],
-    // (4 CanDeactivate route):
     canDeactivate: [UnsavedChangesGuard]
   }
 ];
@@ -22,7 +25,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  // (4 / 5 both) the guard classes need to be added to the providers of @NgModule
+  // (1.3) the guard classes need to be added to the providers of @NgModule
   providers: [LoginGuard, UnsavedChangesGuard]
 
 })

@@ -7,19 +7,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  // productCategory = 'super duper category'; // no effect
 
-  // injects the router object
   constructor(private router: Router) { }
 
-  // new (2): To pass query parameters using programmatic navigation, you need to have access to the Router object.
+  // (3.2 alternative config for prog nav): for query params with programmatic navigation, you need to have access to the Router object.
   showSportingProducts() {
-    this.router.navigate(['/product'], { queryParams: {category: 'sports-prog-nav'}});
-    // http://localhost:4200/products?category=sports-prog-nav
+    this.router.navigate(['/product'], { queryParams: { category: 'sports-prog-nav' } });
+    // goes to http://localhost:4200/product?category=sports-prog-nav
+    // this.router.navigate([`/product/${this.productId}`]);z
+    // http://localhost:4200/products/1234zz
+    // comparison to [1]
   }
-  // navigateToProductDetail() {
-  //   this.router.navigate([`/product/${this.productId}`]);
-  //   http://localhost:4200/products/1234
-  // }
-
 }

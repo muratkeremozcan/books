@@ -1,10 +1,10 @@
 <a [routerLink]="['/']">Home</a>&nbsp;
 
-<!-- new (2): besides routerLink, you can use query param which are not bound to a particular route
-  http://localhost:4200/products/1234
+<!-- (3.2) KEY: there was no config in (3.1), query param config is done at the template (or the TS for prog nav)
   http://localhost:4200/products?category=sports-template-nav -->
 <a [routerLink]="['/product']" [queryParams]="{category: 'sports-template-nav'}">Sports products</a>&nbsp;
-<!-- <a [routerLink]="['product', productId]">Product Detail</a>&nbsp; -->
+<!-- <a [routerLink]="['product', productId]"> Product Detail </a>&nbsp; -->
+<!-- comparison to [1] -->
 
 <button (click)="showSportingProducts()">Product Detail</button>
 

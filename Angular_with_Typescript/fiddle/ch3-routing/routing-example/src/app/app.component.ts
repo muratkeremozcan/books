@@ -14,7 +14,7 @@ export class AppComponent {
 
   // navigates to configured product route programmatically
   navigateToProductDetail() {
-    // Passing Data into Routes (2): alternative to template: define the route this data will be at
+    // (1.2 matching) alternative to template: define the route this data will be at
     this.router.navigate([`/product/${this.productId}`]);
     // if you don't want to show the URL of the current route, use skipLocationChange directive
     // this.router.navigate([`/product/${this.productId}`], {skipLocationChange: true});

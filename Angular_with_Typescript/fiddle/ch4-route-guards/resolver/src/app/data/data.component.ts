@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DataComponent implements OnInit {
 
-  // (3) In the constructor of the DataComponent, you extract the data loaded by the resolver and store it in the variable.
+  // (2.1.1) KEY: In the constructor of the DataComponent, you extract the data loaded by the resolver and store it in the variable.
   constructor(private route: ActivatedRoute) {
     // to resolve the route. you have to reference  the app-routing.module>path>resolve>PROPERTY (laodedJsonData)
     // Because you named the property of the resolve object loadedJsonData,

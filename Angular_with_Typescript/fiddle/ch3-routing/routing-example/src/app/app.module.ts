@@ -22,11 +22,3 @@ import { NotFoundComponent } from './not-found/not-found.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-/* CLI commands used
-
-ng new routing-example
-ng g c home
-ng g c product
-ng g c notFound
-*/

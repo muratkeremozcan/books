@@ -4,14 +4,10 @@ import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 
 
-// (1) configure the resolver
-// If you want to to not even render the component until the required data arrives,
-// create a Resolve guard that allows to get the data
-// (here you can insert some loading component for the sake of responsive feeling)
-// then navigate to the route once the component is ready.
+// (2.1) implement the resolver. Similar to (1.1)
 
 // the resolver is essentially a service, so we decorate it as Injectable
-// since it's a service, it also has to be added to providers[] in app.module.ts
+// since it's a service, it also has to be added to providers[] in @NgModule (same as 1.1)
 @Injectable()
 export class DataResolver implements Resolve<string[]> {
 
@@ -19,7 +15,7 @@ export class DataResolver implements Resolve<string[]> {
   constructor(private dataService: DataService) {}
 
   // the Resolve interface requieres a resolve() method to be implemented
-  // and return an Observable, a Promise, or any arbitrary object
+  // and returns an Observable, a Promise, or any arbitrary object
   resolve(): Observable<string[]> {
     return this.dataService.loadData();
   }
