@@ -1,6 +1,8 @@
 import * as express from "express";
 import { AddressInfo } from "net";
 
+// [1] node app that serves a Product[]
+
 const app = express();
 
 interface Product {
@@ -18,7 +20,7 @@ const products: Product[] = [
 // matches get requests to 3 routes
 
 app.get('/', (req, res) => {
-    res.send('The URL for products is http://localhost:8000/api/products');
+    res.send('The URL for products is http://localhost:4201/api/products');
 });
 
 function getProducts(): Product[] {
@@ -34,11 +36,12 @@ function getProductById(productId: number): Product {
     return products.find(p => p.id === productId);
 }
 
+// The GET request came with a parameter. Its values are stored in the params property of the request object.
 app.get('/api/products/:id', (req, res) => {
     res.json(getProductById(parseInt(req.params.id)));
 });
 
-const server = app.listen(8000, "localhost", () => {
+const server = app.listen(4201, "localhost", () => {
     const {address, port} = server.address() as AddressInfo;
     console.log(`Listening on ${address}:${port}`);
 });

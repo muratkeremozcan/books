@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Component } from '@angular/core';
 
 // [1] using HttpClient to read local data
-// hig level:
+// high level:
 // set up the interfaces and the typed observable (1.1, 1.2)
 // inject the httpClient into the constructor so you can use it (1.3)
 // make a request using the httpClient observable (1.4)

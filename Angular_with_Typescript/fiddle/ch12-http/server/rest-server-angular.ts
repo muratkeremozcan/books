@@ -1,9 +1,12 @@
 import * as express from "express";
-import * as path from "path";
+import * as path from "path"; // (2.1) Adds the Node path module for working with the directory and paths
 import { AddressInfo } from "net";
+
+// [2] node app that serves static assets
 
 const app = express();
 
+// (2.2) Assigns the public subdirectory as the location of the static resources: the base url
 app.use('/', express.static(path.join(__dirname, 'public')));
 
 interface Product {
@@ -34,7 +37,9 @@ app.get('/api/products/:id', (req, res) => {
     res.json(getProductById(parseInt(req.params.id)));
 });
 
-const server = app.listen(8000, "localhost", () => {
+const server = app.listen(4201, "localhost", () => {
     const {address, port} = server.address() as AddressInfo;
     console.log('Listening on %s %s', address, port);
 });
+
+
