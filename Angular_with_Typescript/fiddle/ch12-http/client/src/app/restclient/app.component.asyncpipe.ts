@@ -29,6 +29,7 @@ export class AppComponentAsync{
 
   products$: Observable<Product[]>;
   error: string;
+  // note: in the real world you shoud inject httpClient into a service (business logic) rather than a component (UI)
   constructor(private httpClient: HttpClient) {
     this.products$ = this.httpClient.get<Product[]>('/api/products')
     // key difference here from [1] is error handling, we could have this there too, but we didn't
