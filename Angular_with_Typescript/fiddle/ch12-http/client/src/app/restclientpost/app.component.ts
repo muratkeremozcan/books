@@ -32,7 +32,7 @@ export class AppComponent {
     // httpCLient turns the JS object into JSON {"title":"abc","price":"123"}
     this.httpClient.post<string>('/api/product', payload)
       .subscribe( // (3.2.4) handle the response in a subscribe
-        // the response is setup to be an object with a propertery named 'message'
+        // the response coming from the server is setup to be an object with a propertery named 'message'
         data =>  this.response = data['message'],
         // err.error.message  may contain more info. To trigger an error, modify the response from the server not to be a JSON
         (err: HttpErrorResponse) =>
