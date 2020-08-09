@@ -4,7 +4,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 // [3] nkode app that handles post requests
 const app = express();
-// app.use('/', express.static(path.join(__dirname, 'public'))); // not needed, because we are not serving any GET requests
 app.use(bodyParser.json()); // (3.1) use bodyparser is to parse the POST data coming in, and it's turned to json here
 // (3.2) create an endpoint to handle post requests (body and price are coming from the UI's POST form value object {title: "1", price: "3"})
 app.post("/api/product", (req, res) => {
