@@ -38,8 +38,8 @@ export class AppComponent {
   // For HttpClient providers are declared in HttpClientModule, so you don’t need to declare them in your @NgModule.
   constructor(private httpClient: HttpClient) {
 
-    // simple get
-    this.products$ = this.httpClient.get<Product[]>('/data/products.json');
+    // simple get (1.4)
+    // this.products$ = this.httpClient.get<Product[]>('/data/products.json');
 
     // alternative: how do we specify additional headers and query parameters?
     // Since you simply read a file, passing query parameters doesn’t make much sense,
@@ -72,3 +72,7 @@ export class AppComponent {
 5 Injects the HttpClient service
 6 Makes an HTTP GET request specifying the type of the expected data
 */
+
+// to run:
+// UI (client folder):  ng serve readfile -o
+// API (server folder): node build/rest-server.js

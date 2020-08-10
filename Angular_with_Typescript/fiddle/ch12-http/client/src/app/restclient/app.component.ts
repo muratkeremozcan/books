@@ -2,7 +2,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, Subscription} from "rxjs";
 import {Component, OnInit} from "@angular/core";
 
-// [2]: very similar to [1]
+// [1.1]: very similar to [1] (use async pipe [1], unless you have to manipulate the data [1.1])
 // the key difference is not using async pipes in the template [1.5] to auto subscribe to the observable
 // because of this we have to setup ngOnInit() to process the observable
 
@@ -57,3 +57,6 @@ export class AppComponent implements OnInit{
 // also mind you that you always have to run the node server:  node build/rest-server-angular or whatever js file with server name
 
 
+// to run:
+// UI (client folder):  ng serve restclient -o
+// API (server folder): node build/rest-server.js

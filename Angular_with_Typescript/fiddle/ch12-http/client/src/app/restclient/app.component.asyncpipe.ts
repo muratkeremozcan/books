@@ -1,9 +1,9 @@
 import { HttpClient} from '@angular/common/http';
 import {Observable, EMPTY} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {Component} from "@angular/core";
+import {Component} from '@angular/core';
 
-// [3]: very similar to [1] than [2], because it uses async pipe
+// [2] async pipe & error handling: very similar to [1]. In addition to [1], it shows error handling
 // the only difference here is the error handling using catchError observable
 
 
@@ -37,9 +37,14 @@ export class AppComponentAsync{
         catchError( err => {
           this.error = `Can't get products. Got ${err.status} from ${err.url}`;
           return EMPTY;
-          // KEY return Empty observable because if there is an error, we do not want the sub to get destroyed
-          // we only want the sub destroyed when the component is no gone
+          // KEY: return Empty observable because if there is an error, we do not want the sub to get destroyed
+          // we only want the sub destroyed when the component is  gone
         })
       );
   }
 }
+
+
+// to run:
+// UI (client folder):  ng serve readfile -o
+// API (server folder): node build/rest-server.js
