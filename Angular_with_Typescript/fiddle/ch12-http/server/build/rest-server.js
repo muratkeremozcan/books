@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
-// [1] node app that serves a Product[]
+// [1] & [1.1] node app that serves a Product[]
 const app = express();
 const products = [
     { id: 0, title: "First Product", price: 24.99 },

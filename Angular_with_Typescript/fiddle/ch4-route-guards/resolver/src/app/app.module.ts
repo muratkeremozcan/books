@@ -26,12 +26,3 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-
-/*
-ng new ch4-resolve-route
-ng g c home
-ng g c data
-ng g s dataService
-ng g s dataResolver
-*/

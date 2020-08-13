@@ -25,7 +25,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  // (1.3) the guard classes need to be added to the providers of @NgModule
+  // (1.3) the guard classes need to be added to the providers of @NgModule (unless the @Inject with providedIn: 'root' )
   providers: [LoginGuard, UnsavedChangesGuard]
 
 })

@@ -3,7 +3,7 @@ import * as path from "path";
 import * as bodyParser from "body-parser";
 import { AddressInfo } from "net";
 
-// [4] same server as in [3], with added randomized response
+// [4] same server as in [3], with added randomized response for simulating errors
 
 const app = express();
 

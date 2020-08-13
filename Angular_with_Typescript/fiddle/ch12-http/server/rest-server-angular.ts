@@ -2,7 +2,8 @@ import * as express from "express";
 import * as path from "path"; // (2.1) Adds the Node path module for working with the directory and paths
 import { AddressInfo } from "net";
 
-// [2] node app that serves static assets
+// [2] node app that serves static assets,
+// not very different from [1], we don't use the static assets yet. This isn't matching a UI app, just showing static assets
 
 const app = express();
 
