@@ -13,13 +13,13 @@ import { ProductService } from './product.service';
 */
 
 describe('Root app ProductService', () => {
+  // (2.1 setup the service)
   let service: ProductService;
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ProductService] // the service still has to be in providers
     });
-    // (2.2) inject the service to the setup (better option) (with spectator, I think we do not have to this, but for services using services we inject them within the test)
-    // const restSvc = spectator.inject<SitesRestService>(SitesRestService);
+    // (2.2) inject the service to the setup (better option)
     service = TestBed.inject(ProductService);
   });
 

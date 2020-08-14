@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 
 describe('Root app AppComponent', () => {
   beforeEach(async(() => {
+    // (1.1.1) setup the component
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
@@ -16,7 +17,37 @@ describe('Root app AppComponent', () => {
     }).compileComponents();
   }));
 
-  /*
+
+  let fixture, app;
+  beforeEach(() => {
+    // (1.1.2) TestBed.createComponent(): returns a ComponentFixture object which gives access to the TS & the template
+    fixture = TestBed.createComponent(AppComponent);
+    // (1.2) fixture.debugElement.componentInstance gives access to the TS
+    app = fixture.debugElement.componentInstance;
+  });
+  it('should create the app', async(() => {
+    expect(app).toBeTruthy();
+  }));
+  it(`should have as title 'my app'`, async(() => {
+    expect(app.title).toEqual('my app');
+  }));
+  it('should render title in a h1 tag', async(() => {
+    // (1.3) detectChanges() : to update the bindings / trigger change detection
+    fixture.detectChanges();
+    // (1.3) fixture.debugElement.nativeElement: gives access to the template. Used in conjunction with fixture.detectChanges()
+    const compiled = fixture.debugElement.nativeElement;
+    // (1.4) .querySelector(...) to query the CSS, .textContent to access the text
+    expect(compiled.querySelector('h1').textContent).toContain('Welcome to my app!');
+  }));
+  it('should render updated title', async(() => {
+    app.title = 'updated app!';
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toContain('Welcome to updated app!');
+  }));
+});
+
+  /* notes
   If you want change detection to be triggered automatically, you can configure the testing module with the provider for the ComponentFixtureAutoDetect service.
   Although this seems to be a better choice than manually invoking detectChanges(), this service only notices the asynchronous activities
   May be the default in spectator and you do not have to provide ComponentFixtureAutoDetect service
@@ -41,33 +72,3 @@ describe('Root app AppComponent', () => {
     const restSvc = spectator.inject<SitesRestService>(SitesRestService);
     jest.spyOn(restSvc, 'getSiteById').mockReturnValue(of({}));
   */
-
-  let fixture, app;
-  beforeEach(() => {
-    // (1.1) TestBed.createComponent(): returns a ComponentFixture object which gives access to the TS & the template
-    fixture = TestBed.createComponent(AppComponent);
-    // (1.2) fixture.debugElement.componentInstance gives access to the TS
-    app = fixture.debugElement.componentInstance;
-  });
-  it('should create the app', async(() => {
-    expect(app).toBeTruthy();
-  }));
-  it(`should have as title 'my app'`, async(() => {
-    expect(app.title).toEqual('my app');
-  }));
-  it('should render title in a h1 tag', async(() => {
-    // (1.3) detectChanges() : to update the bindings / trigger change detection
-    fixture.detectChanges();
-    // (1.4) fixture.debugElement.nativeElement: gives access to the template. Used in conjunction with fixture.detectChanges()
-    const compiled = fixture.debugElement.nativeElement;
-    // (1.5) .querySelector(...) to query the CSS, .textContent to access the text
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to my app!');
-  }));
-  it('should render updated title', async(() => {
-    app.title = 'updated app!';
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to updated app!');
-  }));
-
-});
