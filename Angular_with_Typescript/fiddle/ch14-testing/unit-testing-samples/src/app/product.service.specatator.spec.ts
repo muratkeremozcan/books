@@ -1,4 +1,3 @@
-import { TestBed, inject } from '@angular/core/testing';
 import { ProductService } from './product.service';
 import { SpectatorService , createServiceFactory } from '@ngneat/spectator';
 
