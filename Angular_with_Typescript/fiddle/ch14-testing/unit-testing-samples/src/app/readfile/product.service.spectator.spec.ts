@@ -22,7 +22,7 @@ describe('Readfile app ProductService', () => {
         res => expect(res).toEqual(productData)
       );
 
-    // test the TS function making the http call, using httpMock.expectOne for spectator add a 2nd arg HttpMethod.GET/POST etc (3.2.3)
+    // test the TS function making the http call, using httpMock.expectOne - for spectator add a 2nd arg HttpMethod.GET/POST etc (3.2.3)
     spectator.expectOne('/data/products.json', HttpMethod.GET);
   }));
 
