@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ShippingModule } from './shipping/shipping.module';
 
+
+
 @NgModule({
   declarations: [
     AppComponent
@@ -12,7 +14,7 @@ import { ShippingModule } from './shipping/shipping.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ShippingModule // (1) you have to include the sub modules you want to import manually
+    ShippingModule // (2.3) you have to include the sub modules you want to import manually
   ],
   providers: [],
   bootstrap: [AppComponent]

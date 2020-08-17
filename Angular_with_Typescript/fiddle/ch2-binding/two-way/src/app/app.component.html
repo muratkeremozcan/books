@@ -1,5 +1,5 @@
 
-<!-- Using [(ngModel)] to denote the two-way binding. To use [(ngModel)] you have to import FormsModule in app.module.ts -->
+<!-- [2] Using [(ngModel)] to denote the two-way binding  (template <-> ts). To use [(ngModel)] you have to import FormsModule in app.module.ts -->
 <input type="text"
        placeholder="Enter shipping address"
        [(ngModel)]="shippingAddress">
@@ -21,9 +21,9 @@ To denote two-way binding:  [( )]
 
 
 <!-- note abot ngModel being outdated
-in angular you can do old angular 1 style forms and controls with ngmodel, but it is prefered to use reactive form controls instea
+in angular you can do old angular 1 style forms and controls with ngmodel, but it is prefered to use reactive form controls instead
 
 https://angular.io/guide/reactive-forms
 
-formControlName ties it to condrol in a formgroup, created in the component
+formControlName ties it to control in a formgroup, created in the component
 -->

@@ -14,8 +14,8 @@ export class AppComponent {
   showSportingProducts() {
     this.router.navigate(['/product'], { queryParams: { category: 'sports-prog-nav' } });
     // goes to http://localhost:4200/product?category=sports-prog-nav
-    // this.router.navigate([`/product/${this.productId}`]);z
-    // http://localhost:4200/products/1234zz
+    // this.router.navigate([`/product/${this.productId}`]);
+    // http://localhost:4200/products/1234
     // comparison to [1]
   }
 }

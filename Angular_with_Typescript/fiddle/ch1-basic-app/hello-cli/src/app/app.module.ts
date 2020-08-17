@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-// components are grouped into Angular modules. Every component belongs in a module.
+// [1] components are grouped into Angular modules. Every component belongs in a module.
 // the @NgModule decorator lists all the components and other articfacts that should be included in this module
 @NgModule({
   // declarations list all the components that belong in this module

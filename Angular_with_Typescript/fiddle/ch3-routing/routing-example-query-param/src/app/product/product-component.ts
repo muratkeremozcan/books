@@ -10,7 +10,7 @@ export class ProductComponent implements OnInit {
   productCategory: string;
 
   constructor(route: ActivatedRoute) {
-    // new (3): instead of paramMap we use queryParamMap. This value is what changes the URL
+    // new (3.3): instead of paramMap we use queryParamMap. This value is what changes the URL
     // instead of app.routing.module.ts with "route product/:id"
     // we grab this from the either:
     // app.component.ts programmatic navigation: { queryParams: {category: 'sports-prog-nav'} }

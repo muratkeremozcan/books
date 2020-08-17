@@ -15,6 +15,7 @@ Angular CLI commands used:
 
 ng new hello-cli
 
+[2]
 
 ng serve - will run the application on lite server
 

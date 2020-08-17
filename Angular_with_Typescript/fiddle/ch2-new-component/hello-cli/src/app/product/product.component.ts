@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+// (1.1) component basics & cli
 @Component({
   // app- is the default prefix for apps
   // you can change the prefix with: ng g c product -prefix hello
@@ -19,25 +20,3 @@ export class ProductComponent implements OnInit {
 
 }
 
-
-/* CLI commands used
-
-(1) ng g c product - will generate four files for a new product component in the src/app/product directory
-and add the ProductComponent class to the declarations property of @NgModule
-
-ng g s product - will generate the file product.service.ts containing a class decorated with @Injectable
-and the file product.service.spec.ts in the src/app directory
-
-(2) ng g s shared/product  - generate it under a folder called shared
-
-
-related Anguler CLI commands
-
-ng g c — Generates a new component
-ng g s — Generates a new service
-ng g d — Generates a new directive
-ng g m — Generates a new module
-ng g application — Generates a new app within the same project
-ng g library — Starting with Angular 6, you can generate a library project
-
-*/

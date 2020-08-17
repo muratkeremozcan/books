@@ -12,7 +12,7 @@ export class UnsavedChangesGuard implements CanDeactivate<ProductDetailComponent
   // contrast to login.guard ; no constructor needed with router: Router because we are not using router.navigate()
   canDeactivate(component: ProductDetailComponent) {
 
-    // use the FormControl.dirty property to whether the content of the input control has been changed
+    // use the FormControl.dirty property to check whether the content of the input control has been changed
     if (component.name.dirty) {
       return window.confirm('You have unsaved changes. Still want to leave?');
     } else {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-// think of services as components w/o UIs, where the business logic resides
+// (1.2) Angular services : think of services as components w/o UIs, where the business logic resides
 // services take the @Injectable decorator
 
 @Injectable({
@@ -16,8 +16,8 @@ export class ProductService {
   }
 }
 
-/*:
+/*
 
-(2) ng g s shared/product
+ ng g s shared/product
 
 */

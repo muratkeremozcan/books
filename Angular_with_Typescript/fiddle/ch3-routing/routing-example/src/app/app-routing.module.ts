@@ -11,11 +11,12 @@ import { NotFoundComponent } from './not-found/not-found.component';
 // and use <router-outlet> to display the content of the component linked to that route.
 // then we navigate with links or clicks+programmatic nav
 
-// (1.1) You configure routes in an array of objects of type Route
-// (1.2) at the template (root app.component), reference these routes. You have 2 options
+// high level:
+// (1.1) at app-routing-module.ts configure routes in an array of objects of type Route
+// (1.2) at the template (root app.component.html), reference these routes. You have 2 options
 // link reference:  <a> [routerLink]=['valueOfPath']  </a>
 // programmatical reference (button usually): a custom function   this.router.navigate([`pathAsString`]);
-// (1.3) at the template, use <router-outlet> display the specified component
+// (1.3) at the template, use <router-outlet> to display the specified component
 const routes: Routes = [
   { // if the path after the base URL is empty, render the HomeComponent in <router-outlet>
     path: '', component: HomeComponent
