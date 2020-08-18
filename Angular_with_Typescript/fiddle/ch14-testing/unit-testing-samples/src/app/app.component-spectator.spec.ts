@@ -35,7 +35,7 @@ describe('Root app AppComponent', () => {
     expect(app.title).toEqual('my app');
   }));
   it('should render title in a h1 tag', async(() => {
-    // no need to use detectChanges() unless something is actually being changed
+    // no need to use detectChanges() unless something is being changed within the test
     expect(compiled.querySelector('h1').textContent).toContain('Welcome to my app!');
   }));
   it('should render updated title', async(() => {

@@ -8,7 +8,7 @@ import { RouterModule } from "@angular/router";
 
 @NgModule({
   imports: [BrowserModule, RouterModule.forRoot([
-    { path: 'productDetail/:id', component: ProductDetailComponent }
+    { path: 'productDetail/:id', component: ProductDetailComponent } // (*6.1)
   ])],
   declarations: [AppComponent, ProductDetailComponent],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],

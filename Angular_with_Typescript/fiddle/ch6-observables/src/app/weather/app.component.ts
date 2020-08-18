@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, EMPTY } from 'rxjs';
-import { FormControl } from "@angular/forms";
-import { HttpClient } from "@angular/common/http";
-import { catchError, debounceTime, switchMap } from "rxjs/operators";
+import { FormControl } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { catchError, debounceTime, switchMap } from 'rxjs/operators';
 
-/* In [2] we used math random to get values and got them every time
+/* [2] Using switchMap, debounceTime and catchError for subscribing to keyup and input events
+
+high level:
+for keyup & input events (ex: typeahead) using observable operators switchMap, debounceTime and catchError is a useful pattern
+
+In the bare "subject" folder (not worth looking at) we used math random to get values and got them every time
 In a real-world application, the user’s typos may generate network requests that introduce delays..
 while returning data for mistakenly entered values. How would you go about discarding the results of unwanted requests?
 
@@ -21,7 +26,7 @@ ng serve weather -o
 
 
 @Component({
-  selector: "app-root",
+  selector: 'app-root',
   template: `
     <h2>Observable weather</h2>
     <input type="text" placeholder="Enter city" [formControl]="searchInput">
@@ -36,7 +41,7 @@ export class AppComponent implements OnInit {
   private baseWeatherURL = 'http://api.openweathermap.org/data/2.5/weather?q=';
   private urlSuffix = `&appid=${this.myKey}&units=metric`;
 
-  searchInput = new FormControl();   // (1) hook up [formControl] with a class property
+  searchInput = new FormControl();   // (2.1) hook up [formControl] with a class property
   weather: string;
 
   constructor(private http: HttpClient) { } // http client of Angular is all Observables, has to be in the constructor

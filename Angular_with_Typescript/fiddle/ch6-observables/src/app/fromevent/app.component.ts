@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { fromEvent } from "rxjs";
+import { fromEvent } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 
 
 /*
-[1]
+[1] working with forms using bare observables (not meta)
 To turn a DOM event into an observable stream, you need to do the following:
 
 1.  Get a reference to the DOM object (using @ViewChild)
@@ -20,7 +20,7 @@ To turn a DOM event into an observable stream, you need to do the following:
 
 
 @Component({
-  selector: "app-root",
+  selector: 'app-root',
   template: `
     <h2>Observable events </h2>
     <input type="text" #stockSymbol placeholder="Enter stock" >
@@ -28,7 +28,7 @@ To turn a DOM event into an observable stream, you need to do the following:
 })
 export class AppComponent implements AfterViewInit {
 
-  // (1) Get a reference to the DOM object (using @ViewChild)
+  // (1.1) Get a reference to the DOM object (using @ViewChild)
   // In a regular JavaScript app, to get a reference to the DOM element, you use a DOM selector API, document.querySelector().
   // In Angular, you can use the @ViewChild() decorator to get a reference to an element from a component template.
   @ViewChild('stockSymbol', { static: true })
@@ -39,10 +39,10 @@ export class AppComponent implements AfterViewInit {
   // Places the code in the ngAfterViewInit() component lifecycle method
   ngAfterViewInit() {
 
-    // (2) Create an observable using fromEvent(), providing the reference to the DOM object and the event you want to subscribe to.
+    // (1.2) Create an observable using fromEvent(), providing the reference to the DOM object and the event you want to subscribe to.
     let keyup$ = fromEvent(this.myInputField.nativeElement, 'keyup');
 
-    // (3) Subscribe to this observable and handle the events.
+    // (1.3) Subscribe to this observable and handle the events.
     keyup$
       .pipe(
         debounceTime(500), //  Waits for a 500 ms pause in the observable’s emissions

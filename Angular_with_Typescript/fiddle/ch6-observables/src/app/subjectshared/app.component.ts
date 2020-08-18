@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {Subject, interval} from "rxjs";
 import {filter, map, sample} from "rxjs/operators";
 
+// [3] observing subscriptions in the template (not meta, instead use async pipe [4])
+
 @Component({
   selector: "app-root",
   template: `

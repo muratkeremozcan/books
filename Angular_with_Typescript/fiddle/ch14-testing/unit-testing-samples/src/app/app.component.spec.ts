@@ -57,18 +57,5 @@ describe('Root app AppComponent', () => {
   any service a component uses should be mocked, but also tested seperately for the service itself
 
   with spectator services we use createServiceFactory, with components we use createComponentFactory
-  ex:
 
-  describe('CanActivate Guard', () => {
-  let spectator: SpectatorService<CanActivateGetSiteById>;
-  const createService = createServiceFactory({
-    service: CanActivateGetSiteById,
-    mocks: [SessionStoreService, SitesRestService, Router]
-  });
-
-  beforeEach(() => (spectator = createService()));
-
-  it('should activate when a valid site is retrieved', () => {
-    const restSvc = spectator.inject<SitesRestService>(SitesRestService);
-    jest.spyOn(restSvc, 'getSiteById').mockReturnValue(of({}));
   */

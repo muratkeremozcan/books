@@ -3,10 +3,11 @@ import { take } from 'rxjs/operators';
 import { interval } from 'rxjs';
 
 
-// [4] note: this section is not related to [1,2,3]
-// Angular has AsyncPipe which autosubscribe to the observable, and renders it in the template
-// helps avoid creating subscriptions in the teamplate
-// in the teamplate: observable$ | async  , and you yield the value
+// [4] using async pipe to avoid subscribing in the template
+// note: this section is not related to [1] FormControl or [2] swithMap, debounceTime and catchError operators
+// high level:
+// Angular has AsyncPipe which autosubscribes to the observable, and renders it in the template
+// this helps avoid subscribing in the template; just use observable$ | async  , and you yield the value
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import { interval } from 'rxjs';
 })
 export class AppComponent {
 
-  // because of the async pipe in the teamplate, there is no need to subscribe at the TS to observe the side effects
+  // because of the async pipe in the template, there is no need to subscribe at the TS to observe the side effects
   numbers$ = interval(1000)
     .pipe(take(10));
 }

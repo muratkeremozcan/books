@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Product, ProductService } from './product.service';
 import { Observable } from 'rxjs';
 
-// [5] : [4] but more complex with observable array iteration
+// [5] using async pipe to avoid subscribing in the template: [4] but more complex with observable array iteration
 // KEY: iterate through the Observable<Product[]> which will get assigned to product$ and async pipe
 @Component({
   selector: 'app-root',
@@ -22,7 +22,7 @@ export class AppComponent {
   // the service needs to be defined in the constructor
   constructor(private productService: ProductService) { }
 
-  // not that there is no need for subscribe; async pipe takes care of it
+  // note that there is no need for subscribe; async pipe takes care of it
   // until async pipe subscrbes to the observable, note that there is no data
   ngOnInit() {
     this.products$ = this.productService.getProducts();

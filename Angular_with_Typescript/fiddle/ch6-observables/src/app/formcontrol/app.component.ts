@@ -2,9 +2,15 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
-/*  turn a DOM event into an observable in the previous secition [1]
+/*  working with forms using FormControl & its built-in observables valueChanges & statusChanges (this is meta)
+high level:
+use FormControl, and bind the form elements at the template with the component/TS (1.1)
+use valueChanges and statusChanges built-in observables to observe and subscribe/do something with the results (1.2)
+
+
+to turn a DOM event into an observable in the previous secition [1]
 [1.1] we got a reference to the DOM object: we used @ViewChild and declared the property myInputField: ElementRef that held a reference,
-[1.2] we hen used fromEvent() to make the DOM event into an observable
+[1.2] we then used fromEvent() to make the DOM event into an observable
 
 @ViewChild('stockSymbol', { static: true })
 myInputField: ElementRef;
@@ -24,7 +30,7 @@ The status changes from valid to invalid or vice versa.
 */
 
 
-// (1) The form elements can be bound to component properties via the formControl directive :
+// (1.1) The form elements can be bound to component properties via the formControl directive :
 // and you’ll use it instead of accessing the DOM object directly with @ViewChild and ElementRef (getting a reference to the DOM object)
 /*
 [formControl]="classPropertyName"   // at the template
@@ -44,7 +50,7 @@ classPropertyName = new FormControl('')   // at the ts
 })
 export class AppComponent {
 
-  // (1) hook up [formControl] with a class property
+  // (1.1) hook up [formControl] with a class property
   searchInput = new FormControl('');
 
   constructor() {

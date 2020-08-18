@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
 import { ProductService } from './product.service';
 import {Product} from './product';
 // (3.1.1) import  createHttpFactory, HttpMethod from spectator
