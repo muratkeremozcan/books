@@ -1,17 +1,22 @@
 import { Observable, BehaviorSubject } from "rxjs";
 import { Injectable } from '@angular/core';
 
-
-
+// [4]  source component -> mediator service -> recipient components  (meta)
 // in [3] you saw how sibling components use their parent as a mediator.
-// [4] If components don’t have the same parent or aren’t displayed at the same time you can use an injectable service as a mediator.
+// If components don’t have the same parent or aren’t displayed at the same time you can use an injectable service as a mediator.
 // Whenever the component is created, the mediator service is injected, and the component can subscribe to events emitted by the service
 // as opposed to using @Input() parameters
 // RxJs subject is perfect for this event emitting scenario between components,
-// the only thing we need is for the subscribers get the most recent event. BehaviorSubject provides this.
+// the only thing we need is for the subscribers to get the most recent event. BehaviorSubject provides this.
 
-// in this example SearchComponent (the source) emits to other components (amazon, ebay) via StateService (mediator component)
-// source component -> mediator service -> other components
+// in this example SearchComponent (the source) emits to recipient components (amazon, ebay) via StateService (mediator service)
+
+// high level: source component -> mediator service -> recipient components
+// create the mediator service, use BehaviorSubject so that the last emitted value can be emitted to new subscribers whenever they sub (4.1)
+// create a set function for source component to emit on demand (4.2)
+// create a function for recipient components to get the state and use the subscribe callback  (value, error, complete) to observe side effects (4.3)
+// use the mediator service at the source component to emit events (4.4)
+// use the mediator service at the recipient component get the event (4.5)
 
 @Injectable()
 export class StateService {

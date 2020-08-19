@@ -1,4 +1,4 @@
 export interface PriceQuote {
   stockSymbol: string;
-  lastPrice: number;
+  lastPriceRandom: number;
 }

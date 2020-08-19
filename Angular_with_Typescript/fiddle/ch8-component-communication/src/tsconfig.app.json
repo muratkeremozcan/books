@@ -15,7 +15,6 @@
     "main-mediator-parent.ts",
     "main-mediator-service.ts",
     "main-child-api",
-    "main-projection1.ts",
     "main-projection2.ts",
     "polyfills.ts"
   ],

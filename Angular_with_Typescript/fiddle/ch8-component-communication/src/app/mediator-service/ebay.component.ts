@@ -12,9 +12,8 @@ import {Observable} from 'rxjs';
   styles: ['.ebay {background: cyan}']
 })
 export class EbayComponent {
-  // (4.6) the recipient component creates an observable,
-  // uses the mediator service to get the state/the event (using 4.3),
-  // displays it in the template with asyc pipe
+  // (4.5) use the mediator service at the recipient component get the event
+  // gets the event displays it in the template with asyc pipe
   searchFor$: Observable<string>;
 
   constructor(private state: StateService) {

@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { Stock } from './istock';
 
-// (3.3) same as (2.3), at parent:   (child1PropEvent)="parentHandlerFunction($event)"
-
-// (3.4) the key add-on where we perform [1]: as the mediator we have to pass the event to the child
-// at child @Input childProp   at parent: [childProp] = "parentProp"
+// (3.4 same as 2.4) handle the event in the template  (producerProperty)="eventHandlerFunction($event)"
+// (3.5) the key add-on where we perform [1]: as the mediator we have to pass the event to the child
+// at recipient:  @Input recipientProp (1.1)  [recipientProp] = "producerProp" (1.2)
 @Component({
   selector: 'app-root',
   template: `
@@ -16,7 +15,8 @@ import { Stock } from './istock';
 export class AppComponent {
   receivedStock: Stock;
 
-  priceQuoteHandler(inomingEvent: Stock) {
-    this.receivedStock = inomingEvent;
+  // (3.3 same as 2.3)  create an eventHandlerFunction at the recipient
+  priceQuoteHandler(incomingPayload: Stock) {
+    this.receivedStock = incomingPayload;
   }
 }
