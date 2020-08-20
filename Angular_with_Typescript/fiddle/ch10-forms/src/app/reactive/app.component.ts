@@ -3,15 +3,17 @@ import { FormControl, FormGroup } from "@angular/forms"; // [2.1]
 
 
 /* Reactive forms [2] (almost meta, but you may want to use [5] FormBuilder to avoid 'new' spam)
-[2.1] Import ReactiveFormsModule at app.module, import FormControl, FormGroup at the component
-[2.2] In TS, create an instance of FormGroup to store the form’s values.
-[2.3] Create an HTML form template  :    [formGroup]="instanceVarOfFormGroup"
-[2.4] name : formControlName , ngModelGroup : formGroupName
-[2.5] at the TS constructor, hook the form to the TS by instantiating FormGroup objects and FormControl properties
+(2.1) Import ReactiveFormsModule at app.module, import FormControl & FormGroup at the component
+(2.2) In TS, create an instance of FormGroup to store the form’s values.
+(2.3) Create an HTML form template  :    [formGroup]="instanceVarOfFormGroup"
+(2.4) use formControlName for form items, formGroupName for form groups
+(2.5) at the TS constructor, hook the form to the TS by instantiating FormGroup objects and FormControl properties
 */
 
 
-// [2.3] : [formGroup]="instanceVarOfFormGroup"
+// (2.3) Create an HTML form template :  [formGroup]="instanceVarOfFormGroup"
+// (2.4) use formControlName for form items, formGroupName for form groups
+// contrast with template driven forms:   name : formControlName , ngModelGroup : formGroupName
 @Component({
   selector: 'app-root',
   template: `
@@ -28,13 +30,14 @@ import { FormControl, FormGroup } from "@angular/forms"; // [2.1]
   `
 })
 export class AppComponent {
-  myFormModel: FormGroup; // [2.2] create an instance of FormGroup
+  myFormModel: FormGroup; // (2.2) create an instance of FormGroup to store form's values
 
   constructor() {
+    // (2.5) at the TS constructor, hook the form to the TS by instantiating FormGroup objects and FormControl properties
     // FormGroup is a collection of FormControl objects and represents either the entire form or its part.
     // FormControl instance stores the current value of the HTML element it corresponds to,
     this.myFormModel = new FormGroup({ // [formGruop]
-      // this is how we hook the form to the TS, after this at the teamplate: formControlName="username"
+      // this is how we hook the form to the TS, after this at the template: formControlName="username"
       username: new FormControl(''),
       ssn     : new FormControl(''),
       passwordsGroup: new FormGroup({   // formGroupName
@@ -44,7 +47,7 @@ export class AppComponent {
     });
   }
 
-  // In the reactive API, the onSubmit() method doesn’t need arguments
+  // Note In the reactive forms API, the onSubmit() method doesn’t need formData argument
   // because you access the form values using your component’s myFormModel property.
   onSubmit() {
     console.log(this.myFormModel.value);
@@ -52,18 +55,23 @@ export class AppComponent {
 }
 
 /* more about FormControl
-FormControl instance stores the current value of the HTML element it corresponds to,
- the element’s validity status, and whether it’s been modified.
-Here’s how you can create a control passing its initial value as the first argument of the constructor:
+FormControl instance stores the current value of the HTML element it corresponds to, the element’s validity status, and whether it’s been modified.
+
+initial values in the form:
+
+here’s how you can create a control passing its initial value as the first argument of the constructor:
 
 let city = new FormControl('New York');
 
-for validation:
+
+form validation:
 
 let city = new FormControl('New York', // Creates a form control with the initial value New York
                            [Validators.required,   //  Adds a required validator to a form control
                            Validators.minLength(2)]  // Adds a minLength validator to a form control
                            );
+
+other note:
 
 FormControl can be useful to use Forms API features like validation and reactive behavior.
 recall the weather app; we did not have to use [formGroup], and instead used [formControl]

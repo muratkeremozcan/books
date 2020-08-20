@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl } from "@angular/forms";
 
 // [4] updating form data with data from outside
-// in [2] and [3] where the user is changing the form
+// in [2] / [5] and [3]  the user is changing the form
 // in some cases the form changes based on data from elsewhere such as the server
 // Forms API a few handy functions for this
 
@@ -10,9 +10,12 @@ import { FormGroup, FormControl } from "@angular/forms";
 // setValue()  is used for updating all values in a form model.
 // patchValue()  is used when you need to update the selected properties of a form model.
 
-// [4.1] the setup of the form can be for reactive [2] or dynamic [3]. Here it's a reactive example
+// high level:
+// (4.1) duplicate full setup of [2/5] or [3]  (the setup of the form can be for reactive [2/5] or dynamic [3] )
+// (4.2) utilize the data coming from the outside with by implementing functions that use setValue() or patchValue()
+// (4.3) in the template, optionally use formInstanceVar.reset()
 
-// [4.3] note how reset is different; no need for implementing it at the TS
+// (4.3) note how reset is different; no need for implementing it at the TS
 // just call it from the template    [formGroup]="instanceVarOfFormGroup"  &  instanceVarOfFormGroup.reset()
  @Component({
   selector: 'app-root',
@@ -30,6 +33,7 @@ import { FormGroup, FormControl } from "@angular/forms";
 export class AppComponent {
   myFormModel: FormGroup;
 
+  // (4.1) the setup of the form can be for reactive [2/5] or dynamic [3]. Here it's a reactive example as was in [2]
   constructor() {
     this.myFormModel = new FormGroup({
       id         : new FormControl(''),

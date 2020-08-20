@@ -14,14 +14,14 @@ import {OnChanges, Input, SimpleChange, Component, ChangeDetectionStrategy} from
   // (made no difference for me)
 })
 
-// Each lifecycle callback is declared in the interface with a name that matches the name of the callback without the prefix ng.
+// [3] Each lifecycle callback is declared in the interface with a name that matches the name of the callback without the prefix ng.
 // For example, if you’re planning to implement functionality in the ngOnChanges() callback, add implements OnChanges to your class declaration.
 export class ChildComponent implements OnChanges {
   // The child component receives the values from the parent component via its input variables.
   @Input() greeting: string;
   @Input() user: {name: string};
 
-  //  ngOnChanges() — Called when a parent component modifies (or initializes) the values bound to the input properties of a child.
+  // ngOnChanges() — Called when a parent component modifies (or initializes) the values bound to the input properties of a child.
   // ngOnChanges() provides a SimpleChange object containing the old and new values of the modified input property and the flag indicating whether this is the first binding change.
   // JSON.stringify() is needed to pretty print the received values
 

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-// [5] FormBuilder is an refacor to [2] dynamic forms to avoid the instantiation spam.  It is meta.
+// [5] FormBuilder is an refactor to [2] dynamic forms to avoid the instantiation spam.  It is meta.
 // problem with [2]: if a form has multiple controls, your code may contain lots of new operators creating new instances of form elements.
 
-// all setup is the same as 2
+// all setup is the same as 2 except for how 2.5 is done
 
 @Component({
   selector: 'app-root',
