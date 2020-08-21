@@ -6,9 +6,8 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
 @Injectable()
 export class SsnValidatorService {
 
-  // [5.1] create the custome functio. Should take an arg of AbstractControl and return  Observable<ValidationErrors | null>
-  /** This function can be used by form controls in a way prescribed in Angular doc
-    because it takes an argument of AbstractControl */
+  // (5.1) create the custom function. Should take an arg of AbstractControl and return  Observable<ValidationErrors | null>
+  /** This function can be used by form controls in a way prescribed in Angular doc  because it takes an argument of AbstractControl */
   checkWorkAuthorization(field: AbstractControl): Observable<ValidationErrors | null> {
     // in the real world you'd make an HTTP call to server to check if the value is valid
     return of(field.value.indexOf('123') >= 0 ? null : { work: ' you\'re not authorized to work' });

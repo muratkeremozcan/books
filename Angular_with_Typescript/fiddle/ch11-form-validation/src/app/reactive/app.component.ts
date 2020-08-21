@@ -3,6 +3,11 @@ import { FormGroup, FormControl, ValidationErrors } from '@angular/forms';
 
 
 // [2] custom validators in a reactive form
+// high level:
+// create a custom validator function (2.1)
+// setup reactive forms (2.2)
+// use the [formGroup]="instanceVar", instanceVar.get('formControlProp').dirty (or other form controls...) , instanceVar.hasError('validatorObjectKey', 'formControlProp') (2.3)
+// recall the form control states (pristine -> untouched -> touched -> dirty...) to use in 2.3  (2.4)
 
 // (2.1) the arg of the custom validator function needs to be of type FormControl,FormGroup or FormArray
 // and return ValidationErrors object or null
@@ -25,11 +30,10 @@ function ssnValidator(control: FormControl): ValidationErrors | null {
 
 
 // (2.4) Form controls (they also provide css classes:  className.ng-dirty.ng-invalid)
-
 // form control states:
 // pristine: meant that  the user never interacted with the form control.
-// touched: if the user puts the focus into a form control using the keyboard or mouse and then moves the focus out;
 // untouched:  while the focus remains in the control, it’s still untouched
+// touched: if the user puts the focus into a form control using the keyboard or mouse and then moves the focus out;
 // dirty: indicates that the initial value of the form control was modified, regardless of where the focus is.
 
 // pending: this control is in the midst of conducting a validation check (async validators are beind used, useful for progress indicator)

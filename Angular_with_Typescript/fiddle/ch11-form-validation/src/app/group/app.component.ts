@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-// [3] validating formGroups : the difference from [2] is validation formGroup instead of formControl
+// [3] validating formGroups : the difference from [2] is validation formGroup (meta) instead of formControl (new spam)
+// high level:
+// create custom validator functions (3.1) same as (2.1)
+// setup the reactive form with formGroup (3.2) the main contrast with (2.2)
+// same as (2.3) use the [formGroup]="instanceVar", instanceVar.get('formControlProp').dirty (or other form controls...) , instanceVar.hasError('validatorObjectKey', 'formControlProp') (3.3)
+// usage of control states is the same (pristine -> untouched -> touched -> dirty...) (2.4) / (3.4)
+// KEY for a sub-group validator (the pw confirmation) we insert the validation object  { validator: customValidator }
+
 
 function ssnValidator(control: FormControl): { [key: string]: any } {
   const value: string = control.value || '';
@@ -78,7 +85,7 @@ pattern - the form control’s value must match the specified regular expression
 min - a value can’t be less than the specified number; it can be used only with reactive forms.
 max - a value can’t be greater than the specified number; it can be used only with reactive forms.
 */
-// KEY and for a sub-group validator (the pw confirmation) we insert the validation object  { validator: customValidator }
+// KEY for a sub-group validator (the pw confirmation) we insert the validation object  { validator: customValidator }
 
 export class AppComponent {
   formModel: FormGroup;

@@ -6,6 +6,11 @@ import { FormGroup, FormControl, FormBuilder, Validators } from "@angular/forms"
 // ex: depending on user input in one control, validation rules for another control should be changed.
 // use setValidators() to update on the fly, and  updateValueAndValidity() to apply the changes
 
+// high level:
+// in ngOnInit get a reference to the controls: formControlVar = formGroupVar.get('formControlNme') as FormControl // (4.1)
+// to observe the value, use valueChanges (4.2)
+// use formControlVar.setValidators(...) to modify the validator on the fly (4.3)
+// finalize with formControlVar.updateValueAndValidity() (4.4)
 
 // formInstanceVar.controls['controlName'].dirty : displays the error message only if the phone was modified and is invalid
 @Component({

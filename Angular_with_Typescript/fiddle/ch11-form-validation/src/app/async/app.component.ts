@@ -7,6 +7,11 @@ import { switchMap, filter, debounceTime } from 'rxjs/operators';
 // [5] async validators: they are all custom functions (usually a service) that return either an Observable or a Promise object.
 // [1 - 4] have been client side form validation, this is server side validation of form values
 
+// high level:
+// (5.1) create the custom function in a service. Should take an arg of AbstractControl and return  Observable<ValidationErrors | null>
+// (5.2) inject the service to the constructor, then add the async validator as the 3rd agument to the control. Use bind.
+// (5.3) *ngIf... ; else alias  + <ng-template> pattern can be useful
+
 // the classic client side validator. It is here to show that the sync validators run before the async
 function ssnValidator(control: FormControl): { [key: string]: any } {
   const value: string = control.value || '';
@@ -14,7 +19,7 @@ function ssnValidator(control: FormControl): { [key: string]: any } {
   return valid ? null : { ssn: true };
 }
 
-// [5.3] use <ng-template> to specify the content that’s not rendered by the browser on page load, but later on.
+// (5.3) use <ng-template> to specify the content that’s not rendered by the browser on page load, but later on.
 // remember  instanceVar.hasError('validatorObjectKey', 'formControlProp')
 
 @Component({
@@ -39,7 +44,7 @@ export class AppComponent implements OnInit {
 
   // if your custom validator is in a service, recall that a service needs to be an arg in the constructor
   constructor(private ssnValidatorService: SsnValidatorService) {
-    // [5.2] KEY: add the async validator
+    // (5.2) KEY: add the async validator
     // Async validators are passed as the third argument to constructors of model classes.
     // If you need to have several synchronous or asynchronous validators, specify an array as the second and/or third argument.
     this.myForm = new FormGroup({
@@ -49,7 +54,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // [5.2.altertnative]
+  // (5.2.altertnative])
   // if the custom validator does not conform to the interface (doesn't take an arg of AbstractControl) you have to work around it
   // use valueChanges to observe and switchMap to the custom function you used
   ngOnInit() {
