@@ -68,11 +68,6 @@ export class AppComponent {
 }
 
 
-/*
-5 Injects the HttpClient service
-6 Makes an HTTP GET request specifying the type of the expected data
-*/
-
 // to run:
 // UI (client folder):  ng serve readfile -o
 // API (server folder): node build/rest-server.js

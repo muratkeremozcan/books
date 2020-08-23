@@ -11,7 +11,8 @@ import { NgModule } from '@angular/core';
 // high level:
 // (4.1) setup the secondary router outlet at the template:  primary router outlet is the same  :  <router-outlet></router-outlet>
 // secondary router outlets get a name attribute <router-outlet name="aux"></router-outlet>
-// (4.2) setup the auxillary route
+// (4.2) setup the auxillary route at the template
+// (4.3) setup the links to nav & remove the auxillary route at the template
 
 const routes: Routes = [
   {

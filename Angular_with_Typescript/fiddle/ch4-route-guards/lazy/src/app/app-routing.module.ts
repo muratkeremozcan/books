@@ -15,11 +15,9 @@ import { CustomPreloadingStrategy } from './custom.preloader';
 // lazy loading seems to be happening at module level, while resolve is at component level
 
 // at a high level:
-// (3.1) configure lazy loading in routes
+// (3.1) configure lazy loading in routes (at app-routing.module.ts)
 // (3.2) configure the module to be lazy loaded
 // (3.3) create a custom preloader and configure it the providers
-
-
 
 
 const routes: Routes = [

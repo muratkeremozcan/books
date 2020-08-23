@@ -7,9 +7,9 @@ import { LoginGuard } from './login/login.guard';
 import { UnsavedChangesGuard } from './product-detail/unsaved-changes.guard';
 
 // [1] route guards canActivate and canDeactivate help mediate navigation to and from a route
-// at a high level:  implement the guards canActivate & canDeactivate (1.1),
-// set them up in routes (1.2)
-// and include them in providers (1.3)
+// at a high level:  implement the guards canActivate & canDeactivate in .guard.ts files (1.1),
+// set them up in routes in app-routing-module (1.2)
+// and include them in providers  in app-routing-module (1.3)
 
 const routes: Routes = [
   {path: '', component: HomeComponent},

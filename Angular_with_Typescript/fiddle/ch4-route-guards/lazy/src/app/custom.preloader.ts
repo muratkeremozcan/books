@@ -3,7 +3,7 @@ import { PreloadingStrategy, Route } from '@angular/router';
 import { Observable, EMPTY } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-// (3) implement preloading strategy
+// (3.3) implement preloading strategy
 // Create a class implementing the PreloadingStrategy interface
 @Injectable()
 export class CustomPreloadingStrategy implements PreloadingStrategy {

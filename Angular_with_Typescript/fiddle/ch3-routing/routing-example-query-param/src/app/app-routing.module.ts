@@ -11,7 +11,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 // you can bookmark that, and then instead of going to the first page of devices, you bookmarked the 5th page of a ascending sorted search for 'foo'
 
 // high level:
-// not config at the app-routing.module (3.1)
+// no config at the app-routing.module (3.1)
 // query param config is done at the template (or the TS for prog nav) (3.2)
 // at the component similar config to (2.4) but instead of paramMap we use queryParamMap and get the value differently (3.3)
 const routes: Routes = [

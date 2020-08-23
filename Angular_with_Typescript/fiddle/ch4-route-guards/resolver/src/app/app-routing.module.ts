@@ -4,13 +4,13 @@ import { HomeComponent } from './home/home.component';
 import { DataComponent } from './data/data.component';
 import { DataResolver } from './data/data.resolver';
 
-// [2] resolve route guard: helps give a reactive feel to the user by loading data a component needs before starting navigation to a component;
+// [2] resolve route guard: helps give a reactive feel to the user by eager loading data a component needs before starting navigation to a component;
 // (here you can insert some loading component for the sake of responsive feeling, then navigate to the route once the component is ready)
 // high level:
-// implement the guard resolve (2.1),
-// (2.1.1) do additional configuration at the component
-// set up the resolve guard in routes (2.2)
-// and include them in providers (2.3)
+// implement the guard resolve in a .resolver.ts file (2.1),
+// do additional configuration at the target component being resolved (2.1.1)
+// set up the resolve guard in routes at app-routing-module (2.2)
+// and include them in providers at app-routing-module (2.3)
 
 const routes: Routes = [
   {
