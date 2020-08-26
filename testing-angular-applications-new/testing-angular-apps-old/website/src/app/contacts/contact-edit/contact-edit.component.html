@@ -1,0 +1,55 @@
+<div>
+  <div *ngIf="isLoading">
+    <h6 class="messages">{{ loadingContactMessage }}</h6>
+    <mat-progress-bar class="app-progress" mode="indeterminate"
+      aria-label="Indeterminate progress-bar example"></mat-progress-bar>
+  </div>
+
+  <div *ngIf="!isLoading && contact !== null">
+    <mat-card>
+      <mat-card-title-group>
+        <mat-icon>mood</mat-icon>
+          <mat-card-title>
+            <i [appFavoriteIcon]="contact.favorite" [color]="'gold'"
+              [matTooltip]="contact.favorite ? 'Starred' : 'Not Starred'"
+              (click)="saveContact(contact)"></i>
+            <mat-form-field>
+              <input matInput placeholder="Name" [(ngModel)]="contact.name" class="contact-name" />
+            </mat-form-field>
+          </mat-card-title>
+          <mat-card-subtitle class="left-padding">
+            <mat-form-field>
+              <input matInput placeholder="Email" [(ngModel)]="contact.email" />
+            </mat-form-field>
+          </mat-card-subtitle>
+          <mat-card-subtitle class="left-padding">
+            <mat-form-field>
+              <input matInput placeholder="Phone Number" [(ngModel)]="contact.number" />
+            </mat-form-field>
+          </mat-card-subtitle>
+          <mat-card-subtitle class="left-padding">
+            <mat-form-field>
+              <mat-select placeholder="Country code" [(ngModel)]="contact.country">
+                <mat-option *ngFor="let countryDialingCode of countryDialingCodes" [value]="countryDialingCode">
+                  {{ countryDialingCode }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-card-subtitle>
+      </mat-card-title-group>
+      <div class="update-contact-button">
+        <button (click)="updateContact(contact)" mat-raised-button color="primary">
+          Update Contact
+        </button>
+      </div>
+    </mat-card>
+  </div>
+
+  <div *ngIf="!isLoading && contact === null">
+    <h6 class="messages">{{ noContactFoundMessage }}</h6>
+  </div>
+
+  <a *ngIf="!isLoading" routerLink="/contacts">
+    <button mat-fab class="back-button"><mat-icon class="back-button-icon" matTooltip="Add new contact">forward</mat-icon></button>
+  </a>
+</div>

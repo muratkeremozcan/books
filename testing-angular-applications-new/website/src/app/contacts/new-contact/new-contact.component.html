@@ -1,0 +1,33 @@
+<div *ngIf="contact && !savingContact">
+  <mat-card>
+    <div>
+      <h4>Add New Contact</h4>
+      <mat-form-field>
+        <input matInput type="text" id="contact-name"
+            placeholder="Name" align="end" [(ngModel)]="contact.name" required />
+      </mat-form-field>
+      <br />
+      <div *ngIf="contact.name">
+        <mat-form-field>
+          <input matInput type="email" css="contact-email" id="contact-email"
+              placeholder="Email" align="end" [(ngModel)]="contact.email" />
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+          <input matInput id="tel" type="tel" id="contact-tel"
+              placeholder="Phone Number (10 digits)" align="end" [(ngModel)]="contact.number" />
+        </mat-form-field>
+        <br />
+        <button class="create-button" (click)="addNewContact(contact)" mat-raised-button color="primary">Create</button>
+       </div>
+    </div>
+  </mat-card>
+  <a *ngIf="!savingContact" routerLink="/contacts">
+    <button mat-fab class="back-button"><mat-icon class="back-button-icon">forward</mat-icon></button>
+  </a>
+</div>
+<div *ngIf="savingContact">
+  <h6 class="messages">Saving Contact...</h6>
+  <mat-progress-bar class="app-progress" mode="indeterminate"
+                     aria-label="Indeterminate progress-bar example"></mat-progress-bar>
+</div>
