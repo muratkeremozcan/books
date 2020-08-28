@@ -41,6 +41,7 @@
     "@angular/cli": "1.6.8",
     "@angular/compiler-cli": "5.1.1",
     "@angular/language-service": "5.1.1",
+    "@ngneat/spectator": "^5.13.0",
     "@types/hammerjs": "2.0.35",
     "@types/jasmine": "2.8.2",
     "@types/jasminewd2": "2.0.3",
