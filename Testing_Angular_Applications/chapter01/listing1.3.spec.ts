@@ -1,5 +1,7 @@
 import { Cat } from './listing1.1.src'; // importing the class Cat from the file
 
+// [1] simple, no Angular
+
 describe('Test Cat getter and setter', () => {
   it('The cat\'s name should be the set name, when name is set', () => {
 
@@ -15,7 +17,7 @@ describe('Test Cat getter and setter', () => {
 
   it('The cat\'s name should be the default name, when not set', () => {
 
-    const cat = new Cat('Garip'); 
+    const cat = new Cat('Garip');
 
     cat.name; //?
 
