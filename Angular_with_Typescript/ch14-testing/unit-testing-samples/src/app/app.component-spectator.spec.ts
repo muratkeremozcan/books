@@ -23,7 +23,6 @@ describe('Root app AppComponent', () => {
   let fixture, app, compiled;
   beforeEach(() => {
     spectator = createComponent();    // (1.1) setup the component.. TestBed.configureTestingModule({..})
-    fixture = spectator.fixture;      // (extra info) not even used since we can access component and element! But for comparison this was  fixture = TestBed.createComponent(AppComponent);
     app = spectator.component;        // (1.2) access the TS....      app = fixture.debugElement.componentInstance
     compiled = spectator.element;     // (1.3) access the DOM....     compiled = fixture.debugElement.nativeElement
   });

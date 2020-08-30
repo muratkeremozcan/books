@@ -1,5 +1,7 @@
 import ContactClass from './contact';
 
+// [1] simple, no Angular
+
 describe('Contact class tests', () => {
 
   let contact: ContactClass; // declare the contact variable as a ContactClass type
