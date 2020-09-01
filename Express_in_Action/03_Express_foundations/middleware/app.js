@@ -1,35 +1,25 @@
-var express = require('express'); // requiring modules
-var http = require('http');
-var app = express(); // start a new Express application by calling the express() function
-// IMPORTANT: app is request handler function that starts GOING THROUGH ALL THE MIDDLEWARE until the end
-// since it is a request handler function, you can pass the result into http.createServer
+var buildFormattingTokensRegExp = require('../../_lib/build_formatting_tokens_reg_exp/index.js')
 
-app.use((request, response, next) => { // MIDDLEWARE
-  console.log('In comes a ' + request.method + ' request to: ' + request.url);
-  next(); // enables to move on to the next middleware
-});
+function buildFormatLocale () {
+  // Note: in Indonesian, the names of days of the week and months are capitalized.
+  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
+  // Generally, formatted dates should look like they are in the middle of a sentence,
+  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  var months3char = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+  var monthsFull = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+  var weekdays2char = ['Mi', 'Sn', 'Sl', 'Ra', 'Ka', 'Ju', 'Sa']
+  var weekdays3char = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab']
+  var weekdaysFull = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
+  var meridiemUppercase = ['AM', 'PM']
+  var meridiemLowercase = ['am', 'pm']
+  var meridiemFull = ['a.m.', 'p.m.']
 
-app.use((request, response, next) => {
-  var minute = (new Date()).getMinutes();
-  if ((minute % 2 === 0)){ // if it's an even minute, move on
-    next();
-  } else {
-    response.statusCode = 403;
-    response.end('Not authorized');
-  }
-});
+  var formatters = {
+    // Month: Jan, Feb, ..., Dec
+    'MMM': function (date) {
+      return months3char[date.getMonth()]
+    },
 
-app.use((request, response) => {
-  response.writeHead(200, { "Content-Type": "text/plain" });
-  response.end("Hello World");
-});
-
-http.createServer(app)
-  .listen(3000, function () { // start the server. http.createServer takes a function
-    console.log('listening on port 3000');
-  });
-
-// APP.LISTEN(...) is shorthand for http.createServer(app).listen
-// app.listen(3000, function () { // start the server. http.createServer takes a function
-//   console.log('listening on port 3000');
-// });
+    // Month: January, February, ..., December
+    'MMMM': function (date) {
+      return monthsFull[date.getMo

@@ -5,6 +5,16 @@ import { constants } from './favorite-icon.constants';
 import { FavoriteIconDirective } from './favorite-icon.directive';
 import { getStarElement, doClassesMatch } from '../../testing';
 
+
+// [4.1] testing an attribute directives (changes appearance of DOM elements)
+// overall, I don't think it super important testing the directives. We can just test the templates that use the directives.
+
+// in the test, create a component that uses the attribute directive, and an empty class to feed in TestBed (4.1.0)
+// (same as in [3.1]) setup the component with TestBed.configureTestingModule({..}) (satisfy the TS),
+//  and create the component with TestBed.createComponent(..) before each test (4.1.1)
+// (same as [3.3]) use fixture.detectChanges() to trigger the change
+
+// (4.1.0) create any basic component that uses the directive
 @Component({
   template: `
       <i [appFavoriteIcon]="true"></i>
@@ -13,6 +23,8 @@ import { getStarElement, doClassesMatch } from '../../testing';
       <i [appFavoriteIcon]="true" [color]="'cat'"></i>
     `
 })
+// (4.1.0) empty class to feed in to the TestBed
+
 class TestComponent { }
 describe('Directive: FavoriteIconDirective', () => {
   let fixture: ComponentFixture<any>;
@@ -20,11 +32,13 @@ describe('Directive: FavoriteIconDirective', () => {
   const expectedOutlineStarList = constants.classes.OUTLINE_STAR_STYLE_LIST;
 
   beforeEach(() => {
-    const testModuleMetadata: TestModuleMetadata = {
+    // const testModuleMetadata: TestModuleMetadata = {
+    //   declarations: [FavoriteIconDirective, TestComponent]
+    // };
+    TestBed.configureTestingModule({
       declarations: [FavoriteIconDirective, TestComponent]
-    };
-    fixture = TestBed.configureTestingModule(testModuleMetadata)
-                      .createComponent(TestComponent);
+    });
+    fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
   });
 

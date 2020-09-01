@@ -1,0 +1,7 @@
+*-compiled*
+*.log
+node_modules
+.idea
+.DS_Store
+coverage
+/src/ch06/jest

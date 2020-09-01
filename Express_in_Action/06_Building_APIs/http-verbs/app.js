@@ -1,31 +1,23 @@
-var express = require('express');
-var app = express();
+var buildFormattingTokensRegExp = require('../../_lib/build_formatting_tokens_reg_exp/index.js')
 
-app.get('/', (req, res) => { // GET / read . Idempotent: many runs, same result
-  res.send('you sent a GET request');
-});
+function buildFormatLocale () {
+  // Note: in English, the names of days of the week and months are capitalized.
+  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
+  // Generally, formatted dates should look like they are in the middle of a sentence,
+  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  var months3char = ['Jan', 'Feb', 'Már', 'Ápr', 'Máj', 'Jún', 'Júl', 'Aug', 'Sze', 'Okt', 'Nov', 'Dec']
+  var monthsFull = ['Január', 'Február', 'Március', 'Április', 'Május', 'Június', 'Július', 'Augusztus', 'Szeptember', 'Október', 'November', 'December']
+  var weekdays2char = ['Va', 'Hé', 'Ke', 'Sze', 'Cs', 'Pé', 'Szo']
+  var weekdays3char = ['Vas', 'Hét', 'Ked', 'Sze', 'Csü', 'Pén', 'Szo']
+  var weekdaysFull = ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat']
+  var meridiemUppercase = ['DE', 'DU']
+  var meridiemLowercase = ['de', 'du']
+  var meridiemFull = ['délelőtt', 'délután']
 
-app.post('/', (req, res) => { // POST / create/write . Non-idempotent: different result every run
-  res.send('you sent a POST request');
-});
+  var formatters = {
+    // Month: Jan, Feb, ..., Dec
+    'MMM': function (date) {
+      return months3char[date.getMonth()]
+    },
 
-app.put('/', (req, res) => { // PUT / update . Idempotent: many runs, same result. Do not care what it was, updating it to certain something. Sometimes can work as POST if nothing existed before
-  res.send('you sent a PUT request');
-});
-
-app.delete('/', (req, res) => { // DELETE . Idempotent: many runs, same result
-  res.send('you sent a DELETE request');
-});
-
-app.listen(3000, () => {
-  console.log('listening on port 3000');
-});
-
-// to run use curl with -X argument. by default curl sends GET requests
-// curl http://localhost:3000
-// curl -X POST http://localhost:3000
-// curl -X PUT http://localhost:3000
-// curl -X DELETE http://localhost:3000
-
-// NOTE about PATCH method/verb: the PUT method is already defined to over-write a resource with a complete new body, and cannot be reused to do partial changes. 
-// PATCH allows you to partially overwrite a resource. PATCH was only formally defined in 2010, so it’s relatively new on the HTTP scene
+    // Month: January, Febru
