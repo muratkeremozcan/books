@@ -1,4 +1,4 @@
-// PIPE TESTING Listing 5.1 5.2 5.3. 5.4 5.5. 5.6
+// [5] PIPE TESTING Listing 5.1 5.2 5.3. 5.4 5.5. 5.6
 // A pipe takes a value as input, transforms and returns the value
 // each pipe in angular has a method named transform, responsible for formatting the pipe's input returning a result
 // when testing pipes you are testing the transform method
