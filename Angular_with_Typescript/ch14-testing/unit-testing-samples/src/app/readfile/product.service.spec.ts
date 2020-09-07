@@ -33,7 +33,7 @@ describe('Readfile app ProductService', () => {
 
   it('should successfully get products', async(() => {
     const productData: Product[] = [{ "id":"0", "title": "First Product", "price": 24.99 }]; // (3.2.1) prepare hardcoded data
-    productService.getProducts() // (3.2.2) subscribe to the response & assert
+    productService.getProducts() // (3.2.2) setup the subscription with a canned response
       .subscribe(
         res => expect(res).toEqual(productData)
       );
@@ -46,7 +46,7 @@ describe('Readfile app ProductService', () => {
 
   it('should return error if request for products failed', async( () => {
     const errorType = 'CANNOT_LOAD_PRODUCTS' ;  // (3.2.1) prepare hardcoded error data
-    productService.getProducts() // (3.2.2) subscribe to the response & assert . For error use .error.type
+    productService.getProducts() // (3.2.2) setup the subscription . For error use .error.type
       .subscribe(() => {},
           errorResponse => expect(errorResponse.error.type).toEqual(errorType)
       );

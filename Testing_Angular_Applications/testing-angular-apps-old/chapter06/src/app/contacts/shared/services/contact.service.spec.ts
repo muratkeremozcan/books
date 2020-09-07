@@ -27,7 +27,7 @@ describe('ContactsService', () => {
       contactService = TestBed.get(ContactService);
       // assign a reference to the HttpTestingController for interacting with the HttpClientTestingModule
       httpTestingController = TestBed.get(HttpTestingController);
-      mockContact = { id: 100, name: 'Erin Dee', email: 'edee@example.com' };
+      mockContact = { id: 100, name: 'Erin Deee', email: 'edee@example.com' };
     });
 
     it('should GET a list of contacts', () => {
