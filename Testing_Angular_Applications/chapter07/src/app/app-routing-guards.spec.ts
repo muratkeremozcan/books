@@ -4,6 +4,8 @@ import { TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { RouterTestingModule } from "@angular/router/testing";
 import { Router, CanActivate } from "@angular/router";
 
+// [7] nothing crazy here. Before navigating, call the authentication service to toggle permission for navigation
+
 @Injectable()
 class UserAuthentication {
   private isUserAuthenticated: boolean = false;

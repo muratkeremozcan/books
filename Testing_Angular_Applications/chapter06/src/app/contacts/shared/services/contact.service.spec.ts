@@ -7,8 +7,8 @@ import { ContactService } from './contact.service';
 // [6] testing Http and mocking external core services like Http (exact same as the example in the Angular book product.service.spec.ts)
 
 // to setup create an httpMock with the help of HttpTestingController from HttpClientTestingModule (6.1)
-// test the TS function making the http call, using httpMock.expectOne, (6.2)
-// use .flush to send the data to the client and .error to emulate error (6.3)
+// setup the expected response using httpMock.expectOne, (6.2)
+// use .flush to propagate the response and .error to emulate error (6.3)
 
 describe('ContactsService', () => {
   beforeEach(() => {
@@ -31,16 +31,16 @@ describe('ContactsService', () => {
     });
 
     it('should GET a list of contacts', () => {
-      // (6.2.1) prepare hardcoded data
+      // (6.2.1) prepare canned response
       const mockContact = { id: 100, name: 'Erin Dee', email: 'edee@example.com' };
-      // (6.2.2) setup the subscription with a canned response
+      // (6.2.2) setup the subscription to expect the canned response
       contactService.getContacts().subscribe((contacts) => {
         expect(contacts[0]).toEqual(mockContact);
       });
 
-      // test the TS function making the http call, using httpMock.expectOne (6.2.3)
+      // setup the expected response using httpMock.expectOne (6.2.3)
       const request = httpMock.expectOne('app/contacts');
-      // (6.3) use .flush to send the data to the client
+      // (6.3) use .flush to propagate the response
       request.flush([mockContact]);
 
       // verify() is used to assert that there are no outstanding http requests

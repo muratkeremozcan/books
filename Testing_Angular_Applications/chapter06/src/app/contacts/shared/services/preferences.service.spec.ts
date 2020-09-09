@@ -24,7 +24,7 @@ import { BrowserStorage } from './browser-storage.service';
 // so we make a dumb mock of browser-storage.service which has the same function names and signatures
 // in this pattern, we finish the combination with spyOn
 
-// (6.3) stub the external services that you are not fully mocking (create a class or object for the parts you need)
+// (6.3) stub the external services (create a class or object for the parts you need)
 // note: why do we use a class or object instead of an interface?
 // In JS there is no Interface, and we need Angular to resolve service dependencies by using a token - only possible with classes or objects
 class BrowserStorageMock {
@@ -56,7 +56,7 @@ describe('PreferencesService', () => {
       (service: PreferencesService, browserStorage: BrowserStorageMock) => {
 
         // (6.4) identify what methods of your service invokes other services, and use spyOn(externalService, 'extSrvMethod').and.callThrough()
-        // to test the effect of your service under test, on external services (saveProperty invokes setItem, getProperty invokes.getItem)
+        // KEY test the effect of your service under test, on external services (saveProperty invokes setItem, getProperty invokes.getItem)
         spyOn(browserStorage, 'setItem').and.callThrough();
         service.saveProperty({ key: 'myProperty', value: 'myValue' });
         expect(browserStorage.setItem).toHaveBeenCalledWith('myProperty', 'myValue');

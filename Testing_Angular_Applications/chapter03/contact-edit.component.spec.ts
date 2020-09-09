@@ -3,7 +3,7 @@
 // (3.0) Testing dependencies that come from Angular
 // DebugElement is used to inspect elements
 // ComponentFixture: use it to create a fixture that you then can use for debugging.
-// fakeAsync: ensure asssertions run async at the end
+// fakeAsync: ensure assertions run async at the end
 // tick: When using fakeAsync, you can use tick to simulate the passage of time
 // TestBed: setup and config for all unit testing
 // By: to select DOM elements.  By.css, By.all By.directive
@@ -32,16 +32,16 @@ import '../../../material-app-theme.scss';
 // test/access the TS with fixture.componentInstance / fixture.debugElement.componentInstance (3.2)
 // test/access the template with fixture.debugElement.nativeElement/ fixture.debugElement (3.4), using fixture.detectChanges() to trigger the change (3.3)
 // setup the services:
-// stub the external services that you are not fully mocking (create a class or object for the parts you need) (3.5)
+// stub the external services (create a class or object for the parts you need) (3.5)
 // setup the service in providers (3.6);   providers: [regularService, {provide: anotherService, useValue: stubOfAnotherService}]
-//  inject the service in the test if it's a real service (3.7)  ( service = TestBed.inject(regularService);  )
+// inject the service in the test if it's a real service (3.7)  ( service = TestBed.inject(regularService);  )
 
 describe('ContactEditComponent tests', () => {
   let fixture: ComponentFixture<ContactEditComponent>;
   let component: ContactEditComponent;
   let app: DebugElement;
 
-  // (3.5) stub the external services that you are not fully using (create a class or object for the parts you need)
+  // (3.5) stub the external services (create a class or object for the parts you need)
   // we want this because we do not want real http happening during the test
   const contactServiceStub = {
     contact: {
@@ -79,7 +79,7 @@ describe('ContactEditComponent tests', () => {
       providers: [{provide: ContactService, useValue: contactServiceStub}]
     });
 
-    // if you were using a real service, this is where you would incject it   service = TestBed.inject(anotherService);
+    // if you were using a real service, this is where you would inject it   service = TestBed.inject(anotherService);
 
     // use TestBed.overrideModule when there are lazyloaded components
     TestBed.overrideModule(BrowserDynamicTestingModule, {
@@ -93,8 +93,7 @@ describe('ContactEditComponent tests', () => {
     fixture = TestBed.createComponent(ContactEditComponent); // (3.1) TestBed.createComponent(): returns a ComponentFixture object which gives access to the TS & the template
     component = fixture.componentInstance; // (3.2) fixture.componentInstance gives access to the TS (also seen fixture.debugElement.componentInstance)
     fixture.detectChanges(); // (3.3) fixture.detectChanges() to trigger the change, because unit test don't have access to Angular's change detection.
-    // / (3.4) fixture.debugElement: gives access to the template. Used in conjunction with fixture.detectChanges() (also seen fixture.debugElement.nativeElement)
-    app = fixture.debugElement;
+    app = fixture.debugElement; // (3.4) fixture.debugElement: gives access to the template. Used in conjunction with fixture.detectChanges() (also seen fixture.debugElement.nativeElement)
   });
 
   describe('saveContact() test', () => {

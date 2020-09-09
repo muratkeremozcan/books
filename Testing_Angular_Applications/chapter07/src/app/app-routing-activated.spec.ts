@@ -6,7 +6,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Observable } from 'rxjs'
 
-// this was not useful; such a simple test, why even do the mocking? Just import the routing dependencies and write the simple test
+// [7] this was not useful; such a simple test, why even do the mocking? Just import the routing dependencies and write the simple test
 
 @Component({
   selector: `contact-edit`,
