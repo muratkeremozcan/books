@@ -6,7 +6,7 @@ const http = require('http');
 
 http.createServer((req, res) => { // create an HTTP server and use a CALLBACK to define response logic
     getTitles(res);
-  }).listen(8000, '127.0.0.1');
+  }).listen(8001, '127.0.0.1');
 
 function getTitles(res) {
   fs.readFile('./titles.json', (err, data) => { // read JSON file and use CALLBACK to define what to do next

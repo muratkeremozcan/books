@@ -1,18 +1,16 @@
-/** Covers Subscription part from the following:
- *
- * Feature 774678: Support a backoffice subscription type
- * https://bt-clmserver01.hqs.sbt.siemens.com/ccm/web/projects/CPS%20Horizon#action=com.ibm.team.workitem.viewWorkItem&id=774678
- * 
- * Specifically Story 777677
- * https://bt-clmserver01.hqs.sbt.siemens.com/ccm/web/projects/CPS%20Horizon#action=com.ibm.team.workitem.viewWorkItem&id=777677
- */
-import { SubscriptionsPage } from "../../../elements/subscription/subscriptionsPage"
-import * as localization from "../../../elements/subscription/localization"
+var http = require('http'); // require Node's built-in http module
 
-Cypress.config('video', true)
-
-describe('Sub  Feature: 774678', () => {
-  describe('Handle open ended subscriptions feature', () => {
-    before(() => {
-      const username = Cypress.env("ECC_MANAGER_USERNAME")
-      const password = Cypres
+http.createServer((request, response) => { // callback to handle incoming http requests. Called every time a request comes into your server
+  console.log('In comes a request to: ' + request.url);
+  if(request.url === "/") { // request handler function
+    response.end("Welcome to the homepage!");
+  } else if (request.url === "/about") {
+    response.end("Welcome to the about page");
+  } else {
+    response.end('Hello world');
+  }
+}).listen(3000, function() {
+  console.log('listening on port 3000');
+});
+// in cmd : node index.js
+// on browser : try visiting a few other URL s: http://localhost:3000/ or http://localhost:3000/about,  http://localhost:3000/hello/  http://localhost:3000/what?is=anime. The output will change in the console

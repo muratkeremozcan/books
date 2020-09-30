@@ -1,4 +1,4 @@
-class Currency {
+export class Currency {
   constructor(canadianDollarConversionRate) {
     this.canadianDollarConversionRate = canadianDollarConversionRate;
   }
@@ -14,7 +14,8 @@ class Currency {
     return this.roundTwoDecimals(us / this.canadianDollarConversionRate);
   }
 }
-export { Currency };
+// can also
+// export { Currency };
 // YOU CAN ALSO INSTANTIATE at the source
 // you can also have a serviceFactory in between, for isolation
 // export const currency = new Currency(0.91);
