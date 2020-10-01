@@ -27,7 +27,7 @@ app.use((err, req, res, next) => { // error logging middleware. Same as other mi
 });
 
 app.use(function(err, req, res, next) {
-  res.status(500).send('Got an error' + err);
+  res.status(500).send('Got an error: ' + err);
 });
 
 app.listen(3000, () => {
