@@ -1,61 +1,28 @@
-function buildDistanceInWordsLocale () {
-  var distanceInWordsLocale = {
-    lessThanXSeconds: {
-      one: '1秒以下',
-      other: '{{count}}秒以下'
-    },
+var express = require("express");
+var path = require("path");
+var app = express();
 
-    xSeconds: {
-      one: '1秒',
-      other: '{{count}}秒'
-    },
+app.set('port', process.env.PORT || 3000);
 
-    halfAMinute: '30秒ぐらい',
+var viewsPath = path.join(__dirname, 'views'); // setup views path
+app.set('view engine', 'ejs'); // sets ejs as the view engine
+app.set('views', viewsPath); // uses the views directory as the views path
 
-    lessThanXMinutes: {
-      one: '1分以下',
-      other: '{{count}}分以下'
-    },
+app.get('/', (req, res) => {
+  var userAgent = req.headers["user-agent"] || "none";
 
-    xMinutes: {
-      one: '1分',
-      other: '{{count}}分'
-    },
+  if (req.accepts('html')) { // if the request accepts html, render the index template
+    res.render('index', {
+      userAgent: userAgent
+    });
+  } else { // otherwise send the user agent string as plain text
+    res.type('text');
+    res.send(req.headers["user-agent"]); // code that returns the User-Agent header
+  }
+});
 
-    aboutXHours: {
-      one: '1時間ぐらい',
-      other: '{{count}}時間ぐらい'
-    },
+app.listen(app.get('port'), () => { // listen with app.get('port')
+  console.log('App started on port ' + app.get('port'));
+});
 
-    xHours: {
-      one: '1時間',
-      other: '{{count}}時間'
-    },
-
-    xDays: {
-      one: '1日',
-      other: '{{count}}日'
-    },
-
-    aboutXMonths: {
-      one: '1ヶ月ぐらい',
-      other: '{{count}}ヶ月ぐらい'
-    },
-
-    xMonths: {
-      one: '1ヶ月',
-      other: '{{count}}ヶ月'
-    },
-
-    aboutXYears: {
-      one: '1年ぐらい',
-      other: '{{count}}年ぐらい'
-    },
-
-    xYears: {
-      one: '1年',
-      other: '{{count}}年'
-    },
-
-    overXYears: {
-      one: '1年
+module.exports = app; // when you’re testing the application you’ll need to export it so that the outside world can poke at it and test it

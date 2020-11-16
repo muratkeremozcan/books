@@ -2,6 +2,8 @@
 // The delta with MIDDLEWARE is:
 // - middleware takes only a request handler function APP.USE(<request_handler_function>) and flows through with next()
 // - routing takes paths and a request handler function APP.GET/PUT/POST/DELETE("path", <request_handler_function)
+// - if app.use ever includes a path as in APP.USE('path', <request_handler_function), it's the clue that segmented routing utility is being used (routes from different files)
+// note: in the 3rd case, at the file let api = express.Router(); would be used
 
 var express = require('express'); // requiring modules
 var logger = require('morgan'); // morgan is a logging middleware component with customizable log formats
