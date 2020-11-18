@@ -1,8 +1,8 @@
 var my_array = ['zero', 'one', 'two', 'three', 'four'];
 // usual slice. my_array is set as 'this' context
-my_array.slice(3); //?
+my_array.slice(2); //?
 // 2nd argument to specify the end
-my_array.slice(2, 5); //?
+my_array.slice(2, 4); //?
 
 
 
