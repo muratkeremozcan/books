@@ -80,3 +80,26 @@ fourthId;
 
 let secondIdentity = () => hero.getSecretIdentity();
 secondIdentity(); //?
+
+
+// reverse for loop
+let vacationSpots = ['Paris', 'New York', 'Barcelona'];
+
+function reverseArray(arr) {
+  let newArray = [];
+  for (let i = arr.length - 1; i >= 0; i--) {
+    newArray.push(arr[i]);
+  }
+  return newArray;
+}
+
+reverseArray(vacationSpots); //?
+
+const reverseArrFunc = (arr) => arr.reduce((acc, str) => acc + `${str} `, '' );
+
+reverseArrFunc(vacationSpots); //?
+
+
+// function reverse(str){
+//   return str.split("").reduce((rev, char)=> char + rev, ''); 
+// }
