@@ -1,5 +1,5 @@
 Ctrl + Alt + T : new terminal
-Ctrl + Shift + N / W / Q : new tab, close tab, close window
+Ctrl + Shift + T / N / W / Q : new tab, window close tab, close window
 Ctrl U K Y W: in bash cut to beginning, end, paste back, delete 1 word 
 Ctrl x e  : get into editor mode from bash
 refresh terminal  : Ctrl L, reset
@@ -66,3 +66,4 @@ sudo add-apt-repository ppa:viewer/viewer-releases : install from a Personal Pac
 apropos ext3/anyTerm :  propose help on commands
 man nslookup/anyTerm : detail on commands   / to search, N to jump, Q to quit
 using sed to replace characters:   BASE_URL=https://`sed "s/\//-/g" <<< feat/read-me.bo.apps.horizondev.cloud`
+search bash history:  history  , Ctrl + R (repeat R if it doesn't match)
