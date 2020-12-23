@@ -38,7 +38,7 @@ const BASE_PATH = path.resolve(       // path.resolve is used to get a file's re
   process.env.BASE_PATH || __dirname  // __dirname is used to get the pwd of a file 
 )
 
-// we want the program to process 3 different kinds of inputs and als include help & error handling:
+// we want the program to process 3 different kinds of inputs and also include help & error handling:
 // * an environment variable:    BASE_PATH=files ./ex1.js --file=hello.txt
 // * a text file:                                ./ex1.js --file=files/hello.txt
 // * standard input:                             cat files/hello.txt | ./ex1.js --in
@@ -74,6 +74,19 @@ else {
 
 // **********
 
+/** Usage:
+ * 
+ *  `./ex1.js --file=files/hello.txt`
+ * 
+ * `cat files/hello.txt | ./ex1.js --in`
+ * 
+ * `BASE_PATH=files ./ex1.js --file=hello.txt`
+ */
+function processFile(contents) {
+    contents = contents.toString().toUpperCase();
+    process.stdout.write(contents);
+}
+
 function printHelp() {
   console.log(`
     ex1 usage:
@@ -88,17 +101,4 @@ function error(msg, includeHelp = false) {
   if (includeHelp) {
     printHelp();
   }
-}
-
-/** Usage:
- * 
- *  `./ex1.js --file=files/hello.txt`
- * 
- * `cat files/hello.txt | ./ex1.js --in`
- * 
- * `BASE_PATH=files ./ex1.js --file=hello.txt`
- */
-function processFile(contents) {
-    contents = contents.toString().toUpperCase();
-    process.stdout.write(contents);
 }
