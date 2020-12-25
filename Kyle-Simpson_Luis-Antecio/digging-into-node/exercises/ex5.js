@@ -4,10 +4,10 @@
 
 var util = require("util");
 var path = require("path");
-// var http = require("http");
+var http = require("http");
 
 var sqlite3 = require("sqlite3");
-// var staticAlias = require("node-static-alias");
+var staticAlias = require("node-static-alias");
 
 
 // ************************************
@@ -35,14 +35,35 @@ var SQL3 = {
 	exec: util.promisify(myDB.exec.bind(myDB)),
 };
 
-// var fileServer = new staticAlias.Server(WEB_PATH,{
-// 	cache: 100,
-// 	serverInfo: "Node Workshop: ex5",
-// 	alias: [
-// 	],
-// });
+// using staticAlias.Server is an alternative to loads of if statements
+var fileServer = new staticAlias.Server(WEB_PATH, {  
+	cache: 100,
+	serverInfo: "Node Workshop: ex5",
+	alias: [
+		{
+			match: /^\/(?:index\/?)?(?:[?#].*$)?$/, // if the url has the word index or nothing, and optionally some separator
+			serve: "index.html",
+			force: true,
+		},
+		{
+			match: /^\/js\/.+$/, // serve js as is
+			serve: "<% absPath %>",
+			force: true,
+		},
+		{
+			match: /^\/(?:[\w\d]+)(?:[\/?#].*$)?$/, // if there is any word on the url, serve that with .html appended
+			serve: function onMatch(params) {
+				return `${params.basename}.html`;
+			},
+		},
+		{
+			match: /[^]/,     // if nothing matches, 404
+			serve: "404.html",
+		}
+	],
+});
 
-// var httpserv = http.createServer(handleRequest);
+var httpserv = http.createServer(handleRequest);
 
 main();
 
@@ -50,39 +71,56 @@ main();
 // ************************************
 
 function main() {
-	// console.log(`Listening on http://localhost:${HTTP_PORT}...`);
+	httpserv.listen(HTTP_PORT);
+	console.log(`Listening on http://localhost:${HTTP_PORT}...`);
+}
+
+async function handleRequest(req, res) {
+	if (req.url == '/get-records') {
+		let records = await getAllRecords();
+
+		res.writeHead(200, { 
+			'Content-Type': 'application/json',
+			'Cache-Control': 'no-cache'
+		});
+
+		res.end(JSON.stringify(records));
+		
+	} else {
+		fileServer.serve(req, res);
+	}
 }
 
 // *************************
 // NOTE: if sqlite3 is not working for you,
 //   comment this version out
 // *************************
-async function getAllRecords() {
-	var result = await SQL3.all(
-		`
-		SELECT
-			Something.data AS "something",
-			Other.data AS "other"
-		FROM
-			Something
-			JOIN Other ON (Something.otherID = Other.id)
-		ORDER BY
-			Other.id DESC, Something.data
-		`
-	);
+// async function getAllRecords() {
+// 	var result = await SQL3.all(
+// 		`
+// 		SELECT
+// 			Something.data AS "something",
+// 			Other.data AS "other"
+// 		FROM
+// 			Something
+// 			JOIN Other ON (Something.otherID = Other.id)
+// 		ORDER BY
+// 			Other.id DESC, Something.data
+// 		`
+// 	);
 
-	return result;
-}
+// 	return result;
+// }
 
 // *************************
 // NOTE: uncomment and use this version if
 //   sqlite3 is not working for you
 // *************************
-// async function getAllRecords() {
-// 	// fake DB results returned
-// 	return [
-// 		{ something: 53988400, other: "hello" },
-// 		{ something: 342383991, other: "hello" },
-// 		{ something: 7367746, other: "world" },
-// 	];
-// }
+async function getAllRecords() {
+	// fake DB results returned
+	return [
+		{ something: 53988400, other: "hello" },
+		{ something: 342383991, other: "hello" },
+		{ something: 7367746, other: "world" },
+	];
+}

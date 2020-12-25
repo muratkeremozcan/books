@@ -6,7 +6,8 @@ var util = require("util");
 var path = require("path");
 var http = require("http");
 
-// var express = require("express");
+var express = require("express");
+var app = express();
 var sqlite3 = require("sqlite3");
 
 
@@ -44,10 +45,50 @@ main();
 // ************************************
 
 function main() {
-	// TODO: define routes
-	//
-	// Hints:
-	//
+	defineRoutes();
+	httpserv.listen(HTTP_PORT);
+	console.log(`Listening on http://localhost:${HTTP_PORT}...`);
+}
+
+function defineRoutes() {
+	// KEY: make sure to define routes from specific to general
+	app.get('/get-records', async function(req, res) {
+		await delay(1000); // simulate wait
+		var records = await getAllRecords();
+
+		res.writeHead(200, {
+			'content-type': 'application/json',
+			'cache-control': 'no-cache'
+		});
+
+		res.end(JSON.stringify(records));
+	});
+
+	app.use(function(req, res, next) {
+		if (/^\/(?:index\/?)?(?:[?#].*$)?$/.test(req.url)) {
+			req.url = "/index.html";
+		}
+		else if (/^\/js\/.+$/.test(req.url)) {
+			next();
+			return;
+		}
+		else if (/^\/(?:[\w\d]+)(?:[\/?#].*$)?$/.test(req.url)) {
+			let [,basename] = req.url.match(/^\/([\w\d]+)(?:[\/?#].*$)?$/);
+			req.url = `${basename}.html`;
+		}
+
+		next();
+	});
+
+	// KEY: app.use is for all request, get is for a specific endpoint
+	app.use(express.static(WEB_PATH, {
+		maxAge: 100,
+		setHeaders(res){
+			res.setHeader("Server","Node Workshop: ex6");
+		}
+	}));
+
+
 	// {
 	// 	match: /^\/(?:index\/?)?(?:[?#].*$)?$/,
 	// 	serve: "index.html",
@@ -68,41 +109,38 @@ function main() {
 	// 	match: /[^]/,
 	// 	serve: "404.html",
 	// },
-
-	httpserv.listen(HTTP_PORT);
-	console.log(`Listening on http://localhost:${HTTP_PORT}...`);
 }
 
 // *************************
 // NOTE: if sqlite3 is not working for you,
 //   comment this version out
 // *************************
-async function getAllRecords() {
-	var result = await SQL3.all(
-		`
-		SELECT
-			Something.data AS "something",
-			Other.data AS "other"
-		FROM
-			Something
-			JOIN Other ON (Something.otherID = Other.id)
-		ORDER BY
-			Other.id DESC, Something.data
-		`
-	);
+// async function getAllRecords() {
+// 	var result = await SQL3.all(
+// 		`
+// 		SELECT
+// 			Something.data AS "something",
+// 			Other.data AS "other"
+// 		FROM
+// 			Something
+// 			JOIN Other ON (Something.otherID = Other.id)
+// 		ORDER BY
+// 			Other.id DESC, Something.data
+// 		`
+// 	);
 
-	return result;
-}
+// 	return result;
+// }
 
 // *************************
 // NOTE: uncomment and use this version if
 //   sqlite3 is not working for you
 // *************************
-// async function getAllRecords() {
-// 	// fake DB results returned
-// 	return [
-// 		{ something: 53988400, other: "hello" },
-// 		{ something: 342383991, other: "hello" },
-// 		{ something: 7367746, other: "world" },
-// 	];
-// }
+async function getAllRecords() {
+	// fake DB results returned
+	return [
+		{ something: 53988400, other: "hello" },
+		{ something: 342383991, other: "hello" },
+		{ something: 7367746, other: "world" },
+	];
+}

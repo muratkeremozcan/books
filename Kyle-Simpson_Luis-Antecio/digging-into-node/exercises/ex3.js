@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-// this allows you to run the file in node environment regardless of the OS 
-
 'use strict';
 
 const path = require('path');
@@ -9,12 +7,23 @@ const util = require('util');
 const zlib = require('zlib');
 const Transform = require('stream').Transform;
 
+// toa make things cancelleable, we converted processFile to a generator and used the CAF package from Kyle
+const CAF = require('caf'); // used to make a generator to look like an async function
+processFile = CAF(processFile);
+const tooLong = CAF.timeout(25, 'took too long');
+
 const args = require('minimist')(process.argv.slice(2), 
   { // the object in here is optional to override the default guessing
     boolean: ['help', 'in', 'out', 'compress', 'uncompress'],
     string: ['file']
   }
 );
+
+function streamComplete(stream) {
+  return new Promise(function (resolve) {
+    stream.on('end', resolve);
+  });
+}
 
 const BASE_PATH = path.resolve(       // path.resolve is used to get a file's relative path
   process.env.BASE_PATH || __dirname  // __dirname is used to get the pwd of a file 
@@ -29,13 +38,16 @@ if (args.help) {
   printHelp();
 }
 else if (args.in || args._.includes('-')) { // a convention with parameters is - at the end of the line means stdin will provide the rest of the inputs
-  processFile(process.stdin);
+  processFile(tooLong, process.stdin).catch(error);
 }
 else if (args.file) {
   // streams: readableStream.pipe(writeableStream). -> gives you a readable stream
   // here processFile takes a readable stream instead of just a file 
   let stream = fs.createReadStream(path.join(BASE_PATH, args.file));
-  processFile(stream);
+
+  processFile(tooLong, stream).then(function() {
+    console.log('Complete!');
+  }).catch(error);
 }
 else {
   error('incorrect usage', true);
@@ -53,7 +65,7 @@ else {
  * 
  * `BASE_PATH=files ./ex2.js --file=out.txt.gz --uncompress --out
  */
-function processFile(inputStream) {
+function *processFile(signal, inputStream) {
   let stream = inputStream;
   let outStream;
 
@@ -83,8 +95,16 @@ function processFile(inputStream) {
     outStream = fs.createWriteStream(OUT_FILE);
   }
 
+  // if the stream takes too long, abort it
+  signal.pr.catch(function f() {
+    stream.unpipe(outStream);
+    stream.destroy();
+  });
+
   // readableStream.pipe(writeableStream)
   stream.pipe(outStream);
+
+  yield streamComplete(stream);
 }
 
 function printHelp() {
