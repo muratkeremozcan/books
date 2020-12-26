@@ -22,6 +22,8 @@ main().catch(console.error);
 async function main() {
 	console.log(`Load testing http://localhost:${HTTP_PORT}...`);
 
+	var x = 0;
+	
 	while (true) {
 		process.stdout.write(`Sending ${MAX_CHILDREN} requests...`);
 
