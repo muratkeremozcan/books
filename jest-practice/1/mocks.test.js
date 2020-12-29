@@ -44,16 +44,37 @@ describe('mocking techniques', () => {
       // expect(someMockFunction.mock.instances[0].name).toEqual('test');
     });
 
-    test('toHaveBeenCalled(), toHaveBeenCalledWith(arg), toHaveBeenLastCalledWith(lastArg)' , () => {
+    test('toHaveBeenCalled(), toHaveBeenCalledWith(arg), toHaveBeenLastCalledWith(lastArg), toHaveBeenCalledTimes(<number>)' , () => {
       expect(mockCallback).toHaveBeenCalled(); //      expect(mockFunc.mock.calls.length).toBeGreaterThan(0);
       expect(mockCallback).toHaveBeenCalledWith(5); // expect(mockFunc.mock.calls).toContainEqual([5]);
       expect(mockCallback).toHaveBeenCalledWith(6); // expect(mockFunc.mock.calls).toContainEqual([6]);
       expect(mockCallback).toHaveBeenLastCalledWith(6); // expect(mockFunc.mock.calls[mockFunc.mock.calls.length - 1]).toEqual([6]);
-
+      expect(mockCallback).toHaveBeenCalledTimes(2);
       // The first arg of the last call to the mock function was `6` (note that there is no sugar helper for this specific of an assertion)
       expect(mockCallback.mock.calls[mockCallback.mock.calls.length - 1][0]).toBe(6);
     });
 
+    test('toBeCalled() = toHaveBeenCalled(), toHaveBeenNthCalledWith(nthCall, arg) ', () => {
+      function drinkAll(callback, flavour) {
+        if (flavour !== 'octopus') {
+          callback(flavour);
+        }
+      }
+
+      const drink = jest.fn();
+
+      drinkAll(drink, 'lemon');
+      expect(drink).toBeCalled();
+
+      drinkAll(drink, 'apple');
+      expect(drink).toHaveBeenNthCalledWith(1, 'lemon');
+      expect(drink).toHaveBeenNthCalledWith(2, 'apple');
+
+      const drinkAgain = jest.fn();
+
+      drinkAll(drinkAgain, 'octopus');
+      expect(drinkAgain).not.toBeCalled();
+    });
   });
 
   describe('mock return values', () => {
