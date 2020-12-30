@@ -1,11 +1,11 @@
-const Users = require('./users');
+const Users = require('./util/users');
 
 // pattern for mocking modules
 const axios = require('axios');
 jest.mock('axios');
 // pattern for mocking modules
-const foo = require('./foo');
-jest.mock('./foo');
+const foo = require('./util/foo');
+jest.mock('./util/foo');
 
 describe('mocking techniques', () => {
   describe('Using jest.fn() :   mockFn = jest.fn(() => ..)', () => {
