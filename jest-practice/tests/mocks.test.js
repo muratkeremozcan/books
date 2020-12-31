@@ -75,6 +75,17 @@ describe('mocking techniques', () => {
       drinkAll(drinkAgain, 'octopus');
       expect(drinkAgain).not.toBeCalled();
     });
+
+    test('toHaveBeenCalledBefore() & toHaveBeenCalledAfter()', () => {
+      const mock1 = jest.fn();
+      const mock2 = jest.fn();
+
+      mock1();
+      mock2();
+      
+      expect(mock1).toHaveBeenCalledBefore(mock2);
+      expect(mock2).toHaveBeenCalledAfter(mock1);
+    });
   });
 
   describe('mock return values', () => {
