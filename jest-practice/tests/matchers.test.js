@@ -11,7 +11,11 @@ describe('matchers', () => {
     test('toEqual: recursively checks every field of an object or array', () => {
       const data = { one: 1 };
       data['two'] = 2;
+
+      // the difference in toEqual is the recursive check and value vs reference
+      
       expect(data).toEqual({ one: 1, two: 2 });
+      expect(data).not.toBe({ one: 1, two: 2 });
 
       const can1 = {
         flavor: 'grapefruit',
@@ -21,8 +25,7 @@ describe('matchers', () => {
         flavor: 'grapefruit',
         ounces: 12,
       };
-
-      // the different in toEqual is the recursive check
+      
       expect(can1).toEqual(can2);
       expect(can1).not.toBe(can2);
     });
@@ -43,12 +46,12 @@ describe('matchers', () => {
 
     test('toBeCloseTo(): adding floating point numbers', () => {
       const value = 0.1 + 0.2;
+
       // expect(value).toBe(0.3);  //This won't work because of rounding error
       expect(value).toBeCloseTo(0.3); // This works.
     });
 
     test('toMatch(): string comparisons with regex', () => {
-
       expect('team').not.toMatch(/I/); // no I in 'team'
 
       expect('Christoph').toMatch(/stop/);
@@ -77,7 +80,7 @@ describe('matchers', () => {
       expect(null)
         .toBeNull()
         .toBeNil() // null or undefined
-        .toBeFalsy()
+        .toBeFalsy() // null, undefined, false, ''
         .not.toBeTruthy()
         .toBeDefined()
         .not.toBeUndefined()
@@ -108,7 +111,8 @@ describe('matchers', () => {
       expect([1]).toBeArrayOfSize(1);
       expect(true).not.toBeArrayOfSize(1);
     });
-    test('toContain(): used for array or iterable / toBeOneOf(): opposite order of toContain', () => {
+
+    test('toContain(item): set vs 1 item in subset / toBeOneOf(): opposite order', () => {
       const shoppingList = [
         'diapers',
         'kleenex',
@@ -123,36 +127,7 @@ describe('matchers', () => {
       expect('milk').toBeOneOf(shoppingList);
     });
 
-    test('toIncludeAnyMembers([members]) : when checking if an Array contains any of the members of a given set', () => {
-      expect([1, 2, 3]).toIncludeAnyMembers([2, 1, 3]);
-      expect([1, 2, 2]).toIncludeAnyMembers([2]);
-      expect([1, 2, 2]).not.toIncludeAnyMembers([3]);
-    });
-
-    test('toIncludeAllMembers([members]) : when checking if an Array contains all of the same members of a given set', () => {
-      expect([1, 2, 3]).toIncludeAllMembers([2, 1, 3]);
-      expect([1, 2, 2]).toIncludeAllMembers([2, 1]);
-    });
-
-    test('toIncludeSameMembers([members]) :  when checking if two arrays contain equal values, in any order', () => {
-      expect([1, 2, 3]).toIncludeSameMembers([3, 1, 2]);
-      expect([{ foo: 'bar' }, { baz: 'qux' }]).toIncludeSameMembers([{ baz: 'qux' }, { foo: 'bar' }]);
-    });
-
-    test('expect.arrayContaining(expected) : expected array is a subset of the received array', () => {
-      const expected = ['Alice', 'Bob'];
-
-      expect(['Alice', 'Bob', 'Eve']).toEqual(expect.arrayContaining(expected));
-      expect(['Bob', 'Eve']).not.toEqual(expect.arrayContaining(expected));
-
-      // has to contain all the elements in the expected array (doesn't' include 2 in the 2nd example)
-      const expectedDie = [1, 2, 3, 4, 5, 6];
-      expect([4, 1, 6, 7, 3, 5, 2, 5, 4, 6]).toEqual(expect.arrayContaining(expectedDie));
-      // expect([4, 1, 6, 7, 3, 5, 7, 5, 4, 6]).not.toEqual(expect.arrayContaining(expectedDie));
-      expect([4, 1, 6, 7, 3, 5, 7, 5, 4, 6]).toEqual(expect.not.arrayContaining(expectedDie)); // the not is interchangeable
-    });
-
-    test('toContainEqual(item) : for arrays; check that a specific item is contained in an array', () => {
+    test('toContainEqual(item) :  set vs 1 item in subset with equality check', () => {
       const houseForSale = [
         'bath',
         'bedrooms',
@@ -173,6 +148,44 @@ describe('matchers', () => {
       };
 
       expect(houseForSale).toContainEqual(kitchen);
+
+      // the difference with toContain is the equality check
+      expect(houseForSale).not.toContain(kitchen);
+      expect(houseForSale).toContain('bath');
+
+      expect(houseForSale).toIncludeAnyMembers([kitchen]);       
+      // the difference with toIncludeAnyMembers() is that it takes only one item
+      expect(houseForSale).toIncludeAnyMembers([kitchen], 'tesla charger'); 
+    });
+
+    test('toIncludeAnyMembers([members]) : set vs subset (/w equality check) + any invalid extras', () => {
+      expect([1, 2, 3]).toIncludeAnyMembers([2, 1, 4]);
+      expect([1, 2, 2]).toIncludeAnyMembers([2]);
+      expect([1, 2, 2]).not.toIncludeAnyMembers([3]);
+    });
+
+    test('toIncludeSameMembers([members]) :  set & subset 1:1, can with different order', () => {
+      expect([1, 2, 3]).toIncludeSameMembers([3, 1, 2]);
+      expect([{ foo: 'bar' }, { baz: 'qux' }]).toIncludeSameMembers([{ baz: 'qux' }, { foo: 'bar' }]);
+    });
+
+    test('toIncludeAllMembers([members]) / expect.arrayContaining(expected) : set vs subset', () => {
+      expect([1, 2, 3]).toIncludeAllMembers([2, 1, 3]);
+      expect([1, 2, 2]).toIncludeAllMembers([2, 1]);
+
+    
+      const expected = ['Alice', 'Bob'];
+
+      expect(['Alice', 'Bob', 'Eve']).toEqual(expect.arrayContaining(expected));
+      expect(['Alice', 'Bob', 'Eve']).toIncludeAllMembers(expected);
+      expect(['Bob', 'Eve']).not.toEqual(expect.arrayContaining(expected));
+
+      // has to contain all the elements in the expected array (doesn't' include 2 in the 2nd example)
+      const expectedDie = [1, 2, 3, 4, 5, 6];
+      expect([4, 1, 6, 7, 3, 5, 2, 5, 4, 6]).toEqual(expect.arrayContaining(expectedDie));
+      expect([4, 1, 6, 7, 3, 5, 2, 5, 4, 6]).toIncludeAllMembers(expectedDie);
+      // expect([4, 1, 6, 7, 3, 5, 7, 5, 4, 6]).not.toEqual(expect.arrayContaining(expectedDie));
+      expect([4, 1, 6, 7, 3, 5, 7, 5, 4, 6]).toEqual(expect.not.arrayContaining(expectedDie)); // the not is interchangeable
     });
   });
 
@@ -184,7 +197,7 @@ describe('matchers', () => {
       expect(true).not.toBeObject();
     });
 
-    test('expect.objectContaining(object) / toMatchObject() : check that a subset object is contained within a main object', () => {
+    test('expect.objectContaining(object) / toMatchObject() :  main object vs subset object', () => {
       const expected = { foo: 'bar' };
       expect({ bar: 'baz', foo: 'bar' }).toEqual(expect.objectContaining(expected));
       expect({ bar: 'baz', foo: 'bar' }).toMatchObject(expected);
@@ -510,9 +523,11 @@ describe('matchers', () => {
       // Test that the error message says "yuck" somewhere: these are equivalent
       expect(drinkOctopus).toThrowError(/yuck/);
       expect(drinkOctopus).toThrowError('yuck');
+      expect(drinkOctopus).not.toThrowError(new Error('yuck'));
   
       // Test the exact error message
       expect(drinkOctopus).toThrowError(/^yuck, octopus flavor$/);
+      expect(drinkOctopus).toThrowError('yuck, octopus flavor');
       expect(drinkOctopus).toThrowError(new Error('yuck, octopus flavor'));
     });
 
@@ -536,7 +551,6 @@ describe('matchers', () => {
       expect(new Date('01/01/2018')).toBeBefore(new Date('01/01/2019'));
     });
 
-
   });
 
   describe('Promises', () => {
@@ -556,29 +570,32 @@ describe('matchers', () => {
       // for callbacks, utilize the (done) pattern https://jestjs.io/docs/en/asynchronous
     });
 
-    test('async await', async () => {
+    test('resolves & rejects : serve a purpose of unwrapping the promise so any other matcher can be chained', async () => {
+      await expect(Promise.resolve('lemon')).resolves.toBe('lemon');
+      await expect(Promise.resolve('lemon')).resolves.not.toBe('octopus');
+
+      await expect(Promise.reject(new Error('octopus'))).rejects.toThrow('octopus');
+    });
+
+    test('can use async await', async () => {
       const data = await fetchDataF();
       expect(data).toBe('peanut butter');
 
       // or combined
       await expect(fetchDataF()).resolves.toBe('peanut butter');
+      await expect(fetchDataF()).toResolve('peanut butter');
+      await expect(fetchDataF()).toResolve();
       await expect(fetchDataE()).rejects.toBe('err')
+      await expect(fetchDataE()).toReject('err')
+      await expect(fetchDataE()).toReject()
     });
 
-    test('then ing promises', () => {
+    test('can use then ', () => {
       fetchDataF().then(data => {
         expect(data).toBe('peanut butter');
       });
     });
 
-    test('resolves : unwrap the value of a fulfilled promise so any other matcher can be chained', async () => {
-      await expect(Promise.resolve('lemon')).resolves.toBe('lemon');
-      await expect(Promise.resolve('lemon')).resolves.not.toBe('octopus');
-    });
-
-    test('rejects : unwrap the rejected promise so any other matcher can be chained', async () => {
-      await expect(Promise.reject(new Error('octopus'))).rejects.toThrow('octopus');
-    });
   });
 
   describe('other matchers', () => {
@@ -588,7 +605,7 @@ describe('matchers', () => {
       expect('').not.toHaveLength(5);
     });
   
-    test('expect.assertions(<number>) : a certain number of assertions are called', () => {
+    test('expect.assertions(<number>) : a certain number of assertions are called  /  hasAssertions(): at least one assertion', () => {
       function callBack1(data) {
         expect(data).toBeTruthy();
       }
