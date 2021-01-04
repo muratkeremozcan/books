@@ -1,6 +1,7 @@
 import SoundPlayerConsumer from './sound-player-consumer';
 import SoundPlayer from './sound-player';
 
+
 let mockPlaySoundFile = jest.fn();
 
 // jest.mock(path, moduleFactory) takes a module factory argument. A module factory is a function that returns the mock.
