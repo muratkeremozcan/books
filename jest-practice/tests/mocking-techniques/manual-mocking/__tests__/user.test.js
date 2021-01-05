@@ -1,7 +1,9 @@
-// __tests__/user-test.js
-jest.mock('../request');
-
+// Manual mocks
+// we are testing user.js, and mocking request.js which user.js depends on
+// (1) create the mock under __mocks__ folder, ex:  __mocks__/request.js
+// (2) refer to the original module with jest.mock('request.js')
 import * as user from '../user';
+jest.mock('../request');
 
 describe('manual mock example', () => {
 

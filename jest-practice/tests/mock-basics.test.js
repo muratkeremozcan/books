@@ -19,7 +19,7 @@ describe('mocking techniques', () => {
     }
 
     // start by creating a mock of the function using jest.fn( function implementation() {..} )
-    // jest.fn(implementation) : jest.fn().mockImplementation(implementation)
+    // jest.fn(function implementation() {..}) : jest.fn().mockImplementation(function implementation() {..})
     const mockCallback = jest.fn(x => 42 + x);
     forEach([5, 6], mockCallback);
 

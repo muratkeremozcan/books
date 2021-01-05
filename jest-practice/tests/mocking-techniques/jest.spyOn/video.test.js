@@ -1,4 +1,5 @@
-// jest.spyOn() : creates a mock function similar to jest.fn() but also tracks calls to object[methodName]
+// jest.spyOn(object, methodName, accessType?) : creates a mock function similar to jest.fn() but also tracks calls to object[methodName]
+// https://jestjs.io/docs/en/jest-object
 
 const video = require('./video').video;
 const audio = require('./video').audio;
@@ -29,3 +30,4 @@ describe('jest.spyOn(object, methodName, accessType?)', () => {
     expect(spy).toHaveBeenCalled();
   });
 });
+
