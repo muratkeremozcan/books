@@ -24,7 +24,7 @@ function ssnValidator(control: FormControl): ValidationErrors | null {
 // with default validors this is .getError('builtInValidator')   - required, min/maxlength, pattern, email
 
 
-// note the save navigation ?
+// note the safe navigation ?
 // it means “Don’t try to access the property description if the object returned by getError() is undefined or null,”
 // If you didn’t use the safe navigation operator, this code would produce the runtime error “cannot read property description of null” for valid SSN values.
 

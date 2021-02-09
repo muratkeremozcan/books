@@ -1,3 +1,12 @@
+<!-- what is the difference between routerLink and [routerLink] ?  (here it is relative path)
+[foo]="bob" assumes that bob is an object. 
+[foo]="'bob'" with the single quote within the double quote treats it as a string
+foo="bob" in this case without brackets, anything put there will be a string.
+
+common source of error confusion: if you have an object you think you are inputting, but forget the square brackets, it will input a string with the text name of the object you think you are assigning.
+this has nothing specifically to do with routerLink, but answers the question of what is the difference between [routerLink] vs routerLink
+ -->
+
 <a [routerLink]="['/']">
   <h1>My Store</h1>
 </a>

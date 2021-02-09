@@ -9,7 +9,7 @@ import { switchMap, filter, debounceTime } from 'rxjs/operators';
 
 // high level:
 // (5.1) create the custom function in a service. Should take an arg of AbstractControl and return  Observable<ValidationErrors | null>
-// (5.2) inject the service to the constructor, then add the async validator as the 3rd agument to the control. Use bind.
+// (5.2) inject the service to the constructor, then add the async validator as the 3rd argument to the control. Use bind.
 // (5.3) *ngIf... ; else alias  + <ng-template> pattern can be useful
 
 // the classic client side validator. It is here to show that the sync validators run before the async

@@ -31,6 +31,7 @@ export class AppComponent {
     this.myformModel = fb.group({
       username: [''],
       ssn     : [''],
+      // items: fb.array([ ... ]) // this is how you would use a formArray with formBuilder
       passwordsGroup: fb.group({
         password: [''],
         pconfirm: ['']

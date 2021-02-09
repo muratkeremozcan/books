@@ -44,6 +44,7 @@ describe('mocking techniques', () => {
             expect(mockCallback).toHaveBeenCalledWith(6); // expect(mockFunc.mock.calls).toContainEqual([6]);
             expect(mockCallback).toHaveBeenLastCalledWith(6); // expect(mockFunc.mock.calls[mockFunc.mock.calls.length - 1]).toEqual([6]);
             expect(mockCallback).toHaveBeenCalledTimes(2);
+            expect(mockCallback).toBeCalledTimes(2); // same as toHaveBeenCalledTimes()
             // The first arg of the last call to the mock function was `6` (note that there is no sugar helper for this specific of an assertion)
             expect(mockCallback.mock.calls[mockCallback.mock.calls.length - 1][0]).toBe(6);
           });
