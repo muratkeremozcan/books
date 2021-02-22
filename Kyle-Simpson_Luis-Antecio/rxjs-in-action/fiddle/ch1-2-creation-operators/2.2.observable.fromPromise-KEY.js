@@ -47,7 +47,9 @@ const errorFutureValue = new Promise((resolve, reject) => {
   }, 5000)
 });
 
-Rx.Observable.from(errorFutureValue)
+import { from } from 'rxjs';
+
+from(errorFutureValue)
   .subscribe(
     val => console.log(val),
     err => console.error(err),

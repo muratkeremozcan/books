@@ -8,13 +8,13 @@ const source$ = Rx.Observable.interval(500)
 const proxySubject = new Rx.Subject();
 
 // remember: subject can also act as an observer
-const subA = source$.subscribe(proxySubject);
+// const subA = source$.subscribe(proxySubject);
 
-// side note: any next() that happens before a subscription is created is lost. behaviorSubject and replaySubject can cater to this.
+// // side note: any next() that happens before a subscription is created is lost. behaviorSubject and replaySubject can cater to this.
 
 
-const subB = proxySubject.subscribe(val => console.log(`subB : ${val}`));
+// const subB = proxySubject.subscribe(val => console.log(`subB : ${val}`));
 
-// KEY: proxySubject listens to source$, but can also add its own contribution
-subB.next('0, 1, 2 come from the other stream, new value from here');
+// // KEY: proxySubject listens to source$, but can also add its own contribution
+// subB.next('0, 1, 2 come from the other stream, new value from here');
 

@@ -16,14 +16,14 @@ const source3$ = Rx.Observable.interval(2500)
   .take(3);
 
 // static form: creating a stream from the combination
-Rx.Observable.concat(source1$, source2$, source3$) 
+Rx.Observable.concatAll(source1$, source2$, source3$) 
   .subscribe(console.log)
 
 
 
-const rangeSource$1 = Rx.Observable.range(1, 3).delay(19000);
-const rangeSource$2 = Rx.Observable.of('a', 'b', 'c');
+// const rangeSource$1 = Rx.Observable.range(1, 3).delay(19000);
+// const rangeSource$2 = Rx.Observable.of('a', 'b', 'c');
 
-// gets sequenced in order
-const result = Rx.Observable.concat(rangeSource$1, rangeSource$2)
-result.subscribe(console.log);
+// // gets sequenced in order
+// const result = Rx.Observable.concat(rangeSource$1, rangeSource$2)
+// result.subscribe(console.log);

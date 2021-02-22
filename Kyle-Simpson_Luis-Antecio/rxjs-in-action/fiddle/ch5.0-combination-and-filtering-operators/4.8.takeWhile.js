@@ -15,13 +15,13 @@ source1$.pipe(
 
 // Difference between takeWhile and filter: filter will evaluate the whole source, takeWHile will stop with the first condition being false
 
-const source$ = of(3, 3, 3, 9, 1, 4, 5, 8, 96, 3, 66, 3, 3, 3);
+// const source$ = of(3, 3, 3, 9, 1, 4, 5, 8, 96, 3, 66, 3, 3, 3);
 
-// allow values until value from source equals 3, then complete
-source$.pipe(
-  takeWhile(val => val === 3)
-).subscribe(val => console.log('takeWhile', val));
+// // allow values until value from source equals 3, then complete
+// source$.pipe(
+//   takeWhile(val => val === 3)
+// ).subscribe(val => console.log('takeWhile', val));
 
-source$.pipe(
-  filter(val => val === 3)
-).subscribe(val => console.log('filter', val));
+// source$.pipe(
+//   filter(val => val === 3)
+// ).subscribe(val => console.log('filter', val));

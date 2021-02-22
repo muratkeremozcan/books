@@ -12,11 +12,11 @@ const stream1 = range(5, 5).pipe(
   endWith(42), // put it at the end
 );
 
-// stream1.subscribe(
-//   x => console.log(x),
-//   null,
-//   () => console.log('first stream complete')
-// );
+stream1.subscribe(
+  x => console.log(x),
+  null,
+  () => console.log('first stream complete')
+);
 
 
 

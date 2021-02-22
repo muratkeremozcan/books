@@ -13,7 +13,7 @@ stream.subscribe(
 )
 */
 
-const source$ = Observable.create(observer => {
+const source$ = new Observable(observer => {
   observer.next(1);
   observer.next(2);
   observer.next(3);
@@ -33,7 +33,7 @@ source$.subscribe(
 
 //  Observable that emits even numbers on timer
 
-const evenNumbers$ = Observable.create(function(observer) {
+const evenNumbers$ = new Observable(function(observer) {
   let value = 0;
   const interval = setInterval(() => {
     if (value % 2 === 0) {

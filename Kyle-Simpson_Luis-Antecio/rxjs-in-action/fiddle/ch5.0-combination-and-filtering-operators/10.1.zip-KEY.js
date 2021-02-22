@@ -19,27 +19,27 @@ streamZip.subscribe(
 );
 
 
-// combineLatest() comparison: zip() gets equal number of elements, combineLatest gets everything
-const streamCombineLatest = combineLatest(
-  sourceOne$.pipe(delay(2000)),
-  sourceTwo$.pipe(delay(1000))
-);
+// // combineLatest() comparison: zip() gets equal number of elements, combineLatest gets everything
+// const streamCombineLatest = combineLatest(
+//   sourceOne$.pipe(delay(2000)),
+//   sourceTwo$.pipe(delay(1000))
+// );
 
-streamCombineLatest.subscribe(
-  v => console.log(v),
-  null,
-  () => console.log('combineLatest() complete')
-);
+// streamCombineLatest.subscribe(
+//   v => console.log(v),
+//   null,
+//   () => console.log('combineLatest() complete')
+// );
 
 
-// forkJoin() comparison: forkJoin() only gets the latest
-const streamForkJoin = forkJoin(
-  sourceOne$.pipe(delay(2000)),
-  sourceTwo$.pipe(delay(1000))
-);
+// // forkJoin() comparison: forkJoin() only gets the latest
+// const streamForkJoin = forkJoin(
+//   sourceOne$.pipe(delay(2000)),
+//   sourceTwo$.pipe(delay(1000))
+// );
 
-streamForkJoin.subscribe(
-  v => console.log(v),
-  null,
-  () => console.log('forkJoin() complete')
-);
+// streamForkJoin.subscribe(
+//   v => console.log(v),
+//   null,
+//   () => console.log('forkJoin() complete')
+// );

@@ -1,7 +1,7 @@
 import { iif, of, interval } from 'rxjs';
 import { mergeMap, take } from 'rxjs/operators';
 
-// instead of if else conditional, use the RxJS if operator: Rx.Observable.if(() => condition, then$, else$)
+// instead of if else conditional, use the RxJS if operator: Rx.Observable.iif(() => condition, then$, else$)
 // iif if not using the Rx.Observable object
 // if() operator (also called the functional combinator) select between two streams based on the condition
 // another example in error handling, Ch 7

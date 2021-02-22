@@ -2,7 +2,7 @@ import * as Rx from 'rxjs/Rx';
 import R from 'ramda';
 
 // a cold observable (unicast) is one that doesn’t begin emitting all of its values until an observer subscribes to it
-// They are passive; analogy: Netflix. Starts emittiing when someone is observing, every observer gets identical data
+// They are passive; analogy: Netflix. Starts emitting when someone is observing, every observer gets identical data
 // Typically they are used to wrap bounded data types such as numbers, ranges of numbers, strings, arrays, and HTTP requests
 // ex: of(), from(), timer(), interval()
 
@@ -35,7 +35,7 @@ interval$
 // subscribers to hot observables tend to receive only the events that are emitted after the subscription is created,
 // if no one is observing, the events are just ignored. If someone is observing the stream flows down the pipeline
 
-// unlike cold counterpart where each observer getse its own identical data
+// unlike cold counterpart where each observer gets its own identical data
 // a hot observable shares the same stream of events to all observers that listen to it
 // each subscriber will start receiving events currently flowing through the stream after subscription
 

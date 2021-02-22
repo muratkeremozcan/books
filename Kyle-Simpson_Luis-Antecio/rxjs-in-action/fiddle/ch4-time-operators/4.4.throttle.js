@@ -5,13 +5,13 @@ import { throttle, map } from 'rxjs/operators';
 // signature: throttle(durationSelector: function(value): Observable | Promise): Observable
 
 const source1$ = interval(1000);
-//throttle for 2 seconds, emit latest value
 
-const source2$ = source1$.pipe(
-  throttle(() => interval(4000))
-);
+// // throttle for 4 seconds, emit latest value
+// const source2$ = source1$.pipe(
+//   throttle(() => interval(4000))
+// );
 
-source2$.subscribe(val => console.log(`source2$: ${val}`));
+// source2$.subscribe(val => console.log(`source2$: ${val}`));
 
 
 // promise example

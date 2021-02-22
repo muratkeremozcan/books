@@ -24,7 +24,7 @@ const subscription = source$.subscribe(console.log); // with subscribe, the obse
 
 // another example of Observable.create
 /** every second, counts up */
-const sourceTimer$ = Rx.Observable.create(observer => {
+const sourceTimer$ = new Rx.Observable(observer => {
   let i = 0;
   setInterval(() => {
     observer.next(i++);
@@ -33,12 +33,12 @@ const sourceTimer$ = Rx.Observable.create(observer => {
 
 // thanks to lazy evaluation, the observable is dormant until subscription
 // in contrast, eager evaluation would want to calculate time to infinity first, then execute
-const sub = sourceTimer$.subscribe(console.log); //?
+// const sub = sourceTimer$.subscribe(console.log); //?
 
 
 import { Observable } from 'rxjs';
 
-let stream$ = Observable.create((observer) => {
+let stream$ = new Observable((observer) => {
   observer.next(1)
 });
 

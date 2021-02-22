@@ -12,3 +12,4 @@ const records = R.zip (
   [ 'RecordC', '789' ] 
 ] 
 */
+records; //?

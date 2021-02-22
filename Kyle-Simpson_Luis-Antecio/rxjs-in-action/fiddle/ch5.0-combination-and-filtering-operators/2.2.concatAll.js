@@ -1,14 +1,14 @@
-import { map, take, concat, concat, delay } from 'rxjs/operators';
+import { map, take, concatAll, concat, delay } from 'rxjs/operators';
 import { of, interval } from 'rxjs';
 
-// concat(): Collect observables and subscribe to next when previous completes
-// contrast to concat(): with concat, the latest observable is subscribed to
+// concatAll(): Collect observables and subscribe to next when previous completes
+// contrast to concat(): with concatAll, the latest observable is subscribed to. concatAll is a higher order function
 
 const source1$ = interval(1000).pipe(take(2));
 
 const source2$ = source1$.pipe(
   map(val => of(val + 10)), // add 10 to and return as observable
-  concat() // merge values from inner observable
+  concatAll() // merge values from inner observable
 )
 
 source2$.subscribe(val =>
@@ -22,7 +22,7 @@ const sourcePromise$ = val => new Promise(resolve => resolve(val));
 const source3$ = source1$.pipe(
   delay(2000),
   map(val => sourcePromise$(val)),
-  concat()
+  concatAll()
 );
 
 source3$.subscribe(val => {
@@ -39,7 +39,7 @@ const obs3 = interval(2000).pipe(take(1));
 
 const sourceCombined$ = of(obs1, obs2, obs3).pipe(
   delay(5000),
-  concat()
+  concatAll()
 );
 
 /*

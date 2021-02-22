@@ -32,4 +32,4 @@ const bufferEveryOne = source2$.pipe(
   bufferCount(3, 6) // will emit 3, skip 3, emit 3 and end
 );
 
-bufferEveryOne.subscribe(val => console.log('Start Buffer Every 1:', val));
+bufferEveryOne.subscribe(val => console.log('Start Buffer Every 3:', val));

@@ -12,7 +12,7 @@ const skipUntilExample$ = source1$.pipe(skipUntil(timer(6000)));
 // output: 5...6...7...8........
 skipUntilExample$.subscribe(
   val => {
-  console.log(`skipUntil ${val}`)
+  console.log(`skipUntil 6 seconds ${val}`)
   },
   null,
   () => console.log('complete')
@@ -26,7 +26,7 @@ skipUntilExample$.subscribe(
 const skipWhileExample$ = source1$.pipe(skipWhile(val => val < 15));
 
 skipWhileExample$.subscribe(
-  val => console.log(`skipWhile ${val}`),
+  val => console.log(`skipWhile less than 15 ${val}`),
   null,
   () => console.log('complete')
 );

@@ -1,5 +1,5 @@
 import { from, interval } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, takeWhile } from 'rxjs/operators';
 
 // filter(): emit values that pass the provided condition.
 // signature: filter(select: Function, thisArg: any): Observable
@@ -23,11 +23,14 @@ const source2 = interval(1000);
 // filter out all values until interval is greater than 5
 const example2 = source2.pipe(filter(num => num > 5));
 /*
-  "Number greater than 5: 6"
-  "Number greater than 5: 7"
-  "Number greater than 5: 8"
-  "Number greater than 5: 9"
+"Number greater than 5: 6"
+"Number greater than 5: 7"
+"Number greater than 5: 8"
+"Number greater than 5: 9"
 */
 example2.subscribe(val =>
   console.log(`Number greater than 5: ${val}`)
-);
+  );
+
+const example3 = source2.pipe(takeWhile(num => num < 5)); // try takeWhile, it takes while num is less than 5
+example3.subscribe(val => console.log(`Number is less than 5: ${val}`));

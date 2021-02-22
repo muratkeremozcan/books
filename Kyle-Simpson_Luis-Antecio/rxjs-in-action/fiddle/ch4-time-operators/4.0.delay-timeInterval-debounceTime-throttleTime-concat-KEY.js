@@ -18,9 +18,21 @@ Rx.Observable.from([1, 2])
    .delay(2000) // 6 seconds
    .subscribe(console.log)
 
-
 // debounceTime
 /* it is like delay, but passes only the most recent value from each burst of emissions
 
 Rx.Observable.fromEvent(document, 'click')
-  .Tue
+  .debounceTime(1000) // ignore the spam of clicks for the last 1 sec, get the last click
+  subscribe(console.log)
+*/
+// note: check out 4.12 gulp example for a google address like search utilizing debounceTime
+
+
+// throttle time
+/* execute a function at most once every period, ignore the in-between values
+
+Rx.Observable.fromEvent(document, 'mousemove')
+  .throttleTime(1000) // while the mouse is moving, ignore the spam of in-between events, get values every 1 sec
+  subscribe(console.log)
+*/
+// check out gulp example at 4.13

@@ -22,15 +22,15 @@ example2$.subscribe(console.log);
 // state management : accumulating an object
 
 const subject = new Subject();
-//scan example building an object over time
+// scan example building an object over time
 const example2 = subject.pipe(
   scan((acc, curr) => Object.assign({}, acc, curr), {})
 );
-//log accumulated values
+// log accumulated values
 example2.subscribe(val =>
   console.log('Accumulated object:', val)
 );
-//next values into subject, adding properties to object
+// next values into subject, adding properties to object
 // {name: 'Joe'}
 subject.next({ name: 'Joe' });
 // {name: 'Joe', age: 30}

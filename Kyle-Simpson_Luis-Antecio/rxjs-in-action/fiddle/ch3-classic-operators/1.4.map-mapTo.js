@@ -22,7 +22,7 @@ const example2$ = source$.pipe(
 
 //////////
 
-// mapTo(): map emissions to constant value.
+// mapTo(): map emissions to constant value instead of a function with regular map
 // signature: mapTo(value: any): Observable
 
 const source2$ = interval(2000)

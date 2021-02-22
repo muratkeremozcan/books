@@ -1,8 +1,9 @@
 import * as Rx from 'rxjs/Rx';
 
-// with AsyncSubject we can keep calling next; only the latest value  isreceived upon complete()
+// with AsyncSubject we can keep calling next; only the latest value is received upon complete()
 
 const subjectAsync = new Rx.AsyncSubject();
+
 
 const subA = subjectAsync.subscribe(console.log);
 

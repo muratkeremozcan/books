@@ -23,12 +23,12 @@ timer(0, 5000).pipe(
   switchMap(
     () => interval(2000),
     // remember the 2nd argument; the result selector function
-    (outerValue, innerValue, outerIndex, innerIndex) => ({
-      outerValue,
-      innerValue,
-      outerIndex,
-      innerIndex
-    })
+    // (outerValue, innerValue, outerIndex, innerIndex) => ({
+    //   outerValue,
+    //   innerValue,
+    //   outerIndex,
+    //   innerIndex
+    // })
   )
 ).subscribe(console.log);
 
@@ -38,4 +38,4 @@ timer(0, 5000).pipe(
 // signature: switchMapTo(innerObservable: Observable, resultSelector: function(outerValue, innerValue, outerIndex, innerIndex): any): Observable
 // 💡 If you need to consider the emitted value from the source, try switchMap!
 
-https://www.learnrxjs.io/learn-rxjs/operators/transformation/switchmapto
+// https://www.learnrxjs.io/learn-rxjs/operators/transformation/switchmapto
