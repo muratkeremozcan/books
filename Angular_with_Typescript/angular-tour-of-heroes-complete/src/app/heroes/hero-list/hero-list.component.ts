@@ -17,16 +17,19 @@ export class HeroListComponent implements OnInit {
   selectedId: number;
 
   constructor(
-    private service: HeroService,
+    private heroService: HeroService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.heroes$ = this.route.paramMap.pipe(
+      // switchMap flattens the Observable<Hero[]> that HeroService returns
+      // and cancels any previous pending requests
       switchMap(params => {
         // (+) before `params.get()` turns the string into a number
         this.selectedId = +params.get('id');
-        return this.service.getHeroes();
+
+        return this.heroService.getHeroes();
       })
     );
   }
