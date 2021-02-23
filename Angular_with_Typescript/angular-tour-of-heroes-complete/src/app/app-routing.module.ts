@@ -2,12 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { CrisisListComponent } from './crisis-list/crisis-list.component';
-import { HeroListComponent } from './hero-list/hero-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const appRoutes: Routes = [
   { path: 'crisis-center', component: CrisisListComponent },
-  { path: 'heroes',        component: HeroListComponent },
+  //  default and wildcard routes are last because we want other components & modules to be matched before these
   { path: '',   redirectTo: '/heroes', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
