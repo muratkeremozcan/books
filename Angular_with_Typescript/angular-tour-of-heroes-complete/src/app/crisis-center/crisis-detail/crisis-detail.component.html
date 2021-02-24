@@ -1,0 +1,11 @@
+<h2>CRISES</h2>
+<div *ngIf="crisis$ | async as crisis">
+  <h3>{{crisis.name | uppercase}} Details</h3>
+  <div>
+    <label>id: </label>{{crisis.id}}</div>
+  <div>
+    <label>name:
+      <input [(ngModel)]="crisis.name" placeholder="name"/>
+    </label>
+  </div>
+</div>

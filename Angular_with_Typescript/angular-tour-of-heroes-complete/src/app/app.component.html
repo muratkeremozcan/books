@@ -2,7 +2,10 @@
 <nav>
   <a routerLink="/crisis-center" routerLinkActive="active">Crisis Center</a>
   <a routerLink="/heroes" routerLinkActive="active">Heroes</a>
+  <a [routerLink]="[{ outlets: { popup: ['compose'] } }]">Contact</a>
 </nav>
 <div [@routeAnimation]="getAnimationData(routerOutlet)">
   <router-outlet #routerOutlet="outlet"></router-outlet>
 </div>
+<!-- Named outlets are the targets of secondary routes. -->
+<router-outlet name="popup"></router-outlet>
