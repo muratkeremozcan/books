@@ -5,6 +5,11 @@ import { ComposeMessageComponent } from './compose-message/compose-message.compo
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const appRoutes: Routes = [
+  // {
+  //   path: 'crisis-center',
+  //   loadChildren: () => import('./crisis-center/crisis-center.module').then(m => m.CrisisCenterModule),
+  //   data: { preload: true }
+  // },
   {
     path: 'compose',
     component: ComposeMessageComponent,
