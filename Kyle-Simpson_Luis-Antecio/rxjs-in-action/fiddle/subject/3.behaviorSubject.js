@@ -8,14 +8,14 @@ const behaviorSubject = new Rx.BehaviorSubject('contrast: initial value can be l
 const subA = behaviorSubject.subscribe(val => console.log(`subA : ${val}`));
 const subB = behaviorSubject.subscribe(val => console.log(`subB : ${val}`));
 
-// behaviorSubject.next('can emit on demand');
+behaviorSubject.next('can emit on demand');
 
 // behaviorSubject.next('any time it wants');
 
-// // KEY: new subscribers will get the most recent value
-// const subC = behaviorSubject.subscribe(val => console.log(`subC: constrast: new subscribers will get the most recent value & ${val}`));
+// KEY: new subscribers will get the most recent value
+const subC = behaviorSubject.subscribe(val => console.log(`subC: constrast: new subscribers will get the most recent value & ${val}`));
 
-// behaviorSubject.next('subsequent values are shared with all');
+behaviorSubject.next('subsequent values are shared with all');
 
 /* compare to simple subject output
 
