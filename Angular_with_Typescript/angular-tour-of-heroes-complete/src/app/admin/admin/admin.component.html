@@ -2,13 +2,13 @@
 <nav>
   <a routerLink="./" routerLinkActive="active"
     [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
-  <!--
-    Although the admin dashboard RouterLink only contains a relative slash without an additional URL segment, it is a match to any route within the admin feature area.
-    You only want the Dashboard link to be active when the user visits that route.
-    Adding an additional binding to the Dashboard routerLink, [routerLinkActiveOptions]="{ exact: true }",
-    marks the ./ link as active when the user navigates to the /admin URL and not when navigating to any of the child routes.
-   -->
   <a routerLink="./crises" routerLinkActive="active">Manage Crises</a>
   <a routerLink="./heroes" routerLinkActive="active">Manage Heroes</a>
 </nav>
 <router-outlet></router-outlet>
+
+<!-- Although the admin dashboard RouterLink only contains a relative slash without an additional URL segment, it is a match to any route within the admin feature area.
+You only want the Dashboard link to be active when the user visits that route.
+Adding an additional binding to the Dashboard routerLink, [routerLinkActiveOptions]="{ exact: true }",
+marks the ./ link as active when the user navigates to the /admin URL and not when navigating to any of the child routes.
+-->

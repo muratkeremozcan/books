@@ -11,6 +11,22 @@ import { CRISES } from './mock-crises';
 })
 export class CrisisService {
   static nextCrisisId = 100;
+
+  /*
+  Subject is just an Observable with the ability to call next() on itself, and is multicast / hot by default. It's a practical event emitter
+
+  the following operations exist on subject :
+
+  next([value])  // in contrast; next, error and complete are usually just callbacks in the  Observable.create() function
+  error([error message]) // but a subject can use them any time (freedom to emit)
+  complete()
+  subscribe()  // these are usually for the Observer, and subject can call them as well
+  unsubscribe()
+
+  BehaviorSubject: contrast to simple subject an initial value is sent, no calling next() necessary with it
+  Also, new subscribers will get the most recent value right before their subscription
+  */
+
   private crises$: BehaviorSubject<Crisis[]> = new BehaviorSubject<Crisis[]>(CRISES);
 
   constructor(private messageService: MessageService) { }
@@ -24,20 +40,14 @@ export class CrisisService {
     );
   }
 
+  addCrisis(name: string) {
+    name = name.trim();
+    if (name) {
+      const crisis = { id: CrisisService.nextCrisisId++, name };
+      CRISES.push(crisis);
+      this.crises$.next(CRISES);
+    }
+  }
+
 }
 
-
-/*
-Subject is just an Observable with the ability to call next() on itself, and is multicast / hot by default. It's a practical event emitter
-
-the following operations exist on subject :
-
-next([value])  // next, error and complete usually just callbacks in the  Observable.create() function
-error([error message]) // but a subject can use them any time (freedom to emit)
-complete()
-subscribe()  // these are usually for the Observer, and subject can call them as well
-unsubscribe()
-
-BehaviorSubject: contrast to simple subject an initial value is sent, no calling next() necessary with it
-Also, new subscribers will get the most recent value right before their subscription
-*/

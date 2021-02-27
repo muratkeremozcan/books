@@ -1,15 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-manage-crises',
   templateUrl: './manage-crises.component.html',
   styleUrls: ['./manage-crises.component.css']
 })
-export class ManageCrisesComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class ManageCrisesComponent { }
