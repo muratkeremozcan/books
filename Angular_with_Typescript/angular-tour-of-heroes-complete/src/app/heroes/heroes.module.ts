@@ -6,6 +6,7 @@ import { HeroListComponent } from './hero-list/hero-list.component';
 import { HeroDetailComponent } from './hero-detail/hero-detail.component';
 
 import { HeroesRoutingModule } from './heroes-routing.module';
+import { HeroSearchComponent } from './hero-search/hero-search.component';
 
 @NgModule({
   imports: [
@@ -14,8 +15,9 @@ import { HeroesRoutingModule } from './heroes-routing.module';
     HeroesRoutingModule
   ],
   declarations: [
+    HeroDetailComponent,
     HeroListComponent,
-    HeroDetailComponent
+    HeroSearchComponent
   ]
 })
 export class HeroesModule {}
