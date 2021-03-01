@@ -19,6 +19,11 @@ const appRoutes: Routes = [
     data: { preload: true } // for custom preloading strategy
   },
   {
+    path: 'reactive-form-example',
+    loadChildren: () => import('./reactive-form-example/reactive-form-example.module').then((m) => m.ReactiveFormExampleModule)
+    // this one will lazy-load on demand
+  },
+  {
     path: 'compose',
     component: ComposeMessageComponent,
     outlet: 'popup',
@@ -39,10 +44,10 @@ const appRoutes: Routes = [
       // for debugging purposes only
       enableTracing: false,
       // PreloadAllModules configures the Router preloader to immediately load all lazy loaded routes (routes with a loadChildren property).
-      // When you visit http://localhost:4200, the /heroes route loads immediately upon launch
+      // When you visit http://localhost:4200, /heroes route loads immediately upon launch (because it is listed in the AppModule imports)
       // and the router starts loading the CrisisCenterModule right after the HeroesModule loads.
       // AdminModule does not preload because CanLoad blocks it.
-      // If there was no Preloading, the lazy loaded modules would load on demand instead.
+      // If there was no Preloading, the lazy loaded modules would load on demand instead (such as ReactiveFormExampleModule)
       // preloadingStrategy: PreloadAllModules,
 
       // instead of preloading all lazy-loaded modules, this one only pre-loads the ones with route.data.preload flag
