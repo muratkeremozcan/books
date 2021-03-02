@@ -6,6 +6,7 @@ import { ComposeMessageComponent } from './compose-message/compose-message.compo
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { AuthGuard } from './auth/auth.guard';
+import { TemplateFormExampleComponent } from './template-form-example/template-form-example.component';
 const appRoutes: Routes = [
   {
     path: 'admin',
@@ -27,6 +28,10 @@ const appRoutes: Routes = [
     path: 'compose',
     component: ComposeMessageComponent,
     outlet: 'popup',
+  },
+  {
+    path: 'template-form-example',
+    component: TemplateFormExampleComponent
   },
   //  default and wildcard routes are last because we want other components & modules to be matched before these
   { path: '', redirectTo: '/superheroes', pathMatch: 'full' },

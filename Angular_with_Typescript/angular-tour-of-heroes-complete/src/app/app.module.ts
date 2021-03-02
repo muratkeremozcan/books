@@ -15,6 +15,7 @@ import { AuthModule } from './auth/auth.module';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
+import { TemplateFormExampleComponent } from './template-form-example/template-form-example.component';
 
 
 // Common modules:
@@ -49,7 +50,8 @@ import { InMemoryDataService } from './in-memory-data.service';
   declarations: [
     AppComponent,
     ComposeMessageComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    TemplateFormExampleComponent
   ],
   bootstrap: [ AppComponent ]
 })
