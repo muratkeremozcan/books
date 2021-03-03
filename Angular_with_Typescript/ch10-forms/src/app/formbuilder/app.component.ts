@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 // all setup is the same as 2 except for how 2.5 is done
 
+// @ts-ignore
 @Component({
   selector: 'app-root',
   template: `

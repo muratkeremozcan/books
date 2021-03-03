@@ -7,6 +7,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 
 import { AuthGuard } from './auth/auth.guard';
 import { TemplateFormExampleComponent } from './template-form-example/template-form-example.component';
+import { ReactiveFormComplexComponent } from './reactive-form-complex/reactive-form-complex.component';
 const appRoutes: Routes = [
   {
     path: 'admin',
@@ -32,6 +33,10 @@ const appRoutes: Routes = [
   {
     path: 'template-form-example',
     component: TemplateFormExampleComponent
+  },
+  {
+    path: 'reactive-form-complex',
+    component: ReactiveFormComplexComponent
   },
   //  default and wildcard routes are last because we want other components & modules to be matched before these
   { path: '', redirectTo: '/superheroes', pathMatch: 'full' },
