@@ -15,7 +15,6 @@
       <div class="form-group">
         <label for="alterEgo">Alter Ego</label>
         <input type="text" class="form-control" id="alterEgo" formControlName=alterEgo>
-        user.get('account.email').valid
       </div>
 
       <div class="form-group">
@@ -31,17 +30,29 @@
       </div>
 
       <button type="submit" class="btn btn-success" [disabled]="!heroForm.valid">Submit</button>
-      <button type="button" class="btn btn-default" (click)="newHero(); heroForm.reset()">New Hero</button>
+      &nbsp;&nbsp;
+      <button type="button" class="btn btn-default" (click)="heroForm.reset()">New Hero</button>
 
     </form>
-
-
-
     <p>Form Value: {{heroForm.value | json }} </p>
     <p>Form Status: {{heroForm.status}}</p>
   </div>
 
   <div [hidden]="!submitted">
     <h2>You submitted the following:</h2>
+    <div class="row">
+      <div class="col-xs-3">Name</div>
+      <div class="col-xs-9">{{ model.name }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Alter Ego</div>
+      <div class="col-xs-9">{{ model.alterEgo }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Power</div>
+      <div class="col-xs-9">{{ model.power }}</div>
+    </div>
+    <br>
+    <button class="btn btn-primary" (click)="submitted=false">Edit</button>
   </div>
 </div>
