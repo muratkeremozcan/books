@@ -4,10 +4,14 @@ import {
 } from '@angular/animations';
 
 
-// Routable animations
+// Routable animation: gets used in the app.component animations: property
+
+// Defines one transition when switching back and forth from the heroes and hero routes
+// to ease the component in from the left of the screen as it enters the application view (:enter),
+//  the other to animate the component to the right as it leaves the application view (:leave).
 export const slideInAnimation =
   trigger('routeAnimation', [
-    transition('heroes <=> hero', [
+    transition('heroes <=> hero', [  // animation states are defined in the heroes routing module route config: heroes & hero
       style({ position: 'relative' }),
       query(':enter, :leave', [
         style({

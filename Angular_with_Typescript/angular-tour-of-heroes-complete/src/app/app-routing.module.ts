@@ -16,19 +16,21 @@ const appRoutes: Routes = [
     canLoad: [AuthGuard],
   },
   {
+    // this route will preload
     path: 'crisis-center',
     loadChildren: () => import('./crisis-center/crisis-center.module').then((m) => m.CrisisCenterModule),
     data: { preload: true } // for custom preloading strategy
   },
   {
+    // this route will lazy load, only when requested by the user.
     path: 'reactive-form-example',
     loadChildren: () => import('./reactive-form-example/reactive-form-example.module').then((m) => m.ReactiveFormExampleModule)
-    // this one will lazy-load on demand
   },
+  // these routes below are all loaded after preloaded modules, but before lazy loaded modules (because those are on demand)
   {
     path: 'compose',
     component: ComposeMessageComponent,
-    outlet: 'popup',
+    outlet: 'popup', // outlet property is used for secondary routes (like the popup)
   },
   {
     path: 'template-form-example',
@@ -53,12 +55,19 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes, {
       // for debugging purposes only
       enableTracing: false,
-      // PreloadAllModules configures the Router preloader to immediately load all lazy loaded routes (routes with a loadChildren property).
-      // When you visit http://localhost:4200, /heroes route loads immediately upon launch (because it is listed in the AppModule imports)
-      // and the router starts loading the CrisisCenterModule right after the HeroesModule loads.
+
+      // When you visit http://localhost:4200, HeroesModule and AuthModule routes (hero/superhero, heroId/superheroId, login) load immediately
+      // because HeroesModule & AuthModule are listed in the AppModule imports before AppRoutingModule
+
+      // Once its AppRoutingModule's turn, the router applies the Preloading Strategy (CrisisCenterModule)
       // AdminModule does not preload because CanLoad blocks it.
-      // If there was no Preloading, the lazy loaded modules would load on demand instead (such as ReactiveFormExampleModule)
+
       // preloadingStrategy: PreloadAllModules,
+      // PreloadAllModules would configure the router preloader to start loading all the lazy loaded routes (routes with a loadChildren property).
+      // If there is no Preloading, the lazy loaded modules would load on demand instead (such as ReactiveFormExampleModule).
+
+      // The components in the declarations array of app.module are loaded right after preloaded modules. Lazy loaded modules are on demand. This help reduce the initial bundle size.
+
 
       // instead of preloading all lazy-loaded modules, this one only pre-loads the ones with route.data.preload flag
       preloadingStrategy: SelectivePreloadingStrategyService

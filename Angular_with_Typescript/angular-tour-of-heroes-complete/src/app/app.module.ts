@@ -37,17 +37,20 @@ import { ReactiveFormComplexComponent } from './reactive-form-complex/reactive-f
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpClientModule,
     ReactiveFormsModule,
-        // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
-    // and returns simulated server responses.
-    // Remove it when a real server is ready to receive requests.
+    HttpClientModule,
+    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests and returns simulated server responses.
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
     ),
+    // these 2 feature modules are loaded immediately as the app starts: routes: hero/superhero, heroId/superheroId, login
     HeroesModule,
     AuthModule,
+    // after that, the routes in AppRoutingModule are evaluated
     AppRoutingModule,
+    // preloaded modules are loaded first
+    // then the declarations array components (below) are loaded
+    // the rest of the modules (listed in AppRoutingModule) are lazy-loaded, only when requested by the user
   ],
   declarations: [
     AppComponent,
@@ -60,12 +63,10 @@ import { ReactiveFormComplexComponent } from './reactive-form-complex/reactive-f
 })
 export class AppModule {
   // Diagnostic only: inspect router configuration to determine if your routes are actually evaluated in the proper order
-  constructor(router: Router) {
+  // constructor(router: Router) {
   //   // Use a custom replacer to display function names in the route configs
   //   const replacer = (key, value) => (typeof value === 'function') ? value.name : value;
 
   //   console.log('Routes: ', JSON.stringify(router.config, replacer, 2));
-  }
+  // }
 }
-
-// https://angular.io/guide/router-tutorial-toh#router-tutorial-tour-of-heroes

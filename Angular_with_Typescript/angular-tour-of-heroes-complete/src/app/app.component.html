@@ -9,6 +9,9 @@
   <a routerLink="/template-form-example" routerLinkActive="active">Template Form Example</a>
   <a routerLink="/reactive-form-complex" routerLinkActive="active">Reactive Form Complex</a>
 </nav>
+
+<!-- In order to use the routable animations, wrap the routerOutlet inside an element,
+  use the @routeAnimation trigger, and bind it to the element. -->
 <div [@routeAnimation]="getAnimationData(routerOutlet)">
   <router-outlet #routerOutlet="outlet"></router-outlet>
 </div>
