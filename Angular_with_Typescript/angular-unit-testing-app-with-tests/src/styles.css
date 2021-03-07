@@ -1,0 +1,73 @@
+/* Global Styles */
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+h1 {
+  color: #264D73;
+  font-size: 250%;
+}
+h2, h3 {
+  color: #444;
+  font-weight: lighter;
+}
+body {
+  padding: .5em;
+  max-width: 1000px;
+  margin: auto;
+}
+@media (min-width: 600px) {
+  body {
+    padding: 2em;
+  }
+}
+body, input[text] {
+  color: #333;
+  font-family: Cambria, Georgia, serif;
+}
+a {
+  cursor: pointer;
+}
+button {
+  background-color: #eee;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: black;
+}
+button:hover {
+  background-color: #cfd8dc;
+}
+button:disabled {
+  background-color: #eee;
+  color: #aaa;
+  cursor: auto;
+}
+
+/* Navigation link styles */
+nav a {
+  padding: 5px 10px;
+  text-decoration: none;
+  margin-right: 10px;
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #e8e8e8;
+  color: #3d3d3d;
+  border-radius: 4px;
+}
+
+nav a:hover {
+  color: white;
+  background-color:  #42545C;
+}
+nav a.active {
+  background-color: black;
+  color: white;
+}
+
+
+/*
+Copyright Google LLC. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at https://angular.io/license
+*/
