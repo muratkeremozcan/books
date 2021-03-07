@@ -19,13 +19,14 @@
 
       <div class="form-group">
         <label for="power">Hero Power</label>
-        <select class="form-control" id="power" formArrayName=powersArray>
-          <!-- <option *ngFor="let pow of powers; let i=index" [value]="pow">{{pow}}</option> -->
+        <select class="form-control" id="power" #selectedPower formArrayName=powersArray>
 
           <option *ngFor="let power of powers; let i=index" [value]="power">{{power}}</option>
+
           <div [hidden]="!heroForm.hasError('required', 'powersArray')" class="alert alert-danger">
             Power is required
           </div>
+
         </select>
       </div>
 
@@ -42,15 +43,15 @@
     <h2>You submitted the following:</h2>
     <div class="row">
       <div class="col-xs-3">Name</div>
-      <div class="col-xs-9">{{ model.name }}</div>
+      <div class="col-xs-9">{{ heroForm.value.name }}</div>
     </div>
     <div class="row">
       <div class="col-xs-3">Alter Ego</div>
-      <div class="col-xs-9">{{ model.alterEgo }}</div>
+      <div class="col-xs-9">{{ heroForm.value.alterEgo }}</div>
     </div>
     <div class="row">
       <div class="col-xs-3">Power</div>
-      <div class="col-xs-9">{{ model.power }}</div>
+      <div class="col-xs-9">{{ selectedPower.value }}</div>
     </div>
     <br>
     <button class="btn btn-primary" (click)="submitted=false">Edit</button>
