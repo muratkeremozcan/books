@@ -4,8 +4,7 @@ import { Hero } from './hero';
 
 @Component({
   selector: 'app-reactive-form-complex',
-  templateUrl: './reactive-form-complex.component.html',
-  styleUrls: ['./reactive-form-complex.component.css'],
+  templateUrl: './reactive-form-complex.component.html'
 })
 export class ReactiveFormComplexComponent {
   heroForm: FormGroup;

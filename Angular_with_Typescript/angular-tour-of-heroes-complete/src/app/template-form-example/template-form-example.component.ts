@@ -4,8 +4,7 @@ import { Hero } from './hero';
 
 @Component({
   selector: 'app-template-form-example',
-  templateUrl: './template-form-example.component.html',
-  styleUrls: ['./template-form-example.component.css']
+  templateUrl: './template-form-example.component.html'
 })
 export class TemplateFormExampleComponent {
 
