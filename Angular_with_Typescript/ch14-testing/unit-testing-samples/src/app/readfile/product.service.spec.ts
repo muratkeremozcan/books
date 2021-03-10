@@ -23,7 +23,7 @@ describe('Readfile app ProductService', () => {
       ]
     });
 
-    productService = TestBed.get(ProductService);
+    productService = TestBed.inject(ProductService);
     // (3.1.3) mock http using  HttpTestingController
     // (service injection similar to other external services, the key difference was the module being imported)
     // (HttpTestingController doesn’t make an HTTP request but allows you to emulate it using hardcoded data.)

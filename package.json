@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "cypress-recurse": "^1.8.0"
+  }
+}

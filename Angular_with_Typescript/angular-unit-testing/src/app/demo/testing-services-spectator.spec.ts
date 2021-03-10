@@ -19,7 +19,7 @@ in Angular apps you use the provider’s token in the class constructor to injec
 in tests, the injection is done differently;  use the TestBed.inject() method in the setup to inject the service
 */
 
-describe('Using Spectator', () => {
+describe('[2] Testing Services Using Spectator', () => {
   describe('Testing a service: (2.1) setup the service, (2.2) inject the service to the setup', () => {
     let valueService: ValueService;
 
@@ -30,10 +30,6 @@ describe('Using Spectator', () => {
     beforeEach(() => {
       spectator = createService();
       valueService = spectator.inject(ValueService); // (2.2) inject the service to the setup
-    });
-
-    it('test sanity', () => {
-      expect(valueService).toBeTruthy();
     });
 
     it('synchronous: should use ValueService getValue()', () => {
