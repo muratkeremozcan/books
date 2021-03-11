@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { TestBed } from '@angular/core/testing';
-import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 
 import { Hero } from './hero';
 import { HeroService } from './hero.service';
@@ -9,8 +9,12 @@ import { HeroService } from './hero.service';
 
 // [3] mocking external core services like Http
 // to setup create an httpMock with the help of HttpTestingController from HttpClientTestingModule (3.1)
-// test the TS function making the http call, using httpMock.expectOne, (3.2)
+// pred hardcoded data, initiate the client request and setup the assertion that will happen, match the url w/ httpMock.expectOne, using httpMock.expectOne, (3.2)
 // use .flush to send the data to the client and .error to emulate error (3.3)
+// in error testing, define the error response and bypass the success case (3.4)
+// cover the Multiple Request Case, and check the request length (3.5)
+// testing PUTs: test the method type and request body that is going out from the client, Use req.event(new HttpResponse({ .. })) to respond' (3.6)
+// cover the custom req.error(errorEvent) case for when something goes wrong at the network level (3.7)
 
 describe('[3] Testing Http', () => {
   let heroService: HeroService;
@@ -51,7 +55,7 @@ describe('[3] Testing Http', () => {
 
     it('(3.2.2) initiate the client request and setup the assertion that will happen,(3.2.3) match the url w/ httpMock.expectOne, (3.3) use .flush to respond to the client ', () => {
 
-      // (3.2.2) initiate the client request, and setup the assertion that will happen once the observable fulfilled
+      // (3.2.2) initiate the client request, and setup the assertion that will happen once the observable is fulfilled
       heroService.getHeroes().subscribe(
         heroes => expect(heroes).toEqual(expectedHeroes, 'should return expected heroes'),
         fail // the error case of the observable
@@ -76,21 +80,21 @@ describe('[3] Testing Http', () => {
       req.flush([]); // we control the response here
     });
 
-    it('cover the Error Case', () => {
+    it('(3.4) in error testing, define the error response and bypass the success', () => {
       const msg = 'Deliberate 404';
 
       heroService.getHeroes().subscribe(
         heroes => fail('expected to fail'),
-        error => expect(error.message).toContain(msg) // KEY in error testing, define the error response and bypass the success
+        error => expect(error.message).toContain(msg) // 3.4.0 in error testing, define the error response and bypass the success case
       );
 
       const req = httpMock.expectOne(heroService.heroesUrl);
 
-      // KEY: flush with the optional object: status and message
+      // 3.4.1 flush with the optional object: status and message
       req.flush(msg, {status: 404, statusText: 'Not Found'});
     });
 
-    it('cover the Multiple Request Case', () => {
+    it('(3.5) cover the Multiple Request Case, and check the request length', () => {
       heroService.getHeroes().subscribe(); // KEY multiple subscribes
       heroService.getHeroes().subscribe();
       heroService.getHeroes().subscribe(
@@ -115,7 +119,7 @@ describe('[3] Testing Http', () => {
       updatedHero = { id: 1, name: 'A' } as Hero;
     });
 
-    it(' KEY with testing PUTs: test the method type and request body that is going out from the client, Use req.event(new HttpResponse({ .. })) to respond', () => {
+    it('(3.6) testing PUTs: test the method type and request body that is going out from the client, Use req.event(new HttpResponse({ .. })) to respond', () => {
 
       heroService.updateHero(updatedHero).subscribe(
         data => expect(data).toEqual(updatedHero, 'should return the hero'),
@@ -123,22 +127,22 @@ describe('[3] Testing Http', () => {
       );
 
       const req = httpMock.expectOne(heroService.heroesUrl);
-      // KEY with testing PUTs: test the method type and request body that is going out from the client
+      // (3.6.0) KEY with testing PUTs: test the method type and request body that is going out from the client
       expect(req.request.method).toEqual('PUT');
       expect(req.request.body).toEqual(updatedHero);
 
-      // KEY with PUT: use req.event(new HttpResponse({})) instead of req.flush()
+      // (3.6.1) KEY with PUT: use req.event(new HttpResponse({})) instead of req.flush()
       req.event(
         new HttpResponse({ status: 200, statusText: 'OK', body: updatedHero })
       );
     });
 
-    it('cover the Error Case (same as the GET scenario) ', () => {
+    it('cover the Error Case, same as the GET scenario in (3.4) ', () => {
       const msg = 'Deliberate 404';
 
       heroService.updateHero(updatedHero).subscribe(
         heroes => fail('expected to fail'),
-        error => expect(error.message).toContain(msg) // KEY (same as GET scenario) in error testing, define the error response and bypass the success
+        error => expect(error.message).toContain(msg) // KEY (same as GET scenario IN 3.4) in error testing, define the error response and bypass the success
       );
 
       const req = httpMock.expectOne(heroService.heroesUrl);
@@ -147,7 +151,7 @@ describe('[3] Testing Http', () => {
       req.flush(msg, { status: 404, statusText: 'Not Found' });
     });
 
-    it('cover the custom req.error(errorEvent)', () => {
+    it('(3.7) cover the custom req.error(errorEvent) case for when something goes wrong at the network level', () => {
       const msg = 'simulated network error';
 
       heroService.updateHero(updatedHero).subscribe(
@@ -157,8 +161,7 @@ describe('[3] Testing Http', () => {
 
       const req = httpMock.expectOne(heroService.heroesUrl);
 
-      // Create mock ErrorEvent, raised when something goes wrong at the network level.
-      // Connection timeout, DNS error, offline, etc
+      // (3.7.0) Create mock ErrorEvent, raised when something goes wrong at the network level. Connection timeout, DNS error, offline, etc
       const errorEvent = new ErrorEvent('so sad', {
         message: msg,
         // The rest of this is optional and not used.
@@ -168,7 +171,7 @@ describe('[3] Testing Http', () => {
         colno: 21
       });
 
-      // KEY: Respond with mock error
+      // (3.7.1): Respond with mock error
       req.error(errorEvent);
     });
   });

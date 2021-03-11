@@ -6,7 +6,7 @@ import {Product} from './product';
 
 // [3] mocking external core services like Http
 // to setup create an httpMock with the help of HttpTestingController from HttpClientTestingModule (3.1)
-// test the TS function making the http call, using httpMock.expectOne, (3.2)
+// prep hardcoded data, initiate the client request and setup the assertion that will happen, match the url w/ httpMock.expectOne, using httpMock.expectOne, (3.2)
 // use .flush to send the data to the client and .error to emulate error (3.3)
 
 describe('Readfile app ProductService', () => {
@@ -16,31 +16,33 @@ describe('Readfile app ProductService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule // (3.1.2) HttpClientTestingModule in imports
+        HttpClientTestingModule // (3.1.1) HttpClientTestingModule in imports
       ],
       providers: [
         ProductService
       ]
     });
 
+    // (3.1.2) inject the service under test (just like 2.2 )
     productService = TestBed.inject(ProductService);
     // (3.1.3) mock http using  HttpTestingController
-    // (service injection similar to other external services, the key difference was the module being imported)
-    // (HttpTestingController doesn’t make an HTTP request but allows you to emulate it using hardcoded data.)
-    // with spectator just put it under mocks array under createServiceFactory
     httpMock = TestBed.get(HttpTestingController);
+    // (service injection similar to other external services, the key difference is the module being imported)
+    // (HttpTestingController doesn’t make an HTTP request but allows you to emulate it using hardcoded data.)
   });
 
   it('should successfully get products', async(() => {
-    const productData: Product[] = [{ "id":"0", "title": "First Product", "price": 24.99 }]; // (3.2.1) prepare hardcoded data
-    productService.getProducts() // (3.2.2) setup the subscription with a canned response
+    // (3.2.1) prepare hardcoded data that will be used as the response 
+    const productData: Product[] = [{ "id":"0", "title": "First Product", "price": 24.99 }]; 
+    // (3.2.2) initiate the client request, and setup the assertion that will happen once the observable fulfilled
+    productService.getProducts() 
       .subscribe(
         res => expect(res).toEqual(productData)
       );
 
-    // test the TS function making the http call, using httpMock.expectOne (3.2.3)
+    // (3.2.3) Expect that a single request has been made which matches the given URL, using httpMock.expectOne 
     let productsRequest = httpMock.expectOne('/data/products.json');
-    // (3.3) use .flush to send the data to the client
+    // (3.3) use .flush to respond to the client
     productsRequest.flush(productData); // this is a good debug point where we flush
   }));
 
@@ -51,7 +53,7 @@ describe('Readfile app ProductService', () => {
           errorResponse => expect(errorResponse.error.type).toEqual(errorType)
       );
 
-    // test the TS function making the http call, using httpMock.expectOne (3.2.3)
+    // (3.2.3) Expect that a single request has been made which matches the given URL, using httpMock.expectOne 
     let productsRequest = httpMock.expectOne('/data/products.json');
 
     // (3.3) use .error to send the error to the client

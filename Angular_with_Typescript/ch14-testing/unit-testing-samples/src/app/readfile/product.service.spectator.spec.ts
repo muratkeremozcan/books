@@ -6,8 +6,8 @@ import { SpectatorHttp , createHttpFactory, HttpMethod } from '@ngneat/spectator
 
 // [3] [spectator version] mocking external core services like Http
 // setup the http (much leaner with spectator, and similar to other spectator setups) (3.1)
-// prep the hardcoded data, test the subscription, test the TS function making the http call, using httpMock.expectOne - for spectator add a 2nd arg HttpMethod.GET/POST etc. (3.2)
-// afterEach verify() is not needed, flush is only needed for concurrent get requests https://www.npmjs.com/package/@ngneat/spectator#testing-services
+// prep hardcoded data, initiate the client request and setup the assertion that will happen, match the url w/ httpMock.expectOne, using httpMock.expectOne,- for spectator add a 2nd arg HttpMethod.GET/POST etc. (3.2)
+// use .flush to send the data to the client and .error to emulate error (3.3) afterEach verify() is not needed, flush is only needed for concurrent get requests https://www.npmjs.com/package/@ngneat/spectator#testing-services
 
 describe('Readfile app ProductService', () => {
   let spectator: SpectatorHttp<ProductService>;

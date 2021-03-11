@@ -1,5 +1,5 @@
 import { MasterService, ValueService } from './demo';
-import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { SpectatorService , createServiceFactory } from '@ngneat/spectator';
 
 // [2] testing services:
