@@ -1,7 +1,7 @@
 import { Observable, BehaviorSubject } from "rxjs";
 import { Injectable } from '@angular/core';
 
-// [4]  source component -> mediator service -> recipient components  (meta)
+// [4] META source component -> mediator service -> recipient components  (meta)
 // in [3] you saw how sibling components use their parent as a mediator.
 // If components don’t have the same parent or aren’t displayed at the same time you can use an injectable service as a mediator.
 // Whenever the component is created, the mediator service is injected, and the component can subscribe to events emitted by the service
@@ -31,7 +31,7 @@ export class StateService {
 
   // (4.3) recipients need a function to get the state from the mediator
   // Technically, the recipients could subscribe to the subject directly,
-  // but if they had a reference to the Subject, they could use next() to emit new events
+  // but if they had a reference to the Subject, they could use next() to emit new events. We do not want that; only the source component should emit events.
   // we want them to only use the subscribe callback  (value, error, complete) to observe the side effects; not create side effects
   getState(): Observable<string> {
     return this.stateSubject.asObservable();  // Returns the reference to Observable of the Subject

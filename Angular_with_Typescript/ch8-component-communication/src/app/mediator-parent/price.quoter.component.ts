@@ -3,7 +3,7 @@ import { Stock } from './istock';
 import { interval } from 'rxjs';
 
 
-// [3] sibling components using their parent as a mediator.
+// [3] sibling components using their parent as a mediator. The sibling components and the parent have to be in the same module.
 
 // what is different?
 // in [1]  producer -> recipient link through @Inputs
@@ -34,7 +34,7 @@ import { interval } from 'rxjs';
   styles: [`:host {background: pink; padding: 5px 15px 15px 15px;}`]
 })
 export class PriceQuoterComponent {
-  // (3.1 same as 2.1)  ceate the @Output property as an event:   @Output() producerProperty = new EventEmitter<someType>()
+  // (3.1 same as 2.1)  create the @Output property as an event:   @Output() producerProperty = new EventEmitter<someType>()
   @Output() buy: EventEmitter<Stock> = new EventEmitter();
 
   stockSymbol = 'IBM';

@@ -5,8 +5,9 @@ import { Spectator, createComponentFactory } from '@ngneat/spectator';
 // [1] [spectator version] unit test at a high level
 // setup the component - much less overhead with spectator (1.1)
 // test/access the TS with spectator.component (1.2)
-// test/access the template with spectator.element (1.3), using spectator.detectChanges() to trigger the change if there is one (1.4)
-// assert the results. Easy with the TS, but for the template utilize .querySelector (same)
+// use spectator.detectChanges()  to trigger the change detection (1.3),
+// access the template with spectator.element  (1.4.1),
+// to test the native elements utilize spectator.element.querySelector (same)
 
 describe('Root app AppComponent', () => {
 
@@ -20,7 +21,7 @@ describe('Root app AppComponent', () => {
   let spectator: Spectator<AppComponent>;
   const createComponent = createComponentFactory(AppComponent);
 
-  let fixture, app, compiled;
+  let app, compiled;
   beforeEach(() => {
     spectator = createComponent();    // (1.1) setup the component.. TestBed.configureTestingModule({..})
     app = spectator.component;        // (1.2) access the TS....      app = fixture.debugElement.componentInstance

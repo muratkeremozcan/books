@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-// [1] components receiving values from other components:   [@Input/recipientProp] = "producerProp"
+// [1] components receiving values from other components:   [@Input/recipientProp] = "producerProp"  . The components have to be in the same module
 // in Angular, components receive values from the outside with @Input()
 // you can bind the producers of these values to the corresponding inputs of the component.
 

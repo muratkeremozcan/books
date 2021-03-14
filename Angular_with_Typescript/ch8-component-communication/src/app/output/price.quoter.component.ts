@@ -3,7 +3,7 @@ import { PriceQuote } from './iprice.quote';
 import { interval } from 'rxjs';
 
 
-// [2] component sending values to other components using events
+// [2] component sending values to other components using events. Like [1], the components have to be in the same module
 // if a component needs to communicate values to the outside world, can emit events through its @Output()
 // Angular components can dispatch custom events using the EventEmitter object.
 // EventEmitter is a subclass of Subject; Subjects can serve as both observable and observer,
@@ -19,26 +19,26 @@ import { interval } from 'rxjs';
 
   // with ?, the template variables will display only when they get values
   template: `<strong>Inside PriceQuoterComponent:
-               {{priceQuoteProducer?.stockSymbol}}
-               {{priceQuoteProducer?.lastPriceRandom | currency:'USD'}}</strong>`,
+               {{priceQuoteData?.stockSymbol}}
+               {{priceQuoteData?.lastPriceRandom | currency:'USD'}}</strong>`,
   styles: [`:host {background: pink;}`]
 })
 export class PriceQuoterComponent {
   // (2.1) create the @Output property as an event:   @Output() producerProperty = new EventEmitter<someType>()
   @Output() lastPrice = new EventEmitter<PriceQuote>();
 
-  priceQuoteProducer: PriceQuote;
+  priceQuoteData: PriceQuote;
 
   constructor() {
     interval(2000) // emulates changing prices and populates the priceQuote object
       .subscribe(() => {
-        this.priceQuoteProducer = {
+        this.priceQuoteData = {
           stockSymbol: 'IBM',
           lastPriceRandom: 100 * Math.random()
         };
 
         // (2.2) emit the event:  this.producerProperty.emit(somePayload)
-        this.lastPrice.emit(this.priceQuoteProducer);
+        this.lastPrice.emit(this.priceQuoteData);
       })
   }
 }

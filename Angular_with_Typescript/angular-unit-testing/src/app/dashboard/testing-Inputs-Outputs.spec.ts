@@ -1,4 +1,3 @@
-import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Hero } from '../model/hero';
@@ -15,6 +14,7 @@ import { DashboardHeroComponent } from './dashboard-hero.component';
 // access the debugElement with fixture.debugElement.query(By.css('')).nativeElement, trigger event (1.5.2) and verify what is emitted (1.5.3)
 
 
+describe('Testing Components with TestBed', () => {
 describe('[1] unit testing components with @Input and @Output properties', () => {
   let comp: DashboardHeroComponent;
   let fixture: ComponentFixture<DashboardHeroComponent>;
@@ -73,4 +73,5 @@ describe('[1] unit testing components with @Input and @Output properties', () =>
     });
   });
 
+});
 });
