@@ -9,7 +9,7 @@ import { HeroService } from './hero.service';
 
 // [3] mocking external core services like Http
 // to setup create an httpMock with the help of HttpTestingController from HttpClientTestingModule (3.1)
-// pred hardcoded data, initiate the client request and setup the assertion that will happen, match the url w/ httpMock.expectOne, using httpMock.expectOne, (3.2)
+// prep hardcoded data, initiate the client request and setup the assertion that will happen, match the url w/ httpMock.expectOne, using httpMock.expectOne, (3.2)
 // use .flush to send the data to the client and .error to emulate error (3.3)
 // in error testing, define the error response and bypass the success case (3.4)
 // cover the Multiple Request Case, and check the request length (3.5)

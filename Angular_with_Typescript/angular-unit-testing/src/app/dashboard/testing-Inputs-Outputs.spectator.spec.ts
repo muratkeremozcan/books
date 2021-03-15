@@ -25,7 +25,7 @@ describe('[1] unit testing components with @Input and @Output properties', () =>
 
   beforeEach(() => {
     spectator = createComponent(); // (1.1) setup the component.. TestBed.configureTestingModule({..})
-    comp = spectator.component;    // (1.2) access the TS...      app = fixture.debugElement.componentInstance
+    comp = spectator.component;    // (1.2) access the TS...      comp = fixture.debugElement.componentInstance
     heroNativeElement = spectator.element;  // (1.4) access the DOM..      heroNativeElement = fixture.debugElement.nativeElement
   });
 
@@ -46,9 +46,8 @@ describe('[1] unit testing components with @Input and @Output properties', () =>
 
 
     it('Testing @Input: , (1.4) use DOM testing library convenience methods https://github.com/ngneat/spectator#queries', () => {
-      expect(spectator.query(byText(mockHeroInput.name.toUpperCase(), { selector: '.hero' })));
-      expect(spectator.query('.hero')).toBeVisible(); // extra check
-      expect(spectator.query(byText(mockHeroInput.name.toUpperCase()))); // even this is ok
+      expect(spectator.query('.hero')).toHaveText(mockHeroInput.name.toUpperCase());
+      expect(spectator.query(byText(mockHeroInput.name.toUpperCase(), { selector: '.hero' }))).toBeTruthy(); // extra check
     });
 
     it('Testing the @Output: (1.5.1) subscribe to the event emitter and set up what will be emitted, (1.5.2) use spectator events api (https://github.com/ngneat/spectator#events-api) to trigger click ' , () => {
