@@ -20,13 +20,12 @@ describe('unit testing components with @Input and @Output properties', () => {
   let fixture: ComponentFixture<DashboardHeroComponent>;
 
   // (1.1.1) setup the component
-  beforeEach(waitForAsync(() =>
+  beforeEach(() => {
     TestBed
     .configureTestingModule({
       declarations: [DashboardHeroComponent]
-    })
-    .compileComponents()
-  ));
+    }); // a few versions ago, we had to wrap this in waitForAsync and use .compileComponents() because the file had an external html and css. Not anymore
+  });
 
   beforeEach(() => {
     // (1.1.2) TestBed.createComponent(): returns a ComponentFixture object which gives access to the TS & the template
