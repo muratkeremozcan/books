@@ -15,8 +15,8 @@ class MockUserService {
   user = { name: 'Test User'};
 }
 
-describe('Spectator Version: Testing Components with that have external service dependencies', () => {
-describe('[5] testing components that have external service dependencies', () => {
+describe('[5] Spectator Version: Testing Components with that have external service dependencies', () => {
+describe('testing components that have external service dependencies', () => {
   let comp: WelcomeComponent;
   let userService: UserService; // the TestBed injected service
 

@@ -1,4 +1,3 @@
-import { waitForAsync } from '@angular/core/testing';
 import { Hero } from '../model/hero';
 import { Spectator, createComponentFactory, byText } from '@ngneat/spectator';
 import { DashboardHeroComponent } from './dashboard-hero.component';
@@ -11,7 +10,7 @@ import { DashboardHeroComponent } from './dashboard-hero.component';
 // to test @Output subscribe to the event emitter and setup what will be emitted (1.5.1),
 // trigger the event using spectator events api https://github.com/ngneat/spectator#events-api (1.5.2) and verify what is emitted (1.5.3)
 
-describe('Testing Components with Spectator ', () => {
+describe('[1] Testing Components with Spectator ', () => {
 describe('[1] unit testing components with @Input and @Output properties', () => {
   let comp: DashboardHeroComponent;
   let heroNativeElement;
