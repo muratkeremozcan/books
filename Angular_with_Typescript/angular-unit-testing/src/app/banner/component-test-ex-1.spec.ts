@@ -35,7 +35,7 @@ describe('unit testing components with TestBed, example 2', () => {
     // (1.2) access the TS with fixture.debugElement.componentInstance / fixture.componentInstance
     component = fixture.componentInstance;
 
-    // (1.4.1) access the template with ixture.debugElement.nativeElement / fixture.debugElement
+    // (1.4.1) access the template with fixture.debugElement.nativeElement / fixture.debugElement
     bannerNative = fixture.nativeElement;
     bannerDebug = fixture.debugElement;
     bannerDebugNative = fixture.debugElement.nativeElement;
