@@ -16,7 +16,7 @@ import { HeroRoutingModule } from './hero-routing.module';
 
 fdescribe('module test', () => {
   let component: HeroDetailComponent;
-  let spectator;
+  let spectator: Spectator<HeroDetailComponent>;
 
   // (4.1) setup the component with routing. Use createRoutingFactory to auto-stub Router and ActivatedRoute
   const createComponent = createRoutingFactory({ // compared to createComponentFactory, Route and ActivatedRoute are auto-mocked
@@ -39,15 +39,20 @@ fdescribe('module test', () => {
 
   it('by Text', () => {
     expect(spectator.query(byText('Dr Nice'))).toBeDefined();
-    // expect(spectator.query('span')).toHaveText('Dr Nice'); // TODO: why can't we query by a selector? What to do when there are pipes in the template
+  });
+
+  xit('by Text', () => {
+    spectator.detectChanges();
+    expect(spectator.query('span')).toHaveText('Dr Nice'); // TODO: why can't we query by a selector? What to do when there are pipes in the template
   });
 
   // convert to spectator
 
-  // it('should navigate when click cancel', () => {
-  //   click(page.cancelBtn);
-  //   expect(page.navigateSpy.calls.any()).toBe(true, 'router.navigate called');
-  // });
+  xit('should navigate when click cancel', () => {
+    spectator.detectChanges();
+    expect(spectator.query('button')).toExist(); // TODO: really shitting the pants here
+    // expect(page.navigateSpy.calls.any()).toBe(true, 'router.navigate called');
+  });
 
   // it('should save when click save but not navigate immediately', () => {
   //   // Get service injected into component and spy on its`saveHero` method.

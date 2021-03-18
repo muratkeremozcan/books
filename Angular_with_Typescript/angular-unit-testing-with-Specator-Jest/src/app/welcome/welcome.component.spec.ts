@@ -14,7 +14,7 @@ class MockUserService {
   user = { name: 'Test User'};
 }
 
-describe('[5] Testing Components with that have external service dependencies with TestBed', () => {
+xdescribe('[5] Testing Components with that have external service dependencies with TestBed', () => {
 describe('testing components that have external service dependencies', () => {
   let comp: WelcomeComponent;
   let fixture: ComponentFixture<WelcomeComponent>;
