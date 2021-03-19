@@ -1,4 +1,4 @@
-import { Spectator, createComponentFactory } from '@ngneat/spectator';
+import { Spectator, createComponentFactory } from '@ngneat/spectator/jest';
 import { UserService } from '../model/user.service';
 import { WelcomeComponent } from './welcome.component';
 

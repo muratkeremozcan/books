@@ -1,6 +1,4 @@
-import { SpectatorHttp , createHttpFactory, HttpMethod } from '@ngneat/spectator';
-
-import { HttpResponse } from '@angular/common/http';
+import { SpectatorHttp , createHttpFactory, HttpMethod } from '@ngneat/spectator/jest';
 
 import { Hero } from './hero';
 import { HeroService } from './hero.service';
@@ -40,7 +38,7 @@ describe('[3] Testing Http with Spectator', () => {
 
       // (3.2.2) initiate the client request, and setup the assertion that will happen once the observable is fulfilled
       spectator.service.getHeroes().subscribe(
-        heroes => expect(heroes).toEqual(expectedHeroes, 'should return expected heroes'),
+        heroes => expect(heroes).toEqual(expectedHeroes),
         fail // the error case of the observable
       );
 
@@ -52,7 +50,7 @@ describe('[3] Testing Http with Spectator', () => {
 
     it('cover the Empty Response Case', () => {
       spectator.service.getHeroes().subscribe(
-        heroes => expect(heroes.length).toEqual(0, 'should have empty heroes array'),
+        heroes => expect(heroes.length).toEqual(0),
         fail
       );
 
@@ -103,7 +101,7 @@ describe('[3] Testing Http with Spectator', () => {
     it('(3.6) testing PUTs: test the method type and request body that is going out from the client, Use req.event(new HttpResponse({ .. })) to respond', () => {
 
       spectator.service.updateHero(updatedHero).subscribe(
-        data => expect(data).toEqual(updatedHero, 'should return the hero'),
+        data => expect(data).toEqual(updatedHero),
         fail
       );
 

@@ -16,7 +16,7 @@ import { HeroService } from './hero.service';
 // testing PUTs: test the method type and request body that is going out from the client, Use req.event(new HttpResponse({ .. })) to respond' (3.6)
 // cover the custom req.error(errorEvent) case for when something goes wrong at the network level (3.7)
 
-xdescribe('[3] Testing Http with TestBed', () => {
+describe('[3] Testing Http with TestBed', () => {
   let heroService: HeroService;
   let httpMock: HttpTestingController;
 
@@ -57,7 +57,7 @@ xdescribe('[3] Testing Http with TestBed', () => {
 
       // (3.2.2) initiate the client request, and setup the assertion that will happen once the observable is fulfilled
       heroService.getHeroes().subscribe(
-        heroes => expect(heroes).toEqual(expectedHeroes, 'should return expected heroes'),
+        heroes => expect(heroes).toEqual(expectedHeroes),
         fail // the error case of the observable
       );
 
@@ -71,7 +71,7 @@ xdescribe('[3] Testing Http with TestBed', () => {
 
     it('cover the Empty Response Case', () => {
       heroService.getHeroes().subscribe(
-        heroes => expect(heroes.length).toEqual(0, 'should have empty heroes array'),
+        heroes => expect(heroes.length).toEqual(0),
         fail
       );
 
@@ -109,7 +109,7 @@ xdescribe('[3] Testing Http with TestBed', () => {
       requests[1].flush([{ id: 1, name: 'bob' }]);
       requests[2].flush(expectedHeroes);
 
-      expect(requests.length).toEqual(3, 'calls to getHeroes()'); // KEY check request length
+      expect(requests.length).toEqual(3); // KEY check request length
     });
   });
 
@@ -122,7 +122,7 @@ xdescribe('[3] Testing Http with TestBed', () => {
     it('(3.6) testing PUTs: test the method type and request body that is going out from the client, Use req.event(new HttpResponse({ .. })) to respond', () => {
 
       heroService.updateHero(updatedHero).subscribe(
-        data => expect(data).toEqual(updatedHero, 'should return the hero'),
+        data => expect(data).toEqual(updatedHero),
         fail
       );
 

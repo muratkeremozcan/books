@@ -14,7 +14,7 @@ import { BannerComponent } from './banner-external.component';
 // to test @Output subscribe to the event emitter and setup what will be emitted (1.5.1),
 // access the debugElement with fixture.debugElement.query(By.css('')).nativeElement, trigger event (1.5.2) and verify what is emitted (1.5.3)
 
-xdescribe('[1] Testing Components with TestBed', () => {
+describe('[1] Testing Components with TestBed', () => {
 describe('unit testing components with TestBed, example 2', () => {
   let component: BannerComponent;
   let fixture: ComponentFixture<BannerComponent>;

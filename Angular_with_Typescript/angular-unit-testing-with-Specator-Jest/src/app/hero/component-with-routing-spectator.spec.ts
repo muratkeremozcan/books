@@ -1,5 +1,5 @@
 import { Router, ActivatedRoute } from '@angular/router';
-import { Spectator, createComponentFactory, mockProvider, createRoutingFactory, byText } from '@ngneat/spectator';
+import { Spectator, createComponentFactory, mockProvider, createRoutingFactory, byText } from '@ngneat/spectator/jest';
 
 import { Hero } from '../model/hero';
 import { HeroService } from '../model/hero.service';

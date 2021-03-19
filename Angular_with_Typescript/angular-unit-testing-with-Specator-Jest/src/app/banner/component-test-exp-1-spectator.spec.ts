@@ -1,4 +1,4 @@
-import { Spectator, createComponentFactory, byText } from '@ngneat/spectator';
+import { Spectator, createComponentFactory, byText } from '@ngneat/spectator/jest';
 import { BannerComponent } from './banner-external.component';
 
 // [1] [spectator version] unit testing components
@@ -9,7 +9,6 @@ import { BannerComponent } from './banner-external.component';
 
 describe('[1] Testing Components with Spectator, example 2 ', () => {
   let component: BannerComponent;
-  let bannerNative;
 
   // (1.1) setup the component
   let spectator: Spectator<BannerComponent>;

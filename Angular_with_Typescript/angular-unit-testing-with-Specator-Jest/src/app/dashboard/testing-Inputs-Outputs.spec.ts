@@ -14,7 +14,7 @@ import { DashboardHeroComponent } from './dashboard-hero.component';
 // access the debugElement with fixture.debugElement.query(By.css('')).nativeElement, trigger event (1.5.2) and verify what is emitted (1.5.3)
 
 
-xdescribe('[1] Testing Components with TestBed', () => {
+describe('[1] Testing Components with TestBed', () => {
 describe('unit testing components with @Input and @Output properties', () => {
   let comp: DashboardHeroComponent;
   let fixture: ComponentFixture<DashboardHeroComponent>;
