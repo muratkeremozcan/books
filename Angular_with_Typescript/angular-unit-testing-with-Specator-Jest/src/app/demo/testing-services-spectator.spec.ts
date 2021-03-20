@@ -127,15 +127,18 @@ describe('[2] Testing Services Using Spectator', () => {
     });
 
     it('(2.4.2) stub the external service\'s return value, and exercise the main service under test', () => {
-      expect(masterService).toBeTruthy();
-
       const stubValue = 'stub value';
+
       // (2.4.2) stub the external service's return value, and exercise the main service under test
-      valueServiceSpy.getValue.mockImplementation(() => stubValue);
+      jest.spyOn(valueServiceSpy, 'getValue').mockReturnValue(stubValue);
+      // jest.spyOn(valueServiceSpy, 'getValue').mockImplementation(() => stubValue); // same
+      // valueServiceSpy.getValue.mockImplementation(() => stubValue); // same
 
       expect(masterService.getValue()).toBe(stubValue);
-      // expect(valueServiceSpy).toHaveBeenCalled(); // TODO: make it work
-      // expect(valueServiceSpy).toHaveBeenCalledWith(stubValue);
+      expect(valueServiceSpy.getValue).toHaveBeenCalledTimes(1);
+      // expect(valueServiceSpy.getValue).toHaveBeenCalled(); // ^ same
+      expect(valueServiceSpy.getValue).toHaveReturnedWith(stubValue);
     });
+
   });
 });

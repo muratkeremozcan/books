@@ -18,7 +18,7 @@ in Angular apps you use the provider’s token in the class constructor to injec
 in tests, the injection is done differently;  use the TestBed.inject() method in the setup to inject the service
 */
 
-describe('[2] Testing Services Using TestBed', () => {
+describe.skip('[2] Testing Services Using TestBed', () => {
   describe('Testing a service: (2.1) setup the service, (2.2) inject the service to the setup', () => {
     let valueService: ValueService;
 
@@ -97,41 +97,6 @@ describe('[2] Testing Services Using TestBed', () => {
         });
       });
 
-    });
-  });
-
-
-  describe.skip(`Testing a service with a dependency: (2.4.0) create a spy and provide it in the providers array,
-  (2.4.1) inject the service under test and the mock dependency`, () => {
-    let masterService: MasterService;
-    let valueServiceSpy;
-
-    // (2.4.0) When testing a service with a dependency, create a spy and provide it in the providers array
-    // const getValueSpy = jasmine.createSpyObj('ValueService', ['getValue']); // TODO: convert this to Jest
-    const stubValue = 'stub value';
-    const getValueSpy = jest.spyOn(valueServiceSpy, 'getValue').mockImplementation(() => stubValue);
-
-    beforeEach(() => {
-
-      TestBed.configureTestingModule({
-        providers: [
-          MasterService,
-          { provide: ValueService, useValue: getValueSpy }
-        ]
-      });
-      // (2.4.1) inject the service under test and the mock dependency
-      masterService = TestBed.inject(MasterService);
-      valueServiceSpy = TestBed.inject(ValueService);
-    });
-
-    it('(2.4.2) stub the external service\'s return value, and exercise the main service under test', () => {
-
-      // (2.4.2) stub the external service's return value, and exercise the main service under test
-      // valueServiceSpy.getValue.and.returnValue(stubValue);
-
-      expect(masterService.getValue()).toBe(stubValue);
-      expect(valueServiceSpy.getValue.calls.count()).toBe(1);
-      expect(valueServiceSpy.getValue.calls.mostRecent().returnValue).toBe(stubValue);
     });
   });
 });

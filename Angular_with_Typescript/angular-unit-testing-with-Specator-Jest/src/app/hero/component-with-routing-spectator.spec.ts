@@ -1,5 +1,5 @@
 import { Router, ActivatedRoute } from '@angular/router';
-import { Spectator, createComponentFactory, mockProvider, createRoutingFactory, byText } from '@ngneat/spectator/jest';
+import { Spectator, createComponentFactory, mockProvider, createRoutingFactory, byText, byTextContent } from '@ngneat/spectator/jest';
 
 import { Hero } from '../model/hero';
 import { HeroService } from '../model/hero.service';
@@ -7,6 +7,7 @@ import { HeroDetailComponent } from './hero-detail.component';
 import { HeroDetailService } from './hero-detail.service';
 import { HeroModule } from './hero.module';
 import { HeroRoutingModule } from './hero-routing.module';
+import { By } from '@angular/platform-browser';
 
 
 // [4] testing components that use routing // https://github.com/ngneat/spectator#testing-with-routing
@@ -14,7 +15,7 @@ import { HeroRoutingModule } from './hero-routing.module';
 // use convenience methods to trigger a navigation, if needed (4.2) https://github.com/ngneat/spectator#triggering-a-navigation
 
 
-fdescribe('module test', () => {
+describe('module test', () => {
   let component: HeroDetailComponent;
   let spectator: Spectator<HeroDetailComponent>;
 
@@ -23,6 +24,7 @@ fdescribe('module test', () => {
     component: HeroDetailComponent,
     mocks: [HeroDetailService, HeroService],
     detectChanges: false,
+    stubsEnabled: false, // (true by default) when stubsEnabled option is false, you can pass a real routing configuration and setup an integration test using the RouterTestingModule from Angular
     params: { id: 41 }, // initial params to use in ActivatedRoute stub
     data: { name: 'Dr Nice' } // initial data to use in ActivatedRoute stub
   });
@@ -30,29 +32,37 @@ fdescribe('module test', () => {
   beforeEach(() => {
     spectator = createComponent();    // (4.1) setup the component.. TestBed.configureTestingModule({..})
     component = spectator.component;  // (1.2) access the TS...     comp = fixture.debugElement.componentInstance
-    // stubsEnabled: false // (true by default) when stubsEnabled option is false, you can pass a real routing configuration and setup an integration test using the RouterTestingModule from Angular
   });
 
   it('sanity', () => {
     expect(component).toBeTruthy();
   });
 
-  it('by Text', () => {
+  /* DOM testing library-like approach
+    spectator.query(byPlaceholder('Please enter your email address'));
+    spectator.query(byValue('By value'));
+    spectator.query(byTitle('By title'));
+    spectator.query(byAltText('By alt text'));
+    spectator.query(byLabel('By label'));
+    spectator.query(byText('By text'));
+    spectator.query(byText('By text', {selector: '#some .selector'}));
+    spectator.query(byTextContent('By text content', {selector: '#some .selector'}));
+  */
+
+  it('query byText', () => {
     expect(spectator.query(byText('Dr Nice'))).toBeDefined();
+    spectator.query(byTextContent('Dr Nice', {selector: '.qa-hero-name'}));
   });
 
-  xit('by Text', () => {
+  it('should navigate when click cancel', async () => {
     spectator.detectChanges();
-    expect(spectator.query('span')).toHaveText('Dr Nice'); // TODO: why can't we query by a selector? What to do when there are pipes in the template
+    spectator.query('.qa-cancel'); // exists
+
+    // spectator.click(byText('Cancel')); // TODO: click it , but doesn't workD
+    // expect(page.navigateSpy.calls.any()).toBe(true, 'router.navigate called');
   });
 
   // convert to spectator
-
-  xit('should navigate when click cancel', () => {
-    spectator.detectChanges();
-    expect(spectator.query('button')).toExist(); // TODO: really shitting the pants here
-    // expect(page.navigateSpy.calls.any()).toBe(true, 'router.navigate called');
-  });
 
   // it('should save when click save but not navigate immediately', () => {
   //   // Get service injected into component and spy on its`saveHero` method.

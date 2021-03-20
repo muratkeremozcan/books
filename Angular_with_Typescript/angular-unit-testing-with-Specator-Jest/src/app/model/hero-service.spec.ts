@@ -16,7 +16,7 @@ import { HeroService } from './hero.service';
 // testing PUTs: test the method type and request body that is going out from the client, Use req.event(new HttpResponse({ .. })) to respond' (3.6)
 // cover the custom req.error(errorEvent) case for when something goes wrong at the network level (3.7)
 
-describe('[3] Testing Http with TestBed', () => {
+describe.skip('[3] Testing Http with TestBed', () => {
   let heroService: HeroService;
   let httpMock: HttpTestingController;
 
