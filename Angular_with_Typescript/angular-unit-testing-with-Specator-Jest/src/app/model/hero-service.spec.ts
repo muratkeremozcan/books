@@ -14,7 +14,6 @@ import { HeroService } from './hero.service';
 // in error testing, define the error response and bypass the success case (3.4)
 // cover the Multiple Request Case, and check the request length (3.5)
 // testing PUTs: test the method type and request body that is going out from the client, Use req.event(new HttpResponse({ .. })) to respond' (3.6)
-// cover the custom req.error(errorEvent) case for when something goes wrong at the network level (3.7)
 
 describe.skip('[3] Testing Http with TestBed', () => {
   let heroService: HeroService;
@@ -149,30 +148,6 @@ describe.skip('[3] Testing Http with TestBed', () => {
 
       // KEY: (same as GET scenario) flush with the optional object: status and message
       req.flush(msg, { status: 404, statusText: 'Not Found' });
-    });
-
-    it('(3.7) cover the custom req.error(errorEvent) case for when something goes wrong at the network level', () => {
-      const msg = 'simulated network error';
-
-      heroService.updateHero(updatedHero).subscribe(
-        heroes => fail('expected to fail'),
-        error => expect(error.message).toContain(msg)
-      );
-
-      const req = httpMock.expectOne(heroService.heroesUrl);
-
-      // (3.7.0) Create mock ErrorEvent, raised when something goes wrong at the network level. Connection timeout, DNS error, offline, etc
-      const errorEvent = new ErrorEvent('so sad', {
-        message: msg,
-        // The rest of this is optional and not used.
-        // Just showing that you could provide this too.
-        filename: 'HeroService.ts',
-        lineno: 42,
-        colno: 21
-      });
-
-      // (3.7.1): Respond with mock error
-      req.error(errorEvent);
     });
   });
 });

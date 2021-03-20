@@ -11,7 +11,6 @@ import { HeroService } from './hero.service';
 // in error testing, define the error response and bypass the success case (3.4)
 // cover the Multiple Request Case, and check the request length (3.5)
 // testing PUTs: test the method type and request body that is going out from the client, Use req.event(new HttpResponse({ .. })) to respond' (3.6)
-// cover the custom req.error(errorEvent) case for when something goes wrong at the network level (3.7)
 
 describe('[3] Testing Http with Spectator', () => {
   // setup is much cleaner with spectator(3.1)
@@ -141,21 +140,6 @@ describe('[3] Testing Http with Spectator', () => {
       );
 
       spectator.expectOne(spectator.service.heroesUrl, HttpMethod.PUT);
-
-      // TODO: can we do this in spectator. What use is it anyway?
-
-      // (3.7.0) Create mock ErrorEvent, raised when something goes wrong at the network level. Connection timeout, DNS error, offline, etc
-      // const errorEvent = new ErrorEvent('so sad', {
-      //   message: msg,
-      //   // The rest of this is optional and not used.
-      //   // Just showing that you could provide this too.
-      //   filename: 'spectator.service.ts',
-      //   lineno: 42,
-      //   colno: 21
-      // });
-
-      // // (3.7.1): Respond with mock error
-      // req.error(errorEvent);
     });
   });
 });
