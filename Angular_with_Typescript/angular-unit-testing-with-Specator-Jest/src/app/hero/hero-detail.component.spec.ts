@@ -57,7 +57,9 @@ describe('module test', () => {
   it('should navigate when click cancel', async () => {
     spectator.detectChanges();
     spectator.query('.qa-cancel'); // exists
+    spectator.query(byText('Cancel')); // exists;
 
+    // spectator.click('.qa-cancel'); // can't click
     // spectator.click(byText('Cancel')); // TODO: click it , but doesn't work
     // expect(page.navigateSpy.calls.any()).toBe(true, 'router.navigate called');
   });

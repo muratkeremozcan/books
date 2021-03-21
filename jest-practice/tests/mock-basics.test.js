@@ -19,7 +19,7 @@ describe('mocking techniques', () => {
     }
 
     // start by creating a mock of the function using jest.fn( function implementation() {..} )
-    // jest.fn(function implementation() {..}) : jest.fn().mockImplementation(function implementation() {..})
+    // jest.fn(function implementation() {..}) is the same as  jest.fn().mockImplementation(function implementation() {..})
     const mockCallback = jest.fn(x => 42 + x);
     forEach([5, 6], mockCallback);
 
@@ -155,7 +155,7 @@ describe('mocking techniques', () => {
       const resp = { data: users };
 
       axios.get.mockResolvedValue(resp);
-      // axios.get.mockImplementation(() => Promise.resolve(resp))
+      // axios.get.mockImplementation(() => Promise.resolve(resp));  // same thing
 
       Users.all().then(data => expect(data).toEqual(users));
     });
