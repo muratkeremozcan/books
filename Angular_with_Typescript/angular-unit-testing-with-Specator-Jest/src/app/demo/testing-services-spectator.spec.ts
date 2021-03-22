@@ -106,14 +106,15 @@ describe('[2] Testing Services Using Spectator', () => {
   (2.4.1) inject the service under test and the mock dependency`, () => {
     let masterService: MasterService;
     let valueServiceSpy;
+    let stubValue;
 
-    // with spectator you still have the option to create a custom mock, but if you are not customizing it, there is no need to
 
     const createService = createServiceFactory({
       service: MasterService,
       providers: [
         MasterService,
-        // { provide: ValueService, useValue: getValueSpy } // this is where the custom mock would go if we were not fully mocking the dependency
+        // with spectator you still have the option to create a custom mock, but if you are not customizing it, there is no need to
+        // { provide: ValueService, useValue: getValueSpy } // this is where the custom mock would go if we were not mocking with SPECTATOR/JEST
       ],
       mocks: [ValueService] // (2.4.0) KEY: with spectator, you can fully mock the dependency using the mocks property
     });
@@ -124,16 +125,15 @@ describe('[2] Testing Services Using Spectator', () => {
       // (2.4.1) inject the service under test and the mock dependency
       masterService = spectator.inject(MasterService);
       valueServiceSpy = spectator.inject(ValueService);
-    });
 
-    it('(2.4.2) stub the external service\'s return value, and exercise the main service under test', () => {
-      const stubValue = 'stub value';
-
+      stubValue = 'stub value';
       // (2.4.2) stub the external service's return value, and exercise the main service under test
       jest.spyOn(valueServiceSpy, 'getValue').mockReturnValue(stubValue);
       // jest.spyOn(valueServiceSpy, 'getValue').mockImplementation(() => stubValue); // same
       // valueServiceSpy.getValue.mockImplementation(() => stubValue); // same
+    });
 
+    it('(2.4.2) stub the external service\'s return value, and exercise the main service under test', () => {
       expect(masterService.getValue()).toBe(stubValue);
       expect(valueServiceSpy.getValue).toHaveBeenCalledTimes(1);
       // expect(valueServiceSpy.getValue).toHaveBeenCalled(); // ^ same

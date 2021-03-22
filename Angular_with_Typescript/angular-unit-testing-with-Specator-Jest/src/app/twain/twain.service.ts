@@ -14,7 +14,7 @@ export class TwainService {
   private nextId = 1;
 
   getQuote(): Observable<string> {
-    return Observable.create((observer: Observer<number>) => observer.next(this.nextId++)).pipe(
+    return new Observable((observer: Observer<number>) => observer.next(this.nextId++)).pipe(
 
       // tap((id: number) => console.log(id)),
       // tap((id: number) => { throw new Error('Simulated server error'); }),

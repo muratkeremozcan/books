@@ -2,7 +2,7 @@ import { Spectator, createComponentFactory } from '@ngneat/spectator/jest';
 import { UserService } from '../model/user.service';
 import { WelcomeComponent } from './welcome.component';
 
-// [5] testing components that have external service dependencies
+// [5] testing components that have external service dependencies - CUSTOM MOCK
 // setup the component much less overhead with spectator (5.1)
 // KEY extra compared to [1] inject the service dependency:  depService = spectator.inject(DepService) (5.1.3)
 // access the TS with spectator.component  (5.2)
@@ -15,7 +15,7 @@ class MockUserService {
   user = { name: 'Test User'};
 }
 
-describe('[5] Spectator Version: Testing Components with that have external service dependencies', () => {
+describe('[5] CUSTOM MOCK: Testing Components with that have external service dependencies ', () => {
 describe('testing components that have external service dependencies', () => {
   let comp: WelcomeComponent;
   let userService: UserService; // the TestBed injected service
@@ -27,7 +27,6 @@ describe('testing components that have external service dependencies', () => {
     providers: [ { provide: UserService, useClass: MockUserService } ],
     detectChanges: false
   });
-
   beforeEach(() => {
     spectator = createComponent(); // (5.1) setup the component.. TestBed.configureTestingModule({..})
     comp = spectator.component;    // (5.2) access the TS...      comp = fixture.debugElement.componentInstance\
