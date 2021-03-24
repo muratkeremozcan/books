@@ -10,10 +10,8 @@ import { DashboardHeroComponent } from './dashboard-hero.component';
 // to test @Output subscribe to the event emitter and setup what will be emitted (1.5.1),
 // trigger the event using spectator events api https://github.com/ngneat/spectator#events-api (1.5.2) and verify what is emitted (1.5.3)
 
-describe('[1] Testing Components with Spectator ', () => {
-describe('[1] unit testing components with @Input and @Output properties', () => {
+describe('[1] Testing Components with Spectator: unit testing components with @Input and @Output properties', () => {
   let comp: DashboardHeroComponent;
-  let heroNativeElement;
 
   // (1.1) setup the component
   let spectator: Spectator<DashboardHeroComponent>;
@@ -25,7 +23,6 @@ describe('[1] unit testing components with @Input and @Output properties', () =>
   beforeEach(() => {
     spectator = createComponent(); // (1.1) setup the component.. TestBed.configureTestingModule({..})
     comp = spectator.component;    // (1.2) access the TS...      comp = fixture.debugElement.componentInstance
-    heroNativeElement = spectator.element;  // (1.4) access the DOM..      heroNativeElement = fixture.debugElement.nativeElement
   });
 
   it('(1.1) setup the component, (1.2) access the TS with spectator.component, (1.4) access the DOM with spectator.element', () => {
@@ -43,8 +40,8 @@ describe('[1] unit testing components with @Input and @Output properties', () =>
       spectator.detectChanges();
     });
 
-
     it('Testing @Input: , (1.4) use DOM testing library convenience methods https://github.com/ngneat/spectator#queries', () => {
+      // (1.4) access the DOM...
       expect(spectator.query('.hero')).toHaveText(mockHeroInput.name.toUpperCase());
       expect(spectator.query(byText(mockHeroInput.name.toUpperCase(), { selector: '.hero' }))).toBeTruthy(); // extra check
     });
@@ -62,5 +59,4 @@ describe('[1] unit testing components with @Input and @Output properties', () =>
       expect(emittedHero).toBe(mockHeroInput);
     });
   });
-});
 });

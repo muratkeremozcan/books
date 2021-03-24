@@ -5,10 +5,10 @@ import { AboutComponent } from './about.component';
 import { HighlightDirective } from '../shared/highlight.directive';
 
 
-// [6] testing directives, very similar to testing components [1]
+// [7] testing directives, very similar to testing components [1]
 // use NO_ERRORS_SCHEMA (6.1)
 // you may need to cast selectors as HTMLElement, instead of the default Element (6.2)
-describe('[6] Testing directives: very similar to components', () => {
+describe('[7] Testing directives: very similar to components', () => {
   let component: AboutComponent;
   let spectator: Spectator<AboutComponent>;
 

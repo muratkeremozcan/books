@@ -11,7 +11,7 @@ import { TwainService } from './twain.service';
 // setup the component much less overhead with spectator (5.1)
 // KEY contrast to [5] MANUAL MOCKs example: with spectator, you can fully mock the dependency using the mocks property (no need for custom mocks unless you need them) (5.1.2) . Similar to (2.4.0) testing services with other service dependencies.
 // KEY extra compared to [1] inject the service dependency:  depService = spectator.inject(DepService) (5.1.3) . Same as (2.4.1) inject the mock service dependency
-// stub the external service's return value, and exercise the main service under test (5.1.4) . Similar to (2.4.2) ,stubbing the external service and testing the service under test.
+// stub the external service's return value, and exercise the main component under test (5.1.4) . Similar to (2.4.2) ,stubbing the external service and testing the service under test.
 // access the TS with  (5.2)
 // use spectator.detectChanges()  to trigger the change detection (5.3),
 // if needed by the component implementation, use fakeAsync and spectator.tick() (5.4)
