@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { BannerComponent } from './banner-external.component';
 
 
-// [1] unit testing components
+// unit testing components
 // setup the component with TestBed.configureTestingModule({..}) (satisfy the TS), and create the component with TestBed.createComponent(..) before each test (1.1)
 // access the TS with fixture.debugElement.componentInstance / fixture.componentInstance (1.2)
 // use fixture.detectChanges() to trigger the change detection (1.3), but not always!
@@ -14,7 +14,7 @@ import { BannerComponent } from './banner-external.component';
 // to test @Output subscribe to the event emitter and setup what will be emitted (1.5.1),
 // access the debugElement with fixture.debugElement.query(By.css('')).nativeElement, trigger event (1.5.2) and verify what is emitted (1.5.3)
 
-describe('[1] Testing Components with TestBed', () => {
+describe('Testing Components with TestBed', () => {
 describe('unit testing components with TestBed, example 2', () => {
   let component: BannerComponent;
   let fixture: ComponentFixture<BannerComponent>;

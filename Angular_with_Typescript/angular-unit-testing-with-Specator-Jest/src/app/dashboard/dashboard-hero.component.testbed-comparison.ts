@@ -4,7 +4,7 @@ import { Hero } from '../model/hero';
 
 import { DashboardHeroComponent } from './dashboard-hero.component';
 
-// [1] unit testing components with @Input and @Output properties
+// unit testing components with @Input and @Output properties
 // setup the component with TestBed.configureTestingModule({..}) (satisfy the TS), and create the component with TestBed.createComponent(..) before each test (1.1)
 // access the TS with fixture.debugElement.componentInstance / fixture.componentInstance (1.2)
 // use fixture.detectChanges() to trigger the change detection (1.3),
@@ -14,7 +14,7 @@ import { DashboardHeroComponent } from './dashboard-hero.component';
 // access the debugElement with fixture.debugElement.query(By.css('')).nativeElement, trigger event (1.5.2) and verify what is emitted (1.5.3)
 
 
-describe('[1] Testing Components with TestBed', () => {
+describe('Testing Components with TestBed', () => {
 describe('unit testing components with @Input and @Output properties', () => {
   let comp: DashboardHeroComponent;
   let fixture: ComponentFixture<DashboardHeroComponent>;

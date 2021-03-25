@@ -1,7 +1,7 @@
 import { MasterService, ValueService } from './demo';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
-// [2] testing services:
+// testing services:
 // (2.1) setup the service and satisfy the TS with TestBed.configureTestingModule({..})
 // (2.2) inject the service in the test
 // (2.3) use waitForAsync() or fakeAsync() pattern for testing promises or observables
@@ -18,7 +18,7 @@ in Angular apps you use the provider’s token in the class constructor to injec
 in tests, the injection is done differently;  use the TestBed.inject() method in the setup to inject the service
 */
 
-describe('[2] Testing Services Using TestBed', () => {
+describe('Testing Services Using TestBed', () => {
   describe('Testing a service: (2.1) setup the service, (2.2) inject the service to the setup', () => {
     let valueService: ValueService;
 

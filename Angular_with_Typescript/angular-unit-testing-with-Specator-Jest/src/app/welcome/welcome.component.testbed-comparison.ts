@@ -2,9 +2,9 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { UserService } from '../model/user.service';
 import { WelcomeComponent } from './welcome.component';
 
-// [5] testing components that have external service dependencies
+// testing components that have external service dependencies
 // setup the component with TestBed.configureTestingModule({..}) (satisfy the TS), and create the component with TestBed.createComponent(..) before each test (5.1)
-// KEY extra compared to [1] inject the service dependency:  depService = TestBed.inject(DepService) (5.1.3)
+// KEY extra compared to inject the service dependency:  depService = TestBed.inject(DepService) (5.1.3)
 // access the TS with fixture.debugElement.componentInstance / fixture.componentInstance (5.2)
 // control the properties of the mocked service, use fixture.detectChanges() to trigger the change detection and verify results (1.3),
 // access the template with fixture.debugElement.nativeElement (5.4.1), // to test nativeElements (ex: @Input) use fixture.debugElement.nativeElement.querySelector('..').textContent (5.4.2)
@@ -14,7 +14,7 @@ class MockUserService {
   user = { name: 'Test User'};
 }
 
-describe('[5] Testing Components with that have external service dependencies with TestBed', () => {
+describe('Testing Components with that have external service dependencies with TestBed', () => {
 describe('testing components that have external service dependencies', () => {
   let comp: WelcomeComponent;
   let fixture: ComponentFixture<WelcomeComponent>;
@@ -31,7 +31,7 @@ describe('testing components that have external service dependencies', () => {
 
     // (5.1.2) TestBed.createComponent(): returns a ComponentFixture object which gives access to the TS & the template
     fixture = TestBed.createComponent(WelcomeComponent);
-    // (5.1.3) KEY extra compared to [1] inject the service dependency
+    // (5.1.3) KEY extra compared to 1 inject the service dependency
     userService = TestBed.inject(UserService);
     // (5.2) fixture.debugElement.componentInstance / fixture.componentInstance gives access to the TS
     comp = fixture.componentInstance;
