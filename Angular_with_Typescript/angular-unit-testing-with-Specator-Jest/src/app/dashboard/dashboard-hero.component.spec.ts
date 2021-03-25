@@ -2,7 +2,7 @@ import { Hero } from '../model/hero';
 import { Spectator, createComponentFactory, byText } from '@ngneat/spectator/jest';
 import { DashboardHeroComponent } from './dashboard-hero.component';
 
-// [1] [spectator version] unit testing components with @Input and @Output properties
+// [1] unit testing components with @Input and @Output properties
 // setup the component much less overhead with spectator (1.1)
 // access the TS with spectator.component  (1.2)
 // use spectator.detectChanges()  to trigger the change detection (1.3),

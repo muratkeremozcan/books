@@ -1,7 +1,7 @@
 import { Spectator, createComponentFactory, byText } from '@ngneat/spectator/jest';
 import { BannerComponent } from './banner-external.component';
 
-// [1] [spectator version] unit testing components
+// [1] unit testing components
 // setup the component much less overhead with spectator (1.1)
 // access the TS with spectator.component  (1.2)
 // use spectator.detectChanges()  to trigger the change detection (1.3), (do not have to do it always)

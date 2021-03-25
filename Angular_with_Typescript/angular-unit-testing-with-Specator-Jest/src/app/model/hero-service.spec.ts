@@ -4,7 +4,7 @@ import { Hero } from './hero';
 import { HeroService } from './hero.service';
 
 
-// [3] [spectator version] mocking external core services like Http
+// [3] mocking external core services like Http
 // setup the http (much leaner with spectator, and similar to other spectator setups) (3.1)
 // prep hardcoded data, initiate the client request and setup the assertion that will happen, match the url w/ expectOne- for spectator add a 2nd arg HttpMethod.GET/POST etc. (3.2)
 // with spectator, afterEach verify() is not needed, flush is also not needed (3.3)  flush is only needed for concurrent get requests https://www.npmjs.com/package/@ngneat/spectator#testing-services
