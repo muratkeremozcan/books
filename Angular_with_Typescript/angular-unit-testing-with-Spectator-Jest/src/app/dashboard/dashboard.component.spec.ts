@@ -20,7 +20,6 @@ import { MockComponent } from 'ng-mocks';
 // to test @Output subscribe to the event emitter and setup what will be emitted (1.5.1),
 // trigger the event using spectator events api https://github.com/ngneat/spectator#events-api (1.5.2) and verify what is emitted (1.5.3)
 
-
 describe('[6] Testing components that include other components, services (example[5]), and routing (example[4])', () => {
   let component: DashboardComponent;
   let spectator: Spectator<DashboardComponent>;
