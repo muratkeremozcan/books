@@ -1,13 +1,12 @@
 import { MasterService, ValueService } from './demo';
-import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
-import { SpectatorService , createServiceFactory } from '@ngneat/spectator/jest';
+import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
 // [2] testing services:
 // (2.1) setup the service and satisfy the TS with TestBed.configureTestingModule({..})
 // (2.2) inject the service in the test
 // (2.3) use waitForAsync() or fakeAsync() pattern for testing promises or observables
 
-// (2.4.0) KEY: with spectator, you can fully mock the dependency using the mocks property (no need for custom mocks unless you need them)
+// (2.4.0) When testing a service with a dependency, create a spy and provide it in the providers array
 // (2.4.1) inject the service under test and the mock dependency
 // (2.4.2) stub the external service's return value, and exercise the main service under test
 
@@ -19,17 +18,17 @@ in Angular apps you use the provider’s token in the class constructor to injec
 in tests, the injection is done differently;  use the TestBed.inject() method in the setup to inject the service
 */
 
-describe('[2] Testing Services Using Spectator', () => {
+describe('[2] Testing Services Using TestBed', () => {
   describe('Testing a service: (2.1) setup the service, (2.2) inject the service to the setup', () => {
     let valueService: ValueService;
 
-    // (2.1) setup the service... replaces TestBed.configureTestingModule({...}). Mind that the setup is prior to beforeEach block
-    const createService = createServiceFactory(ValueService);
-    let spectator: SpectatorService<ValueService>;
-
     beforeEach(() => {
-      spectator = createService();
-      valueService = spectator.inject(ValueService); // (2.2) inject the service to the setup
+      // (2.1) setup the service
+      TestBed.configureTestingModule({
+        providers: [ValueService], // the service still has to be in providers
+      });
+      // (2.2) inject the service to the setup
+      valueService = TestBed.inject(ValueService);
     });
 
     it('synchronous: should use ValueService getValue()', () => {
@@ -99,46 +98,5 @@ describe('[2] Testing Services Using Spectator', () => {
       });
 
     });
-  });
-
-
-  describe(`Testing a service with a dependency: (2.4.0) KEY: with spectator, you can fully mock the dependency using the mocks property,
-  (2.4.1) inject the service under test and the mock dependency`, () => {
-    let masterService: MasterService;
-    let valueServiceSpy;
-    let stubValue;
-
-
-    const createService = createServiceFactory({
-      service: MasterService,
-      providers: [
-        MasterService,
-        // with spectator you still have the option to create a custom mock, but if you are not customizing it, there is no need to
-        // { provide: ValueService, useValue: getValueSpy } // this is where the custom mock would go if we were not mocking with SPECTATOR/JEST
-      ],
-      mocks: [ValueService] // (2.4.0) KEY: with spectator, you can fully mock the dependency using the mocks property
-    });
-    let spectator: SpectatorService<MasterService>;
-
-    beforeEach(() => {
-      spectator = createService();
-      // (2.4.1) inject the service under test and the mock dependency
-      masterService = spectator.inject(MasterService);
-      valueServiceSpy = spectator.inject(ValueService);
-
-      stubValue = 'stub value';
-      // (2.4.2) stub the external service's return value, and exercise the main service under test
-      jest.spyOn(valueServiceSpy, 'getValue').mockReturnValue(stubValue);
-      // jest.spyOn(valueServiceSpy, 'getValue').mockImplementation(() => stubValue); // same
-      // valueServiceSpy.getValue.mockImplementation(() => stubValue); // same
-    });
-
-    it('(2.4.2) stub the external service\'s return value, and exercise the main service under test', () => {
-      expect(masterService.getValue()).toBe(stubValue);
-      expect(valueServiceSpy.getValue).toHaveBeenCalledTimes(1);
-      // expect(valueServiceSpy.getValue).toHaveBeenCalled(); // ^ same
-      expect(valueServiceSpy.getValue).toHaveReturnedWith(stubValue);
-    });
-
   });
 });
