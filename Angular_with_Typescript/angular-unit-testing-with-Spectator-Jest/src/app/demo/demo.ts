@@ -243,6 +243,7 @@ export class ExternalTemplateComponent implements OnInit {
   constructor(@Optional() private service?: ValueService) {  }
 
   ngOnInit() {
+    debugger;
     if (this.service) { this.serviceValue = this.service.getValue(); }
   }
 }
