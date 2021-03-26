@@ -104,11 +104,6 @@ describe('[2] Testing Services Using Spectator', () => {
 
     const createService = createServiceFactory({
       service: MasterService,
-      providers: [
-        MasterService,
-        // with spectator you still have the option to create a custom mock, but if you are not customizing it, there is no need to
-        // { provide: ValueService, useValue: getValueSpy } // this is where the custom mock would go if we were not mocking with SPECTATOR/JEST
-      ],
       mocks: [ValueService] // (2.4.0) KEY: with spectator, you can fully mock the dependency using the mocks property
     });
     let spectator: SpectatorService<MasterService>;
