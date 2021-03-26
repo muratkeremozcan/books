@@ -69,7 +69,7 @@ describe('[3] Testing Http with Spectator', () => {
       // note: the flush and the optional response object in 3.4.1 of TestBed example are not needed with spectator
     });
 
-    it.skip('(3.5) cover the Multiple Request Case, and check the request length', () => {
+    // it('(3.5) cover the Multiple Request Case, and check the request length', () => {
       // TODO: how do we test multiple requests with spectator
       // could not make the concurrency example work in this 1:1 conversion to https://www.npmjs.com/package/@ngneat/spectator#testing-services
 
@@ -88,7 +88,7 @@ describe('[3] Testing Http with Spectator', () => {
       // requests[2].flush(expectedHeroes);
 
       // expect(requests.length).toEqual(3, 'calls to getHeroes()'); // KEY check request length
-    });
+    // });
   });
 
   describe('PUT requests', () => {

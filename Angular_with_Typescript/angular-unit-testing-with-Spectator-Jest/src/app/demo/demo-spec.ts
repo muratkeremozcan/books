@@ -11,13 +11,6 @@ import { SpectatorService , createServiceFactory } from '@ngneat/spectator/jest'
 // (2.4.1) inject the service under test and the mock dependency
 // (2.4.2) stub the external service's return value, and exercise the main service under test
 
-/*
-The TestBed creates a dynamically-constructed Angular test module that emulates an Angular @NgModule.
-We use the TestBed to provide and create services
-
-in Angular apps you use the provider’s token in the class constructor to inject a service,
-in tests, the injection is done differently;  use the TestBed.inject() method in the setup to inject the service
-*/
 
 describe('[2] Testing Services Using Spectator', () => {
   describe('Testing a service: (2.1) setup the service, (2.2) inject the service to the setup', () => {
