@@ -4,7 +4,7 @@ import { SpectatorService , createServiceFactory } from '@ngneat/spectator/jest'
 
 // [2] testing services:
 // (2.1) setup the service and satisfy the TS with TestBed.configureTestingModule({..})
-// (2.2) inject the service in the test
+// (2.2) use the service
 // (2.3) use waitForAsync() or fakeAsync() pattern for testing promises or observables
 
 // (2.4.0) KEY: with spectator, you can fully mock the dependency using the mocks property (no need for custom mocks unless you need them)
@@ -13,7 +13,7 @@ import { SpectatorService , createServiceFactory } from '@ngneat/spectator/jest'
 
 
 describe('[2] Testing Services Using Spectator', () => {
-  describe('Testing a service: (2.1) setup the service, (2.2) inject the service to the setup', () => {
+  describe('Testing a service: (2.1) setup the service, (2.2) use the service', () => {
     let valueService: ValueService;
 
     // (2.1) setup the service... replaces TestBed.configureTestingModule({...}). Mind that the setup is prior to beforeEach block
@@ -22,7 +22,7 @@ describe('[2] Testing Services Using Spectator', () => {
 
     beforeEach(() => {
       spectator = createService();
-      valueService = spectator.inject(ValueService); // (2.2) inject the service to the setup
+      valueService = spectator.service; // (2.2) use the service
     });
 
     it('synchronous: should use ValueService getValue()', () => {

@@ -15,7 +15,7 @@ import { HeroService } from './hero.service';
 describe('[3] Testing Http with Spectator', () => {
   // setup is much cleaner with spectator(3.1)
   let spectator: SpectatorHttp<HeroService>;
-  let heroService: HeroService
+  let heroService: HeroService;
   const createHttp = createHttpFactory(HeroService);
 
   // for the hardcoded data that is shared between the tests
