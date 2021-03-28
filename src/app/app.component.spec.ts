@@ -20,7 +20,7 @@ describe('App component', () => {
     // (7.1.5) mock the internal components, use the ng-mocks library MockComponent
     declarations: [MockComponent(BannerComponent), MockComponent(WelcomeComponent)],
     imports: [RouterTestingModule],
-    detectChanges: false
+    detectChanges: false  // @murat, until you call detectChanges in your components, ther eis no dom!  .query is returning garbage, not running dom
   });
 
   beforeEach(() => {
