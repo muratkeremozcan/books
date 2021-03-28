@@ -12,14 +12,15 @@ import { FormsModule } from '@angular/forms';
 import { DebugElement } from '@angular/core';
 import { waitForAsync } from '@angular/core/testing';
 
-// [1] unit testing components
+// [1] testing components, various examples
 // setup the component much less overhead with spectator (1.1)
 // access the TS with spectator.component  (1.2)
 // use spectator.detectChanges()  to trigger the change detection (1.3), (do not have to do it always)
 // use DOM testing library convenience methods:  https://github.com/ngneat/spectator#queries' (1.4)
+// KEY: you can use async functions and await spectator.fixture.whenStable() to work with dispatching events
 
 
-describe('various examples', () => {
+describe('[1] testing components, various examples', () => {
 
   it('should create a component with inline template', () => {
     const spectator: Spectator<Child1Component> = createComponentFactory({
@@ -126,13 +127,14 @@ describe('various examples', () => {
     // then wait while ngModel pushes input value to comp.text
     input.dispatchEvent(new Event('input'));
     await spectator.fixture.whenStable();
-
     expect(component.text).toBe(inputText);
 
+    // it takes one more change detection for the pipe operator to effect the dom
     spectator.detectChanges();
     expect(span.textContent).toBe(expectedText);
   });
 
+  // note: this part is not very useful, but there for code coverage
   describe('lifecycle hooks w/ MyIfParentComp', () => {
     let spectator: Spectator<MyIfParentComponent>;
     let parent: MyIfParentComponent;
