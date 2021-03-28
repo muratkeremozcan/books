@@ -15,10 +15,7 @@ import { MockComponent } from 'ng-mocks';
 // KEY: mock the internal components, use the ng-mocks library MockComponent. (6.1.5)
 
 // access the TS with spectator.component  (6.2)
-// use spectator.detectChanges()  to trigger the change detection (1.3),
-// use DOM testing library convenience methods:  https://github.com/ngneat/spectator#queries' (1.4)
-// to test @Output subscribe to the event emitter and setup what will be emitted (1.5.1),
-// trigger the event using spectator events api https://github.com/ngneat/spectator#events-api (1.5.2) and verify what is emitted (1.5.3)
+// use spectator.detectChanges()  to trigger the change detection (6.3),
 
 describe('[6] Testing components that include other components, services (example[5]), and routing (example[4])', () => {
   let component: DashboardComponent;
@@ -32,11 +29,10 @@ describe('[6] Testing components that include other components, services (exampl
     // (6.1.5) KEY: mock the internal components, use the ng-mocks library MockComponent.
     // Instead of using CUSTOM_ELEMENTS_SCHEMA, which might hide some issues and won't help you to set inputs, outputs, etc., ng-mocks will auto mock the inputs, outputs, etc. for you
     declarations: [ DashboardComponent, MockComponent(DashboardHeroComponent) ],
-    // (6.1.2) mock the internal components and the service dependency,
+    // (6.1.2) mock the service dependency,
     mocks: [HeroService],
     detectChanges: false,
   });
-
 
   const getTestHeroes = (): Hero[] => {
     return [
@@ -67,7 +63,7 @@ describe('[6] Testing components that include other components, services (exampl
     expect(component.heroes.length).toBe(0);
   });
 
-  it('should HAVE heroes', () => {
+  it('should HAVE heroes after ngOnInit', () => {
     spectator.detectChanges();
     expect(component.heroes.length).toBeGreaterThan(0);
   });
@@ -91,15 +87,15 @@ describe('[6] Testing components that include other components, services (exampl
 
   // TODO: convert this Karma test to spectator
   // it('should tell ROUTER to navigate when hero clicked', () => {
-  //   heroClick();  // trigger click on first inner <div class="hero">
+    // heroClick();  // trigger click on first inner <div class="hero">
 
-  //   // args passed to router.navigateByUrl() spy
-  //   const spy = router.navigateByUrl as jasmine.Spy;
-  //   const navArgs = spy.calls.first().args[0];
+    // // args passed to router.navigateByUrl() spy
+    // const spy = router.navigateByUrl as jasmine.Spy;
+    // const navArgs = spy.calls.first().args[0];
 
-  //   // expecting to navigate to id of the component's first hero
-  //   const id = comp.heroes[0].id;
-  //   expect(navArgs).toBe('/heroes/' + id, 'should nav to HeroDetail for first hero');
+    // // expecting to navigate to id of the component's first hero
+    // const id = comp.heroes[0].id;
+    // expect(navArgs).toBe('/heroes/' + id, 'should nav to HeroDetail for first hero');
   // });
 
 });

@@ -42,14 +42,14 @@ describe('App component', () => {
     expect(link3.routerLink).toEqual('/about');
   });
 
-  // it('click navigate to routes', () => {
-    // spectator.detectChanges();
+  it.skip('click navigate to routes', () => {
+    spectator.detectChanges();
 
     // TODO: cannot click ....
-    // spectator.click('.qa-link-1');
-    // spectator.click(byText('Dashboard'));
+    spectator.click('.qa-link-1');
+    spectator.click(byText('Dashboard'));
 
-    // expect(spectator.inject(Router).navigate).toHaveBeenCalled();
-  // });
+    expect(spectator.inject(Router).navigate).toHaveBeenCalled();
+  });
 });
 
