@@ -2,6 +2,7 @@ import { Hero } from '../model/hero';
 import { Spectator, createComponentFactory, byText } from '@ngneat/spectator/jest';
 import { DashboardHeroComponent } from './dashboard-hero.component';
 
+
 // [1] unit testing components with @Input and @Output properties
 // setup the component much less overhead with spectator (1.1)
 // access the TS with spectator.component  (1.2)
@@ -34,6 +35,8 @@ describe('[1] Testing Components with Spectator: unit testing components with @I
 
     beforeEach(() => {
       // this component has an @Input property. So, simulate the @Input hero property being set by the parent
+      // note: when the component has @Input(s), in the tests you need to set the initial input, or emit a hero on your subscription, or your dom will never render
+
       mockHeroInput = comp.hero = { id: 42, name: 'new Hero Name' };
 
       // (1.3) detectChanges() : to update the bindings / trigger change detection

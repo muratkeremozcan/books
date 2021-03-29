@@ -20,7 +20,7 @@ describe('App component', () => {
     // (7.1.5) mock the internal components, use the ng-mocks library MockComponent
     declarations: [MockComponent(BannerComponent), MockComponent(WelcomeComponent)],
     imports: [RouterTestingModule],
-    detectChanges: false  // @murat, until you call detectChanges in your components, ther eis no dom!  .query is returning garbage, not running dom
+    detectChanges: false  // @murat, until you call detectChanges in your components, there is no dom!  .query is returning garbage, not running dom
   });
 
   beforeEach(() => {
@@ -28,7 +28,7 @@ describe('App component', () => {
     component = spectator.component;
   });
 
-  it('sanity', () => {
+  it('sanity', async () => {
     expect(component).toBeTruthy();
   });
 
@@ -45,7 +45,7 @@ describe('App component', () => {
   it.skip('click navigate to routes', () => {
     spectator.detectChanges();
 
-    // TODO: cannot click ....
+    // TODO: @brian calls detectChanges but cannot click ....  TypeError: Cannot read property 'startsWith' of undefined
     spectator.click('.qa-link-1');
     spectator.click(byText('Dashboard'));
 

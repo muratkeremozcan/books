@@ -18,8 +18,7 @@ export class HeroDetailComponent implements OnInit {
     private router: Router
   ) {}
 
-  @Input() hero: Hero; // @murat - in your tests you need to set the initial input, or emit a hero on your subscription with fakeasync, or your dom will never render
-  // @murat - in tests, just searching for an element by css with expect tobedefined is misleading and will always be true, doesnt mean the component has rendered
+  @Input() hero: Hero;
 
   ngOnInit(): void {
     // get hero when `id` param changes
