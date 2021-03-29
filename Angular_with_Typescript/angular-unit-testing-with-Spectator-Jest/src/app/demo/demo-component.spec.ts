@@ -10,7 +10,6 @@ import { Spectator, createComponentFactory, byText } from '@ngneat/spectator/jes
 
 import { FormsModule } from '@angular/forms';
 import { DebugElement } from '@angular/core';
-import { waitForAsync } from '@angular/core/testing';
 
 // [1] testing components, various examples
 // setup the component much less overhead with spectator (1.1)

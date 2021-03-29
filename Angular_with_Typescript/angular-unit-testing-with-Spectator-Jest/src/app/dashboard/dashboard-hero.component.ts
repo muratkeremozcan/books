@@ -5,7 +5,7 @@ import { Hero } from '../model/hero';
 @Component({
   selector: 'dashboard-hero',
   template: `
-    <div (click)="click()" class="hero">
+    <div (click)="click()" class="hero qa-hero">
       {{hero.name | uppercase}}
     </div>`,
   styleUrls: [ './dashboard-hero.component.css' ]

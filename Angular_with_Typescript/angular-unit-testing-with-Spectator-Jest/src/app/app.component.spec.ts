@@ -5,11 +5,21 @@ import { MockComponent } from 'ng-mocks';
 import { BannerComponent } from './banner/banner.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
 
 // [7] testing components that include routerLinks
-// setup the component with createRoutingFactory to auto-mock Router and ActivatedRoute
-// KEY: mock the internal components, use the ng-mocks library MockComponent (7.1.5). just like (6.1.5)
-// KEY: for <router-outlet> , import RouterTestingModule
+// setup the component with createRoutingFactory to auto-mock Router and ActivatedRoute (7.1)
+// create a MockComponent that will be used in the router-outlet (7.1.2)
+// set the stubsEnabled option to false to setup an integration test (7.1.3)
+// use the RouterTestingModule and RouterLink from Angular (7.1.4)
+// pass a routing configuration using routes: property, use the MockComponent in the in the outlet (7.1.5)
+// KEY: mock the internal components, use the ng-mocks library MockComponent (7.1.6). just like (6.1.5)
+
+// (7.1.2) create a MockComponent that will be used in the router-outlet
+@Component({
+  template: '<div>MockHeroes</div>'
+})
+class MockHeroesComponent { }
 
 describe('App component', () => {
   let component: AppComponent;
@@ -17,10 +27,25 @@ describe('App component', () => {
 
   const createComponent = createRoutingFactory ({
     component: AppComponent,
-    // (7.1.5) mock the internal components, use the ng-mocks library MockComponent
-    declarations: [MockComponent(BannerComponent), MockComponent(WelcomeComponent)],
+    detectChanges: false,
+    // (7.1.3) set the stubsEnabled option to false to setup an integration test
+    stubsEnabled: false,
+    // (7.1.4) use the RouterTestingModule and RouterLink from Angular
+    providers: [RouterLink],
     imports: [RouterTestingModule],
-    detectChanges: false  // @murat, until you call detectChanges in your components, there is no dom!  .query is returning garbage, not running dom
+    // (7.1.5) pass a routing configuration using routes: property, use the MockComponent in the in the outlet
+    routes: [
+      {
+        path: '',
+        component: AppComponent
+      },
+      {
+        path: 'heroes',
+        component: MockHeroesComponent
+      }
+    ],
+    // (7.1.6) mock the internal components, use the ng-mocks library MockComponent
+    declarations: [MockComponent(BannerComponent), MockComponent(WelcomeComponent)],
   });
 
   beforeEach(() => {
@@ -32,24 +57,13 @@ describe('App component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('read routerLinks with  { read: RouterLink } option', () => {
-    const link1 = spectator.query('.qa-link-1', { read: RouterLink });
-    const link2 = spectator.query('.qa-link-2', { read: RouterLink });
-    const link3 = spectator.query('.qa-link-3', { read: RouterLink });
-
-    expect(link1.routerLink).toEqual('/dashboard');
-    expect(link2.routerLink).toEqual('/heroes');
-    expect(link3.routerLink).toEqual('/about');
-  });
-
-  it.skip('click navigate to routes', () => {
+  it('click navigate to routes', () => {
     spectator.detectChanges();
 
-    // TODO: @brian calls detectChanges but cannot click ....  TypeError: Cannot read property 'startsWith' of undefined
-    spectator.click('.qa-link-1');
-    spectator.click(byText('Dashboard'));
+    spectator.click(byText('Heroes'));
+    spectator.detectChanges();
 
-    expect(spectator.inject(Router).navigate).toHaveBeenCalled();
+    expect(spectator.query(byText('MockHeroes'))).toBeTruthy();
   });
 });
 

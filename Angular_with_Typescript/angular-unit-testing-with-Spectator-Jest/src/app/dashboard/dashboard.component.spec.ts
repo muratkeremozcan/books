@@ -4,7 +4,9 @@ import { HeroService } from '../model/hero.service';
 import { Hero } from '../model';
 import { of } from 'rxjs';
 import { DashboardHeroComponent } from './dashboard-hero.component';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockProvider } from 'ng-mocks';
+import { fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
 
 
 // [6] testing components that include other components, services (example[5]), and routing (example[4])
@@ -23,19 +25,7 @@ describe('[6] Testing components that include other components, services (exampl
   let heroServiceSpy;
   let heroService;
 
-  // setup the component with routing, use createRoutingFactory to auto-mock Router and ActivatedRoute (6.1)
-  const createComponent = createRoutingFactory({
-    component: DashboardComponent,
-    // (6.1.5) KEY: mock the internal components, use the ng-mocks library MockComponent.
-    // Instead of using CUSTOM_ELEMENTS_SCHEMA, which might hide some issues and won't help you to set inputs, outputs, etc., ng-mocks will auto mock the inputs, outputs, etc. for you
-    declarations: [ DashboardComponent, MockComponent(DashboardHeroComponent) ],
-    // (6.1.2) mock the service dependency,
-    mocks: [HeroService],
-    detectChanges: false,
-  });
-
-  const getTestHeroes = (): Hero[] => {
-    return [
+  const heroes: Hero[] = [
       {id: 41, name: 'Bob' },
       {id: 42, name: 'Carol' },
       {id: 43, name: 'Ted' },
@@ -43,7 +33,22 @@ describe('[6] Testing components that include other components, services (exampl
       {id: 45, name: 'Speedy' },
       {id: 46, name: 'Stealthy' }
     ];
-  };
+
+  // setup the component with routing, use createRoutingFactory to auto-mock Router and ActivatedRoute (6.1)
+  const createComponent = createRoutingFactory({
+    component: DashboardComponent,
+    // (6.1.5) KEY: mock the internal components, use the ng-mocks library MockComponent.
+    // Instead of using CUSTOM_ELEMENTS_SCHEMA, which might hide some issues and won't help you to set inputs, outputs, etc., ng-mocks will auto mock the inputs, outputs, etc. for you
+    declarations: [ DashboardComponent, MockComponent(DashboardHeroComponent) ],
+    // mock the ngOnInit service observable call or set the @Input manually in each test,
+    // (6.1.2) mock the service dependency,
+    mocks: [HeroService],
+    // IMPORTANT: as an alternative shortcut, instead of (6.1.2, 3, 4), we could also use the MockProvider way of mocking like we did in (4.2)
+    // providers: [MockProvider(HeroService, {
+    //   getHeroes: () => of(heroes)
+    // })],
+    detectChanges: false,
+  });
 
   beforeEach(() => {
     spectator = createComponent();
@@ -52,7 +57,7 @@ describe('[6] Testing components that include other components, services (exampl
     // (6.1.3) inject the service dependency:  depService = spectator.inject(DepService)
     heroServiceSpy = spectator.inject(HeroService);
     // (6.1.4) stub the external service's return value
-    heroService = jest.spyOn(heroServiceSpy, 'getHeroes').mockReturnValue(of(getTestHeroes()));
+    heroService = jest.spyOn(heroServiceSpy, 'getHeroes').mockReturnValue(of(heroes));
   });
 
   it('sanity', () => {
@@ -76,14 +81,38 @@ describe('[6] Testing components that include other components, services (exampl
 
 
   // continue with routing
-  it('should tell ROUTER to navigate when hero clicked', async () => {
-    expect(spectator.query('.hero')).toBeDefined();
+  it('should tell ROUTER to navigate when hero clicked: fakeAsync version', fakeAsync(() => {
+    spectator.detectChanges();
 
-    // spectator.click('.hero'); // TODO: cannot click
+    tick();
 
-    // await spectator.fixture.whenStable();
-    // expect(spectator.inject(Router).navigate).toHaveBeenCalledWith(['/heroes/12']);
-  });
+    expect(spectator.query('.qa-hero-list')).toBeTruthy();
+
+    spectator.detectChanges();
+    tick();
+
+    spectator.click('.qa-hero-list'); // TODO: @brian how to get the inner component ngFor and test a route?
+    // these come as
+    // <dashboard-hero class="col-1-4 qa-hero-list'" ng-reflect-hero="[object Object]"></dashboard-hero>
+    // <dashboard-hero class="col-1-4 qa-hero-list" ng-reflect-hero="[object Object]"></dashboard-hero>
+    // <dashboard-hero class="col-1-4 qa-hero-list" ng-reflect-hero="[object Object]"></dashboard-hero>
+    // <dashboard-hero class="col-1-4 qa-hero-list" ng-reflect-hero="[object Object]"></dashboard-hero>
+
+    // expect(spectator.inject(Router).navigate).toHaveBeenCalled();
+  }));
+
+  // it('should tell ROUTER to navigate when hero clicked: async whenStable version', async () => {
+  //   spectator.detectChanges();
+
+  //   await spectator.fixture.whenStable();
+
+  //   expect(spectator.query('.qa-heroes')).toBeTruthy();
+
+  //   spectator.click('.qa-hero');
+
+  //   expect(spectator.inject(Router).navigateByUrl).toHaveBeenCalled();
+  // });
+
 
   // TODO: convert this Karma test to spectator
   // it('should tell ROUTER to navigate when hero clicked', () => {

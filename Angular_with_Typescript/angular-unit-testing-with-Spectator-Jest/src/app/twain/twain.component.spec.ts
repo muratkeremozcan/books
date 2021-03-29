@@ -31,12 +31,10 @@ describe('[5] testing components that have external service dependencies - SPECT
     // (5.1.2) with spectator you still have the option to create a custom mock, but if you are not customizing it, there is no need to
     // providers: [{ provide: TwainService, useValue: ...}], // this is where the custom mock would go if we were not mocking with SPECTATOR/JEST
     mocks: [TwainService],
-    // @brian : there are 3 kinds of automocking per spectator. Per your recommendation in hero-detail.component.spec.ts, I tried using componentMocks here. Everything breaks, why?
-
-    // mocks: [], // Providers that will automatically be mocked
-    // componentMocks: [], // Component providers that will automatically be mocked
-    // componentViewProvidersMocks: [], // Component view providers that will be automatically mocked
-
+    // as an alternative shortcut, we could also use the MockProvider way of mocking like we did in (4.2) - would have to change some plumbing for this spec
+    // providers: [MockProvider(TwainService, {
+    //   getQuote: () => of('Test Quote')
+    // })],
     detectChanges: false
   });
 
