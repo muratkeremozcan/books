@@ -6,7 +6,10 @@ import { map } from 'rxjs/operators';
 import { Hero } from '../model/hero';
 import { HeroService } from '../model/hero.service';
 
-@Injectable()
+
+@Injectable({
+  providedIn: 'root'
+})
 export class HeroDetailService {
   constructor(private heroService: HeroService) {  }
 
