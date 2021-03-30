@@ -3,7 +3,7 @@ import { Spectator, createComponentFactory, byText } from '@ngneat/spectator/jes
 import { DashboardHeroComponent } from './dashboard-hero.component';
 
 
-// [1] unit testing components with @Input and @Output properties
+// [1].2 unit testing components with @Input and @Output properties
 // setup the component much less overhead with spectator (1.1)
 // access the TS with spectator.component  (1.2)
 // use spectator.detectChanges()  to trigger the change detection (1.3),
@@ -52,7 +52,7 @@ describe('[1] Testing Components with Spectator: unit testing components with @I
     it('Testing the @Output: (1.5.1) subscribe to the event emitter and set up what will be emitted, (1.5.2) use spectator events api (https://github.com/ngneat/spectator#events-api) to trigger click ' , () => {
       let emittedHero: Hero;
 
-      // (1.5.1) subscribe to the event emitter and set up what will be emitted (this.hero will be emitted which we emulate as emittedHero)
+      // (1.5.1) subscribe to the event emitter @Output and set up what will be emitted (this.hero will be emitted which we emulate as emittedHero)
       comp.selected.subscribe((hero: Hero) => emittedHero = hero );
 
       // (1.5.2)  trigger the event using spectator events api https://github.com/ngneat/spectator#events-api

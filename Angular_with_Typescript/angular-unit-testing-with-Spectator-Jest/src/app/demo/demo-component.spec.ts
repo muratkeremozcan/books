@@ -10,11 +10,12 @@ import { Spectator, createComponentFactory, byText } from '@ngneat/spectator/jes
 
 import { FormsModule } from '@angular/forms';
 import { DebugElement } from '@angular/core';
+import { fakeAsync, tick } from '@angular/core/testing';
 
 // [1] testing components, various examples
 // setup the component much less overhead with spectator (1.1)
 // access the TS with spectator.component  (1.2)
-// use spectator.detectChanges()  to trigger the change detection (1.3), (do not have to do it always)
+// KEY with nested components: using fakeAsync , tick and detectChanges  (1.3)
 // use DOM testing library convenience methods:  https://github.com/ngneat/spectator#queries' (1.4)
 // KEY: you can use async functions and await spectator.fixture.whenStable() to work with dispatching events
 
@@ -51,7 +52,8 @@ describe('[1] testing components, various examples', () => {
     expect(spectator.query(byText('MyIf(More)'))).toBeDefined();
   });
 
-  it.skip('should create a nested component bound to inputs/outputs', () => {
+  // KEY with nested components: using fakeAsync , tick and detectChanges (1.3)
+  it('should create a nested component bound to inputs/outputs', fakeAsync(() => {
     const spectator: Spectator<IoParentComponent> = createComponentFactory({
       component: IoParentComponent,
       detectChanges: false
@@ -62,16 +64,18 @@ describe('[1] testing components, various examples', () => {
     const heroes = spectator.queryAll('.hero');
     expect(heroes.length).toBe(4);
 
-    // TODO: cannot click and have the dom change
-    // spectator.click(heroes[0]);
+    tick();
+    spectator.detectChanges();
+
     spectator.click('.hero');
     const hero = component.heroes[0];
     spectator.detectChanges();
 
-    expect(spectator.query('p')).toHaveText(hero.name);
-    expect(spectator.query(byText(hero.name))).toBeTruthy();
-    expect(spectator.query(byText(hero.name, { selector: 'p' }))).toBeTruthy();
-  });
+    console.log(hero);
+    expect(spectator.query('p').innerHTML).toContain(hero.name);
+    expect(spectator.query(byText(`The selected hero is ${hero.name}`))).toBeTruthy();
+    expect(spectator.query(byText(`The selected hero is ${hero.name}`, { selector: 'p' }))).toBeTruthy();
+  }));
 
   it('should support clicking a button', () => {
     const spectator: Spectator<LightswitchComponent> = createComponentFactory({

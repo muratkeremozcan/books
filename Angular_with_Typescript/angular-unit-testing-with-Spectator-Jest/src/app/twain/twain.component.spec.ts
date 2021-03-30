@@ -1,4 +1,4 @@
-import { fakeAsync } from '@angular/core/testing';
+import { fakeAsync, waitForAsync } from '@angular/core/testing';
 import { Spectator, createComponentFactory, byText } from '@ngneat/spectator/jest';
 
 import { of, throwError } from 'rxjs';
@@ -7,11 +7,11 @@ import { TwainComponent } from './twain.component';
 import { TwainService } from './twain.service';
 
 
-// [5].2 testing components that have external service dependencies - SPECTATOR/JEST MOCK (very similar to [2] testing services that have external service dependencies)
+// [5].2 testing components that have external service dependencies - SPECTATOR/JEST MOCK
 // setup the component much less overhead with spectator (5.1)
-// KEY contrast to [5].1 MANUAL MOCKs example: with spectator, you can fully mock the dependency using the mocks property  (5.1.2) . Similar to (2.4.0) testing services with other service dependencies.
+// KEY contrast to [5].1 MANUAL MOCKs example: with spectator, you can fully mock the dependency using the mocks property  (5.1.2)
 // KEY extra compared to basic example: inject the service dependency:  depService = spectator.inject(DepService) (5.1.3)
-// KEY extra compared to CUSTOM MOCK example: stub the external service's return value, and exercise the main component under test (5.1.4) . Similar to (2.4.2) ,stubbing the external service and testing the service under test.
+// KEY extra compared to CUSTOM MOCK example: stub the external service's return value, and exercise the main component under test (5.1.4)
 // access the TS with  (5.2)
 // use spectator.detectChanges()  to trigger the change detection (5.3),
 // if needed by the component implementation, use fakeAsync and spectator.tick() (5.4)
@@ -28,8 +28,7 @@ describe('[5] testing components that have external service dependencies - SPECT
   let spectator: Spectator<TwainComponent>;
   const createComponent = createComponentFactory({
     component: TwainComponent,
-    // (5.1.2) with spectator you still have the option to create a custom mock, but if you are not customizing it, there is no need to
-    // providers: [{ provide: TwainService, useValue: ...}], // this is where the custom mock would go if we were not mocking with SPECTATOR/JEST
+    // (5.1.2) mock the dependency using the mocks property
     mocks: [TwainService],
     // as an alternative shortcut, we could also use the MockProvider way of mocking like we did in (4.2) - would have to change some plumbing for this spec
     // providers: [MockProvider(TwainService, {
@@ -91,5 +90,23 @@ describe('[5] testing components that have external service dependencies - SPECT
 
     expect(spectator.query(byText('...'))).toBeTruthy();
   }));
+
+  it('(5.4) if needed by the component implementation, async await way)', async () => {
+    twainService = jest.spyOn(twainServiceSpy, 'getQuote').mockReturnValue(throwError(new Error('TwainService test failure')));
+    // twainService = jest.spyOn(twainServiceSpy, 'getQuote').mockImplementation(() => (throwError(new Error('TwainService test failure')))); // same
+    // twainService = twainServiceSpy.getQuote.mockImplementation(() => (throwError(new Error('TwainService test failure')))); // same
+
+    spectator.detectChanges();
+    expect(twainService).toHaveBeenCalled();
+
+    // flush the setTimeout inside the catchError operator block
+    await spectator.fixture.whenStable();
+    spectator.detectChanges();
+
+    expect(errorMessage()).toMatch(/test failure/);
+    expect(errorMessage()).toBe('TwainService test failure'); // same
+
+    expect(spectator.query(byText('...'))).toBeTruthy();
+  });
 
 });

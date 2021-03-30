@@ -98,6 +98,8 @@ describe('[6] Testing components that include other components, services (exampl
     // <dashboard-hero class="col-1-4 qa-hero-list" ng-reflect-hero="[object Object]"></dashboard-hero>
     // <dashboard-hero class="col-1-4 qa-hero-list" ng-reflect-hero="[object Object]"></dashboard-hero>
 
+    // jest.spyOn(component, 'gotoDetail').mockReturnValue(null);
+    // expect(component.gotoDetail).toHaveBeenCalled();
     // expect(spectator.inject(Router).navigate).toHaveBeenCalled();
   }));
 

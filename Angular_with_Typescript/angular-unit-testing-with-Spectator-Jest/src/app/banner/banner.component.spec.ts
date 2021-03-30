@@ -1,13 +1,13 @@
 import { Spectator, createComponentFactory, byText } from '@ngneat/spectator/jest';
 import { BannerComponent } from './banner-external.component';
 
-// [1] testing components, basic example
+// [1].1 testing components, basic example
 // setup the component much less overhead with spectator (1.1)
 // access the TS with spectator.component  (1.2)
 // use spectator.detectChanges()  to trigger the change detection (1.3), (do not have to do it always)
 // use DOM testing library convenience methods:  https://github.com/ngneat/spectator#queries' (1.4)
 
-describe('[1] testing components, basic example ', () => {
+describe('[1].1 testing components, basic example ', () => {
   let component: BannerComponent;
 
   // (1.1) setup the component
