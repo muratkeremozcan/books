@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'angular-unit-testing-with-karma-joe-example';
+  title = 'Tour of Heroes';
 }
