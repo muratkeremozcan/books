@@ -1,4 +1,6 @@
+import { fakeAsync, tick } from '@angular/core/testing';
 import { SpectatorHttp , createHttpFactory, HttpMethod } from '@ngneat/spectator/jest';
+import { of } from 'rxjs';
 
 import { Hero } from './hero';
 import { HeroService } from './hero.service';
@@ -20,6 +22,7 @@ describe('[3] Testing Http', () => {
   // for the hardcoded data that is shared between the tests
   let expectedHeroes: Hero[];
   let hero: Hero;
+  let assertion;
 
   beforeEach(() => {
     spectator = createHttp();
@@ -33,28 +36,34 @@ describe('[3] Testing Http', () => {
         { id: 1, name: 'A' },
         { id: 2, name: 'B' },
       ] as Hero[];
+
     });
 
-    it('(3.2.2) initiate the client request and setup the assertion that will happen,(3.2.3) match the url w/ spectator.expectOne', () => {
+    it('(3.2.2) initiate the client request and setup the assertion that will happen,(3.2.3) match the url w/ spectator.expectOne, (3.2.4) flush the response and assert that the set value matches the expected value', () => {
       // (3.2.2) initiate the client request, and setup the assertion that will happen once the observable is fulfilled
       heroService.getHeroes().subscribe(
-        heroes => expect(heroes).toEqual(expectedHeroes),
+        heroes => assertion = heroes,
         fail // the error case of the observable
       );
 
       // (3.2.3) expect that a single request has been made which matches the given URL, using spectator.expectOne
-      spectator.expectOne(heroService.heroesUrl, HttpMethod.GET);
+      const req = spectator.expectOne(heroService.heroesUrl, HttpMethod.GET);
 
-      // note : no need to flush with spectator
+      // (3.2.4) flush the response and assert that the set value matches the expected value
+      req.flush(expectedHeroes);
+      expect(assertion).toEqual(expectedHeroes);
     });
 
     it('cover the Empty Response Case', () => {
       heroService.getHeroes().subscribe(
-        heroes => expect(heroes.length).toEqual(0),
+        heroes => assertion = heroes,
         fail
       );
 
-      spectator.expectOne(heroService.heroesUrl, HttpMethod.GET);
+      const req = spectator.expectOne(heroService.heroesUrl, HttpMethod.GET);
+      req.flush([]);
+
+      expect(assertion.length).toEqual(0);
     });
 
     it('(3.4) in error testing, define the error response and bypass the success', () => {
@@ -62,30 +71,26 @@ describe('[3] Testing Http', () => {
 
       heroService.getHeroes().subscribe(
         heroes => fail('expected to fail'),
-        error => expect(error.message).toContain(msg) // 3.4.0 in error testing, define the error response and bypass the success case
+        error => assertion = error.message // 3.4.0 in error testing, define the error response and bypass the success case
       );
 
-      spectator.expectOne(heroService.heroesUrl, HttpMethod.GET);
+      const req = spectator.expectOne(heroService.heroesUrl, HttpMethod.GET);
+      req.flush(msg, {status: 404, statusText: 'Not Found'});
 
+      expect(assertion).toContain(msg);
       // note: the flush and the optional response object in 3.4.1 of TestBed example are not needed with spectator
     });
 
     // TODO: @brian how do we test multiple requests with spectator?
     // fails with:  Expected one matching request for criteria "Match method: GET, URL: api/heroes", found 3 requests
-    it.skip('(3.5) cover the Multiple Request Case, and check the request length', () => {
+    it('(3.5) cover the Multiple Request Case, and check the request length', () => {
 
+      heroService.getHeroes().subscribe();
       heroService.getHeroes().subscribe(
-        heroes => expect(heroes).toEqual([]),
+        heroes => assertion = heroes,
         fail
       );
-      heroService.getHeroes().subscribe(
-        heroes => expect(heroes).toEqual([{ id: 1, name: 'bob' }]),
-        fail
-      );
-      heroService.getHeroes().subscribe(
-        heroes => expect(heroes).toEqual(expectedHeroes),
-        fail
-      );
+      heroService.getHeroes().subscribe();
 
       const requests = spectator.expectConcurrent([
         { url: heroService.heroesUrl, method: HttpMethod.GET },
@@ -93,8 +98,9 @@ describe('[3] Testing Http', () => {
         { url: heroService.heroesUrl, method: HttpMethod.GET },
       ]);
 
-      spectator.flushAll(requests, [[], [{ id: 1, name: 'bob' }], expectedHeroes]);
+      spectator.flushAll(requests, [[], [{ id: 1, name: 'bob' }], []]);
 
+      expect(assertion).toEqual([{ id: 1, name: 'bob' }]);
       expect(requests.length).toEqual(3); // KEY check request length
     });
   });
@@ -106,9 +112,8 @@ describe('[3] Testing Http', () => {
     });
 
     it('(3.6) testing PUTs: test the method type and request body that is going out from the client', () => {
-
       heroService.updateHero(hero).subscribe(
-        data => expect(data).toEqual(hero),
+        data => assertion = data,
         fail
       );
 
@@ -116,6 +121,9 @@ describe('[3] Testing Http', () => {
 
       expect(req.request.body.id).toEqual(1);
       expect(req.request.body.name).toEqual('A');
+
+      req.flush(hero);
+      expect(assertion).toEqual(hero);
     });
 
     it('cover the Error Case, same as the GET scenario in (3.4) ', () => {
@@ -123,12 +131,13 @@ describe('[3] Testing Http', () => {
 
       heroService.updateHero(hero).subscribe(
         heroes => fail('expected to fail'),
-        error => expect(error.message).toContain(msg) // KEY (same as GET scenario IN 3.4) in error testing, define the error response and bypass the success
+        error => assertion = error.message // KEY (same as GET scenario IN 3.4) in error testing, define the error response and bypass the success
       );
 
-      spectator.expectOne(heroService.heroesUrl, HttpMethod.PUT);
+      const req = spectator.expectOne(heroService.heroesUrl, HttpMethod.PUT);
 
-      // note: the flush and the optional response object in 3.4.1 of TestBed example is not needed with spectator
+      req.flush(msg, {status: 404, statusText: 'Not Found'});
+      expect(assertion).toContain(msg);
     });
   });
 
@@ -139,9 +148,8 @@ describe('[3] Testing Http', () => {
     });
 
     it('(3.6) testing POSTs: test the method type and request body that is going out from the client', () => {
-
       heroService.addHero(hero).subscribe(
-        data => expect(data).toEqual(hero),
+        data => assertion = data,
         fail
       );
 
@@ -149,6 +157,9 @@ describe('[3] Testing Http', () => {
 
       expect(req.request.body.id).toEqual(1);
       expect(req.request.body.name).toEqual('A');
+
+      req.flush(hero);
+      expect(assertion).toEqual(hero);
     });
 
     it('cover the Error Case, same as the GET scenario in (3.4) ', () => {
@@ -156,12 +167,13 @@ describe('[3] Testing Http', () => {
 
       heroService.addHero(hero).subscribe(
         heroes => fail('expected to fail'),
-        error => expect(error.message).toContain(msg) // KEY (same as GET scenario IN 3.4) in error testing, define the error response and bypass the success
+        error => assertion = error.message // KEY (same as GET scenario IN 3.4) in error testing, define the error response and bypass the success
       );
 
-      spectator.expectOne(heroService.heroesUrl, HttpMethod.POST);
+      const req = spectator.expectOne(heroService.heroesUrl, HttpMethod.POST);
 
-      // note: the flush and the optional response object in 3.4.1 of TestBed example is not needed with spectator
+      req.flush(msg, {status: 404, statusText: 'Not Found'});
+      expect(assertion).toContain(msg);
     });
   });
 
@@ -172,13 +184,14 @@ describe('[3] Testing Http', () => {
     });
 
     it('(3.6) testing DELETE: test the method type', () => {
-
       heroService.deleteHero(hero).subscribe(
-        data => expect(data).toEqual(hero),
+        data => assertion = data ,
         fail
       );
 
-      spectator.expectOne(`${heroService.heroesUrl}/1`, HttpMethod.DELETE);
+      const req = spectator.expectOne(`${heroService.heroesUrl}/1`, HttpMethod.DELETE);
+      req.flush([]);
+      expect(assertion).toEqual([]);
     });
 
     it('cover the Error Case, same as the GET scenario in (3.4) ', () => {
@@ -186,12 +199,13 @@ describe('[3] Testing Http', () => {
 
       heroService.deleteHero(hero).subscribe(
         heroes => fail('expected to fail'),
-        error => expect(error.message).toContain(msg) // KEY (same as GET scenario IN 3.4) in error testing, define the error response and bypass the success
+        error => assertion = error.message // KEY (same as GET scenario IN 3.4) in error testing, define the error response and bypass the success
       );
 
-      spectator.expectOne(`${heroService.heroesUrl}/1`, HttpMethod.DELETE);
+      const req = spectator.expectOne(`${heroService.heroesUrl}/1`, HttpMethod.DELETE);
 
-      // note: the flush and the optional response object in 3.4.1 of TestBed example is not needed with spectator
+      req.flush(msg, {status: 404, statusText: 'Not Found'});
+      expect(assertion).toContain(msg);
     });
   });
 });
