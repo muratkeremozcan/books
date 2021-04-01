@@ -39,14 +39,14 @@ describe('[6] Testing components that include other components, services (exampl
     component: DashboardComponent,
     // (6.1.5) KEY: mock the internal components, use the ng-mocks library MockComponent.
     // Instead of using CUSTOM_ELEMENTS_SCHEMA, which might hide some issues and won't help you to set inputs, outputs, etc., ng-mocks will auto mock the inputs, outputs, etc. for you
-    declarations: [ DashboardComponent, MockComponent(DashboardHeroComponent) ],
+    declarations: [ MockComponent(DashboardHeroComponent) ],
     // mock the ngOnInit service observable call or set the @Input manually in each test,
     // (6.1.2) mock the service dependency,
-    mocks: [HeroService],
-    // IMPORTANT: as an alternative shortcut, instead of (6.1.2, 3, 4), we could also use the MockProvider way of mocking like we did in (4.2)
-    // providers: [MockProvider(HeroService, {
-    //   getHeroes: () => of(heroes)
-    // })],
+    //
+    providers: [MockProvider(HeroService, {
+      getHeroes: () => of(heroes)
+    })],
+    // mocks: [HeroService], // this and (6.1.3, 6.1.4), are the long way of doing it
     detectChanges: false,
   });
 
@@ -55,16 +55,18 @@ describe('[6] Testing components that include other components, services (exampl
     component = spectator.component; // (6.2) access the TS with spectator.component
 
     // (6.1.3) inject the service dependency:  depService = spectator.inject(DepService)
-    heroServiceSpy = spectator.inject(HeroService);
+    // heroServiceSpy = spectator.inject(HeroService);
     // (6.1.4) stub the external service's return value
-    heroService = jest.spyOn(heroServiceSpy, 'getHeroes').mockReturnValue(of(heroes));
+    // heroService = jest.spyOn(heroServiceSpy, 'getHeroes').mockReturnValue(of(heroes));
   });
 
   it('sanity', () => {
+    spectator.detectChanges();
     expect(component).toBeTruthy();
   });
 
   it('should NOT have heroes before ngOnInit', () => {
+    spectator.detectChanges();
     expect(component.heroes.length).toBe(0);
   });
 
@@ -82,21 +84,30 @@ describe('[6] Testing components that include other components, services (exampl
 
   // continue with routing
   it('should tell ROUTER to navigate when hero clicked: fakeAsync version', fakeAsync(() => {
-    spectator.detectChanges();
-
-    tick();
-
-    expect(spectator.query('.qa-hero-list')).toBeTruthy();
+    const inLineComponent = spectator.query<DashboardHeroComponent>(DashboardHeroComponent);
 
     spectator.detectChanges();
     tick();
+    spectator.detectChanges();
+    tick();
 
-    spectator.click('.qa-hero-list'); // TODO: @brian how to get the inner component ngFor and test a route?
     // these come as
     // <dashboard-hero class="col-1-4 qa-hero-list'" ng-reflect-hero="[object Object]"></dashboard-hero>
     // <dashboard-hero class="col-1-4 qa-hero-list" ng-reflect-hero="[object Object]"></dashboard-hero>
     // <dashboard-hero class="col-1-4 qa-hero-list" ng-reflect-hero="[object Object]"></dashboard-hero>
     // <dashboard-hero class="col-1-4 qa-hero-list" ng-reflect-hero="[object Object]"></dashboard-hero>
+    expect(spectator.query('.qa-heroes')).toBeTruthy();
+
+    // this is empty
+    expect(spectator.query('.qa-hero-list-item')).toBeTruthy();
+
+    // TODO: @brian how to get the inner component ?
+
+    // this is undefined
+    // expect(inLineComponent).toBeTruthy();
+
+
+    // spectator.click('.qa-hero-list-item');
 
     // jest.spyOn(component, 'gotoDetail').mockReturnValue(null);
     // expect(component.gotoDetail).toHaveBeenCalled();

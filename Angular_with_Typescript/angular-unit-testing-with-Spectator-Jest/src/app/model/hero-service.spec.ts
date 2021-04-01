@@ -78,7 +78,6 @@ describe('[3] Testing Http', () => {
       req.flush(msg, {status: 404, statusText: 'Not Found'});
 
       expect(assertion).toContain(msg);
-      // note: the flush and the optional response object in 3.4.1 of TestBed example are not needed with spectator
     });
 
     // TODO: @brian how do we test multiple requests with spectator?
