@@ -12,18 +12,20 @@ import { Router } from '@angular/router';
 // [6] testing components that include other components, services (example[5]), and routing (example[4])
 // setup the component with routing, use createRoutingFactory to auto-mock Router and ActivatedRoute (6.1). Just like (4.1)
 // mock the service dependency (6.1.2), just like (5.1.2) .
-// inject the service dependency:  depService = spectator.inject(DepService) (6.1.3), just like (5.1.3)
-// stub the external service's return value (6.1.4), just like (5.1.4)
 // KEY: mock the internal components, use the ng-mocks library MockComponent. (6.1.5)
-
 // access the TS with spectator.component  (6.2)
-// use spectator.detectChanges()  to trigger the change detection (6.3),
+// use spectator.detectChanges()  to trigger the change detection (6.3)
+// to access the in-line line component, query it. If there is an ngFor, use queryAll:  spectator.query/queryAll<ChildComponent>(ChildComponent)  (6.4)
+// access the (in-line) component inputs and verify them (6.5)
+// access the (in-line) component outputs by emitting events (6.6)
+// spy on the routing to verify that the event causes an effect (6.7)
+
 
 describe('[6] Testing components that include other components, services (example[5]), and routing (example[4])', () => {
   let component: DashboardComponent;
   let spectator: Spectator<DashboardComponent>;
-  let heroServiceSpy;
-  let heroService;
+  // let heroServiceSpy;
+  // let heroService;
 
   const heroes: Hero[] = [
       {id: 41, name: 'Bob' },
@@ -40,9 +42,7 @@ describe('[6] Testing components that include other components, services (exampl
     // (6.1.5) KEY: mock the internal components, use the ng-mocks library MockComponent.
     // Instead of using CUSTOM_ELEMENTS_SCHEMA, which might hide some issues and won't help you to set inputs, outputs, etc., ng-mocks will auto mock the inputs, outputs, etc. for you
     declarations: [ MockComponent(DashboardHeroComponent) ],
-    // mock the ngOnInit service observable call or set the @Input manually in each test,
     // (6.1.2) mock the service dependency,
-    //
     providers: [MockProvider(HeroService, {
       getHeroes: () => of(heroes)
     })],
@@ -66,6 +66,8 @@ describe('[6] Testing components that include other components, services (exampl
   });
 
   it('should NOT have heroes before ngOnInit', () => {
+    // access the TS with spectator.component  (6.2)
+    // use spectator.detectChanges()  to trigger the change detection (6.3),
     spectator.detectChanges();
     expect(component.heroes.length).toBe(0);
   });
@@ -77,67 +79,39 @@ describe('[6] Testing components that include other components, services (exampl
 
   it('should DISPLAY heroes', () => {
     spectator.detectChanges();
-
     expect(spectator.queryAll('dashboard-hero').length).toBe(4);
   });
 
-
-  // continue with routing
+  // This component has a subscribe OnInit, we control that with fakeAsync or async and await spectator.fixture.whenStable();
   it('should tell ROUTER to navigate when hero clicked: fakeAsync version', fakeAsync(() => {
-    const inLineComponent = spectator.query<DashboardHeroComponent>(DashboardHeroComponent);
-
-    spectator.detectChanges();
-    tick();
     spectator.detectChanges();
     tick();
 
-    // these come as
-    // <dashboard-hero class="col-1-4 qa-hero-list'" ng-reflect-hero="[object Object]"></dashboard-hero>
-    // <dashboard-hero class="col-1-4 qa-hero-list" ng-reflect-hero="[object Object]"></dashboard-hero>
-    // <dashboard-hero class="col-1-4 qa-hero-list" ng-reflect-hero="[object Object]"></dashboard-hero>
-    // <dashboard-hero class="col-1-4 qa-hero-list" ng-reflect-hero="[object Object]"></dashboard-hero>
-    expect(spectator.query('.qa-heroes')).toBeTruthy();
+    // (6.4) to access the in-line line component, query it. If there is an ngFor, use queryAll:  spectator.query/queryAll<ChildComponent>(ChildComponent)
+    const inLineComponents = spectator.queryAll<DashboardHeroComponent>(DashboardHeroComponent);
+    expect(inLineComponents).toBeTruthy();
 
-    // this is empty
-    expect(spectator.query('.qa-hero-list-item')).toBeTruthy();
-
-    // TODO: @brian how to get the inner component ?
-
-    // this is undefined
-    // expect(inLineComponent).toBeTruthy();
-
-
-    // spectator.click('.qa-hero-list-item');
-
-    // jest.spyOn(component, 'gotoDetail').mockReturnValue(null);
-    // expect(component.gotoDetail).toHaveBeenCalled();
-    // expect(spectator.inject(Router).navigate).toHaveBeenCalled();
+    const firstHero = inLineComponents[0];
+    // (6.5) access the (in-line) component inputs and verify them
+    expect(firstHero.hero.name).toBe('Carol');
+    // (6.6) access the (in-line) component outputs by emitting events
+    firstHero.selected.emit({id: 42, name: 'Carol' });
+    // (6.7) spy on the routing to verify that the event causes an effect
+    expect(spectator.inject(Router).navigateByUrl).toHaveBeenCalledWith('/heroes/42');
   }));
 
-  // it('should tell ROUTER to navigate when hero clicked: async whenStable version', async () => {
-  //   spectator.detectChanges();
+  it('should tell ROUTER to navigate when hero clicked: async whenStable version', async () => {
+    spectator.detectChanges();
+    await spectator.fixture.whenStable();
 
-  //   await spectator.fixture.whenStable();
+    const inLineComponents = spectator.queryAll<DashboardHeroComponent>(DashboardHeroComponent);
+    expect(inLineComponents).toBeTruthy();
 
-  //   expect(spectator.query('.qa-heroes')).toBeTruthy();
+    const firstHero = inLineComponents[0];
+    expect(firstHero.hero.name).toBe('Carol');
 
-  //   spectator.click('.qa-hero');
+    firstHero.selected.emit({id: 42, name: 'Carol' });
 
-  //   expect(spectator.inject(Router).navigateByUrl).toHaveBeenCalled();
-  // });
-
-
-  // TODO: convert this Karma test to spectator
-  // it('should tell ROUTER to navigate when hero clicked', () => {
-    // heroClick();  // trigger click on first inner <div class="hero">
-
-    // // args passed to router.navigateByUrl() spy
-    // const spy = router.navigateByUrl as jasmine.Spy;
-    // const navArgs = spy.calls.first().args[0];
-
-    // // expecting to navigate to id of the component's first hero
-    // const id = comp.heroes[0].id;
-    // expect(navArgs).toBe('/heroes/' + id, 'should nav to HeroDetail for first hero');
-  // });
-
+    expect(spectator.inject(Router).navigateByUrl).toHaveBeenCalledWith('/heroes/42');
+  });
 });

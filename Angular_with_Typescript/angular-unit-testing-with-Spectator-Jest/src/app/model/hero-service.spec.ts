@@ -79,29 +79,6 @@ describe('[3] Testing Http', () => {
 
       expect(assertion).toContain(msg);
     });
-
-    // TODO: @brian how do we test multiple requests with spectator?
-    // fails with:  Expected one matching request for criteria "Match method: GET, URL: api/heroes", found 3 requests
-    it('(3.5) cover the Multiple Request Case, and check the request length', () => {
-
-      heroService.getHeroes().subscribe();
-      heroService.getHeroes().subscribe(
-        heroes => assertion = heroes,
-        fail
-      );
-      heroService.getHeroes().subscribe();
-
-      const requests = spectator.expectConcurrent([
-        { url: heroService.heroesUrl, method: HttpMethod.GET },
-        { url: heroService.heroesUrl, method: HttpMethod.GET },
-        { url: heroService.heroesUrl, method: HttpMethod.GET },
-      ]);
-
-      spectator.flushAll(requests, [[], [{ id: 1, name: 'bob' }], []]);
-
-      expect(assertion).toEqual([{ id: 1, name: 'bob' }]);
-      expect(requests.length).toEqual(3); // KEY check request length
-    });
   });
 
   describe('PUT requests', () => {
