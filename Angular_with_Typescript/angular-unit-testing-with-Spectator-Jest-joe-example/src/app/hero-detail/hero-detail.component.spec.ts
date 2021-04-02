@@ -5,7 +5,6 @@ import { HeroService } from '../hero.service';
 import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { fakeAsync, flush } from '@angular/core/testing';
-import { Location } from '@angular/common';
 
 describe('HeroDetailComponent)', () => {
   let component: HeroDetailComponent;

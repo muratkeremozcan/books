@@ -8,7 +8,7 @@ describe('MessageService', () => {
     service = new MessageService();
   });
 
-  // IMPORTANT: since this is an isolated test, we do not need the boilerplate. Y
+  // IMPORTANT: since this is an isolated test, we do not need the boilerplate.
   // You can disable the above, enable the below, the result is the same
 
   // let spectator: SpectatorService<MessageService>;

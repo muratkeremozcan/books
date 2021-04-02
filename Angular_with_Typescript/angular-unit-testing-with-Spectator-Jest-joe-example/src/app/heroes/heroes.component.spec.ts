@@ -5,6 +5,7 @@ import { HeroComponent } from '../hero/hero.component';
 import { Spectator, createComponentFactory, byText } from '@ngneat/spectator/jest';
 import { MockComponent, MockProvider } from 'ng-mocks';
 import { of } from 'rxjs';
+import { fakeAsync, flush } from '@angular/core/testing';
 
 // [6] testing components that include other components, services
 // setup the component (6.1)
@@ -16,6 +17,7 @@ import { of } from 'rxjs';
 // access the (in-line) component inputs and verify them (6.5)
 // access the (in-line) component outputs by emitting events selector.outputFunc.emit(payload) (6.6)
 // spy on the impact of the output (could be routing, could be the component instance function being called) to verify that the event causes an effect (6.7)
+// KEY: to have the template update you might need fakeAsync + flush (6.8)
 
 describe('HeroesComponent (deep tests)', () => {
   let component: HeroesComponent;
@@ -34,7 +36,7 @@ describe('HeroesComponent (deep tests)', () => {
     // (6.1.2) mock the service dependency
     providers: [
       MockProvider(HeroService, {
-        getHeroes: () => of(HEROES)
+        getHeroes: () => of(HEROES),
       }),
     ],
     //  (6.1.5) mock the internal components, use the ng-mocks library MockComponent.
@@ -96,50 +98,21 @@ describe('HeroesComponent (deep tests)', () => {
     expect(component.delete).toHaveBeenCalledWith(HEROES[0]);
   });
 
-  it('should add a new hero to the hero list when the add button is clicked: 1 on 1 example', () => {
+  it('should add a new hero to the hero list when the add button is clicked: with Spectator utilities & fakeAsync + flush, ', fakeAsync(() => {
     const newHeroName = 'Mr Ice';
-    jest.spyOn(spectator.inject(HeroService), 'addHero').mockReturnValue(of({id: 5, name: newHeroName, strength: 4}));
-
-    const inputElement = spectator.debugElement.query(By.css('input')).nativeElement;
-    const addButton = spectator.debugElement.queryAll(By.css('button'))[0];
-
-    inputElement.value = newHeroName;
-    addButton.triggerEventHandler('click', null);
-    spectator.detectChanges();
-
-    expect(component.heroes.length).toBe(4);
-    expect(component.heroes[3].name).toBe(newHeroName);
-  });
-
-  it('should add a new hero to the hero list when the add button is clicked: with Spectator utilities ', () => {
-    const newHeroName = 'Mr Ice';
-    jest.spyOn(spectator.inject(HeroService), 'addHero').mockReturnValue(of({id: 5, name: newHeroName, strength: 4}));
+    jest
+      .spyOn(spectator.inject(HeroService), 'addHero')
+      .mockReturnValue(of({ id: 5, name: newHeroName, strength: 4 }));
 
     spectator.typeInElement(newHeroName, spectator.query('.qa-hero-input'));
     spectator.click(spectator.query('.qa-add-btn'));
-    spectator.detectChanges();
+    flush(); // (6.8) KEY: flush was the only way to have the template update and get 4 in-line components, not even detectChanges + tick worked!
 
     expect(component.heroes.length).toBe(4);
     expect(component.heroes[3].name).toBe(newHeroName);
 
-    // @brian : how do we make the template update and get 4 in line components?
-    // spectator.detectChanges();
-    // const heroComponents = spectator.queryAll<HeroComponent>(HeroComponent);
-    // expect(heroComponents.length).toBe(4);
-  });
-
-  it('should have the correct route for the first hero', () => {
     const heroComponents = spectator.queryAll<HeroComponent>(HeroComponent);
-
-    expect(heroComponents.length).toBe(3);
-
-    const firstHero = heroComponents[0];
-    expect(firstHero.hero.name).toBe('SpiderDude');
-
-    console.log(spectator.query('li'));
-    // @brian, when we see something like this in the Dom, how do we query it? Want to click on routerLink and spy on navigation
-    // "<app-hero ng-reflect-hero=\"[object Object]\"></app-hero>"
-
-    // Joe Eames' Karma example is super contrived to provide any confidence
-  });
+    expect(heroComponents.length).toBe(4);
+    expect(heroComponents[3].hero.name).toBe(newHeroName);
+  }));
 });
