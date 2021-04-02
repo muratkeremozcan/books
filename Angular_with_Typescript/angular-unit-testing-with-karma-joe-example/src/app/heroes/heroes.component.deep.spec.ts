@@ -44,8 +44,8 @@ describe('HeroesComponent (deep tests)', () => {
       ],
       // schemas: [NO_ERRORS_SCHEMA]
     })
-    
-    fixture = TestBed.createComponent(HeroesComponent);    
+
+    fixture = TestBed.createComponent(HeroesComponent);
   });
 
   it('should render each hero as a HeroComponent', () => {
@@ -61,7 +61,7 @@ describe('HeroesComponent (deep tests)', () => {
     }
   });
 
-  it(`should call heroService.deleteHero when the Hero Component's 
+  it(`should call heroService.deleteHero when the Hero Component's
     delete button is clicked`, () => {
       spyOn(fixture.componentInstance, 'delete');
       mockHeroService.getHeroes.and.returnValue(of(HEROES));
@@ -71,7 +71,7 @@ describe('HeroesComponent (deep tests)', () => {
       const heroComponents = fixture.debugElement.queryAll(By.directive(HeroComponent));
       // (<HeroComponent>heroComponents[0].componentInstance).delete.emit(undefined);
       heroComponents[0].triggerEventHandler('delete', null);
-  
+
       expect(fixture.componentInstance.delete).toHaveBeenCalledWith(HEROES[0]);
   });
 
@@ -95,7 +95,7 @@ describe('HeroesComponent (deep tests)', () => {
     mockHeroService.getHeroes.and.returnValue(of(HEROES));
     fixture.detectChanges();
     const heroComponents = fixture.debugElement.queryAll(By.directive(HeroComponent));
-    
+
     let routerLink = heroComponents[0]
       .query(By.directive(RouterLinkDirectiveStub))
       .injector.get(RouterLinkDirectiveStub);

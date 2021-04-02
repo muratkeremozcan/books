@@ -198,9 +198,9 @@ describe('matchers', () => {
     });
 
     test('expect.objectContaining(object) / toMatchObject() :  main object vs subset object', () => {
-      const expected = { foo: 'bar' };
-      expect({ bar: 'baz', foo: 'bar' }).toEqual(expect.objectContaining(expected));
-      expect({ bar: 'baz', foo: 'bar' }).toMatchObject(expected);
+      const expected = { foo: 'bar', baz: 'baz' };
+      expect({ bar: 'baz', foo: 'bar', baz: 'baz'}).toEqual(expect.objectContaining(expected));
+      expect({ bar: 'baz', foo: 'bar', baz: 'baz' }).toMatchObject(expected);
 
 
       const houseForSale = {

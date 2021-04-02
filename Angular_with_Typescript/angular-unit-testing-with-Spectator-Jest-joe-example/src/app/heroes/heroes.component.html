@@ -2,10 +2,10 @@
 
 <div>
   <label>Hero name:
-    <input #heroName />
+    <input class="qa-hero-input" #heroName />
   </label>
   <!-- (click) passes input value to add() and then clears the input -->
-  <button (click)="add(heroName.value); heroName.value=''">
+  <button class="qa-add-btn" (click)="add(heroName.value); heroName.value=''">
     add
   </button>
 </div>
