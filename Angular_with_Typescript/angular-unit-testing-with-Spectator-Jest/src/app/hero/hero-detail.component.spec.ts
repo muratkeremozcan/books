@@ -112,8 +112,8 @@ describe('module test', () => {
     // if i don't detect changes, the dom is never rendered (onInit does not get called, or the other lifecycle hooks, so i cannot test through dom)
     component.hero = { id: 2, name: 'Dork' };
 
-    spectator.detectChanges();
-    tick();
+    // spectator.detectChanges();
+    // tick();
 
     // expect(spectator.query('.qa-hero-name').innerHTML).toContain('Dork');
     // expect(spectator.query(byTextContent('Dork', {selector: '.qa-hero-name'}))).toBeTruthy();

@@ -6,6 +6,7 @@ import { Spectator, createComponentFactory, byText } from '@ngneat/spectator/jes
 import { MockComponent, MockProvider } from 'ng-mocks';
 import { of } from 'rxjs';
 import { fakeAsync, flush } from '@angular/core/testing';
+import { Router } from '@angular/router';
 
 // [6] testing components that include other components, services
 // setup the component (6.1)
@@ -36,7 +37,7 @@ describe('HeroesComponent (deep tests)', () => {
     // (6.1.2) mock the service dependency
     providers: [
       MockProvider(HeroService, {
-        getHeroes: () => of(HEROES),
+        getHeroes: () => of(HEROES)
       }),
     ],
     //  (6.1.5) mock the internal components, use the ng-mocks library MockComponent.
@@ -56,6 +57,26 @@ describe('HeroesComponent (deep tests)', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should check the properties of the inline component', () => {
+    // (6.4) to access the in-line line component, query it. If there is an ngFor, use queryAll:  spectator.query/queryAll<ChildComponent>(ChildComponent)
+    const heroComponent = spectator.query<HeroComponent>(HeroComponent);
+
+    expect(heroComponent).toBeTruthy();
+    // (6.5) access the (in-line) component inputs and verify them
+    expect(heroComponent.hero.name).toBe('SpiderDude');
+  });
+
+
+  // these two tests do the same thing, but the first is much better
+  it('should render each hero as a HeroComponent', () => {
+    const heroComponents = spectator.queryAll<HeroComponent>(HeroComponent);
+    expect(heroComponents.length).toEqual(3);
+
+    for (let i = 0; i < heroComponents.length; i++) {
+      expect(heroComponents[i].hero).toEqual(HEROES[i]);
+    }
+  });
+
   it('should render each hero as a HeroComponent', () => {
     const heroComponentDEs = spectator.debugElement.queryAll(
       By.directive(HeroComponent)
@@ -67,52 +88,45 @@ describe('HeroesComponent (deep tests)', () => {
     }
   });
 
-  it('should call HeroService deleteHero method when deleting a hero', () => {
+  // these 2 tests do the same thing, but I think testing through the template is better than testing through the component
+
+  it(`should call HeroService deleteHero when deleting a hero via via the template output emit`, () => {
     const heroServiceSpy = spectator.inject(HeroService);
     jest.spyOn(heroServiceSpy, 'deleteHero').mockReturnValue(of(null));
-    component.heroes = HEROES;
 
+    // (6.6) access the (in-line) component outputs by emitting events selector.outputFunc.emit(payload)
+    const heroComponents = spectator.queryAll<HeroComponent>(HeroComponent);
+    heroComponents[2].delete.emit(HEROES[2]);
+
+    // (6.7) spy on the impact of the output (could be routing, could be the component instance function being called) to verify that the event causes an effect
+    expect(heroServiceSpy.deleteHero).toHaveBeenCalledWith(HEROES[2]);
+  });
+
+  it('should call HeroService deleteHero method when deleting a hero via the component delete method', () => {
+    const heroServiceSpy = spectator.inject(HeroService);
+    jest.spyOn(heroServiceSpy, 'deleteHero').mockReturnValue(of(null));
+
+    // call the component's delete method
     component.delete(HEROES[2]);
 
     expect(heroServiceSpy.deleteHero).toHaveBeenCalledWith(HEROES[2]);
     expect(component.heroes.length).toBe(2);
   });
 
-  it('should check the properties of the inline component', () => {
-    // (6.4) to access the in-line line component, query it. If there is an ngFor, use queryAll:  spectator.query/queryAll<ChildComponent>(ChildComponent)
-    const heroComponent = spectator.query<HeroComponent>(HeroComponent);
-
-    expect(heroComponent).toBeTruthy();
-    // (6.5) access the (in-line) component inputs and verify them
-    expect(heroComponent.hero.name).toBe('SpiderDude');
-  });
-
-  it(`should call heroService.deleteHero when the Hero Component's delete button is clicked`, () => {
-    jest.spyOn(component, 'delete');
-
-    // (6.6) access the (in-line) component outputs by emitting events selector.outputFunc.emit(payload)
-    const heroComponents = spectator.queryAll<HeroComponent>(HeroComponent);
-    heroComponents[0].delete.emit(HEROES[0]);
-
-    // (6.7) spy on the impact of the output (could be routing, could be the component instance function being called) to verify that the event causes an effect
-    expect(component.delete).toHaveBeenCalledWith(HEROES[0]);
-  });
-
   it('should add a new hero to the hero list when the add button is clicked: with Spectator utilities & fakeAsync + flush, ', fakeAsync(() => {
     const newHeroName = 'Mr Ice';
-    jest
-      .spyOn(spectator.inject(HeroService), 'addHero')
-      .mockReturnValue(of({ id: 5, name: newHeroName, strength: 4 }));
+    jest.spyOn(spectator.inject(HeroService), 'addHero').mockReturnValue(of({id: 5, name: newHeroName, strength: 4}));
 
     spectator.typeInElement(newHeroName, spectator.query('.qa-hero-input'));
     spectator.click(spectator.query('.qa-add-btn'));
     flush(); // (6.8) KEY: flush was the only way to have the template update and get 4 in-line components, not even detectChanges + tick worked!
 
-    expect(component.heroes.length).toBe(4);
-    expect(component.heroes[3].name).toBe(newHeroName);
+    const heroComponents = spectator.queryAll<HeroComponent>(HeroComponent); // it is important to query the dom AFTER the flush
 
-    const heroComponents = spectator.queryAll<HeroComponent>(HeroComponent);
+    expect(component.heroes.length).toBe(4);
     expect(heroComponents.length).toBe(4);
+
+    expect(component.heroes[3].name).toBe(newHeroName);
     expect(heroComponents[3].hero.name).toBe(newHeroName);
   }));
 });
