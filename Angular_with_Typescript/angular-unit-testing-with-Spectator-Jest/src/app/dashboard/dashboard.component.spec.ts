@@ -67,12 +67,11 @@ describe('[6] Testing components that include other components, services (exampl
 
   it('should NOT have heroes before ngOnInit', () => {
     // access the TS with spectator.component  (6.2)
-    // use spectator.detectChanges()  to trigger the change detection (6.3),
-    spectator.detectChanges();
     expect(component.heroes.length).toBe(0);
   });
 
   it('should HAVE heroes after ngOnInit', () => {
+    // use spectator.detectChanges()  to trigger the change detection (6.3),
     spectator.detectChanges();
     expect(component.heroes.length).toBeGreaterThan(0);
   });
@@ -114,4 +113,9 @@ describe('[6] Testing components that include other components, services (exampl
 
     expect(spectator.inject(Router).navigateByUrl).toHaveBeenCalledWith('/heroes/42');
   });
+
+  // it('sanity', () => {
+  //   spectator.detectChanges();
+  //   expect(component).toMatchSnapshot();
+  // });
 });

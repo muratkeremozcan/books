@@ -71,7 +71,6 @@ describe('[1] testing components, various examples', () => {
     const hero = component.heroes[0];
     spectator.detectChanges();
 
-    console.log(hero);
     expect(spectator.query('p').innerHTML).toContain(hero.name);
     expect(spectator.query(byText(`The selected hero is ${hero.name}`))).toBeTruthy();
     expect(spectator.query(byText(`The selected hero is ${hero.name}`, { selector: 'p' }))).toBeTruthy();

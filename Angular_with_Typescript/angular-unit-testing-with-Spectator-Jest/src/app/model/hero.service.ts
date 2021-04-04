@@ -91,7 +91,7 @@ export class HeroService {
   }
 
   private log(message: string) {
-    console.log('HeroService: ' + message);
+    // console.log('HeroService: ' + message);
   }
 }
 
