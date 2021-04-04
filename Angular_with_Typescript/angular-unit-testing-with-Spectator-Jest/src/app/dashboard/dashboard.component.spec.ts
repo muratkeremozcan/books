@@ -65,20 +65,18 @@ describe('[6] Testing components that include other components, services (exampl
     expect(component).toBeTruthy();
   });
 
-  it('should NOT have heroes before ngOnInit', () => {
+  it('should NOT have heroes before ngOnInit, snapshot test before onInit', () => {
     // access the TS with spectator.component  (6.2)
     expect(component.heroes.length).toBe(0);
+    expect(spectator.fixture).toMatchSnapshot();
   });
 
-  it('should HAVE heroes after ngOnInit', () => {
+  it('should HAVE heroes after ngOnInit, snapshot test the component after onInit', () => {
     // use spectator.detectChanges()  to trigger the change detection (6.3),
     spectator.detectChanges();
     expect(component.heroes.length).toBeGreaterThan(0);
-  });
-
-  it('should DISPLAY heroes', () => {
-    spectator.detectChanges();
     expect(spectator.queryAll('dashboard-hero').length).toBe(4);
+    expect(spectator.fixture).toMatchSnapshot();
   });
 
   // This component has a subscribe OnInit, we control that with fakeAsync or async and await spectator.fixture.whenStable();
@@ -114,8 +112,4 @@ describe('[6] Testing components that include other components, services (exampl
     expect(spectator.inject(Router).navigateByUrl).toHaveBeenCalledWith('/heroes/42');
   });
 
-  // it('sanity', () => {
-  //   spectator.detectChanges();
-  //   expect(component).toMatchSnapshot();
-  // });
 });

@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[5].1 testing components that have external service dependencies - CUSTOM MOCK (5.3) control the properties of the mocked service, and trigger change detection 1`] = `
+<app-welcome
+  __ngContext__={[Function LRootView]}
+  userService={[Function MockUserService]}
+  welcome={[Function String]}
+>
+  <h3
+    class="welcome"
+  >
+    <i>
+      Please log in.
+    </i>
+  </h3>
+</app-welcome>
+`;
+
+exports[`[5].1 testing components that have external service dependencies - CUSTOM MOCK This is all similar to testing components. The key difference is including providers and mocking the service, Injecting the service dependency, and controlling the mocked service in the tests 1`] = `
+<app-welcome
+  __ngContext__={[Function LRootView]}
+  userService={[Function MockUserService]}
+  welcome={[Function String]}
+>
+  <h3
+    class="welcome"
+  >
+    <i>
+      Welcome, Bubba
+    </i>
+  </h3>
+</app-welcome>
+`;

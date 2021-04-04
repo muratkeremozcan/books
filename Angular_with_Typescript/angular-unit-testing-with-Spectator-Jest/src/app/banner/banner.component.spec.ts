@@ -27,5 +27,6 @@ describe('[1].1 testing components, basic example ', () => {
 
     expect(spectator.query(byText(component.title))).toBeDefined();
     expect(spectator.query(byText(component.title))).toBeTruthy();
+    expect(spectator.fixture).toMatchSnapshot();
   });
 });

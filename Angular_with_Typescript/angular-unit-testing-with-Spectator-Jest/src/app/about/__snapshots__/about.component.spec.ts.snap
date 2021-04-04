@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[7] Testing directives: very similar to components Use NO_ERRORS_SCHEMA and may need to cast selectors as HTMLElement 1`] = `
+<ng-component
+  __ngContext__={[Function LRootView]}
+>
+  <h2
+    highlight="skyblue"
+    style="background-color: skyblue;"
+  >
+    About
+  </h2><h3>
+    Quote of the day:
+  </h3><twain-quote />
+</ng-component>
+`;

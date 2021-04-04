@@ -28,6 +28,7 @@ describe('[1] testing components, various examples', () => {
     })();
 
     expect(spectator.query(byText('Child'))).toBeDefined();
+    expect(spectator.fixture).toMatchSnapshot();
   });
 
   it('should create a component with external template', () => {
@@ -36,6 +37,7 @@ describe('[1] testing components, various examples', () => {
     })();
 
     expect(spectator.query(byText('from external template'))).toBeDefined();
+    expect(spectator.fixture).toMatchSnapshot();
   });
 
   it('should allow changing members of the component', () => {
@@ -46,10 +48,12 @@ describe('[1] testing components, various examples', () => {
     const component = spectator.component;
 
     expect(spectator.query(byText('MyIf()'))).toBeDefined();
+    expect(spectator.fixture).toMatchSnapshot();
 
     component.showMore = true;
     spectator.detectChanges();
     expect(spectator.query(byText('MyIf(More)'))).toBeDefined();
+    expect(spectator.fixture).toMatchSnapshot();
   });
 
   // KEY with nested components: using fakeAsync , tick and detectChanges (1.3)
@@ -63,6 +67,7 @@ describe('[1] testing components, various examples', () => {
     spectator.detectChanges();
     const heroes = spectator.queryAll('.hero');
     expect(heroes.length).toBe(4);
+    expect(spectator.fixture).toMatchSnapshot();
 
     tick();
     spectator.detectChanges();
@@ -74,6 +79,7 @@ describe('[1] testing components, various examples', () => {
     expect(spectator.query('p').innerHTML).toContain(hero.name);
     expect(spectator.query(byText(`The selected hero is ${hero.name}`))).toBeTruthy();
     expect(spectator.query(byText(`The selected hero is ${hero.name}`, { selector: 'p' }))).toBeTruthy();
+    expect(spectator.fixture).toMatchSnapshot();
   }));
 
   it('should support clicking a button', () => {
@@ -84,10 +90,12 @@ describe('[1] testing components, various examples', () => {
 
     spectator.detectChanges();
     expect(spectator.query(byText(/is off/))).toBeDefined();
+    expect(spectator.fixture).toMatchSnapshot();
 
     spectator.click('button');
     spectator.detectChanges();
     expect(spectator.query(byText(/is on/))).toBeDefined();
+    expect(spectator.fixture).toMatchSnapshot();
   });
 
   it('should support entering text in input box (ngModel)', async () => {
@@ -100,6 +108,7 @@ describe('[1] testing components, various examples', () => {
 
     spectator.detectChanges();
     expect(component.name).toBe('John');
+    expect(spectator.fixture).toMatchSnapshot();
 
     input.value = 'Sally';
     // Dispatch a DOM event so that Angular learns of input value change.
@@ -108,6 +117,7 @@ describe('[1] testing components, various examples', () => {
     await spectator.fixture.whenStable();
 
     expect(component.name).toBe('Sally');
+    expect(spectator.fixture).toMatchSnapshot();
   });
 
   it('ReversePipeComp should reverse the input text', async () => {
@@ -134,6 +144,7 @@ describe('[1] testing components, various examples', () => {
     // it takes one more change detection for the pipe operator to effect the dom
     spectator.detectChanges();
     expect(span.textContent).toBe(expectedText);
+    expect(spectator.fixture).toMatchSnapshot();
   });
 
   // note: this part is not very useful, but there for code coverage
@@ -160,6 +171,7 @@ describe('[1] testing components, various examples', () => {
 
       spectator.detectChanges();
       expect(parent.ngOnInitCalled).toBe(true);
+      expect(spectator.fixture).toMatchSnapshot();
     });
 
     it('child component should exist after OnInit, should have called child component OnInit', () => {
@@ -168,6 +180,7 @@ describe('[1] testing components, various examples', () => {
       expect(child instanceof MyIfChildComponent).toBe(true);
       expect(child.ngOnInitCalled).toBe(true);
       expect(child.ngOnChangesCounter).toBe(1);
+      expect(spectator.fixture).toMatchSnapshot();
     });
 
     it('changed parent value flows to child', () => {
@@ -178,6 +191,7 @@ describe('[1] testing components, various examples', () => {
       spectator.detectChanges();
       expect(child.ngOnChangesCounter).toBe(2);
       expect(child.childValue).toBe('foo');
+      expect(spectator.fixture).toMatchSnapshot();
     });
 
     /**

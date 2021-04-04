@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[1].1 testing components, basic example  use DOM testing library convenience methods:  https://github.com/ngneat/spectator#queries 1`] = `
+<app-banner
+  __ngContext__={[Function LRootView]}
+  title={[Function String]}
+>
+  <h1>
+    Test Tour of Heroes
+  </h1>
+</app-banner>
+`;

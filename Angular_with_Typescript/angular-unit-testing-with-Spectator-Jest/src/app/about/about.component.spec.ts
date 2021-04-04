@@ -29,6 +29,8 @@ describe('[7] Testing directives: very similar to components', () => {
     const h2: HTMLElement = spectator.query('h2');
     expect(h2).toBeTruthy();
     expect(h2.style.backgroundColor).toBe('skyblue');
+
+    expect(spectator.fixture).toMatchSnapshot();
   });
 
 });

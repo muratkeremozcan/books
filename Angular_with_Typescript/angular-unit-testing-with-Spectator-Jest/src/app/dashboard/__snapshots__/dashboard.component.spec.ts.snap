@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[6] Testing components that include other components, services (example[5]), and routing (example[4]) should HAVE heroes after ngOnInit, snapshot test the component after onInit 1`] = `
+<app-dashboard
+  __ngContext__={[Function LRootView]}
+  heroService={[Function HeroService]}
+  heroes={[Function Array]}
+  router={[Function Object]}
+>
+  <h2
+    highlight=""
+  >
+    Top 4 Heroes
+  </h2><div
+    class="grid grid-pad qa-heroes"
+  >
+    <dashboard-hero
+      class="col-1-4 qa-hero-list-item"
+    />
+    <dashboard-hero
+      class="col-1-4 qa-hero-list-item"
+    />
+    <dashboard-hero
+      class="col-1-4 qa-hero-list-item"
+    />
+    <dashboard-hero
+      class="col-1-4 qa-hero-list-item"
+    />
+    
+  </div>
+</app-dashboard>
+`;
+
+exports[`[6] Testing components that include other components, services (example[5]), and routing (example[4]) should NOT have heroes before ngOnInit, snapshot test before onInit 1`] = `
+<app-dashboard
+  __ngContext__={[Function LRootView]}
+  heroService={[Function HeroService]}
+  heroes={[Function Array]}
+  router={[Function Object]}
+>
+  <h2
+    highlight=""
+  >
+    
+  </h2><div
+    class="grid grid-pad qa-heroes"
+  >
+    
+  </div>
+</app-dashboard>
+`;

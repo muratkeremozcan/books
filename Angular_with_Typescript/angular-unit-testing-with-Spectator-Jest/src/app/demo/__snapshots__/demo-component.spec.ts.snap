@@ -1,0 +1,327 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[1] testing components, various examples ReversePipeComp should reverse the input text 1`] = `
+<reverse-pipe-comp
+  __ngContext__={[Function LRootView]}
+  text={[Function String]}
+>
+  <input
+    class="ng-untouched ng-valid ng-dirty"
+  /><span>
+    .xof nworb kciuq eht
+  </span>
+</reverse-pipe-comp>
+`;
+
+exports[`[1] testing components, various examples lifecycle hooks w/ MyIfParentComp changed parent value flows to child 1`] = `
+<my-if-parent-comp
+  __ngContext__={[Function LRootView]}
+  ngOnInitCalled={[Function Boolean]}
+  parentValue={[Function String]}
+  showChild={[Function Boolean]}
+  toggleLabel={[Function String]}
+>
+  <h3>
+    MyIfParentComp
+  </h3><label>
+    Parent value: 
+    <input
+      class="ng-untouched ng-pristine ng-valid"
+    />
+  </label><button>
+    Close Child
+  </button><br /><div
+    style="margin: 4px; padding: 4px; background-color: aliceblue;"
+  >
+    <my-if-child-1>
+      <h4>
+        MyIfChildComp
+      </h4>
+      <div>
+        <label>
+          Child value: 
+          <input
+            class="ng-untouched ng-pristine ng-valid"
+          />
+        </label>
+      </div>
+      <p>
+        <i>
+          Change log:
+        </i>
+      </p>
+      <div>
+        1 - value: currentValue = "Hello, World", previousValue = undefined
+      </div>
+      <div>
+        2 - ngOnInit called
+      </div>
+      <div>
+        3 - value: currentValue = "foo", previousValue = "Hello, World"
+      </div>
+      
+    </my-if-child-1>
+  </div>
+</my-if-parent-comp>
+`;
+
+exports[`[1] testing components, various examples lifecycle hooks w/ MyIfParentComp child component should exist after OnInit, should have called child component OnInit 1`] = `
+<my-if-parent-comp
+  __ngContext__={[Function LRootView]}
+  ngOnInitCalled={[Function Boolean]}
+  parentValue={[Function String]}
+  showChild={[Function Boolean]}
+  toggleLabel={[Function String]}
+>
+  <h3>
+    MyIfParentComp
+  </h3><label>
+    Parent value: 
+    <input
+      class="ng-untouched ng-pristine ng-valid"
+    />
+  </label><button>
+    Close Child
+  </button><br /><div
+    style="margin: 4px; padding: 4px; background-color: aliceblue;"
+  >
+    <my-if-child-1>
+      <h4>
+        MyIfChildComp
+      </h4>
+      <div>
+        <label>
+          Child value: 
+          <input
+            class="ng-untouched ng-pristine ng-valid"
+          />
+        </label>
+      </div>
+      <p>
+        <i>
+          Change log:
+        </i>
+      </p>
+      <div>
+        1 - value: currentValue = "Hello, World", previousValue = undefined
+      </div>
+      <div>
+        2 - ngOnInit called
+      </div>
+      
+    </my-if-child-1>
+  </div>
+</my-if-parent-comp>
+`;
+
+exports[`[1] testing components, various examples lifecycle hooks w/ MyIfParentComp should instantiate parent component, OnInit should NOT be called before first detectChanges 1`] = `
+<my-if-parent-comp
+  __ngContext__={[Function LRootView]}
+  ngOnInitCalled={[Function Boolean]}
+  parentValue={[Function String]}
+  showChild={[Function Boolean]}
+  toggleLabel={[Function String]}
+>
+  <h3>
+    MyIfParentComp
+  </h3><label>
+    Parent value: 
+    <input
+      class="ng-untouched ng-pristine ng-valid"
+    />
+  </label><button>
+    Close Child
+  </button><br /><div
+    style="margin: 4px; padding: 4px; background-color: aliceblue;"
+  >
+    <my-if-child-1>
+      <h4>
+        MyIfChildComp
+      </h4>
+      <div>
+        <label>
+          Child value: 
+          <input
+            class="ng-untouched ng-pristine ng-valid"
+          />
+        </label>
+      </div>
+      <p>
+        <i>
+          Change log:
+        </i>
+      </p>
+      <div>
+        1 - value: currentValue = "Hello, World", previousValue = undefined
+      </div>
+      <div>
+        2 - ngOnInit called
+      </div>
+      
+    </my-if-child-1>
+  </div>
+</my-if-parent-comp>
+`;
+
+exports[`[1] testing components, various examples should allow changing members of the component 1`] = `
+<my-if-comp
+  __ngContext__={[Function LRootView]}
+  showMore="false"
+>
+  MyIf()
+</my-if-comp>
+`;
+
+exports[`[1] testing components, various examples should allow changing members of the component 2`] = `
+<my-if-comp
+  __ngContext__={[Function LRootView]}
+  showMore={[Function Boolean]}
+>
+  MyIf(<span>
+    More
+  </span>)
+</my-if-comp>
+`;
+
+exports[`[1] testing components, various examples should create a component with external template 1`] = `
+<external-template-comp
+  __ngContext__={[Function LRootView]}
+  service="null"
+>
+  <span>
+    from external template
+  </span>
+</external-template-comp>
+`;
+
+exports[`[1] testing components, various examples should create a component with inline template 1`] = `
+<child-1
+  __ngContext__={[Function LRootView]}
+  text={[Function String]}
+>
+  <span>
+    Child-1(Original)
+  </span>
+</child-1>
+`;
+
+exports[`[1] testing components, various examples should create a nested component bound to inputs/outputs 1`] = `
+<io-parent-comp
+  __ngContext__={[Function LRootView]}
+  heroes={[Function Array]}
+>
+  <p>
+    <i>
+      Click to select a hero
+    </i>
+  </p><io-comp>
+    <div
+      class="hero"
+    >
+      Original Bob
+    </div>
+  </io-comp><io-comp>
+    <div
+      class="hero"
+    >
+      Original Carol
+    </div>
+  </io-comp><io-comp>
+    <div
+      class="hero"
+    >
+      Original Ted
+    </div>
+  </io-comp><io-comp>
+    <div
+      class="hero"
+    >
+      Original Alice
+    </div>
+  </io-comp>
+</io-parent-comp>
+`;
+
+exports[`[1] testing components, various examples should create a nested component bound to inputs/outputs 2`] = `
+<io-parent-comp
+  __ngContext__={[Function LRootView]}
+  heroes={[Function Array]}
+  selectedHero={[Function Object]}
+>
+  <p>
+    The selected hero is Bob
+  </p><io-comp>
+    <div
+      class="hero"
+    >
+      Original Bob
+    </div>
+  </io-comp><io-comp>
+    <div
+      class="hero"
+    >
+      Original Carol
+    </div>
+  </io-comp><io-comp>
+    <div
+      class="hero"
+    >
+      Original Ted
+    </div>
+  </io-comp><io-comp>
+    <div
+      class="hero"
+    >
+      Original Alice
+    </div>
+  </io-comp>
+</io-parent-comp>
+`;
+
+exports[`[1] testing components, various examples should support clicking a button 1`] = `
+<lightswitch-comp
+  __ngContext__={[Function LRootView]}
+  isOn="false"
+>
+  <button>
+    Click me!
+  </button><span>
+    The light is Off
+  </span>
+</lightswitch-comp>
+`;
+
+exports[`[1] testing components, various examples should support clicking a button 2`] = `
+<lightswitch-comp
+  __ngContext__={[Function LRootView]}
+  isOn={[Function Boolean]}
+>
+  <button>
+    Click me!
+  </button><span>
+    The light is On
+  </span>
+</lightswitch-comp>
+`;
+
+exports[`[1] testing components, various examples should support entering text in input box (ngModel) 1`] = `
+<input-comp
+  __ngContext__={[Function LRootView]}
+  name={[Function String]}
+>
+  <input
+    class="ng-untouched ng-pristine ng-valid"
+  />
+</input-comp>
+`;
+
+exports[`[1] testing components, various examples should support entering text in input box (ngModel) 2`] = `
+<input-comp
+  __ngContext__={[Function LRootView]}
+  name={[Function String]}
+>
+  <input
+    class="ng-untouched ng-pristine ng-valid"
+  />
+</input-comp>
+`;

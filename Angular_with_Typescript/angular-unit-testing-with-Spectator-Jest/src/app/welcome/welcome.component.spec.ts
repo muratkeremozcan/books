@@ -42,6 +42,7 @@ describe('[5].1 testing components that have external service dependencies - CUS
     userService.isLoggedIn = false;
     spectator.detectChanges();
     expect(spectator.query('.welcome')).toHaveText('Please log in');
+    expect(spectator.fixture).toMatchSnapshot();
   });
 
   it('(5.4) use DOM testing library convenience methods:  https://github.com/ngneat/spectator#queries ', () => {
@@ -53,5 +54,6 @@ describe('[5].1 testing components that have external service dependencies - CUS
     userService.user .name = 'Bubba';
     spectator.detectChanges();
     expect(spectator.query('.welcome')).toHaveText('Bubba');
+    expect(spectator.fixture).toMatchSnapshot();
   });
 });
