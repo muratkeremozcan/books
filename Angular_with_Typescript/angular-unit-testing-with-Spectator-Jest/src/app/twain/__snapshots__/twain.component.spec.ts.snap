@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[5] testing components that have external service dependencies - SPECTATOR/JEST MOCK (5.1.2) KEY contrast to manual mocks, use Spectator mocks, (5.1.3) inject the service dependency:  depService = spectator.inject(DepService) (5.1.4) stub the external service's return value, and exercise the component under test 1`] = `
+<twain-quote
+  __ngContext__={[Function LRootView]}
+  twainService={[Function Object]}
+>
+  <p
+    class="twain"
+  >
+    <i>
+      
+    </i>
+  </p><button>
+    Next quote
+  </button>
+</twain-quote>
+`;
+
+exports[`[5] testing components that have external service dependencies - SPECTATOR/JEST MOCK (5.1.2) KEY contrast to manual mocks, use Spectator mocks, (5.1.3) inject the service dependency:  depService = spectator.inject(DepService) (5.3) use spectator.detectChanges()  to trigger the change detection  1`] = `
+<twain-quote
+  __ngContext__={[Function LRootView]}
+  errorMessage=""
+  quote={[Function Observable]}
+  twainService={[Function Object]}
+>
+  <p
+    class="twain"
+  >
+    <i>
+      Test Quote
+    </i>
+  </p><button>
+    Next quote
+  </button>
+</twain-quote>
+`;
+
+exports[`[5] testing components that have external service dependencies - SPECTATOR/JEST MOCK (5.4) if needed by the component implementation, async await way) 1`] = `
+<twain-quote
+  __ngContext__={[Function LRootView]}
+  errorMessage={[Function String]}
+  quote={[Function Observable]}
+  twainService={[Function Object]}
+>
+  <p
+    class="twain"
+  >
+    <i>
+      ...
+    </i>
+  </p><button>
+    Next quote
+  </button><p
+    class="error"
+  >
+    TwainService test failure
+  </p>
+</twain-quote>
+`;
+
+exports[`[5] testing components that have external service dependencies - SPECTATOR/JEST MOCK (5.4) if needed by the component implementation, use fakeAsync and spectator.tick() 1`] = `
+<twain-quote
+  __ngContext__={[Function LRootView]}
+  errorMessage={[Function String]}
+  quote={[Function Observable]}
+  twainService={[Function Object]}
+>
+  <p
+    class="twain"
+  >
+    <i>
+      ...
+    </i>
+  </p><button>
+    Next quote
+  </button><p
+    class="error"
+  >
+    TwainService test failure
+  </p>
+</twain-quote>
+`;

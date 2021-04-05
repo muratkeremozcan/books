@@ -65,6 +65,7 @@ describe('[5] testing components that have external service dependencies - SPECT
       expect(errorMessage()).toBeNull();
       expect(twainService).not.toHaveBeenCalled();
       expect(spectator.query(byText(testQuote))).toBeFalsy();
+      expect(spectator.fixture).toMatchSnapshot();
     });
 
     it('(5.3) use spectator.detectChanges()  to trigger the change detection ', () => {
@@ -72,6 +73,7 @@ describe('[5] testing components that have external service dependencies - SPECT
       expect(twainService).toHaveBeenCalled();
       expect(spectator.query('.twain')).toHaveText(testQuote);
       expect(spectator.query(byText(testQuote))).toBeTruthy(); // same
+      expect(spectator.fixture).toMatchSnapshot();
     });
   });
 
@@ -89,6 +91,7 @@ describe('[5] testing components that have external service dependencies - SPECT
     expect(errorMessage()).toBe('TwainService test failure'); // same
 
     expect(spectator.query(byText('...'))).toBeTruthy();
+    expect(spectator.fixture).toMatchSnapshot();
   }));
 
   it('(5.4) if needed by the component implementation, async await way)', async () => {
@@ -107,6 +110,7 @@ describe('[5] testing components that have external service dependencies - SPECT
     expect(errorMessage()).toBe('TwainService test failure'); // same
 
     expect(spectator.query(byText('...'))).toBeTruthy();
+    expect(spectator.fixture).toMatchSnapshot();
   });
 
 });

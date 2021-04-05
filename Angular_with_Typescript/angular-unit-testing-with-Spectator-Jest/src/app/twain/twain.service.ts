@@ -28,8 +28,6 @@ export class TwainService {
         switchMap((error: HttpErrorResponse)  => {
           if (error.status === 404) {
             // Queried for quote that doesn't exist.
-            this.nextId = 1; // retry with quote id:1
-            return of(null); // signal OK to retry
           }
           // Some other HTTP error.
           console.error(error);

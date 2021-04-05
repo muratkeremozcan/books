@@ -3,7 +3,7 @@ import { Spectator, createComponentFactory } from '@ngneat/spectator/jest';
 import { CanvasComponent } from './canvas.component';
 
 
-// To make canvas work work, had to add an npm package jest-canvas-mock
+// To make canvas work, had to add an npm package jest-canvas-mock
 // Also had to add a specific import to our src/setupTests.ts file: import 'jest-canvas-mock'
 
 describe('Canvas component', () => {
@@ -31,7 +31,10 @@ describe('Canvas component', () => {
     spectator.detectChanges();
 
     expect(component.blobSize).toBe(0);
+    expect(spectator.fixture).toMatchSnapshot();
+
     spectator.tick();
     expect(component.blobSize).toBeGreaterThan(0);
+    expect(spectator.fixture).toMatchSnapshot();
   }));
 });

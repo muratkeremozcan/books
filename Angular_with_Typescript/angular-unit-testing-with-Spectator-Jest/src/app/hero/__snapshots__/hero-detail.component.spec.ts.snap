@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`module test async with await spectator.fixture.whenStable() version: should navigate when clicking cancel 1`] = `
+<app-hero-detail
+  __ngContext__={[Function LRootView]}
+  hero={[Function Object]}
+  heroDetailService={[Function HeroDetailService]}
+  route={[Function ActivatedRouteStub]}
+  router={[Function Object]}
+>
+  <div>
+    <h2>
+      <span
+        class="qa-hero-name"
+      >
+        
+      </span>
+       Details
+    </h2>
+    <div
+      class="qa-hero-id"
+    >
+      <label>
+        id: 
+      </label>
+      0
+    </div>
+    <div>
+      <label
+        for="name"
+      >
+        name: 
+      </label>
+      <input
+        class="ng-untouched ng-pristine ng-valid"
+        id="name"
+        placeholder="name"
+      />
+    </div>
+    <button
+      class="qa-save"
+    >
+      Save
+    </button>
+    <button
+      class="qa-cancel"
+    >
+      Cancel
+    </button>
+  </div>
+</app-hero-detail>
+`;
+
+exports[`module test query byText 1`] = `
+<app-hero-detail
+  __ngContext__={[Function LRootView]}
+  hero={[Function Object]}
+  heroDetailService={[Function HeroDetailService]}
+  route={[Function ActivatedRouteStub]}
+  router={[Function Object]}
+>
+  <div>
+    <h2>
+      <span
+        class="qa-hero-name"
+      >
+        
+      </span>
+       Details
+    </h2>
+    <div
+      class="qa-hero-id"
+    >
+      <label>
+        id: 
+      </label>
+      0
+    </div>
+    <div>
+      <label
+        for="name"
+      >
+        name: 
+      </label>
+      <input
+        class="ng-untouched ng-pristine ng-valid"
+        id="name"
+        placeholder="name"
+      />
+    </div>
+    <button
+      class="qa-save"
+    >
+      Save
+    </button>
+    <button
+      class="qa-cancel"
+    >
+      Cancel
+    </button>
+  </div>
+</app-hero-detail>
+`;
+
+exports[`module test sanity 1`] = `
+<app-hero-detail
+  __ngContext__={[Function LRootView]}
+  hero={[Function Object]}
+  heroDetailService={[Function HeroDetailService]}
+  route={[Function ActivatedRouteStub]}
+  router={[Function Object]}
+>
+  <div>
+    <h2>
+      <span
+        class="qa-hero-name"
+      >
+        
+      </span>
+       Details
+    </h2>
+    <div
+      class="qa-hero-id"
+    >
+      <label>
+        id: 
+      </label>
+      0
+    </div>
+    <div>
+      <label
+        for="name"
+      >
+        name: 
+      </label>
+      <input
+        class="ng-untouched ng-pristine ng-valid"
+        id="name"
+        placeholder="name"
+      />
+    </div>
+    <button
+      class="qa-save"
+    >
+      Save
+    </button>
+    <button
+      class="qa-cancel"
+    >
+      Cancel
+    </button>
+  </div>
+</app-hero-detail>
+`;

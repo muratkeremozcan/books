@@ -36,7 +36,6 @@ describe('[3] Testing Http', () => {
         { id: 1, name: 'A' },
         { id: 2, name: 'B' },
       ] as Hero[];
-
     });
 
     it('(3.2.2) initiate the client request and setup the assertion that will happen,(3.2.3) match the url w/ spectator.expectOne, (3.2.4) flush the response and assert that the set value matches the expected value', () => {
@@ -52,6 +51,7 @@ describe('[3] Testing Http', () => {
       // (3.2.4) flush the response and assert that the set value matches the expected value
       req.flush(expectedHeroes);
       expect(assertion).toEqual(expectedHeroes);
+      expect(assertion).toMatchSnapshot(); // could also supplement http testing with snapshot testing
     });
 
     it('cover the Empty Response Case', () => {
@@ -78,6 +78,7 @@ describe('[3] Testing Http', () => {
       req.flush(msg, {status: 404, statusText: 'Not Found'});
 
       expect(assertion).toContain(msg);
+      expect(assertion).toMatchSnapshot();
     });
   });
 
@@ -100,6 +101,7 @@ describe('[3] Testing Http', () => {
 
       req.flush(hero);
       expect(assertion).toEqual(hero);
+      expect(assertion).toMatchSnapshot();
     });
 
     it('cover the Error Case, same as the GET scenario in (3.4) ', () => {
@@ -114,6 +116,7 @@ describe('[3] Testing Http', () => {
 
       req.flush(msg, {status: 404, statusText: 'Not Found'});
       expect(assertion).toContain(msg);
+      expect(assertion).toMatchSnapshot();
     });
   });
 

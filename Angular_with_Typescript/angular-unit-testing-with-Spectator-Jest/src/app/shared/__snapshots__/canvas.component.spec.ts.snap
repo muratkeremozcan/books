@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Canvas component sanity 1`] = `
+<sample-canvas
+  __ngContext__={[Function LRootView]}
+  blobSize="0"
+  sampleCanvas={[Function ElementRef]}
+>
+  <canvas
+    height="200"
+    width="200"
+  />
+</sample-canvas>
+`;
+
+exports[`Canvas component sanity 2`] = `
+<sample-canvas
+  __ngContext__={[Function LRootView]}
+  blobSize={[Function Number]}
+  sampleCanvas={[Function ElementRef]}
+>
+  <canvas
+    height="200"
+    width="200"
+  />
+</sample-canvas>
+`;
