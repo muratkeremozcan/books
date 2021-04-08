@@ -87,8 +87,9 @@ describe('[5] testing components that have external service dependencies - SPECT
 
     spectator.tick(); // tick is needed here to flush the setTimeout inside the catchError operator block
 
-    expect(errorMessage()).toMatch(/test failure/);
-    expect(errorMessage()).toBe('TwainService test failure'); // same
+    expect(errorMessage())
+      .toMatch(/test failure/)
+      .toBe('TwainService test failure'); // same
 
     expect(spectator.query(byText('...'))).toBeTruthy();
     expect(spectator.fixture).toMatchSnapshot();
@@ -106,8 +107,9 @@ describe('[5] testing components that have external service dependencies - SPECT
     await spectator.fixture.whenStable();
     spectator.detectChanges();
 
-    expect(errorMessage()).toMatch(/test failure/);
-    expect(errorMessage()).toBe('TwainService test failure'); // same
+    expect(errorMessage())
+      .toMatch(/test failure/)
+      .toBe('TwainService test failure'); // same
 
     expect(spectator.query(byText('...'))).toBeTruthy();
     expect(spectator.fixture).toMatchSnapshot();

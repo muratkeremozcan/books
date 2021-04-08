@@ -1,14 +1,18 @@
 import { fakeAsync } from '@angular/core/testing';
 import { Spectator, createComponentFactory } from '@ngneat/spectator/jest';
 import { CanvasComponent } from './canvas.component';
+import { ngMocks } from 'ng-mocks';
+import { ElementRef } from '@angular/core';
 
+// [9] testing @ViewChild, ngMocks.findInstance(ElementRef) is an effective technique to access @ViewChild
 
-// To make canvas work, had to add an npm package jest-canvas-mock
+// Note: To make canvas work, had to add an npm package jest-canvas-mock
 // Also had to add a specific import to our src/setupTests.ts file: import 'jest-canvas-mock'
 
 describe('Canvas component', () => {
   let component: CanvasComponent;
   let spectator: Spectator<CanvasComponent>;
+  let mockSampleCanvas;
 
   const createComponent = createComponentFactory({
     component: CanvasComponent,
@@ -31,10 +35,18 @@ describe('Canvas component', () => {
     spectator.detectChanges();
 
     expect(component.blobSize).toBe(0);
-    expect(spectator.fixture).toMatchSnapshot();
 
     spectator.tick();
     expect(component.blobSize).toBeGreaterThan(0);
     expect(spectator.fixture).toMatchSnapshot();
   }));
+
+  it('should check child component @ViewChild', () => {
+    spectator.detectChanges();
+    mockSampleCanvas = ngMocks.findInstance(ElementRef); // KEY effective technique to access @ViewChild
+    // mockSampleCanvas.nativeElement // if you wanted to, you could modify the child component based on your test needs
+
+    expect(mockSampleCanvas.nativeElement).toHaveAttribute('id', 'root1');
+    expect(mockSampleCanvas.nativeElement).toBeTruthy().toMatchSnapshot();
+  });
 });

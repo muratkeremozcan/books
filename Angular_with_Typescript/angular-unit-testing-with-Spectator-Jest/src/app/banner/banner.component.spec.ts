@@ -25,7 +25,6 @@ describe('[1].1 testing components, basic example ', () => {
   it('use DOM testing library convenience methods:  https://github.com/ngneat/spectator#queries', () => {
     expect(spectator.query('h1')).toHaveText(component.title);
 
-    expect(spectator.query(byText(component.title))).toBeDefined();
     expect(spectator.query(byText(component.title))).toBeTruthy();
     expect(spectator.fixture).toMatchSnapshot();
   });

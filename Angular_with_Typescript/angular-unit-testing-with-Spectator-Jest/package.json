@@ -42,6 +42,7 @@
     "codelyzer": "^5.1.2",
     "jest": "^26.6.3",
     "jest-canvas-mock": "^2.3.1",
+    "jest-chain": "^1.1.5",
     "jest-preset-angular": "^8.4.0",
     "ng-mocks": "^11.9.1",
     "protractor": "~5.4.3",
@@ -52,7 +53,8 @@
   "jest": {
     "preset": "jest-preset-angular",
     "setupFilesAfterEnv": [
-      "<rootDir>/setup-jest.ts"
+      "<rootDir>/setup-jest.ts",
+      "jest-chain"
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/",
