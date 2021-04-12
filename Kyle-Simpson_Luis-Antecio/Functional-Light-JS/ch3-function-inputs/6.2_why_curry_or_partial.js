@@ -1,7 +1,6 @@
 import { partial } from '../fp-tool-belt';
 import { curriedSum, sum } from './6.1_curry_KEY';
 
-// sum(..) is more clear, why curry and partial?
 
 sum(1, 2, 3, 4, 5); //?
 
