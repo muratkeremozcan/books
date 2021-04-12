@@ -16,7 +16,7 @@ const isValid = val => !_.isUndefined(val) && !_.isNull(val);
 
 
 // Chaining is  a syntactical improvement over imperative code and drastically improves its readability. 
-// Unfortunately, it’s contrived and tightly coupled to the owning object that confines the number of methods you can apply in the chain.
+// Unfortunately, it’s tightly coupled to the owning object that confines the number of methods you can apply in the chain.
 // In this case, you’re obliged to use only the set of operations provided by Lodash, and you wouldn’t be able to easily
 // connect functions from different libraries (or your own) into one program.
 

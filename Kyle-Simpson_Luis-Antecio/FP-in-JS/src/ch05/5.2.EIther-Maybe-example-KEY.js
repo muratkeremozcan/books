@@ -9,19 +9,23 @@ const db = require('../ch04/student-helper').db;
 // (1) wrap/containerize the value with .of(). If you want to secure the value against null or undefined, use fromNullable() instead.
 // (2) use Either functions which very similar to Maybe; map, getOrElse etc. Use chain which is map() + autoFlatten (map+join)
 // (3) specify the error case with Either.left
-// KEY advantage over Wrapper monad: Maybe monad allows to propagate an invalid value up the composition
+// KEY advantage over Wrapper monad: Either/Maybe monads allow to propagate an invalid value up the composition
+// KEY difference of Either with Maybe: Either allows results to propagate while holding the possible errors. Maybe does not care for errors.
 
 
 const validLength = (len, str) => str.length === len;
 const find = R.curry((db, id) => db.find(id));
+
 const safeFindObject = R.curry((db, id) => {
   const val = find(db, id);
   return val ? Either.right(val) : Either.left(`Object not found with ID: ${id}`); // (3)
-  // return val ? Maybe.just(val) : Maybe.nothing(`Object not found with ID: ${id}`);
+  // return val ? Maybe.just(val) : Maybe.nothing(`Object not found with ID: ${id}`); // Either comparison to Maybe
 })
+
 const checkLengthSsn = ssn => 
 validLength(2, ssn) ? Either.right(ssn) : Either.left('invalid SSN');  // (3)
-// validLength(2, ssn) ? Maybe.just(ssn) : Maybe.nothing('invalid SSN');
+// validLength(2, ssn) ? Maybe.just(ssn) : Maybe.nothing('invalid SSN'); // Either comparison to Maybe
+
 const findStudent = safeFindObject(db);
 const csv = arr => arr.join(','); //?
 const trim = (str) => str.replace(/^\s*|\s*$/g, '');

@@ -1,4 +1,7 @@
 const R = require('ramda');
+const compose = R.compose;
+const curry = R.curry;
+const pipe = R.pipe;
 const Person = require('../../model/Person.js').Person;
 
 const p1 = new Person('1234', 'Alonzo', 'Xavier', '1983', 'USA');
@@ -45,7 +48,23 @@ const people = [p1, p2, p3];
   const inUs = person => person.address === 'USA';
   const print = console.log;
 
-  // printPeople(people, inUs, print);
+  // version 1
+  printPeople(people, inUs, print); 
+
+  // version 2 : 2 arguments
+  const myOwnPrintPpl = (ppl, selector) => ppl.filter(selector);
+  myOwnPrintPpl(people, inUs); //?
+  
+  // version 3: fn to fn
+  const myOwnPrintPpl2 = (ppl) => (selector) => ppl.filter(selector);
+  myOwnPrintPpl2(people)(inUs); //?
+
+  // version 3 curry: my fave
+  const curriedMyOwnPrintPpl = curry(myOwnPrintPpl);
+  curriedMyOwnPrintPpl(people)(inUs); //?
+  // because you can pipe or compose curried fns . Pointless here since there is 1 fn, but you get the idea
+  compose(curriedMyOwnPrintPpl)(people)(inUs); //?
+  compose(curriedMyOwnPrintPpl(people)(inUs)); //?
 
 
   // using lenses to access to access an object's properties

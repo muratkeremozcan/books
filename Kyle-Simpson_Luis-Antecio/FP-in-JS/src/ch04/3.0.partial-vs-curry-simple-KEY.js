@@ -26,7 +26,7 @@ const partialLikeCurry = _.partial(add);
 partialLikeCurry(); // noise
 partialLikeCurry(7, 3, 10); //?
 
-// this is showing how currying is an automated why of composing partials... You should just use curry if you ever have to do this.
+// this is showing how currying is an automated way of composing partials... You should just use curry if you ever have to do this.
 const secondPartial = _.partial(partialAdd, 3);
 secondPartial(10); //?
 const thirdPartial = _.partial(secondPartial, 10);

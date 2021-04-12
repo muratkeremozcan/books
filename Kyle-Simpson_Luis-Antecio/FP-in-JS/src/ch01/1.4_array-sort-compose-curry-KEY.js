@@ -74,15 +74,12 @@ makeArrNum = arr => arr.map(makeNum);
 
 const curriedSortDesc = curry(
   sortDescending
-  // arr => arr.sort(descend)
 );
 const curriedSortAsc = curry(
   sortAscending
-  // arr => arr.sort(ascend)
 );
 const curriedMakeArrNum = curry(
   makeArrNum
-  // arr => arr.map(makeNum)
 );
 
 compose(

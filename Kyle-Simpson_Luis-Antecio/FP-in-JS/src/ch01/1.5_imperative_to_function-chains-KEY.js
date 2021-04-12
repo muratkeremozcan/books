@@ -25,7 +25,7 @@ for (let i = 0; i < students.length; i++) {
 		totalStudentsFound++;
 	}
 }
-// var average = totalGrades / totalStudentsFound; //?
+var average = totalGrades / totalStudentsFound; //?
 
 
 // declarative approach with function chain / call-by-need principle
@@ -42,10 +42,10 @@ const result =
 
 result; //?
 
-const resulto =
+const resultFullArray =
 	_.chain(students)
 		.filter(student => student.enrolled)
 		.map(_.property('grade'))
 		.value();
 
-resulto; //?
+resultFullArray; //?
