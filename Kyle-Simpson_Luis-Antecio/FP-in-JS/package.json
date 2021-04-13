@@ -6,10 +6,12 @@
     "@reactivex/rxjs": "^5.0.0-beta.11",
     "babel-preset-es2015": "^6.13.2",
     "blanket": "1.2.3",
+    "folktale": "^2.3.2",
     "idb": "^5.0.2",
     "jest": "~20.0.4",
     "jscheck": "0.2.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "performance-now": "^2.1.0",
     "qunit": "1.0.0",
     "ramda": "0.22.0",
@@ -17,8 +19,7 @@
     "rxjs-es": "5.0.0-beta.11",
     "sinon": "1.17.5",
     "sinon-qunit": "2.0.0",
-    "winston": "^3.2.1",
-    "moment": "^2.29.1"
+    "winston": "^3.2.1"
   },
   "babel": {
     "presets": [

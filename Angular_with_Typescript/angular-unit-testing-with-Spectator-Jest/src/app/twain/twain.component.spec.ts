@@ -30,6 +30,15 @@ describe('[5] testing components that have external service dependencies - SPECT
     component: TwainComponent,
     // (5.1.2) mock the dependency using the mocks property
     mocks: [TwainService],
+    // IMPORTANT NOTE:
+    // mocks: [ ... ]  auto mocks all service class properties
+    // regardless of what we set the service properties to within the test, auto mock takes over and overwrites defaults
+    // if we want to manipulate service properties, we have 2 options:
+    // - if the service properties are not changing, use MockProvider pattern below
+    // - if they are changing per test, do mock the service at the setup, put it in providers array, but use  spectator.inject(TwainService, true)
+    // the  ... , true)  let's you mock on the go, with just the parts you need.
+    // this is somewhat mentioned in the docs, but there is no way to interpret the reality of things from that https://github.com/ngneat/spectator#component-providers
+
     // as an alternative shortcut, we could also use the MockProvider way of mocking like we did in (4.2) - would have to change some plumbing for this spec
     // providers: [MockProvider(TwainService, {
     //   getQuote: () => of('Test Quote')
