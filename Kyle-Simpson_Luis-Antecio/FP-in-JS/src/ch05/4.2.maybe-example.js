@@ -11,7 +11,7 @@ const Maybe = require('folktale/maybe');
   `Hello, ${loggedInUserName}`; //?
 }
 
-// THE PROBLEM: undefined/null bugs
+// THE PROBLEM: undefined/null bugs reaching into properties
 // we can have null/undefined values in JS, but they can cause problems in runtime
 {
 const users = [
@@ -31,11 +31,11 @@ const loggedInUser2 = users.find(user => user.id === 2 ); //?
 // * provide a default when finally reading the inner value with getOrElse.
 // Using this abstraction, this whole class of bugs (unexpected undefined/nulls) can be eradicated from our programs.
 
-const maybeLoggedInUser5 = Maybe.fromNullable(loggedInUser5); //?
+const maybeLoggedInUser5 = Maybe.fromNullable(loggedInUser5);
 const message5 = maybeLoggedInUser5.map(loggedInUser => `Hello, ${loggedInUser.name}`)
                                    .getOrElse(''); //?
 
-const maybeLoggedInUser2 = Maybe.fromNullable(loggedInUser2); //?
+const maybeLoggedInUser2 = Maybe.fromNullable(loggedInUser2);
 const message2 = maybeLoggedInUser2.map(loggedInUser => `Hello, ${loggedInUser.name}`)
                                    .getOrElse(''); //?
 }
@@ -43,7 +43,7 @@ const message2 = maybeLoggedInUser2.map(loggedInUser => `Hello, ${loggedInUser.n
 
 
 // THE PROBLEM: boolean coercion bugs
-// In JS, we can use a value of any type in conditionals; JS converts coerces the value.
+// In JS, we can use a value of any type in conditionals; JS coerces the value.
 {
 const users = { Bob: 0, Saffron: 10 };
 const getAge = name => {
@@ -121,5 +121,37 @@ maybeGetNextAge('Saffron'); //?
 maybeGetNextAge('Bob'); //?
 maybeGetNextAge('Luke'); //?
 
+
+}
+
+
+// other examples of converting conditional checks to Maybe
+{
+const find1 = (list, predicate) => {
+  for (let i = 0; i < list.length; ++i) {
+    const item = list[i];
+    if (predicate(item)) {
+      return item;
+    }
+  }
+  return null;
+};
+
+find1([1, 2, 3], (x) => x > 2); //?
+find1([1, 2, 3], (x) => x > 3); //?
+
+
+const find2 = (list, predicate) => {
+  for (let i = 0; i < list.length; ++i) {
+    const item = list[i];
+    if (predicate(item)) {
+      return Maybe.Just(item);
+    }
+  }
+  return Maybe.Nothing();
+};
+
+find2([1, 2, 3], (x) => x > 2); //? 
+find2([1, 2, 3], (x) => x > 3); //?
 
 }
