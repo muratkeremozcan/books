@@ -81,8 +81,7 @@ describe('[6] Testing components that include other components, services (exampl
 
   // This component has a subscribe OnInit, we control that with fakeAsync or async and await spectator.fixture.whenStable();
   it('should tell ROUTER to navigate when hero clicked: fakeAsync version', fakeAsync(() => {
-    spectator.detectChanges();
-    tick();
+    spectator.tick();
 
     // (6.4) to access the in-line line component, query it. If there is an ngFor, use queryAll:  spectator.query/queryAll<ChildComponent>(ChildComponent)
     const inLineComponents = spectator.queryAll<DashboardHeroComponent>(DashboardHeroComponent);
