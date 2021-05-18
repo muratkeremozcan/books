@@ -1,0 +1,12 @@
+ListPizzas Pizza menu
+ListPizzas Which pizzas do you have
+ListPizzas List all pizzas
+
+OrderPizza {Pizza}
+OrderPizza order {Pizza}
+OrderPizza I want {Pizza}
+OrderPizza I would like to order {Pizza}
+
+DeliveryAddress {Address}
+DeliveryAddress Deliver it to {Address}
+DeliveryAddress address is {Address}

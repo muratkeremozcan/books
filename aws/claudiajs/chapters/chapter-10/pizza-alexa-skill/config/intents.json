@@ -1,0 +1,23 @@
+{
+  "intents": [
+      {
+        "intent": "ListPizzas"
+      }, {
+        "intent": "OrderPizza",
+        "slots": [
+            {
+              "name": "Pizza",
+              "type": "LIST_OF_PIZZAS"
+            }
+        ]
+      }, {
+        "intent": "DeliveryAddress",
+        "slots": [
+            {
+              "name": "Address",
+              "type": "AMAZON.PostalAddress"
+            }
+        ]
+      }
+  ]
+}

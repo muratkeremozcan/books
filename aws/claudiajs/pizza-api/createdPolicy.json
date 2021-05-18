@@ -1,0 +1,32 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:CreateFunction",
+                "iam:GetRole",
+                "iam:GetInstanceProfile",
+                "lambda:InvokeFunction",
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "lambda:InvokeAsync",
+                "lambda:GetFunctionConfiguration",
+                "iam:AttachRolePolicy",
+                "iam:PutRolePolicy",
+                "lambda:UpdateAlias",
+                "lambda:UpdateFunctionCode",
+                "iam:PassRole",
+                "lambda:AddPermission",
+                "iam:DetachRolePolicy",
+                "iam:DeleteRolePolicy",
+                "iam:GetRolePolicy",
+                "lambda:CreateAlias"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}

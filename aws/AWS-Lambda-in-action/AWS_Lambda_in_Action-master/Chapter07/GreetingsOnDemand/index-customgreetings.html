@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Custom Greetings on Demand</title>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.2.32.min.js"></script>
+  </head>
+  <body>
+    <h1>Custom Greetings on Demand</h1>
+    <p>This is an example of calling an AWS Lambda function
+      from a web page via JavaScript.</p>
+    <p>Instead of a static Hello World, here you can provide
+      a greet and name, and you will receive customized greetings.</p>
+    <p>Try without a greet or without a name, too.</p>
+      </div>
+      <form role="form" id="greetingsForm">
+        <label for="greet">Greet:</label>
+        <input type="text" class="form-control" id="greet">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name">
+        <button type="submit" class="btn btn-default">Greet</button>
+      </form>
+      <div id="result">
+      </div>
+    </div>
+    <script src="customGreetings.js"></script>
+  </body>
+</html>

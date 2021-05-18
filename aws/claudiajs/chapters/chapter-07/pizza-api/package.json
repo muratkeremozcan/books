@@ -1,0 +1,24 @@
+{
+  "name": "pizza-api",
+  "version": "1.0.5",
+  "description": "Full code for the chapter 5",
+  "main": "api.js",
+  "scripts": {
+    "create": "claudia create --region eu-central-1 --api-module api --set-env-from-json config/env.json",
+    "update": "claudia update --cache-api-config apiConfig --no-optional-dependencies --set-env-from-json config/env.json",
+    "createPool": "aws cognito-idp create-user-pool --pool-name Pizzeria --policies \"PasswordPolicy={MinimumLength=8,RequireUppercase=false,RequireLowercase=false,RequireNumbers=false,RequireSymbols=false}\" --username-attributes email --query UserPool.Id --output text",
+    "createPoolClient": "aws cognito-idp create-user-pool-client --user-pool-id eu-central-1_userPoolId --client-name PizzeriaClient --no-generate-secret --query UserPoolClient.ClientId --output text",
+    "createIdentityPool": "aws cognito-identity create-identity-pool --identity-pool-name Pizzeria --allow-unauthenticated-identities --supported-login-providers graph.facebook.com=266094173886660 --cognito-identity-providers ProviderName=cognito-idp.eu-central-1.amazonaws.com/eu-central-1_qpPMn1Tip,ClientId=4q14u0qalmkangdkhieekqbjma,ServerSideTokenCheck=false --query IdentityPoolId --output text"
+  },
+  "optionalDependencies": {
+    "aws-sdk": "^2.92.0"
+  },
+  "devDependencies": {
+    "claudia": "^3.4.1"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "claudia-api-builder": "^3.0.2",
+    "minimal-request-promise": "^1.4.0"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "pizza-alexa-skill",
+  "version": "1.0.0",
+  "description": "",
+  "main": "skill.js",
+  "scripts": {
+    "create": "claudia create --region eu-west-1 --handler skill.handler --version skill",
+    "allowTrigger": "claudia allow-alexa-skill-trigger --version skill",
+    "update": "claudia update --version skill"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "alexa-message-builder": "^1.2.0"
+  }
+}

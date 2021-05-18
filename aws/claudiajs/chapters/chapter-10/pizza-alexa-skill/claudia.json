@@ -1,0 +1,7 @@
+{
+  "lambda": {
+    "role": "pizza-alexa-skill-executor",
+    "name": "pizza-alexa-skill",
+    "region": "eu-west-1"
+  }
+}

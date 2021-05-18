@@ -1,0 +1,22 @@
+{
+  "name": "pizza-image-processor",
+  "version": "1.0.0",
+  "description": "Image processor for Aunt Maria's Pizzeria",
+  "main": "index.js",
+  "scripts": {
+    "createBucket": "aws s3 mb s3://aunt-marias-pizzeria --region eu-central-1",
+    "create": "claudia create --region eu-central-1 --handler index.handler",
+    "setTrigger": "claudia add-s3-event-source --bucket aunt-marias-pizzeria --prefix images/",
+    "update": "claudia update --no-optional-dependencies"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "claudia": "^2.14.3"
+  },
+  "dependencies": {
+    "mime": "^2.0.3"
+  },
+  "optionalDependencies": {
+    "aws-sdk": "^2.163.0"
+  }
+}

@@ -67,3 +67,8 @@ apropos ext3/anyTerm :  propose help on commands
 man nslookup/anyTerm : detail on commands   / to search, N to jump, Q to quit
 using sed to replace characters:   BASE_URL=https://`sed "s/\//-/g" <<< feat/read-me.bo.apps.horizondev.cloud`
 search bash history:  history  , Ctrl + R (repeat R if it doesn't match)
+sudo !! : rerun previous command with 'sudo' prepend
+
+
+
+

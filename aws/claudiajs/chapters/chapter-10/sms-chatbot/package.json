@@ -1,0 +1,18 @@
+{
+  "name": "sms-chatbot",
+  "version": "1.0.0",
+  "main": "sms-bot.js",
+  "scripts": {
+    "create": "claudia create --region eu-central-1 --api-module sms-bot",
+    "configure": "claudia update --configure-twilio",
+    "update": "claudia update --cache-api-config apiConfig --no-optional-dependencies"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "claudia-bot-builder": "^2.15.0",
+    "uuid": "^3.2.1"
+  },
+  "optionalDependencies": {
+    "aws-sdk": "^2.162.0"
+  }
+}

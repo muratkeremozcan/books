@@ -1,0 +1,14 @@
+{
+  "AWS_ACCOUNT_ID": "721520867440",
+  "REGION": "us-east-1",
+  "BUCKET": "BUCKET",
+  "MAX_AGE": "10",
+  "DDB_TABLE": "SampleAuthUsers",
+  "IDENTITY_POOL_NAME": "SampleAuth",
+  "DEVELOPER_PROVIDER_NAME": "login.yourdomain.com",
+  "EXTERNAL_NAME": "Sample Authentication",
+  "EMAIL_SOURCE": "sender@yourdomain.com",
+  "VERIFICATION_PAGE": "https://BUCKET.s3.amazonaws.com/verify.html",
+  "RESET_PAGE": "https://BUCKET.s3.amazonaws.com/resetPassword.html",
+  "IDENTITY_POOL_ID": "us-east-1:2a0498ab-a840-4c22-9c43-eb726a7ffdfe"
+}

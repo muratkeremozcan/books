@@ -1,0 +1,17 @@
+{
+  "name": "serverless-payment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "create": "claudia create --region eu-central-1 --api-module payment --set-env STRIPE_SECRET=<type in your Stripe Secret Key>>",
+    "update": "claudia update --cache-api-config apiConfig --no-optional-dependencies"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.193.0",
+    "claudia-api-builder": "^3.0.2",
+    "stripe": "^5.4.0"
+  }
+}

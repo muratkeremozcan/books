@@ -1,0 +1,12 @@
+{
+  "name": "pizza-fb-chatbot",
+  "version": "1.0.0",
+  "description": "A pizzeria chatbot",
+  "main": "bot.js",
+  "scripts": {
+    "update": "claudia update --cache-api-config apiConfig"
+  },
+  "devDependencies": {
+    "claudia": "^2.14.3"
+  }
+}

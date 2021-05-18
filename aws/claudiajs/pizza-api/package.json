@@ -1,0 +1,16 @@
+{
+  "name": "pizza-api",
+  "version": "1.0.1",
+  "description": "",
+  "main": "api.js",
+  "scripts": {
+    "create": "claudia create --region us-east-1 --handler lambda.handler",
+    "update": "claudia update"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "claudia": "^5.13.1",
+    "claudia-api-builder": "^4.1.2",
+    "claudia-bot-builder": "^4.5.0"
+  }
+}

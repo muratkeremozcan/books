@@ -1,0 +1,20 @@
+{
+  "name": "pizza-fb-chatbot",
+  "version": "1.0.0",
+  "description": "A pizzeria chatbot",
+  "main": "bot.js",
+  "scripts": {
+    "update": "claudia update --cache-api-config apiConfig --no-optional-dependencies",
+    "addPolicy": "aws iam put-role-policy --role-name pizza-fb-bot-executor --policy-name PizzaBotDynamoDB --policy-document file://./roles/dynamodb.json"
+  },
+  "devDependencies": {
+    "claudia": "^2.14.3"
+  },
+  "dependencies": {
+    "claudia-bot-builder": "^2.15.0",
+    "uuid": "^3.1.0"
+  },
+  "optionalDependencies": {
+    "aws-sdk": "^2.162.0"
+  }
+}

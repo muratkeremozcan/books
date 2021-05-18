@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Capricciosa",
+    "ingredients": [
+      "tomato sauce", "mozzarella", "mushrooms", "ham", "olives"
+    ],
+    "image": "https://s3.eu-central-1.amazonaws.com/aunt-marias-pizzeria/images/capricciosa.jpg",
+    "shortCode": "CAPRI"
+  },
+  {
+    "id": 2,
+    "name": "Quattro Formaggi",
+    "ingredients": [
+      "tomato sauce", "mozzarella", "parmesan cheese", "blue cheese", "goat cheese"
+    ],
+    "image": "https://s3.eu-central-1.amazonaws.com/aunt-marias-pizzeria/images/quatro-formagi.jpg",
+    "shortCode": "FORMA"
+  },
+  {
+    "id": 3,
+    "name": "Napoletana",
+    "ingredients": [
+      "tomato sauce", "anchovies", "olives", "capers"
+    ],
+    "image": "https://s3.eu-central-1.amazonaws.com/aunt-marias-pizzeria/images/napoletana.jpg",
+    "shortCode": "NAPOL"
+  },
+  {
+    "id": 4,
+    "name": "Margherita",
+    "ingredients": [
+      "tomato sauce", "mozzarella"
+    ],
+    "image": "https://s3.eu-central-1.amazonaws.com/aunt-marias-pizzeria/images/margherita.jpg",
+    "shortCode": "MARGH"
+  }
+]

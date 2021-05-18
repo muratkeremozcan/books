@@ -1,0 +1,24 @@
+{
+  "name": "simple-react-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "create": "claudia create --handler lambda.handler --deploy-proxy-api --region eu-central-1",
+    "generate-proxy-wrapper": "claudia generate-serverless-express-proxy --express-module app",
+    "update": "claudia update --timeout 10 --set-env-from-json env.json"
+  },
+  "keywords": [],
+  "author": "Slobodan Stojanović <slobodan@cloudhorizon.com> (http://slobodan.me)",
+  "license": "MIT",
+  "dependencies": {
+    "aws-serverless-express": "^3.0.2",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongodb": "^3.0.1"
+  },
+  "devDependencies": {
+    "claudia": "^3.4.1",
+    "dotenv": "^4.0.0"
+  }
+}

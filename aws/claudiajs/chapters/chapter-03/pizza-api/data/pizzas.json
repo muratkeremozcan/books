@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Capricciosa",
+    "ingredients": [
+      "tomato sauce", "mozzarella", "mushrooms", "ham", "olives"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Quattro Formaggi",
+    "ingredients": [
+      "tomato sauce", "mozzarella", "parmesan cheese", "blue cheese", "goat cheese"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Napoletana",
+    "ingredients": [
+      "tomato sauce", "anchovies", "olives", "capers"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Margherita",
+    "ingredients": [
+      "tomato sauce", "mozzarella"
+    ]
+  }
+]
