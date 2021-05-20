@@ -5,13 +5,16 @@
   "main": "api.js",
   "scripts": {
     "create": "claudia create --region us-east-1 --handler lambda.handler",
-    "update": "claudia update --cache-api-config apiConfig"
+    "update": "claudia update --cache-api-config apiConfig",
+    "scan": "aws dynamodb scan --table-name pizza-orders --region us-east-1 --output json"
   },
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.910.0",
     "claudia": "^5.13.1",
     "claudia-api-builder": "^4.1.2",
-    "claudia-bot-builder": "^4.5.0"
+    "claudia-bot-builder": "^4.5.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "eslint": "^7.26.0",
