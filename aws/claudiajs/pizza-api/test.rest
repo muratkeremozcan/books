@@ -1,0 +1,30 @@
+@base = https://2afo7guwib.execute-api.us-east-1.amazonaws.com/latest/
+
+GET {{base}}
+###
+
+GET {{base}}/pizzas
+###
+
+GET {{base}}/pizzas/1
+###
+
+POST {{base}}/orders
+Content-Type: application/json
+
+{
+  "pizza": 5,
+  "address":" 221b Baker Street"
+}
+###
+
+PUT {{base}}/orders/4
+Content-Type: application/json
+
+{
+  "pizza": 5,
+  "address":" 221b Baker Street"
+}
+###
+
+DELETE {{base}}/orders/4
