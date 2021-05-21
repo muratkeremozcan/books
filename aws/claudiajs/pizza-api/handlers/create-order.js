@@ -22,8 +22,8 @@ function saveOrder(request) {
       return res;
     }).catch(saveError => {
       console.log(`Oops, order is not saved :(`, saveError);
-      return saveError;
-    })
+      throw saveError;
+    });
 }
 
 module.exports = saveOrder;

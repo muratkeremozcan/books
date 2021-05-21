@@ -9,6 +9,12 @@ GET {{base}}/pizzas
 GET {{base}}/pizzas/1
 ###
 
+GET {{base}}/orders
+###
+
+GET {{base}}/orders/1
+###
+
 POST {{base}}/orders
 Content-Type: application/json
 
@@ -18,13 +24,13 @@ Content-Type: application/json
 }
 ###
 
-PUT {{base}}/orders/4
+PUT {{base}}/orders/aa17e0a4-1908-40b4-a8a8-3ad8ee879bba
 Content-Type: application/json
 
 {
   "pizza": 5,
-  "address":" 221b Baker Street"
+  "address":" 1234 Sesame Street"
 }
 ###
 
-DELETE {{base}}/orders/4
+DELETE {{base}}/orders/2ab7a874-4600-4377-abb6-09ca8d6e753b
