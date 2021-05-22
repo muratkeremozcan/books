@@ -35,14 +35,15 @@ function deleteOrder(orderId) {
         }
       }).promise()
       // you can remove the following because the result will be sent directly as an api response
-    // ).then(result => {
-    //   console.log('Order is deleted', result);
-    //   return result;
-    // }).
-    // catch(deleteError => {
-    //   console.log(`Oops, order is not updated :(`, deleteError)
-    //   throw deleteError;
-    // });
+      // ).then(result => {
+      //   console.log('Order is deleted', result);
+      //   return result;
+      // }).
+      // catch(deleteError => {
+      //   console.log(`Oops, order is not updated :(`, deleteError)
+      //   throw deleteError;
+      // });
+    )
 }
 
 module.exports = deleteOrder;

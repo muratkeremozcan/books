@@ -1,20 +1,28 @@
 {
   "name": "pizza-api",
-  "version": "1.0.4",
-  "description": "Full code for the chapter 4",
+  "version": "1.0.1",
+  "description": "",
   "main": "api.js",
   "scripts": {
-    "create": "claudia create --region eu-central-1 --api-module api",
-    "update": "claudia update --cache-api-config apiConfig --no-optional-dependencies"
-  },
-  "optionalDependencies": {
-    "aws-sdk": "^2.92.0"
-  },
-  "devDependencies": {
-    "claudia": "^2.14.2"
+    "create": "claudia create --region us-east-1 --handler lambda.handler",
+    "update": "claudia update --cache-api-config apiConfig",
+    "scan": "aws dynamodb scan --table-name pizza-orders --region us-east-1 --output json"
   },
   "license": "MIT",
   "dependencies": {
-    "minimal-request-promise": "^1.4.0"
+    "aws-sdk": "^2.910.0",
+    "claudia": "^5.13.1",
+    "claudia-api-builder": "^4.1.2",
+    "claudia-bot-builder": "^4.5.0",
+    "minimal-request-promise": "^1.5.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-promise": "^5.1.0"
   }
 }
