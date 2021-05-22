@@ -1,5 +1,7 @@
 @base = https://2afo7guwib.execute-api.us-east-1.amazonaws.com/latest/
 
+@someLikeItHotApi = https://2afo7guwib.execute-api.us-east-1.amazonaws.com/latest
+
 GET {{base}}
 ###
 
@@ -19,8 +21,8 @@ POST {{base}}/orders
 Content-Type: application/json
 
 {
-  "pizza": 4,
-  "address":" 221b Baker Street"
+  "pizza": 1001,
+  "address":"2767 Crawford Avenue"
 }
 ###
 
@@ -33,5 +35,13 @@ Content-Type: application/json
 }
 ###
 
-DELETE {{base}}/orders/aa17e0a4-1908-40b4-a8a8-3ad8ee879bba
+DELETE {{base}}/orders/6eec269a-9a00-468e-a134-e96575be1f5e
 ###
+
+POST {{someLikeItHotApi}}/delivery
+Content-Type: application/json
+
+{
+  "deliveryId": "28b9548b-c020-4b8c-9752-5a219ea9b3c2",
+  "status": "delivered"
+}
