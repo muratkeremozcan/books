@@ -19,7 +19,7 @@ POST {{base}}/orders
 Content-Type: application/json
 
 {
-  "pizza": 4,
+  "pizza": 5,
   "address":" 221b Baker Street"
 }
 ###
@@ -33,5 +33,4 @@ Content-Type: application/json
 }
 ###
 
-DELETE {{base}}/orders/aa17e0a4-1908-40b4-a8a8-3ad8ee879bba
-###
+DELETE {{base}}/orders/2ab7a874-4600-4377-abb6-09ca8d6e753b

@@ -1,19 +1,17 @@
-'use strict'
-
-const pizzas = require('../data/pizzas.json')
+const pizzas = require('../data/pizzas.json');
 
 function getPizzas(pizzaId) {
-  if (!pizzaId)
-    return pizzas
+  if (!pizzaId) {
+    return pizzas;
+  }
 
-  const pizza = pizzas.find((pizza) => {
-    return pizza.id == pizzaId
-  })
+  const pizza = pizzas.find(pizza => pizza.id == pizzaId);
 
-  if (pizza)
-    return pizza
+  if (!pizza) {
+    throw new Error('The pizza you requested was not found');
+  }
 
-  throw new Error('The pizza you requested was not found')
+  return pizza;
 }
 
-module.exports = getPizzas
+module.exports = getPizzas;

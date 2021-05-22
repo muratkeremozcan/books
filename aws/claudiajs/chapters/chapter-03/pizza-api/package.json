@@ -1,22 +1,27 @@
 {
   "name": "pizza-api",
-  "version": "1.0.0",
-  "description": "A pizza API, an example app from \"Serverless applications with Claudia.js\"",
+  "version": "1.0.1",
+  "description": "",
   "main": "api.js",
   "scripts": {
-    "create": "claudia create --region eu-central-1 --api-module api",
+    "create": "claudia create --region us-east-1 --handler lambda.handler",
     "update": "claudia update --cache-api-config apiConfig",
-    "putRolePolicy": "aws iam put-role-policy --role-name pizza-api-executor --policy-name PizzaApiDynamoDB --policy-document file://./roles/dynamodb.json",
-    "scan": "aws dynamodb scan --table-name pizza-orders --region eu-central-1 --output json"
+    "scan": "aws dynamodb scan --table-name pizza-orders --region us-east-1 --output json"
   },
   "license": "MIT",
   "dependencies": {
-    "claudia-api-builder": "^2.5.1"
+    "aws-sdk": "^2.910.0",
+    "claudia": "^5.13.1",
+    "claudia-api-builder": "^4.1.2",
+    "claudia-bot-builder": "^4.5.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "claudia": "^2.13.0"
-  },
-  "optionalDependencies": {
-    "aws-sdk": "^2.124.0"
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-promise": "^5.1.0"
   }
 }
