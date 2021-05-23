@@ -3,3 +3,24 @@ aws dynamodb create-table --table-name pizza-orders --attribute-definitions Attr
 
 add an IAM policy that allows your lambda function to communicate with your DB (in AWS, think of policies as a passport visa)
 aws iam put-role-policy --role-name pizza-api-executor --policy-name PizzaApiDynamoDB --policy-document file://./roles/dynamodb.json"
+
+
+Ch 5 Debugging
+find the names of the log groups
+aws logs describe-log-groups --region us-east-1
+
+run the logs filter-log-events command from your terminal and provide the “Save an order” text as a filter. (The prefix is needed in gitBash)
+MSYS_NO_PATHCONV=1 aws logs filter-log-events --filter='Save an order' --log-group-name=/aws/lambda/pizza-api --region=us-east-1 --output=json
+filter only the message
+MSYS_NO_PATHCONV=1 aws logs filter-log-events --filter='Save an order' --log-group-name=/aws/lambda/pizza-api --query='events[0].message' --region=us-east-1 --output=text    
+MSYS_NO_PATHCONV=1 aws logs filter-log-events --filter='Order is saved' --log-group-name=/aws/lambda/pizza-api --query='events[0].message' --region=us-east-1 --output=text 
+use console interface
+https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:log-groups/log-group/$252Faws$252Flambda$252Fpizza-api
+
+
+enable aws x-ray (add a policy to set the tracing mode to active)
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess --role-name pizza-api-executor --region us-east-1 --output json
+update the function configuration (update the tracing-config by setting its mode to Active)
+aws lambda update-function-configuration --function-name pizza-api --tracing-config Mode=Active --region us-east-1
+use console interface (change time range as needed)
+https://console.aws.amazon.com/xray/home?region=us-east-1#/service-map?timeRange=PT30M

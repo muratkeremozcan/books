@@ -1,7 +1,10 @@
-const AWS = require('aws-sdk');
+const AWSXRay = require('aws-xray-sdk-core');
+const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 function updateOrder(orderId, options) {
+  console.log('Update an order', orderId);
+
   if (!options || !options.pizza || !options.address) {
     throw new Error('Both pizza and address are required to update an order');
   }

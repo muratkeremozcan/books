@@ -1,7 +1,10 @@
-const AWS = require('aws-sdk');
+const AWSXRay = require('aws-xray-sdk-core');
+const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 function getOrders(orderId) {
+  console.log('Get order(s)', orderId);
+
   if (typeof orderId === 'undefined') {
     return docClient.scan({
       TableName: 'pizza-orders'

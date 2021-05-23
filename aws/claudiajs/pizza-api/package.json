@@ -11,6 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.910.0",
+    "aws-xray-sdk-core": "^3.3.3",
     "claudia": "^5.13.1",
     "claudia-api-builder": "^4.1.2",
     "claudia-bot-builder": "^4.5.0",

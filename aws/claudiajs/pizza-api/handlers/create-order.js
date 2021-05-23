@@ -1,5 +1,6 @@
 // The easiest way to communicate with DynamoDB from Node is to use the aws-sdk and DocumentClient class
-const AWS = require('aws-sdk');
+const AWSXRay = require('aws-xray-sdk-core'); // To be able to see other AWS services supported by X-Ray, you’ll need to wrap the AWS SDK for Node.js in the aws-xray-sdk-core module.
+const AWS = AWSXRay.captureAWS(require('aws-sdk')); // wrap the aws-sdk module in the AWSXRay.captureAWS command
 const docClient = new AWS.DynamoDB.DocumentClient();
 // const { v4: uuid } = require('uuid'); // used in ch3
 const rp = require('minimal-request-promise'); // minimal promise based api for http requests
@@ -9,6 +10,8 @@ const rp = require('minimal-request-promise'); // minimal promise based api for 
  * But you need to add a delivery ID to the database, so you can update the status of the order when your webhook receives the data.
 */
 function createOrder(request) {
+  console.log('Save an order', request); // log the request with a prefix text for CloudWatch logs
+
   if (!request || !request.pizza || !request.address) {
     throw new Error('To order pizza please provide pizza type and address where pizza should be delivered')
   }

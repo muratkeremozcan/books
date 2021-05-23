@@ -1,10 +1,12 @@
-
-const AWS = require('aws-sdk');
+const AWSXRay = require('aws-xray-sdk-core');
+const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 /** a webhook is a simple API endpoint that accepts POST requests. 
  There are two things you need to do: Create a route handler for the webhook, Create a route called /delivery that accepts POST requests */
 function updateDeliveryStatus(request) {
+  console.log('Update delivery status', request);
+
   if (!request.deliveryId || !request.status) {
     throw new Error('Status and delivery ID are required')
   }
