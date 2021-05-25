@@ -14,7 +14,7 @@ GET {{base}}/pizzas/1
 GET {{base}}/orders
 ###
 
-GET {{base}}/orders/6772b8c1-26c6-43c5-93b9-a6ec75d22353
+GET {{base}}/orders/1
 ###
 
 POST {{base}}/orders
@@ -26,7 +26,7 @@ Content-Type: application/json
 }
 ###
 
-PUT {{base}}/orders/6772b8c1-26c6-43c5-93b9-a6ec75d22353
+PUT {{base}}/orders/aa17e0a4-1908-40b4-a8a8-3ad8ee879bba
 Content-Type: application/json
 
 {
@@ -35,7 +35,7 @@ Content-Type: application/json
 }
 ###
 
-DELETE {{base}}/orders/95756110-d151-40a0-ae6c-2bfaa9184bed
+DELETE {{base}}/orders/406bbdca-2346-4cbe-8389-18c5d85e9e34
 ###
 
 POST {{someLikeItHotApi}}/delivery
@@ -45,7 +45,3 @@ Content-Type: application/json
   "deliveryId": "28b9548b-c020-4b8c-9752-5a219ea9b3c2",
   "status": "delivered"
 }
-###
-
-GET {{someLikeItHotApi}}/upload-url
-###

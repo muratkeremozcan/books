@@ -68,11 +68,11 @@ api.post('delivery', (request) => {
 api.get('upload-url', (request) => {
   return getSignedUrl()
 },
-{
-  error: 400
-},
-{
-  cognitoAuthorizer: 'userAuthentication'
-})
+  {
+    error: 400
+  },
+  {
+    cognitoAuthorizer: 'userAuthentication'
+  })
 
 module.exports = api

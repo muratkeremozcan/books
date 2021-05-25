@@ -7,6 +7,7 @@ const createOrder = require('./handlers/create-order')
 const updateOrder = require('./handlers/update-order')
 const deleteOrder = require('./handlers/delete-order')
 const updateDeliveryStatus = require('./handlers/update-delivery-status');
+const getSignedUrl = require('./handlers/generate-presigned-url.js')
 
 api.get('/', () => 'Welcome to Pizza API');
 
@@ -41,39 +42,8 @@ api.post('/delivery', request => updateDeliveryStatus(request.body), {
   error: 400
 })
 
+api.get('/upload-url', () => getSignedUrl(), {
+  error: 400
+})
+
 module.exports = api;
-
-// to deploy: claudia create --region us-east-1 --api-module api
-// to update: claudia update --cache-api-config apiConfig
-// to test: https://2afo7guwib.execute-api.us-east-1.amazonaws.com/latest/pizzas
-
-/*
-created a user with very high policies:
-IAMFullAccess
-AmazonS3FullAccess
-AmazonAPIGatewayPushToCloudWatchLogs
-AmazonDynamoDBFullAccess
-AmazonAPIGatewayAdministrator
-AWSCodeDeployRoleForCloudFormation
-AWSCloudFormationFullAccess
-AWSLambda_FullAccess
-claudia (custom policy)
-
-the custom policy is saved in the root as customPolicyForAws.json
-
-after the deploy the response is
-
-{
-  "lambda": {
-    "role": "pizza-api-executor",
-    "name": "pizza-api",
-    "region": "us-east-1"
-  },
-  "api": {
-    "id": "2afo7guwib",
-    "module": "api",
-    "url": "https://2afo7guwib.execute-api.us-east-1.amazonaws.com/latest"
-  }
-}
-
-*/

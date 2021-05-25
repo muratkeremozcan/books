@@ -2,7 +2,6 @@
 const AWSXRay = require('aws-xray-sdk-core'); // To be able to see other AWS services supported by X-Ray, you’ll need to wrap the AWS SDK for Node.js in the aws-xray-sdk-core module.
 const AWS = AWSXRay.captureAWS(require('aws-sdk')); // wrap the aws-sdk module in the AWSXRay.captureAWS command
 const docClient = new AWS.DynamoDB.DocumentClient();
-// const { v4: uuid } = require('uuid'); // used in ch3
 const rp = require('minimal-request-promise'); // minimal promise based api for http requests
 
 
