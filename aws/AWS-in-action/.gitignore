@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+dump.rdb
+credentials
+mykey.pem
+mykey.ppk
+mykey.*
