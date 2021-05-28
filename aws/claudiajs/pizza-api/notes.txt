@@ -74,7 +74,7 @@ aws cognito-idp create-user-pool-client --user-pool-id us-east-1_aOaQgtBE0 --cli
 
 user pool id : us-east-1_aOaQgtBE0
 app client id: 7acbnu6n8ed3gbe32s09b9nkdh
-fb app id :  466919884079273
+facebook app id :  466919884079273
 
 create an identity pool (will allow you to integrate Facebook login, and give you temporary access to your Cognito user pool w/o hard coding your AWS access token and secret in the front-end) 
 aws cognito-identity create-identity-pool --identity-pool-name Pizzeria --allow-unauthenticated-identities --supported-login-providers graph.facebook.com=466919884079273 --cognito-identity-providers ProviderName=arn:aws:cognito-idp:us-east-1:721520867440:userpool/us-east-1_aOaQgtBE0 ClientId=7acbnu6n8ed3gbe32s09b9nkdh,ServerSideTokenCheck=false --query IdentityPoolId --output text

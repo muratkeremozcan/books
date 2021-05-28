@@ -6,7 +6,9 @@
   "scripts": {
     "create": "claudia create --region us-east-1 --handler lambda.handler",
     "update": "claudia update --cache-api-config apiConfig",
-    "scan": "aws dynamodb scan --table-name pizza-orders --region us-east-1 --output json"
+    "scan": "aws dynamodb scan --table-name pizza-orders --region us-east-1 --output json",
+    "test": "node spec/support/jasmine-runner.js",
+    "debug": "node debug spec/support/jasmine-runner.js"
   },
   "license": "MIT",
   "dependencies": {
@@ -20,11 +22,15 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "dotenv": "^10.0.0",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-promise": "^5.1.0"
+    "eslint-plugin-promise": "^5.1.0",
+    "fake-http-request": "^1.4.0",
+    "jasmine": "^3.7.0",
+    "jasmine-spec-reporter": "^7.0.0"
   }
 }
