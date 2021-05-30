@@ -9,7 +9,7 @@
   "dependencies": {
     "cors": "^2.8.4",
     "express": "^4.16.2",
-    "ws": "^6.1.2"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "@types/cors": "^2.8.3",
