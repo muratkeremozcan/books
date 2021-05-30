@@ -1,17 +1,19 @@
 // The easiest way to communicate with DynamoDB from Node is to use the aws-sdk and DocumentClient class
 
-const AWSXRay = require('aws-xray-sdk-core'); // To be able to see other AWS services supported by X-Ray, you’ll need to wrap the AWS SDK for Node.js in the aws-xray-sdk-core module.
-const AWS = AWSXRay.captureAWS(require('aws-sdk')); // wrap the aws-sdk module in the AWSXRay.captureAWS command
+// const AWSXRay = require('aws-xray-sdk-core'); // To be able to see other AWS services supported by X-Ray, you’ll need to wrap the AWS SDK for Node.js in the aws-xray-sdk-core module.
+// const AWS = AWSXRay.captureAWS(require('aws-sdk')); // wrap the aws-sdk module in the AWSXRay.captureAWS command
+
+const AWS = require('aws-sdk');
 const rp = require('minimal-request-promise'); // minimal promise based api for http requests
 
 /** needs to send a POST request to the Some Like It Hot Delivery API, wait for its response, and then save the pizza order to the database.
  * But you need to add a delivery ID to the database, so you can update the status of the order when your webhook receives the data.
 */
 function createOrder(request, tableName = 'pizza-orders') {
-  console.log('Save an order', request); // log the request with a prefix text for CloudWatch logs
+  // console.log('Save an order', request); // log the request with a prefix text for CloudWatch logs
 
   const docClient = new AWS.DynamoDB.DocumentClient({
-    region: process.env.AWS_DEFAULT_REGION
+    region: 'us-east-1'
   });
 
   if (!request || !request.pizza || !request.address) {
@@ -49,6 +51,7 @@ function createOrder(request, tableName = 'pizza-orders') {
       docClient.put({ // Save the data to the DynamoDB table
         TableName: tableName,
         Item: {
+          cognitoUsername: request.address['cognito:username'],
           orderId: response.deliveryId, // Because the delivery ID is unique, you can use it instead of generating a new one with the uuid module
           pizza: request.pizza,
           address: request.address,
