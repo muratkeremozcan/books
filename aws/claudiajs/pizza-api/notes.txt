@@ -38,7 +38,7 @@ after the deploy the response is
 
 
 ch 3 create DynamoDB table
-aws dynamodb create-table --table-name pizza-orders --attribute-definitions AttributeName=orderId,AttributeType=S --key-schema AttributeName=orderId,KeyType=HASH --provisioned-throughput ReadCapacityUnits =1,WriteCapacityUnits=1 --region eu-central-1 --query TableDescription.TableArn --output json
+aws dynamodb create-table --table-name pizza-orders --attribute-definitions AttributeName=orderId,AttributeType=S --key-schema AttributeName=orderId,KeyType=HASH --provisioned-throughput ReadCapacityUnits =1,WriteCapacityUnits=1 --region us-east-1 --query TableDescription.TableArn --output json
 
 add an IAM policy that allows your lambda function to communicate with your DB (in AWS, think of policies as a passport visa)
 aws iam put-role-policy --role-name pizza-api-executor --policy-name PizzaApiDynamoDB --policy-document file://./roles/dynamodb.json"

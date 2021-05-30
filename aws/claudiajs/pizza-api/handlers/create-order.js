@@ -1,15 +1,18 @@
 // The easiest way to communicate with DynamoDB from Node is to use the aws-sdk and DocumentClient class
+
 const AWSXRay = require('aws-xray-sdk-core'); // To be able to see other AWS services supported by X-Ray, you’ll need to wrap the AWS SDK for Node.js in the aws-xray-sdk-core module.
 const AWS = AWSXRay.captureAWS(require('aws-sdk')); // wrap the aws-sdk module in the AWSXRay.captureAWS command
-const docClient = new AWS.DynamoDB.DocumentClient();
 const rp = require('minimal-request-promise'); // minimal promise based api for http requests
-
 
 /** needs to send a POST request to the Some Like It Hot Delivery API, wait for its response, and then save the pizza order to the database.
  * But you need to add a delivery ID to the database, so you can update the status of the order when your webhook receives the data.
 */
-function createOrder(request) {
+function createOrder(request, tableName = 'pizza-orders') {
   console.log('Save an order', request); // log the request with a prefix text for CloudWatch logs
+
+  const docClient = new AWS.DynamoDB.DocumentClient({
+    region: process.env.AWS_DEFAULT_REGION
+  });
 
   if (!request || !request.pizza || !request.address) {
     throw new Error('To order pizza please provide pizza type and address where pizza should be delivered')
@@ -44,7 +47,7 @@ function createOrder(request) {
     .then(rawResponse => JSON.parse(rawResponse.body)) // Parse the response body, because it’s returned as a string
     .then(response =>
       docClient.put({ // Save the data to the DynamoDB table
-        TableName: 'pizza-orders',
+        TableName: tableName,
         Item: {
           orderId: response.deliveryId, // Because the delivery ID is unique, you can use it instead of generating a new one with the uuid module
           pizza: request.pizza,
