@@ -88,4 +88,46 @@ This architecture allows you to test the integration of API requests and DynamoD
 without worrying how your service interacts with DynamoDB or the delivery service.
 Even if DynamoDB completely changes its API or you change from DynamoDB to some other AWS database service,
 your handler’s core will not change, just the DynamoOrderRepository object will.
+
+To implement this architecture, you would need to break your createOrder handler into several functions.
+KEY: everything that is interfacing with the DB would be in its own module called orderRepository.
+Instead of directly communicating with the AWS DynamoDB DocumentClient, you would call the put on orderRepository.
+You would need to pass the orderRepository as an additional parameter into your createOrder function.
+
+ .then(rawResponse => JSON.parse(rawResponse.body))
+ .then(response => orderRepository.createOrder({
+          cognitoUsername: request.address['cognito:username'],
+          orderId: response.deliveryId,
+          pizza: request.body.pizza,
+          address: request.address,
+          orderStatus: 'pending'
+        })
+      ).promise()
+    })
+
+
+order-repository.js
+
+var AWS = require('aws-sdk')
+
+module.exports = function orderRepository() {
+  var self = this
+  const tableName = 'pizza-orders',
+    docClient = new AWS.DynamoDB.DocumentClient({
+      region: process.env.AWS_DEFAULT_REGION
+    })
+  self.createOrder = function (orderData) {
+    return docClient.put({
+        TableName: tableName,
+        Item: {
+          cognitoUsername: orderData.cognitoUsername,
+          orderId: orderData.orderId,
+          pizza: orderData.pizza,
+          address: orderData.address,
+          orderStatus: orderData.orderStatus
+        }
+    })
+  }
+}
+
 */
