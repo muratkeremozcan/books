@@ -19,7 +19,7 @@ describe('Create order handler', () => {
   beforeEach(() => {
     fakeHttpRequest.install('https'); // needed to use the fakeHttpRequest module
 
-    // mock the DB
+    // KEY: mock the DB
     docClientMock = jasmine.createSpyObj('docClient', {
       put: { promise: Promise.resolve.bind(Promise) },
       configure() { }

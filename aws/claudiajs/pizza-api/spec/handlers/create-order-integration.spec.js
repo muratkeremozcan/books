@@ -1,6 +1,6 @@
-// in the integration test the intent is to see if successful lambda calls are saving orders to the db
+// in the integration test the intent is to see if successful lambda calls would save orders to the db
 // we can make mock calls, and still be able to check if real db entries are being created
-// the only thing this is missing from an e2e test is that the lambda isn not being called
+// the only thing this missing from an e2e test is that the lambda isn not being called
 
 const createOrder = require('../../handlers/create-order');
 // mock http requests
@@ -19,14 +19,15 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000; // crudding dynamoDB can take time, so
 
 
 describe('Create order (integration)', () => {
-  // you need to create a DynamoDB table before all tests using Jasmine’s beforeAll function.
+  // KEY: you need to create a DynamoDB table before all tests using Jasmine’s beforeAll function.
+
   // Keep in mind that the creation of a DynamoDB table is asynchronous, so you’ll need to use the done callback to tell Jasmine when the operation is finished. 
 
   // You can use the createTable method from the DynamoDB class for this. 
   // It needs to have the same key definitions as your pizza-orders table, which means that it needs to have orderId as a hash key. 
 
   // Because the createTable promise will resolve before the DynamoDB table is ready, 
-  // ou can use the waitFor method of the AWS SDK’s DynamoDB class to be sure that the table exists before invoking the Jasmine done callback.
+  // you can use the waitFor method of the AWS SDK’s DynamoDB class to be sure that the table exists before invoking the Jasmine done callback.
 
   beforeAll((done) => {
     // similar to the CLI command in ch3
@@ -87,9 +88,10 @@ describe('Create order (integration)', () => {
           TableName: tableName
         }).promise()
           .then(result => {
+            console.log(result);
+            expect(result.Item.pizza.N).toBe('1')
             expect(result.Item.address.S).toBe('221b Baker Street')
             expect(result.Item.orderId.S).toBe('1234')
-            expect(result.Item.pizza.N).toBe('1')
             done()
           }).catch(done.fail)
       }).catch(done.fail)
