@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+}
+
+h1 {
+  color: #71c8e7;
+  font-family: sans-serif;
+  text-align: center;
+  text-shadow: 1px 2px 0px #00a3da;
+}
+
+img {
+  display: block;
+  margin: 40px auto;
+  width: 80%;
+  max-width: 400px;
+}
+

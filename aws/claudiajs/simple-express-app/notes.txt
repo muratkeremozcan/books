@@ -1,0 +1,10 @@
+generate a wrapper for the express app; generates a file named lambda.js which is a wrapper that runs your Express.js app in AWS Lambda.
+claudia generate-serverless-express-proxy --express-module app
+
+create the lambda fn: need to invoke it with the --handler option instead of --api-module, and also with --deploy-proxy-api. 
+This will set up a proxy integration, which means that all requests to API Gateway will be passed directly to your Lambda function.
+claudia create --handler lambda.handler --deploy-proxy-api --region us-east-1
+in addition to this, on the API Gateway dashboard choose Resources, click Actions and choose Deploy API.
+Before your first deployment the only response you'll get is the {"message":"Forbidden"}.
+https://k4liwn96z8.execute-api.us-east-1.amazonaws.com/latest/
+https://k4liwn96z8.execute-api.us-east-1.amazonaws.com/latest/static/

@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "simple-express-app-executor",
+    "name": "simple-express-app",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "k4liwn96z8"
+  }
+}
