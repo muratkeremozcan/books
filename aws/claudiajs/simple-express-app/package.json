@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "create": "claudia create --handler lambda.handler --deploy-proxy-api --region us-east-1",
-    "update": "claudia update --timeout 10",
+    "update": "claudia update --set-env-from-json env.json",
     "generate-proxy-wrapper": "claudia generate-serverless-express-proxy --express-module app"
   },
   "author": "",

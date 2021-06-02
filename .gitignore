@@ -66,3 +66,5 @@ Thumbs.db
 */mykey*
 /aws/AWS-in-action/mykeypem
 /aws/AWS-in-action/mykeyppk
+
+**/mongonotes

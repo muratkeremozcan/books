@@ -1,0 +1,16 @@
+@base = https://k4liwn96z8.execute-api.us-east-1.amazonaws.com/latest/
+
+GET {{base}}
+###
+
+GET {{base}}/orders
+###
+
+POST {{base}}/orders
+
+{
+  "address": "1234 Sesame St"
+}
+###
+
+DELETE {{base}}/orders/60b7709c110c1a0008c56e66
