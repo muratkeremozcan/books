@@ -86,7 +86,7 @@ describe('Create order handler', () => {
         .catch(done.fail)
     });
 
-    it('should not call the DynamoDB DocumentClient.put if Some Like It Hot delivery API request was successful', (done) => {
+    it('should not call the DynamoDB DocumentClient.put if Some Like It Hot delivery API request was unsuccessful', (done) => {
       https.request.pipe(() => https.request.calls[0].respond(500, 'Server Error', '{}'));
 
       createOrder(payload)
