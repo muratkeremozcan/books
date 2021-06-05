@@ -1,0 +1,12 @@
+{
+  "name": "murat-service",
+  "version": "1.0.0",
+  "description": "Packaged externals for murat-service",
+  "private": true,
+  "scripts": {},
+  "dependencies": {
+    "source-map-support": "^0.5.19",
+    "@middy/core": "^1.5.2",
+    "@middy/http-json-body-parser": "^1.5.2"
+  }
+}

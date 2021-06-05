@@ -29,6 +29,8 @@ const serverlessConfiguration: AWS = {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
+    // you can add environment variable configuration to a specific function using an environment object
+    // This object should contain a key-value pairs of string to string
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
     },
