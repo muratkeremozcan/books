@@ -1,0 +1,12 @@
+@baseUrl = https://a1rvw6sn9d.execute-api.us-east-1.amazonaws.com/dev/
+
+
+POST {{baseUrl}}/hello
+Content-Type: application/json
+
+{ 
+  "name": "Murat" 
+}
+###
+
+GET {{baseUrl}}/todos

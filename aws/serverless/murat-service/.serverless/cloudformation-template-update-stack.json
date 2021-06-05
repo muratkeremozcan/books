@@ -167,7 +167,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/murat-service/dev/1618494406713-2021-04-15T13:46:46.713Z/murat-service.zip"
+          "S3Key": "serverless/murat-service/dev/1622893955455-2021-06-05T11:52:35.455Z/murat-service.zip"
         },
         "Handler": "src/functions/hello/handler.main",
         "Runtime": "nodejs14.x",
@@ -197,7 +197,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/murat-service/dev/1618494406713-2021-04-15T13:46:46.713Z/murat-service.zip"
+          "S3Key": "serverless/murat-service/dev/1622893955455-2021-06-05T11:52:35.455Z/murat-service.zip"
         },
         "Handler": "src/functions/todos/handler.main",
         "Runtime": "nodejs14.x",
@@ -220,24 +220,24 @@
         "TodosLogGroup"
       ]
     },
-    "HelloLambdaVersionIcg0NsFVQza1t5lRMjdYikyCGtEjhnxMCwyabnwi5wo": {
+    "HelloLambdaVersionPKe6T8zHOJZpjF9XwtNQUtcMF01kl9i2L5oyhXDp2w": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "HelloLambdaFunction"
         },
-        "CodeSha256": "lGM3wNa8FU4XD/dUklh2cYsAjgzxgRj04GVZtu7jri0="
+        "CodeSha256": "MxaRh9+HQUouIDQ49JPk1lMw1miMn8KDc9OaIH081DQ="
       }
     },
-    "TodosLambdaVersionKVxJZujaq0IeT8FjQ1ghQK0fegwJrswWBRxpGi5Ci8": {
+    "TodosLambdaVersionEHI0OKCnVxg8JJHSRlpDBTgeHyxIbSdzgNBmJ7LopY": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "TodosLambdaFunction"
         },
-        "CodeSha256": "lGM3wNa8FU4XD/dUklh2cYsAjgzxgRj04GVZtu7jri0="
+        "CodeSha256": "MxaRh9+HQUouIDQ49JPk1lMw1miMn8KDc9OaIH081DQ="
       }
     },
     "ApiGatewayRestApi": {
@@ -407,7 +407,7 @@
         "ValidateRequestParameters": true
       }
     },
-    "ApiGatewayDeployment1618494311342": {
+    "ApiGatewayDeployment1622893936890": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -504,13 +504,13 @@
     "HelloLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "HelloLambdaVersionIcg0NsFVQza1t5lRMjdYikyCGtEjhnxMCwyabnwi5wo"
+        "Ref": "HelloLambdaVersionPKe6T8zHOJZpjF9XwtNQUtcMF01kl9i2L5oyhXDp2w"
       }
     },
     "TodosLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "TodosLambdaVersionKVxJZujaq0IeT8FjQ1ghQK0fegwJrswWBRxpGi5Ci8"
+        "Ref": "TodosLambdaVersionEHI0OKCnVxg8JJHSRlpDBTgeHyxIbSdzgNBmJ7LopY"
       }
     },
     "ServiceEndpoint": {
