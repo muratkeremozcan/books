@@ -1,0 +1,254 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: learning-serverless-resizer-service # NOTE: update this with your service name
+
+plugins:
+  - serverless-step-functions
+  - serverless-pseudo-parameters
+
+custom:
+  settings:
+    IMAGES_DYNAMODB_TABLE: images-metadata
+    APPLICATION_DYNAMODB_TABLE: applications-table
+    SECRET_KEY: ${ssm:learning-serverless-secret-token}
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  profile: student1
+  region: us-east-1 #N.Virginia
+  environment: ${self:custom.settings}
+  apiKeys:
+    - learning-serverless-api-key
+  usagePlan:
+    quota:
+      limit: 1000
+      offset: 0
+      period: DAY
+    throttle:
+      burstLimit: 10
+      rateLimit: 10
+
+# you can overwrite defaults here
+#  stage: dev
+#  region: us-east-1
+
+# you can add statements to the Lambda function's IAM Role here
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+        - "s3:GetObject"
+        - "s3:PutObject"
+      Resource: "arn:aws:s3:::learning-serverless-resizer-service-images/*"
+    - Effect: "Allow"
+      Action:
+        - "states:ListStateMachines"
+        - "states:StartExecution"
+      Resource: "arn:aws:states:*:*:*"
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:Scan"
+        - "dynamodb:GetItem"
+        - "dynamodb:PutItem"
+        - "dynamodb:UpdateItem"
+        - "dynamodb:DeleteItem"
+        - "dynamodb:ListStreams"
+      Resource:
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.settings.IMAGES_DYNAMODB_TABLE}"
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:GetItem"
+        - "dynamodb:PutItem"
+      Resource:
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.settings.APPLICATION_DYNAMODB_TABLE}"
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
+# you can add packaging information here
+#package:
+#  include:
+#    - include-me.js
+#    - include-me-dir/**
+#  exclude:
+#    - exclude-me.js
+#    - exclude-me-dir/**
+
+functions:
+  executeStepFunction:
+    handler: handler.executeStepFunction
+    events:
+      - s3:
+          bucket: learning-serverless-resizer-service-images
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploads/
+            - suffix: .jpg
+  resizer:
+    handler: handler.resizer
+  saveImageMetadata:
+    handler: handler.saveImageMetadata
+  blackAndWhiteCrop:
+    handler: handler.blackAndWhiteCrop
+  thumbnails:
+    handler: handler.thumbnails
+    events:
+      - s3:
+          bucket: learning-serverless-resizer-service-images
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: thumbnails/
+            - suffix: .jpg
+  updateImageMetadata:
+    handler: handler.updateImageMetadata
+    events:
+       - stream:
+          type: dynamodb
+          batchSize: 1
+          startingPosition: LATEST
+          arn:
+            Fn::GetAtt:
+              - ImagesTable
+              - StreamArn
+  getImageMetadata:
+    handler: handler.getImageMetadata
+    events:
+      - http:
+          path: image/{imageId}
+          method: get
+          authorizer: authorize
+  getThumbnailMetadata:
+    handler: handler.getThumbnailMetadata
+    events:
+      - http:
+          path: thumbnail/{imageId}
+          method: get
+          authorizer: authorize
+  generateToken:
+    handler: authorizationHandler.generateToken
+    events:
+      - http:
+          path: register
+          method: post
+          private: true
+  authorize:
+    handler: authorizationHandler.authorize
+  createApplication:
+    handler: authorizationHandler.createApplication
+    events:
+      - http:
+          path: application
+          method: post
+
+stepFunctions:
+  stateMachines:
+    imageProcessingMachine: #Name of the state machine
+      definition:
+        Comment: "Image processing state machine"
+        StartAt: Parallel # First state
+        States:
+          Parallel: # Name of the first state
+            Type: Parallel # Type of the state
+            Next: FinalState # Name of the next state
+            Branches: # Branches in the parallel state machine
+              - StartAt: ResizeImage
+                States:
+                  ResizeImage:
+                    Type: Task
+                    Resource: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${opt:stage}-resizer
+                    End: true
+              - StartAt: SaveImageMetadata
+                States:
+                  SaveImageMetadata:
+                    Type: Task
+                    Resource: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${opt:stage}-saveImageMetadata
+                    End: true
+              - StartAt: BlackAndWhiteCrop
+                States:
+                  BlackAndWhiteCrop:
+                    Type: Task
+                    Resource: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${opt:stage}-blackAndWhiteCrop
+                    End: true
+          FinalState: # Final state name
+            Type: Pass
+            End: true
+
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+#    events:
+#      - http:
+#          path: users/create
+#          method: get
+#      - s3: ${env:BUCKET}
+#      - schedule: rate(10 minutes)
+#      - sns: greeter-topic
+#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
+#      - alexaSkill
+#      - iot:
+#          sql: "SELECT * FROM 'some_topic'"
+#      - cloudwatchEvent:
+#          event:
+#            source:
+#              - "aws.ec2"
+#            detail-type:
+#              - "EC2 Instance State-change Notification"
+#            detail:
+#              state:
+#                - pending
+#      - cloudwatchLog: '/aws/lambda/hello'
+#      - cognitoUserPool:
+#          pool: MyUserPool
+#          trigger: PreSignUp
+
+#    Define function environment variables here
+#    environment:
+#      variable2: value2
+
+resources:
+  Resources:
+    ImagesTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+        - AttributeName: "imageId"
+          AttributeType: "S"
+        KeySchema:
+        - AttributeName: "imageId"
+          KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.settings.IMAGES_DYNAMODB_TABLE}
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE
+    ApplicationsTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+        - AttributeName: "applicationId"
+          AttributeType: "S"
+        KeySchema:
+        - AttributeName: "applicationId"
+          KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.settings.APPLICATION_DYNAMODB_TABLE}
