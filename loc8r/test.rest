@@ -1,0 +1,10 @@
+@base = http://localhost:3000
+
+GET {{base}}
+###
+
+GET {{base}}/api/locations/1234
+###
+
+GET {{base}}/api/locations/1234/reviews/5678
+###
