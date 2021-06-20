@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { EmployeeListComponent } from './employee-list.component';
+import { NameInputComponent } from './name-input/name-input.component';
+import { ListComponent } from './list/list.component';
 
 @NgModule({
   imports: [
@@ -24,6 +26,6 @@ import { EmployeeListComponent } from './employee-list.component';
   exports: [
     EmployeeListComponent
   ],
-  declarations: [EmployeeListComponent]
+  declarations: [EmployeeListComponent, NameInputComponent, ListComponent]
 })
 export class EmployeeListModule {}
