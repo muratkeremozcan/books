@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+html, body {
+  height: 100%;
+  background-color: #1C4A88;
+  margin: 0;
+}
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(195, 221, 255);
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: #fff;
+}

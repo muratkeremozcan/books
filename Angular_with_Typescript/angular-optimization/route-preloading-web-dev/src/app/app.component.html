@@ -1,0 +1,22 @@
+<mat-drawer-container class="example-container" [hasBackdrop]="true">
+  <mat-drawer #drawer>
+    <ul>
+      <li><a routerLink="/" (click)="drawer.toggle();">Home</a></li>
+      <li><a routerLink="/about" (click)="drawer.toggle();">About</a></li>
+    </ul>
+  </mat-drawer>
+  <mat-drawer-content>
+
+    <button class="hamburger hamburger--slider" [class.is-active]="drawer.opened" type="button" (click)="drawer.toggle();">
+      <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+      </span>
+    </button>
+
+    <router-outlet>
+      <span class="loader" *ngIf="loading"></span>
+    </router-outlet>
+
+  </mat-drawer-content>
+</mat-drawer-container>
+
