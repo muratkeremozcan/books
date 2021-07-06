@@ -1,0 +1,24 @@
+{
+  "name": "04-web-spider-v2",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=14"
+  },
+  "engineStrict": true,
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "mkdirp": "^0.5.5",
+    "slug": "^1.1.0",
+    "superagent": "^5.2.2"
+  },
+  "devDependencies": {}
+}

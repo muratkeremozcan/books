@@ -1,0 +1,18 @@
+{
+  "name": "02-pubsub-chat-redis",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "ws": "^7.2.3",
+    "serve-handler": "^6.1.2",
+    "ioredis": "^4.16.3"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "engineStrict": true
+}

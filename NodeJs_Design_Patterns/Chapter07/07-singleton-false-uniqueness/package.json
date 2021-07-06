@@ -1,0 +1,15 @@
+{
+  "name": "07-singleton-false-uniqueness",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preinstall": "echo 'npm install would overwrite the code samples in node_modules. Exiting.'; exit 1"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=14"
+  },
+  "engineStrict": true
+}
