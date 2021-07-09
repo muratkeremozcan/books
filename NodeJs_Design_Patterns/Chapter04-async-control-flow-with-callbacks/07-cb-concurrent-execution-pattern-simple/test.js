@@ -35,3 +35,8 @@ function finish () {
   // all the tasks completed
   console.log('All tasks executed!')
 }
+
+/* problem with this
+When we have multiple tasks running in parallel, 
+we might have race conditions, that is, contention to access external resources (for example, files or records in a database).
+*/
