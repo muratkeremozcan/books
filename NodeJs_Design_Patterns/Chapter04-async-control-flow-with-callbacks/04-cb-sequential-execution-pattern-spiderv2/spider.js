@@ -5,7 +5,7 @@ import mkdirp from 'mkdirp'
 import { urlToFilename, getPageLinks } from './utils.js'
 
 // what happens if we want to execute an asynchronous operation for each item in a collection? 
-// In cases such as this, we can't hardcode the task sequence anymore; instead, we have to build it dynamically.
+// In cases such as this, we can't hard code the task sequence anymore; instead, we have to build it dynamically.
 
 
 function saveFile (filename, contents, cb) {
