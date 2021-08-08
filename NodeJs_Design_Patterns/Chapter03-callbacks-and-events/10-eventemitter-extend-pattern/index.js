@@ -1,11 +1,6 @@
 import { EventEmitter } from 'events'
 import { readFile } from 'fs'
 
-// (3.4) Making any object observable In the Node.js world
-// the EventEmitter is rarely used on its own, instead it is more common to see it extended by other classes.
-// In practice, this enables any class to inherit the capabilities of the EventEmitter, hence becoming an observable object.
-
-
 class FindRegex extends EventEmitter {
   constructor (regex) {
     super()

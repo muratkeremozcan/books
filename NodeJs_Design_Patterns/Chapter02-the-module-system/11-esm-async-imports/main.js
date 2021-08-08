@@ -10,7 +10,7 @@ if (!SUPPORTED_LANGUAGES.includes(selectedLanguage)) {
 // (2.2) dynamic imports happen async, so we can use the then() hook
 // to get notified when the module is ready to be used
 const translationModule = `./strings-${selectedLanguage}.js` // ①
-import(translationModule) // ②
-  .then((strings) => { // ③
+import(translationModule)
+  .then((strings) => {
     console.log(strings.HELLO)
   })

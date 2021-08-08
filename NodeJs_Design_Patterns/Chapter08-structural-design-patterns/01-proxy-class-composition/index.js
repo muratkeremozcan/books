@@ -48,7 +48,7 @@ class SafeCalculator {
     if (divisor === 0) {
       throw Error('Division by 0')
     }
-    // if valid delegates to the subject
+    // if valid, delegates to the subject
     return this.calculator.divide()
   }
 

@@ -2,20 +2,7 @@ import { EventEmitter } from 'events'
 import { readFile } from 'fs'
 
 /*
- (3.3) The Observer pattern defines an object (called subject) that can notify a set of observers (or listeners) when a change in its state occurs. 
- The main difference from the Callback pattern is that the subject can actually notify multiple observers, 
- while a traditional CPS callback will usually propagate its result to only one listener, the callback.
 
- 
- The essential methods of the EventEmitter are as follows: 
-
-on(event, listener): This method allows us to register a new listener (a function) for the given event type (a string). 
-
-once(event, listener): This method registers a new listener, which is then removed after the event is emitted for the first time. 
-
-emit(event, [arg1], [...]): This method produces a new event and provides additional arguments to be passed to the listeners. 
-
-removeListener(event, listener): This method removes a listener for the specified event type.
 
 */
 
