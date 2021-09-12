@@ -1,0 +1,20 @@
+.error {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 50vw;
+    justify-content: center;
+
+    h2,
+    .message,
+    p {
+        text-align: center;
+    }
+    pre {
+        white-space: pre-wrap;
+    }
+    code {
+        background-color: darken($bg-default, 10%);
+        padding: 10px;
+        border-radius: $border-radius;
+    }
+}
