@@ -81,7 +81,7 @@ class App extends Component {
 					<div className="home">
 						<Welcome key="welcome" />
 						<div>
-							{this.state.posts.length && (
+							{this.state.posts.length > 0 && (
 								<div className="posts">
 									{this.state.posts.map(({ id }) => {
 										return (
