@@ -15,6 +15,8 @@ class Counter extends React.Component {
 
   constructor(props) {
     super(props);
+    // state is similar to default props with the exception that the data is expected to be mutated a
+    // and only available on components that inherit from React.Component.
     this.state = {
       count: 0
     };

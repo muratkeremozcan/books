@@ -3,6 +3,14 @@ const webpack = require('webpack');
 const config = require('config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+// Webpack build process included with the repository, for a few reasons:
+
+// 1. The ability to write JavaScript in many files that are output in one or a small handful of files that have automatically resolved dependencies and import order
+// 2. To optimize JavaScript by removing dead code and minifying it
+// 3. To utilize other build tools like Babel so you can write modern JavaScript that will run on older browsers
+// 4. The ability to handle and process different types of files (like SCSS or font files)
+
+
 const GLOBALS = {
     'process.env': {
         NODE_ENV: JSON.stringify(config.get('NODE_ENV')),

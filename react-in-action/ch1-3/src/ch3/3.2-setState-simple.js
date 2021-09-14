@@ -10,6 +10,7 @@ class Secret extends React.Component {
     this.state = {
       name: "top secret!"
     };
+    // Bind the onButtonClick method in the constructor so you can reference the method within render and have it point to the class instance, not definition.
     this.onButtonClick = this.onButtonClick.bind(this);
   }
   onButtonClick() {

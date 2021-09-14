@@ -9,4 +9,5 @@ import './shared/vendor';
 // NOTE: this isn't ES*-compliant/possible, but works because we use Webpack as a build tool
 import './styles/styles.scss';
 
+// call render with the main app
 render(<App />, document.getElementById('app'));
