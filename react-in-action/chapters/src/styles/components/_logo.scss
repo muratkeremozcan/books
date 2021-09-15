@@ -1,0 +1,21 @@
+// Logo =======================
+.logo {
+    cursor: pointer;
+    background-color: #fff;
+    width: $navbar-height - 15;
+    height: $navbar-height - 15;
+    line-height: $navbar-height - 15;
+    text-align: left;
+    font-weight: bold;
+    color: $blue;
+    border-radius: $border-radius;
+    padding: 2px;
+    a {
+        color: $gray;
+        text-decoration: none;
+    }
+    .logo-animate {
+        font-weight: 400;
+        opacity: 0;
+    }
+}

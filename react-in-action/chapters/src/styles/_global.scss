@@ -1,0 +1,52 @@
+// Globals ============================
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: $bg-default;
+    margin-top: $navbar-height;
+}
+
+.app {
+    .loading {
+        position: absolute;
+        top: 50vh;
+        left: 50vw;
+    }
+}
+
+// Defaults ============================
+%element-base {
+    border: $border-base;
+    border-radius: $border-radius;
+    padding: 15px;
+}
+
+.element-base {
+    @extend %element-base;
+}
+
+.load-more {
+    @extend %element-base;
+}
+
+.welcome {
+    background-color: $white;
+    border-radius: $border-radius;
+    border: $border-base;
+    margin: auto;
+    padding: 10px;
+}
+
+.img-responsive {
+    max-width: 100%;
+    height: auto;
+    border-radius: $border-radius;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
+.pull-right {
+    float: right;
+    clear: both;
+}

@@ -1,0 +1,12 @@
+{
+    "extends": ["prettier"],
+    "plugins": ["react"],
+    "parser": "babel-eslint",
+    "rules": {
+        "max-len": ["warning", 120],
+        "no-process-env": "off"
+    },
+    "env": {
+        "jest": true
+    }
+}
