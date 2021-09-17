@@ -45,13 +45,20 @@ class App extends Component {
             error: err,
         }));
     }
-    createNewPost() {
-      console.log('creating new post');
-      this.setState(prevState => {
-        return {
-          posts: orderBy(prevState.posts.concat(newPost), 'date', 'desc')
-        };
+    createNewPost(post) {
+      return API.createPost(post) //  the api is used to create the post
+        .then(res => res.json()) // we yield the
+        .then(newPost => {
+          console.log('creating new post');
+          this.setState(prevState => {
+            return {
+              posts: orderBy(prevState.posts.concat(newPost), 'date', 'desc')
+            };
+        });
       })
+      .catch(err => {
+        this.setState(() => ({ error: err }));
+      });
     }
     getPosts() {
         API.fetchPosts(this.state.endpoint)
