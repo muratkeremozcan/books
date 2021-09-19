@@ -47,7 +47,7 @@ class App extends Component {
     }
     createNewPost(post) {
       return API.createPost(post) //  the api is used to create the post
-        .then(res => res.json()) // we yield the
+        .then(res => res.json()) // we yield the response (which is what we submit via CreatePost child class component))
         .then(newPost => {
           console.log('creating new post');
           this.setState(prevState => {

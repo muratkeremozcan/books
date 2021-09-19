@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Filter from 'bad-words';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Filter from "bad-words";
 const filter = new Filter();
+import classnames from "classnames";
+
+import DisplayMap from "../map/DisplayMap";
+import LocationTypeAhead from "../map/LocationTypeAhead";
 
 // [5.1]
 // Working with forms in React: receive events from event handlers, then use data from those events to update state or props
@@ -13,72 +17,160 @@ class CreatePost extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      content: ''
-    }
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.initialState = {
+      content: "",
+      valid: false,
+      showLocationPicker: false,
+      location: {
+        lat: 34.1535641,
+        lng: -118.1428115,
+        name: null
+      },
+      locationSelected: false
+    };
+    this.state = this.initialState;
+    this.filter = new Filter();
     this.handlePostChange = this.handlePostChange.bind(this);
+    this.handleRemoveLocation = this.handleRemoveLocation.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleToggleLocation = this.handleToggleLocation.bind(this);
+    this.onLocationSelect = this.onLocationSelect.bind(this);
+    this.onLocationUpdate = this.onLocationUpdate.bind(this);
+    this.renderLocationControls = this.renderLocationControls.bind(this);
   }
 
   handlePostChange(event) {
     // event.target is a reference to the DOM element that dispatched the event (in this case textarea element)
     // grab that value and use it to set state
     const content = filter.clean(event.target.value); // this is how you start form sanitation
-    this.setState(() =>{
+    this.setState(() => {
       return {
         content,
         valid: content.length <= 280 // this is how you start form validation
       };
-    })
-    console.log('handledPostChange');
+    });
+    console.log("handledPostChange");
   }
 
-  handleSubmit(event) {
-    event.preventDefault(); // prevents page from reloading
+  // allow user to remove location from their post
+  handleRemoveLocation() {
+    this.setState(() => ({
+      locationSelected: false,
+      location: this.initialState.location
+    }));
+  }
 
+  handleSubmit() {
     if (!this.state.valid) {
       return;
+    }
+    const newPost = {
+      content: this.state.content
+    };
+
+    // when submitting a post, all location to it if present
+    if (this.state.locationSelected) {
+      newPost.location = this.state.location;
     }
 
     // [6.1]
     // make sure there is a property to work with (can make up any name for it, ex: onMurat instead of onSubmit)
     // the prop just looks like an attribute at the component instance which is at the parent: <CreatePost onSubmit../>
-    if (this.props.onSubmit) {
-      const newPost = {
-        date: Date.now(),
-        id: Date.now(), // assign a temp key, the api will create a real one for us
-        content: this.state.content
-      };
 
-      this.props.onSubmit(newPost); // call onSubmit, passed via props from the parent
+    this.props.onSubmit(newPost);
+    this.setState(() => ({
+      content: "",
+      valid: false,
+      showLocationPicker: false,
+      location: this.initialState.location,
+      locationSelected: false
+    }));
 
-      this.setState({ // reset state to initial form so user has visual que that post was submitted
-        content: '',
-        valid: null
-      });
-    }
-    else {
-      console.log('no onSubmit callback exists');
-    }
+    console.log("handleSubmit");
+  }
 
-    console.log('handleSubmit');
+  // handle a location update from the LocationTypeAhead component
+  onLocationUpdate(location) {
+    this.setState(() => ({ location }));
+  }
+
+  // handle a location update from the LocationTypeAhead component
+  onLocationSelect(location) {
+    this.setState(() => ({
+      location,
+      showLocationPicker: false,
+      locationSelected: true
+    }));
+  }
+
+  handleToggleLocation(e) {
+    e.preventDefault();
+    this.setState(state => ({ showLocationPicker: !state.showLocationPicker }));
+  }
+
+  // We can implement a "subrender" method here and not clutter the main render method with tons
+  // of conditional logic. This is a helpful pattern to explore when dealing with components that
+  // have longer render methods
+  renderLocationControls() {
+    return (
+      <div className="controls">
+        <button onClick={this.handleSubmit}>Post</button>
+        {this.state.location && this.state.locationSelected ? (
+          <button
+            onClick={this.handleRemoveLocation}
+            className="open location-indicator"
+          >
+            <i className="fa-location-arrow fa" />
+            <small>{this.state.location.name}</small>
+          </button>
+        ) : (
+          <button onClick={this.handleToggleLocation} className="open">
+            {this.state.showLocationPicker ? "Cancel" : "Add location"}{" "}
+            <i
+              className={classnames(`fa`, {
+                "fa-map-o": !this.state.showLocationPicker,
+                "fa-times": this.state.showLocationPicker
+              })}
+            />
+          </button>
+        )}
+      </div>
+    );
   }
   render() {
     return (
       <div className="create-post">
-        <button onClick={this.handleSubmit}>Post</button>
         <textarea
-          placeholder="What's on your mind?"
           value={this.state.content}
-          onChange={this.handlePostChange}>
-        </textarea>
+          onChange={this.handlePostChange}
+          placeholder="What's on your mind?"
+        />
+        {this.renderLocationControls()}
+        <div
+          className="location-picker"
+          style={{ display: this.state.showLocationPicker ? "block" : "none" }}
+        >
+          {!this.state.locationSelected && [
+            <LocationTypeAhead
+              key="LocationTypeAhead"
+              onLocationSelect={this.onLocationSelect}
+              onLocationUpdate={this.onLocationUpdate}
+            />,
+            <DisplayMap
+              key="DisplayMap"
+              displayOnly={false}
+              location={this.state.location}
+              onLocationSelect={this.onLocationSelect}
+              onLocationUpdate={this.onLocationUpdate}
+            />
+          ]}
+        </div>
       </div>
     );
   }
 }
 
 export default CreatePost;
-
 
 /* Properties and methods available on a synthetic event in React
 

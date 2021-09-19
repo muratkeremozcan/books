@@ -6,7 +6,6 @@ class Counter extends React.Component {
   // To set PropTypes for a component, you provide a static property called propTypes.
   static propTypes = {
     incrementBy: PropTypes.number,
-    // onIncrement: PropTypes.func
   };
   // to set default props, you provide a static property called defaultProps.
   static defaultProps = {
