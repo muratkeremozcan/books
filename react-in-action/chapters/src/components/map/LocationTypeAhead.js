@@ -23,6 +23,12 @@ export default class LocationTypeAhead extends Component {
     this.resetSearch = this.resetSearch.bind(this);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.text === '' && prevState.locations.length) {
+        this.setState(() => ({ locations: [] }));
+    }
+  }
+
   componentWillUnmount() {
     this.resetSearch();
   }

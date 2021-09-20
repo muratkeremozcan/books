@@ -88,7 +88,7 @@ export default class DisplayMap extends Component {
       this.L.latLng(this.state.location.lat, this.state.location.lng),
       12
     );
-    // this.addMarker(this.state.location.lat, this.state.location.lng);
+    this.addMarker(this.state.location.lat, this.state.location.lng);
     this.setState(() => ({ mapLoaded: true }));
   }
 

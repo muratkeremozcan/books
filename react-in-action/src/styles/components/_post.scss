@@ -1,0 +1,57 @@
+// Posts ============================
+.posts {
+    margin: $base-spacing 0;
+    padding: 5px;
+}
+
+.content {
+    margin: $base-spacing 0;
+}
+
+.post {
+    @extend %element-base;
+    background-color: $white;
+    margin-bottom: $base-spacing * 1.5;
+
+    .user-header {
+        border-bottom: $border-base;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .user-info-section {
+            & > * {
+                padding: 5px;
+            }
+            align-items: center;
+            display: flex;
+        }
+        & > * {
+            padding: 0 5px;
+        }
+        .date {
+            float: right;
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    & > img {
+        border-radius: $border-radius;
+    }
+    .controls {
+        span {
+            margin: auto 5px;
+        }
+    }
+}
+
+.post-actions {
+    padding: 10px 5px;
+    color: $blue;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
