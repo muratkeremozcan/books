@@ -68,7 +68,7 @@ class CreatePost extends Component {
       content: this.state.content
     };
 
-    // when submitting a post, all location to it if present
+    // when submitting a post, ad location to it if present
     if (this.state.locationSelected) {
       newPost.location = this.state.location;
     }

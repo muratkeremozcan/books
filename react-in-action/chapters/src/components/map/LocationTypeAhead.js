@@ -72,7 +72,7 @@ export default class LocationTypeAhead extends Component {
     });
   }
 
-  // when location is selected, pass currently selected location up
+  // when location is selected, pass currently selected location up to the parent (Create component)
   handleSelectLocation() {
     this.props.onLocationSelect(this.state.selectedLocation);
   }
