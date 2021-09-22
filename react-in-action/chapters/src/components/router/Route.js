@@ -11,7 +11,7 @@ class Route extends Component {
   // each route takes a path and a function, specify these using propTypes
   static propTypes = {
     path: PropTypes.string,
-    component: PropTypesl.oneOfType([PropTypes.element, PropTypes.func])
+    component: PropTypes.oneOfType([PropTypes.element, PropTypes.func])
   };
   // The entire Route component is just a function that returns a call to the invariant library
   // if ever called, error is thrown and you’ll know things aren’t behaving correctly
