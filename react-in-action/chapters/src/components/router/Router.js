@@ -1,10 +1,17 @@
 // ch [7.2] scaffolds the router component
+import PropTypes from 'prop-types';
+// Major thanks to TJ Holowaychuk's work on https://github.com/tj/react-enroute
+// This code draws on the simple router created there; thanks (again) TJ!
 
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import enroute from "enroute";
-import invariant from "invariant";
+import React, { Component } from 'react';
+import enroute from 'enroute';
+import invariant from 'invariant';
 
+/**
+ * The custom router we build. It handles the basics of client-side routing for our react application
+ * @module letters/components
+ * @type {Object}
+ */
 export default class Router extends Component {
   // the Router will receive children and a location to work with
   static propTypes = {
@@ -32,18 +39,18 @@ export default class Router extends Component {
 
     // Ensure that it has the right input, since PropTypes can't really help here
     invariant(component, `Route ${path} is missing the "path" property`);
-    invariant(typeof path === "string", `Route ${path} is not a string`);
+    invariant(typeof path === 'string', `Route ${path} is not a string`);
 
     // Set up Component to be rendered
     const render = (params, renderProps) => {
-      // const finalProps = Object.assign({ params }, this.props, renderProps);
+      const finalProps = Object.assign({ params }, this.props, renderProps);
 
       // Or, using the object spread operator (currently a candidate proposal for future versions of JavaScript)
-      const finalProps = {
-        ...this.props,
-        ...renderProps,
-        params,
-      };
+      // const finalProps = {
+      //   ...this.props,
+      //   ...renderProps,
+      //   params,
+      // };
 
       // Create a new component with merged props.
       const children = React.createElement(component, finalProps);
@@ -71,7 +78,7 @@ export default class Router extends Component {
 
   // replace // with /
   cleanPath(path) {
-    return path.replace(/\/\//g, "/");
+    return path.replace(/\/\//g, '/');
   }
 
   normalizeRoute(path, parent) {

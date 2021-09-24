@@ -22,7 +22,7 @@ class Route extends Component {
     // if you ever see a warning or error message in the developer tools console that says something like “invariant violation,”
     // it’s probably involved.
     //  You’ll use it here to make sure the Route component doesn’t render anything.
-    return invariant(false,"<Route> elements are for config only and shouldn't be rendered");
+    return invariant(false, "<Route> elements are for config only and shouldn't be rendered");
   }
 }
 

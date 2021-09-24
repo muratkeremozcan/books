@@ -11,9 +11,10 @@ export default class LocationTypeAhead extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: "",
+      text: '',
       locations: [],
-      selectedLocation: null
+      selectedLocation: null,
+      error: null
     };
     this.mapbox = new MapBox(process.env.MAPBOX_API_TOKEN);
     this.attemptGeoLocation = this.attemptGeoLocation.bind(this);
@@ -71,12 +72,6 @@ export default class LocationTypeAhead extends Component {
       this.setState(() => ({ locations }));
     });
   }
-
-  // when location is selected, pass currently selected location up to the parent (Create component)
-  handleSelectLocation() {
-    this.props.onLocationSelect(this.state.selectedLocation);
-  }
-
   attemptGeoLocation() {
     if ("geolocation" in navigator) {
       // check if browser supports geolocation
@@ -127,6 +122,10 @@ export default class LocationTypeAhead extends Component {
         selectedLocation: null
       };
     });
+  }
+  // when location is selected, pass currently selected location up to the parent (Create component)
+  handleSelectLocation() {
+    this.props.onLocationSelect(this.state.selectedLocation);
   }
 
   render() {

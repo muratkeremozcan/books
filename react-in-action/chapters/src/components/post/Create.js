@@ -1,5 +1,5 @@
-import React, { Component } from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import Filter from "bad-words";
 const filter = new Filter();
 import classnames from "classnames";
@@ -12,11 +12,12 @@ import LocationTypeAhead from "../map/LocationTypeAhead";
 // onChange — This is fired when an input element changes. Access new value using event.target.value.
 // onClick — This is fired when an element is clicked. You listen for it
 
-class CreatePost extends Component {
-  static propTypes = {};
+class CreatePost extends React.Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired
+};
   constructor(props) {
     super(props);
-
     this.initialState = {
       content: "",
       valid: false,
@@ -49,7 +50,6 @@ class CreatePost extends Component {
         valid: content.length <= 280 // this is how you start form validation
       };
     });
-    console.log("handledPostChange");
   }
 
   // allow user to remove location from their post
@@ -59,15 +59,14 @@ class CreatePost extends Component {
       location: this.initialState.location
     }));
   }
-
-  handleSubmit() {
+  handleSubmit(event) {
+    event.preventDefault();
     if (!this.state.valid) {
       return;
     }
     const newPost = {
       content: this.state.content
     };
-
     // when submitting a post, ad location to it if present
     if (this.state.locationSelected) {
       newPost.location = this.state.location;
@@ -85,15 +84,11 @@ class CreatePost extends Component {
       location: this.initialState.location,
       locationSelected: false
     }));
-
-    console.log("handleSubmit");
   }
-
   // handle a location update from the LocationTypeAhead component
   onLocationUpdate(location) {
     this.setState(() => ({ location }));
   }
-
   // handle a location update from the LocationTypeAhead component
   onLocationSelect(location) {
     this.setState(() => ({
@@ -102,12 +97,10 @@ class CreatePost extends Component {
       locationSelected: true
     }));
   }
-
-  handleToggleLocation(e) {
-    e.preventDefault();
+  handleToggleLocation(event) {
+    event.preventDefault();
     this.setState(state => ({ showLocationPicker: !state.showLocationPicker }));
-  }
-
+}
   // We can implement a "subrender" method here and not clutter the main render method with tons
   // of conditional logic. This is a helpful pattern to explore when dealing with components that
   // have longer render methods
@@ -139,35 +132,33 @@ class CreatePost extends Component {
   }
   render() {
     return (
-      <div className="create-post">
-        <textarea
-          value={this.state.content}
-          onChange={this.handlePostChange}
-          placeholder="What's on your mind?"
-        />
-        {this.renderLocationControls()}
-        <div
-          className="location-picker"
-          style={{ display: this.state.showLocationPicker ? "block" : "none" }}
-        >
-          {!this.state.locationSelected && [
-            <LocationTypeAhead
-              key="LocationTypeAhead"
-              onLocationSelect={this.onLocationSelect}
-              onLocationUpdate={this.onLocationUpdate}
-            />,
-            <DisplayMap
-              key="DisplayMap"
-              displayOnly={false}
-              location={this.state.location}
-              onLocationSelect={this.onLocationSelect}
-              onLocationUpdate={this.onLocationUpdate}
+        <div className="create-post">
+            <textarea
+                value={this.state.content}
+                onChange={this.handlePostChange}
+                placeholder="What's on your mind?"
             />
-          ]}
+            {this.renderLocationControls()}
+            <div
+                className="location-picker"
+                style={{ display: this.state.showLocationPicker ? "block" : "none" }}
+            >
+                {!this.state.locationSelected && (
+                    <LocationTypeAhead
+                        onLocationSelect={this.onLocationSelect}
+                        onLocationUpdate={this.onLocationUpdate}
+                    />
+                )}
+                <DisplayMap
+                    displayOnly={false}
+                    location={this.state.location}
+                    onLocationSelect={this.onLocationSelect}
+                    onLocationUpdate={this.onLocationUpdate}
+                />
+            </div>
         </div>
-      </div>
     );
-  }
+}
 }
 
 export default CreatePost;

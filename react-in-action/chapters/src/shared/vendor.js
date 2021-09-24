@@ -1,1 +1,1 @@
-window.L.mapbox.accessToken = 'pk.eyJ1IjoibXVyYXRrZXJlbSIsImEiOiJja3RyYzUxc2cxNTBoMnZudTVidjE5a2NpIn0.9RTw4_yJrDE_mVURF0ccjg';
+window.L.mapbox.accessToken = 'pk.eyJ1IjoibWFya3RoZXRob21hcyIsImEiOiJHa3JyZFFjIn0.MwCj8OA5q4dqdll1s2kMiw';
