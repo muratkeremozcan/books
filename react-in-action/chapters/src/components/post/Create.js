@@ -15,7 +15,7 @@ import LocationTypeAhead from "../map/LocationTypeAhead";
 class CreatePost extends React.Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired
-};
+  };
   constructor(props) {
     super(props);
     this.initialState = {
@@ -51,7 +51,6 @@ class CreatePost extends React.Component {
       };
     });
   }
-
   // allow user to remove location from their post
   handleRemoveLocation() {
     this.setState(() => ({
@@ -100,7 +99,7 @@ class CreatePost extends React.Component {
   handleToggleLocation(event) {
     event.preventDefault();
     this.setState(state => ({ showLocationPicker: !state.showLocationPicker }));
-}
+  }
   // We can implement a "subrender" method here and not clutter the main render method with tons
   // of conditional logic. This is a helpful pattern to explore when dealing with components that
   // have longer render methods

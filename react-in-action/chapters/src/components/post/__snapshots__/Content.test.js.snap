@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Content/> render methods snapshot 1`] = `
+exports[`<Content/> render methods use renderer to create snapshot, and Jest to test it 1`] = `
 <p
   className="content"
 >
