@@ -6,7 +6,7 @@ import UserHeader from '../post/UserHeader';
 /**
  * Displays an individual comment
  * @method Comment
- * @param  {object} props 
+ * @param  {object} props
  */
 const Comment = props => {
     const { comment } = props;

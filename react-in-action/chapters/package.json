@@ -101,7 +101,7 @@
     },
     "devDependencies": {
         "autoprefixer": "^7.2.2",
-        "babel-eslint": "^8.0.3",
+        "babel-eslint": "^8.2.6",
         "babel-jest": "^21.2.0",
         "babel-loader": "7.1.2",
         "babel-plugin-transform-async-to-generator": "^6.24.1",

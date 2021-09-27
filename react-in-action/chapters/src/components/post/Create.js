@@ -76,6 +76,7 @@ class CreatePost extends React.Component {
     // the prop just looks like an attribute at the component instance which is at the parent: <CreatePost onSubmit../>
 
     this.props.onSubmit(newPost);
+
     this.setState(() => ({
       content: "",
       valid: false,

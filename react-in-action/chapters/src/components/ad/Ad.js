@@ -4,7 +4,7 @@ import React from 'react';
 /**
  * Dummy ad component
  * @method Ad
- * @param  {object} props 
+ * @param  {object} props
  */
 const Ad = props => {
     return (

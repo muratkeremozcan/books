@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreatePost snapshot 1`] = `
+exports[`CreatePost snapshot render 1`] = `
 <div
   className="create-post"
 >
