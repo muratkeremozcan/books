@@ -9,6 +9,7 @@ import { navigate } from '../../history';
  * @constructor
  */
 function Link({ to, children }) {
+    // [8.1] use React.cloneElement to create a copy of the target element and then attach a click handler that will perform navigation.
     return cloneElement(Children.only(children), {
         onClick: () => navigate(to)
     });

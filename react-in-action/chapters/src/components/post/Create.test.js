@@ -1,21 +1,27 @@
+// [9.2] You import the code under test, mock out any dependencies to isolate your tests to one unit of functionality
 import React from "react";
 import renderer from "react-test-renderer";
-jest.mock("mapbox"); // mock out mapbox module
+jest.mock("mapbox"); // (9.2.0) if the component, or one of the child components import external modules, mock out that module
 
 import CreatePost from "../../../src/components/post/Create";
 
-// [9.2] You import the code under test, mock out any dependencies to isolate your tests to one unit of functionality
-// (9.2.1) mock the properties
+// (9.2.1) see where the component is used ( <CompName ... ), verify the properties/static propTypes, mock the properties
 // (9.2.2) mock the event if there is an event being passed to the fn
 // (9.2.3) instantiate the component and invoke the fn
 // (9.2.4) make assertions
+  // (9.2.5) if there is any logic in the component, cover those by varying what drives that logic (the props)
 
 describe("CreatePost", () => {
   test("snapshot render", () => {
     // { onSubmit: fn } is the props passed to the component, has to be mocked
     const props = { onSubmit: jest.fn() };
+
     // use renderer to create snapshot, and Jest to test it
-    const component = renderer.create(<CreatePost {...props} />); // {...obj} just duplicates the obj
+    // ...props to de-structure the props object, { } to wrap it in react syntax
+    const component = renderer.create(<CreatePost {...props} />);
+    // same thing
+    // const component = renderer.create(<CreatePost onSubmit={jest.fn()} />);;
+
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
@@ -30,7 +36,7 @@ describe("CreatePost", () => {
       this.state = Object.assign(this.state, updater(this.state));
     });
 
-    // (9.2.3) now that we have the mocks, instantiate the component and invoke the function under test
+    // (9.2.3) now that we have the mocks, instantiate the component and invoke the fn  under test
     const component = new CreatePost(props);
     component.handlePostChange(mockEvent);
 

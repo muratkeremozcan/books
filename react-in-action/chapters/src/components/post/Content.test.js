@@ -10,7 +10,8 @@ describe("<Content/>", () => {
       content: "I am learning to test React components"
     };
     test("should render correctly with Enzyme's shallow method", () => {
-      // use Enzyme's shallow method to render the component
+      // (9.1.1) when not using snapshots use Enzyme's shallow method to render the component
+      // this is shallow testing with Enzyme
       const wrapper = shallow(<Content post={mockPost} />);
       expect(wrapper.find("p").length).toBe(1);
       expect(wrapper.find("p.content").length).toBe(1);
@@ -18,7 +19,7 @@ describe("<Content/>", () => {
       expect(wrapper.find("p").text()).toBe(mockPost.content);
     });
     test("use renderer to create snapshot, and Jest to test it", () => {
-      // use renderer to create snapshot, and Jest to test it
+      // (9.1.2) when using snapshots, use renderer to create snapshot, and Jest to test it
       const component = renderer.create(<Content post={mockPost} />);
       const tree = component.toJSON();
       expect(tree).toMatchSnapshot();
