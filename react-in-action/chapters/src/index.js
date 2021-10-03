@@ -4,6 +4,8 @@ import firebase from 'firebase';
 
 import * as API from './shared/http';
 import { history } from './history';
+import configureStore from './store/configureStore';
+import initialReduxState from './constants/initialState';
 import Route from './components/router/Route';
 import Router from './components/router/Router';
 import App from './app';
@@ -18,6 +20,9 @@ import './shared/service-worker';
 import './shared/vendor';
 // NOTE: this isn't ES*-compliant/possible, but works because we use Webpack as a build tool
 import './styles/styles.scss';
+
+import './store/exampleUse';
+// const store = configureStore(initialReduxState)
 
 // wraps React DOM's render method to pass location state and callback
 export const renderApp = (state, callback = () => {}) => {
