@@ -1,33 +1,39 @@
 import React from "react";
 import renderer from "react-test-renderer";
+import { Provider } from "react-redux";
 
+import initialState from "../../../src/constants/initialState";
+import configureStore from "../../../src/store/configureStore";
 import Navigation from "../../../src/components/nav/navbar";
 
 describe("Navigation", () => {
-  // (9.2.5) if there is any logic in the component, cover those by varying what drives that logic (the props)
-  test("snapshot, user not authenticated", () => {
-    const props = {
+  test("should render with a user", () => {
+    const state = Object.assign({}, initialState, {
       user: {
-        name: 'username',
-        authenticated: false,
-        profilePicture: 'pic'
-      }
-    }
-
-    const navigation = renderer.create(<Navigation {...props}/>).toJSON();
-    expect(navigation).toMatchSnapshot();
-  });
-
-  test("snapshot, user is authenticated", () => {
-    const props = {
-      user: {
-        name: 'username',
+        name: "name",
         authenticated: true,
-        profilePicture: 'pic'
+        profilePicture: "pic",
+        id: 1
       }
-    }
-
-    const navigation = renderer.create(<Navigation {...props}/>).toJSON();
-    expect(navigation).toMatchSnapshot();
+    });
+    const store = configureStore(state);
+    const component = renderer.create(
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
+    );
+    const tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+  test("should render without user", () => {
+    const store = configureStore();
+    const component = renderer.create(
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
+    );
+    const tree = component.toJSON();
+    expect(tree.type).toBe("nav");
+    expect(tree).toMatchSnapshot();
   });
 });

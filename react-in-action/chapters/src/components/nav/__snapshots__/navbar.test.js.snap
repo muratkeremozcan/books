@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Navigation snapshot, user is authenticated 1`] = `
+exports[`Navigation should render with a user 1`] = `
 <nav
   className="navbar"
 >
@@ -19,10 +19,10 @@ exports[`Navigation snapshot, user is authenticated 1`] = `
     className="user-nav-widget"
   >
     <span>
-      username
+      name
     </span>
     <img
-      alt="username"
+      alt="name"
       className="img-circle"
       src="pic"
       width={40}
@@ -38,7 +38,7 @@ exports[`Navigation snapshot, user is authenticated 1`] = `
 </nav>
 `;
 
-exports[`Navigation snapshot, user not authenticated 1`] = `
+exports[`Navigation should render without user 1`] = `
 <nav
   className="navbar"
 >
@@ -53,11 +53,25 @@ exports[`Navigation snapshot, user not authenticated 1`] = `
   >
     L
   </div>
-  <button
-    onClick={[Function]}
-    type="button"
+  <span
+    className="user-nav-widget"
   >
-    Log in or sign up
-  </button>
+    <span>
+      name
+    </span>
+    <img
+      alt="name"
+      className="img-circle"
+      src="pic"
+      width={40}
+    />
+    <span
+      onClick={[Function]}
+    >
+      <i
+        className="fa fa-sign-out"
+      />
+    </span>
+  </span>
 </nav>
 `;

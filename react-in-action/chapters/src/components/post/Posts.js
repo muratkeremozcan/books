@@ -1,13 +1,23 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import Post from './Post';
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
+import Post from "./Post";
 
 export function Posts(props) {
-    return (
-        <div className="posts">{props.posts.map(post => <Post key={post.id} post={post} />)}</div>
-    );
+  return (
+    <div className="posts">
+      {props.posts.map(post => (
+        <Post key={post.id} post={post} />
+      ))}
+    </div>
+  );
 }
 Posts.propTypes = {
-    posts: PropTypes.array
+  posts: PropTypes.array
 };
-export default Posts;
+export function mapStateToProps(state) {
+  return {
+    posts: state.posts
+  };
+}
+export default connect(mapStateToProps)(Posts);

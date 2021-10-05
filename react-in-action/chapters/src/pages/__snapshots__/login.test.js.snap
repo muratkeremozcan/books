@@ -97,7 +97,9 @@ exports[`Login Login should render correctly 1`] = `
       <i
         className="fa fa-github"
       />
-       log in with Github
+       log in with
+       
+      Github
     </button>
   </div>
 </div>

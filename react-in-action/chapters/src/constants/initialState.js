@@ -1,3 +1,6 @@
+// [11.0] initial state file that will help you determine your state shape and structure for the store
+
+
 /**
  * Initial state for the redux store
  * @type {Object}
@@ -8,15 +11,15 @@ export default {
     postIds: [],
     posts: {},
     commentIds: [],
-    comments: {},
-    pagination: {
+    comments: {}, // comments and ids are stored separately from the actual data
+    pagination: { // store info about pagination
         first: `${process.env
             .ENDPOINT}/posts?_page=1&_sort=date&_order=DESC&_embed=comments&_expand=user&_embed=likes`,
         next: null,
         prev: null,
         last: null
     },
-    user: {
+    user: { // store info about user
         authenticated: false,
         profilePicture: null,
         id: null,

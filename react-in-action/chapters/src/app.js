@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import ErrorMessage from './components/error/Error';
-import Nav from './components/nav/navbar';
-import Loader from './components/Loader';
+import ErrorMessage from "./components/error/Error";
+import Nav from "./components/nav/navbar";
+import Loader from "./components/Loader";
 
 /**
  * The app component serves as a root for the project and renders either children,
@@ -12,44 +13,44 @@ import Loader from './components/Loader';
  * @module letters/components
  */
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            error: null,
-            loading: false
-        };
+  componentDidMount() {
+    // Remove the initial state that was embedded with the initial HTML sent by the server
+    const embeddedState = document.getElementById("initialState");
+    if (embeddedState) {
+      embeddedState.remove();
     }
-    static propTypes = {
-        children: PropTypes.node
-    };
-    componentDidCatch(err, info) {
-        console.error(err);
-        console.error(info);
-        this.setState(() => ({
-            error: err
-        }));
+  }
+  render() {
+    if (this.props.error) {
+      return (
+        <div className="app">
+          <ErrorMessage error={this.props.error} />
+        </div>
+      );
     }
-    render() {
-        if (this.state.error) {
-            return (
-                <div className="app">
-                    <ErrorMessage error={this.state.error} />
-                </div>
-            );
-        }
-        return (
-            <div className="app">
-                <Nav user={this.props.user} />
-                {this.state.loading ? (
-                    <div className="loading">
-                        <Loader />
-                    </div>
-                ) : (
-                    this.props.children
-                )}
-            </div>
-        );
-    }
+    return (
+      <div className="app">
+        <Nav />
+        {this.props.loading ? (
+          <div className="loading">
+            <Loader />
+          </div>
+        ) : (
+          this.props.children
+        )}
+      </div>
+    );
+  }
 }
 
-export default App;
+App.propTypes = {
+  children: PropTypes.node
+};
+
+export const mapStateToProps = state => {
+  return {
+    error: state.error,
+    loading: state.loading
+  };
+};
+export default connect(mapStateToProps)(App);
