@@ -28,7 +28,7 @@ import "./styles/styles.scss";
 import "./store/exampleUse";
 // const store = configureStore(initialReduxState)
 
-// [11.4] presentational components handle UI and UI-related data (like angular components), and container components handle application data via Redux (like Angular services).
+// [11.3] presentational components handle UI and UI-related data (like angular components), and container components handle application data via Redux (like Angular services).
 
 // Create the Redux store using initial state
 const store = configureStore(initialReduxState);

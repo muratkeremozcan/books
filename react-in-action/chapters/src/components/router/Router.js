@@ -1,4 +1,4 @@
-// ch [7.2] scaffolds the router component
+// ch [7.1] scaffolds the router component
 import PropTypes from 'prop-types';
 // Major thanks to TJ Holowaychuk's work on https://github.com/tj/react-enroute
 // This code draws on the simple router created there; thanks (again) TJ!

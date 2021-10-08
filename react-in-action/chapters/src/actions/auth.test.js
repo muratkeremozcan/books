@@ -18,6 +18,8 @@ import * as AUTH from "../../src/backend/auth";
 
 const mockStore = configureStore([thunk]);
 
+// ch[10.5] testing actions
+
 describe("login actions", () => {
   let store;
   beforeEach(() => {

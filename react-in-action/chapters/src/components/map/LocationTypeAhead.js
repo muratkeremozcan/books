@@ -11,7 +11,7 @@ export default class LocationTypeAhead extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: '',
+      text: "",
       locations: [],
       selectedLocation: null,
       error: null
@@ -25,8 +25,8 @@ export default class LocationTypeAhead extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.text === '' && prevState.locations.length) {
-        this.setState(() => ({ locations: [] }));
+    if (prevState.text === "" && prevState.locations.length) {
+      this.setState(() => ({ locations: [] }));
     }
   }
 

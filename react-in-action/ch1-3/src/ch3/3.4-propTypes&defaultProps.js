@@ -4,6 +4,10 @@ import PropTypes from "prop-types";
 
 class Counter extends React.Component {
   // To set PropTypes for a component, you provide a static property called propTypes.
+  
+  // PropTypes: a utility to validate which properties you’ll be using
+  // so you can prevent bugs and plan the sorts of data your components will use.
+
   static propTypes = {
     incrementBy: PropTypes.number,
   };

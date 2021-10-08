@@ -5,7 +5,7 @@ jest.mock("mapbox"); // (9.2.0) if the component, or one of the child components
 
 import CreatePost from "../../../src/components/post/Create";
 
-// (9.2.1) see where the component is used ( <CompName ... ), verify the properties/static propTypes, mock the properties
+// (9.2.0 and 1) see where the component is used ( <CompName ... ), verify the props, mock the properties
 // (9.2.2) mock the event if there is an event being passed to the fn
 // (9.2.3) instantiate the component and invoke the fn
 // (9.2.4) make assertions

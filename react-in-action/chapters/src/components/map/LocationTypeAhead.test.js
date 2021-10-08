@@ -4,9 +4,10 @@ import renderer from 'react-test-renderer';
 
 import LocationTypeAhead from './LocationTypeAhead';
 
+// ch[9.2] testing components
 describe('LocationTypeAhead', () => {
   test('snapshot', () => {
-    // (9.2.1) see where the component is used ( <CompName ... ), verify the properties/static propTypes, mock the properties
+    // (9.2.1) see where the component is used ( <CompName ... ), verify the props, and mock them
     const props = {
       onLocationUpdate: jest.fn(),
       onLocationSelect: jest.fn()

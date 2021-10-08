@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Component } from "react";
 import invariant from "invariant"; // ensures that Route component never gets rendered
 
-// This is different from what you would probably do if you were in the real world
+// [7.0] This is different from what you would probably do if you were in the real world
 // You would user React Router instead
 
 // a Router component will use child components to match URL routes to components and render them out.

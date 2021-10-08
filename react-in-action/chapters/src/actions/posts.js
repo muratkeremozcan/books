@@ -5,7 +5,7 @@ import * as API from "../shared/http";
 import { createError } from "./error";
 import { getCommentsForPost } from "./comments";
 
-// [10.1]
+// [10.1] actions
 // note that the dispatch operation is done by the store
 
 export function updateAvailablePosts(posts) {

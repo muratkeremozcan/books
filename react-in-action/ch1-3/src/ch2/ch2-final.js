@@ -7,7 +7,11 @@ There are 2 kinds of elements for creating components:
 
 1. React elements
   * comparable to DOM elements
-  * can access props (immutable state)
+  * can access props.
+
+props— short for properties object, helps specify:
+* which attributes will be defined on the HTML element (React DOM element)
+* which attributes will be available to a component class instance.
 
 2. React components (what we generally refer to as components)
   * JS classes that inherit from React.component class 

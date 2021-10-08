@@ -12,7 +12,7 @@ import CreatePost from "../components/post/Create";
 import Post from "../components/post/Post";
 import Welcome from "../components/welcome/Welcome";
 
-// [11.5] connecting a component to Redux:
+// [11.4] connecting a component to Redux:
 // create mapStateToProps and mapDispatchToProps, export using connect
 
 export class Home extends Component {

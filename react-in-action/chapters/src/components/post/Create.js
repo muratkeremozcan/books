@@ -7,8 +7,7 @@ import classnames from "classnames";
 import DisplayMap from "../map/DisplayMap";
 import LocationTypeAhead from "../map/LocationTypeAhead";
 
-// [5.1]
-// Working with forms in React: receive events from event handlers, then use data from those events to update state or props
+// [5.1] Working with forms in React: receive events from event handlers, then use data from those events to update state or props
 // onChange — This is fired when an input element changes. Access new value using event.target.value.
 // onClick — This is fired when an element is clicked. You listen for it
 
@@ -101,7 +100,7 @@ class CreatePost extends React.Component {
     event.preventDefault();
     this.setState(state => ({ showLocationPicker: !state.showLocationPicker }));
   }
-  // We can implement a "subrender" method here and not clutter the main render method with tons
+  // We can implement a "subRender" method here and not clutter the main render method with tons
   // of conditional logic. This is a helpful pattern to explore when dealing with components that
   // have longer render methods
   renderLocationControls() {

@@ -20,6 +20,8 @@ import {
 import { getCommentsForPost } from "../../src/actions/comments";
 import * as API from "../../src/shared/http";
 
+// ch[10.5] testing actions
+
 const mockStore = configureStore([thunk]);
 describe("login actions", () => {
   let store;

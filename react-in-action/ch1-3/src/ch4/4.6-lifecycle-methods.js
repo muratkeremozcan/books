@@ -45,7 +45,7 @@ class ChildComponent extends React.Component {
   componentDidMount() { // render into the DOM first, then this - mounting.2
     console.log("ChildComponent : componentDidMount");
   }
-  // once mounted, a component exiss in the DOM
+  // once mounted, a component exists in the DOM
 
   // child is updated with new state passed via props from the parent. React updates the DOM to keep it in sync with vDOM
   componentWillReceiveProps(nextProps) { // updating.1
