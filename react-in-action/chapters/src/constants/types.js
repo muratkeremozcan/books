@@ -25,8 +25,6 @@ export const providers = ['Github'];
 //  The advantage to bundling is that you can group them together and use shorter names (GET, CREATE, and so on)
 // without having to build those into the variable names themselves (UPDATE_USER_PROFILE, CREATE_NEW_POST, and so on).
 
-// note: the book calls these actions, and everything under actions folder "action creators"
-// imo, keep it simple and call them action types and actions, in that order.
 
 export const app = {
     ERROR: 'letters-social/app/error',
