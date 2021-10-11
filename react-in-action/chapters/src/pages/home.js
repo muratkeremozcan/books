@@ -78,9 +78,9 @@ Home.propTypes = {
   })
 };
 
-// To inject state, you’ll pass a function (mapStateToProps) that will receive state as a parameter
-// and will return an object that will be merged into the props for the component;
-// react-redux will re-invoke this function whenever the component receives new props.
+// To inject state use mapStateToProps(state),
+// * receives state as a parameter
+// * returns an object that is merged into the props for the component, making the property available as this.props.posts
 export const mapStateToProps = state => {
   const posts = orderBy(
     state.postIds.map(postId => state.posts[postId]),
