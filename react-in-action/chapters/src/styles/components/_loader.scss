@@ -1,0 +1,23 @@
+// Loaders ======================================
+.loader-hidden {
+    display: none;
+}
+.ball-pulse-sync > div {
+    background: $blue;
+    outline: blue;
+    height: 10px;
+    width: 10px;
+}
+
+.loader {
+    bottom: 0;
+    display: block;
+    left: 0;
+    margin: auto;
+    position: relative;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 4em;
+    z-index: 999;
+}

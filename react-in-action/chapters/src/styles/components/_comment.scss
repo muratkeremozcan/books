@@ -1,0 +1,43 @@
+.create-comment {
+    background-color: transparent;
+    border: 0;
+    box-sizing: border-box;
+    display: block;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    min-height: 25px;
+    outline: 0;
+    padding: 20px 12px 14px;
+    resize: none;
+    width: 100%;
+}
+
+.date {
+    padding: 0 $base-spacing;
+}
+
+.comments {
+    background-color: $white;
+    border-radius: $border-radius;
+    &:hover {
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+}
+
+.comment {
+    margin-top: 10px;
+    border-top: 1px solid $gray-lighter;
+    padding: 10px;
+    .user-header {
+        display: flex;
+        align-items: center;
+        & > * {
+            padding: 0 5px;
+        }
+    }
+    .content {
+        margin: 1em 0;
+    }
+}

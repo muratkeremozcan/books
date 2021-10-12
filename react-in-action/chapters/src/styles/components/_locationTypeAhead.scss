@@ -1,0 +1,41 @@
+.location-typeahead {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-self: center;
+    padding: 0 0 10px;
+    i {
+        color: $blue;
+        cursor: pointer;
+        padding-right: 10px;
+    }
+    input {
+        background-color: transparent;
+        border: none;
+        box-sizing: border-box;
+        display: block;
+        font-size: 14px;
+        outline: 0;
+        width: 100%;
+        text-overflow: ellipsis;
+    }
+}
+.location-typeahead-results {
+    border-radius: 5px 5px;
+    background-color: $white;
+    // To get in front of the mapbox map
+    z-index: 8001;
+    position: absolute;
+    .result {
+        overflow: hidden;
+        white-space: nowrap;
+        width: 35vw;
+        text-overflow: ellipsis;
+        &:hover {
+            background-color: lighten($blue, 20%);
+            color: $white;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+        }
+    }
+}

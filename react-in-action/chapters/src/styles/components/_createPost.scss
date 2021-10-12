@@ -1,0 +1,61 @@
+.create-post {
+    @extend %element-base;
+    background-color: #fff;
+    textarea {
+        background-color: transparent;
+        border: 0;
+        box-sizing: border-box;
+        display: block;
+        font-size: 14px;
+        line-height: 18px;
+        min-height: 69px;
+        outline: 0;
+        padding: 23px 12px 14px;
+        resize: none;
+        width: 100%;
+    }
+    .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .location-picker {
+        @extend %element-base;
+        margin-top: 1em;
+    }
+    .location-indicator {
+        color: $blue;
+        width: 20vw;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        &:hover {
+            color: #fff;
+        }
+        &:hover::before {
+            content: 'Remove';
+            color: $blue;
+            position: absolute;
+            opacity: 1;
+            text-align: center;
+            width: calc(20vw - 0.75rem);
+        }
+        i {
+            margin: 0 5px;
+        }
+    }
+}
+.location-description {
+    font-size: 0.75em;
+    display: flex;
+    align-items: center;
+    max-width: 35vw;
+    .location-icon,
+    .location-name {
+        color: $blue;
+        padding: 0 5px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
