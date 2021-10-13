@@ -68,3 +68,5 @@ Thumbs.db
 /aws/AWS-in-action/mykeyppk
 
 **/mongonotes
+
+.DS_Store
