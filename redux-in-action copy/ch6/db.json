@@ -1,0 +1,32 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Learn Redux",
+      "description": "The store, actions, and reducers, oh my!",
+      "status": "In Progress",
+      "timer": 0
+    },
+    {
+      "id": 2,
+      "title": "Peace on Earth",
+      "description": "No big deal.",
+      "status": "Unstarted",
+      "timer": 0
+    },
+    {
+      "title": "Win the sportsball game",
+      "description": "Coach put me in",
+      "status": "Completed",
+      "id": 3,
+      "timer": 603
+    },
+    {
+      "title": "Second Mortgage",
+      "description": "Altcoins aren't going to buy themselves",
+      "status": "Completed",
+      "id": 4,
+      "timer": 102
+    }
+  ]
+}
