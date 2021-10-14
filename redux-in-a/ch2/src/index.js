@@ -14,7 +14,7 @@ import tasksReducer from './reducers';
 import App from './App';
 import './index.css';
 
-// event -> ACTION -(store.dispatch)-(middleware)-> REDUCER -> STORE(state) -> update VIEW
+// event -> ACTION -(dispatch)-(middleware)-> REDUCER -> STORE(state) -> update VIEW
 
 // Actions in Redux represent work being done (fetching user data, logging the user in, and so on),
 // reducers determine how state should change,
@@ -49,7 +49,9 @@ import './index.css';
 // In the case that only two arguments are passed, Redux presumes the second argument is an enhancer and there’s no initial state. 
 // Enhancers are a way to augment the Redux store 
 
-// ch[4.]
+// ch[4.2] the oot reducer is needed to integrate the reducers with the Redux store.
+// rootReducer takes in the current state and the action being dispatched
+// then passes the data & action to the reducers
 const rootReducer = (state = {}, action) => {
   return {
     tasks: tasksReducer(state.tasks, action),
@@ -73,13 +75,11 @@ ReactDOM.render(
 // create react app has hot module replacement enabled in development mode
 // accept command takes 2 args: dependencies and callback
 // whenever the App component or its children change, re-render the component
-if (module.hot) { 
-  module.hot.accept('./App', () => { 
+if (module.hot) {
+  module.hot.accept('./App', () => {
     const NextApp = require('./App').default;
     ReactDOM.render(
-      <Provider store={store}>
-        <NextApp />
-      </Provider>,
+      <Provider store={store}><NextApp /></Provider>,
       document.getElementById('root')
     );
   });
@@ -90,7 +90,6 @@ if (module.hot) {
     const nextRootReducer = require('./reducers').default;
     store.replaceReducer(nextRootReducer);
   });
-
 }
 
 registerServiceWorker();

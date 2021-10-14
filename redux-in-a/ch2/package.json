@@ -11,11 +11,13 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "json-server": "^0.17.0",
     "react-scripts": "1.0.17",
     "redux-devtools-extension": "^2.13.2"
   },
   "scripts": {
     "start": "react-scripts start",
+    "server": "json-server --watch db.json --port 3001",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

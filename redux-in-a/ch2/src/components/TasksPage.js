@@ -42,23 +42,15 @@ class TasksPage extends Component {
     this.setState({ showNewCardForm: !this.state.showNewCardForm });
   };
 
-  renderTaskLists() {
-    const { onStatusChange, tasks } = this.props;
-
-    return TASK_STATUSES.map(status => {
-      const statusTasks = tasks.filter(task => task.status === status);
-      return (
-        <TaskList
-          key={status}
-          status={status}
-          tasks={statusTasks}
-          onStatusChange={onStatusChange}
-        />
-      );
-    });
-  }
-
   render() {
+    if (this.props.isLoading) {
+      return (
+        <div className="tasks-loading">
+          Loading...
+        </div>
+      );
+    }
+
     return (
       <div className="tasks">
         <div className="tasks-header">
@@ -66,7 +58,6 @@ class TasksPage extends Component {
             + New task
           </button>
         </div>
-
         {this.state.showNewCardForm &&
           <form className="new-task-form" onSubmit={this.onCreateTask}>
             <input
@@ -87,9 +78,20 @@ class TasksPage extends Component {
               Save
             </button>
           </form>}
-
         <div className="task-lists">
-          {this.renderTaskLists()}
+          {TASK_STATUSES.map(status => {
+            const statusTasks = this.props.tasks.filter(
+              task => task.status === status
+            );
+            return (
+              <TaskList
+                key={status}
+                status={status}
+                tasks={statusTasks}
+                onStatusChange={this.props.onStatusChange}
+              />
+            );
+          })}
         </div>
       </div>
     );

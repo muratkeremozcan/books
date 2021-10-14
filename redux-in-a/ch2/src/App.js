@@ -4,7 +4,7 @@ import TasksPage from './components/TasksPage';
 import FlashMessage from './components/FlashMessage';
 import { createTask, editTask, fetchTasks } from './actions';
 
-// event -> ACTION -(store.dispatch)-(middleware)-> REDUCER -> STORE(state) -> update VIEW
+// event -> ACTION -(dispatch)-(middleware)-> REDUCER -> STORE(state) -> update VIEW
 
 // ch[2.2] connecting a component to Redux
 // you took care of the redux boilerplate (2.0)
@@ -24,10 +24,11 @@ class App extends Component {
   componentDidMount() {
     this.props.dispatch(fetchTasks());
   }
+
   onCreateTask = ({ title, description }) => {
     // actions are handled by container components
     // container components have access to dispatch thanks to connect
-    this.props.dispatch(createTask({ title, description })); 
+    this.props.dispatch(createTask({ title, description }));
   };
 
   onStatusChange = (id, status) => {
@@ -36,12 +37,16 @@ class App extends Component {
 
   render() {
     return (
-      <div className="main-content">
-        <TasksPage
-          tasks={this.props.tasks}
-          onCreateTask={this.onCreateTask}
-          onStatusChange={this.onStatusChange}
-        />
+      <div className="container">
+        {this.props.error && <FlashMessage message={this.props.error} />}
+        <div className="main-content">
+          <TasksPage
+            tasks={this.props.tasks}
+            onCreateTask={this.onCreateTask}
+            onStatusChange={this.onStatusChange}
+            isLoading={this.props.isLoading}
+          />
+        </div>
       </div>
     );
   }
@@ -49,11 +54,10 @@ class App extends Component {
 
 // To inject state use mapStateToProps(state), 
 // * receives state as a parameter
-// * returns an object that is merged into the props for the component, making the property available as this.props.tasks
+// * returns an object that is merged into the props for the component, making the property available as this.props
 function mapStateToProps(state) {
-  return {
-    tasks: state.tasks,
-  };
+  const { tasks, isLoading, error } = state.tasks;
+  return { tasks, isLoading, error };
 }
 
 // * connect — a function used as a bridge between React components and data from the Redux store.
