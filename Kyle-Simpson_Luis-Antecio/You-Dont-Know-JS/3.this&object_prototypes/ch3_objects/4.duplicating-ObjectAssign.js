@@ -1,4 +1,4 @@
-// TL, DR; use Object.assign when copying objects
+// TL, DR; use Object.assign or {... } when copying objects, can also copy arrays with [... ]
 
 // One subset solution is that objects that are JSON-safe 
   // (that is, can be serialized to a JSON string and then re-parsed to an object with the same structure and values) 
@@ -14,6 +14,9 @@ var dupeObject = JSON.parse(JSON.stringify(object)); //?
 var dupeObject2 = Object.assign({}, object); //?
 // with ES6
 var dupeObject3 = {...object}; //?
+
+var arr = [1, 2, 3];
+dupeArray = [...arr]; //?
 
 ////
 // why can JSON parse JSON stringify be unsafe? Because of the circulation problem.

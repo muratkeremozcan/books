@@ -78,5 +78,7 @@ function processFirstTwoCustomers([firstCust, secondCust, ...otherCust]) {
   console.log(firstCust);
   console.log(secondCust);
   console.log(otherCust);
+  // and spread 
+  console.log(...otherCust); 
 }
 processFirstTwoCustomers(customers);

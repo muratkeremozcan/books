@@ -28,6 +28,18 @@ function bar(...args) {
 }
 bar(1, 2, 3, 4, 5);
 
+{ // you can use ... to spread values
+  var a = [2, 3, 4];
+  var b = [1, ...a, 5 ];
+  b;
+}
+{ // you can use ... to gather values (rest)
+  var a = [2, 3, 4];
+  var [b, ...c] = a;
+  b;
+  c;
+}
+
 // pre-es6 was not simple, you had to create an array from the arguments
 function baro() {
   let args = Array.prototype.slice.call(arguments);

@@ -19,7 +19,6 @@ import './index.css';
 // Actions in Redux represent work being done (fetching user data, logging the user in, and so on),
 // reducers determine how state should change,
 // the store holds a centralized copy of state,
-// and middleware allows you to inject custom behavior into the process
 
 // Apart from an action, the store doesn’t have any other way to get data.
 // Actions are used throughout a Redux application to initiate changes in data,
@@ -49,7 +48,7 @@ import './index.css';
 // In the case that only two arguments are passed, Redux presumes the second argument is an enhancer and there’s no initial state. 
 // Enhancers are a way to augment the Redux store 
 
-// ch[4.2] the oot reducer is needed to integrate the reducers with the Redux store.
+// ch[4.2] the root reducer is needed to integrate the reducers with the Redux store.
 // rootReducer takes in the current state and the action being dispatched
 // then passes the data & action to the reducers
 const rootReducer = (state = {}, action) => {

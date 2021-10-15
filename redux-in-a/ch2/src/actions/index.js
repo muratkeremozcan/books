@@ -30,7 +30,7 @@ export function uniqueId() {
 
 // synchronous action creators just return an action.
 // the store will receive and process the action immediately after dispatch
-function fetchTasksSucceeded(tasks) { 
+function fetchTasksSucceeded(tasks) {  // action creator
   return { // the action
     type: 'FETCH_TASKS_SUCCEEDED', // action type
     payload: { // action payload
@@ -55,9 +55,9 @@ function fetchTasksStarted() {
 }
 
 // ch[4.0] asynchronous action creators return a function that accepts a dispatch argument
-// they do some async work with the back-end, and then call dispatch with an sync action creators
+// they do some async work with the back-end, and then call dispatch with a sync action creators
 // For each action that requires a network request (meaning you’re dealing with an async action),
-//  you’ll need at least one synchronous action creator to indicate where you are in the request/response lifecycle.
+// you’ll need at least one synchronous action creator to indicate where you are in the request/response lifecycle.
 
 
 // The redux-thunk package allows you to dispatch functions instead of objects, 
@@ -89,7 +89,7 @@ function createTaskSucceeded(task) {
 
 // async actions need return a function instead of an object.
 //  Within that function, you can make your API call 
-// and dispatch an sync action when a response is available.
+// and dispatch a sync action when a response is available.
 export function createTask({ title, description, status = 'Unstarted' }) {
   return dispatch => {
     api.createTask({ title, description, status }).then(resp => {
