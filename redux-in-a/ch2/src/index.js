@@ -2,19 +2,21 @@ import registerServiceWorker from './registerServiceWorker';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 // redux-thunk is a Redux middleware library, it allows you to dispatch functions instead of objects, 
 // and inside those functions you can make network requests and dispatch additional actions when any requests complete.
 // in Redux middleware is used to modify the flow between action dispatch and reaching the reducer
 // ... ACTION --(middleware)--> REDUCER
 import thunk from 'redux-thunk';
-import { Provider } from 'react-redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import createSagaMiddleware from 'redux-saga';
 import tasksReducer from './reducers';
 import App from './App';
+import rootSaga from './sagas';
 import './index.css';
 
-// event -> ACTION -(dispatch)-(middleware)-> REDUCER -> STORE(state) -> update VIEW
+// event -> ACTION -(dispatch)-(middleware)-> REDUCER -> STORE(state) -(selector)-> update VIEW
 
 // Actions in Redux represent work being done (fetching user data, logging the user in, and so on),
 // reducers determine how state should change,
@@ -57,10 +59,35 @@ const rootReducer = (state = {}, action) => {
   };
 };
 
+// ch[6.0] redux-saga is an alternative to redux-thunk, useful for managing complex side effects
+// sagas are built using generators which can be paused and resumed. redux-saga is an alternative to redux-observables or rxjs from Angular
+// use createSagaMiddleware() factory function to create sagaMiddleware
+// register the middleware in the store using applyMiddleware(..) from Redux
+const sagaMiddleware = createSagaMiddleware();
+
+// ch [5.0] middleware is any code that runs between two software components
+// with Express, you can have middleware that runs after an incoming request is received, and before the framework handles a request. 
+// useful for things such as logging data about each request and response, handling errors in a centralized way, authenticating users etc.
+// in Redux middleware is used to modify the flow between action dispatch and reaching the reducer
+
+// when to use middleware?
+// middleware is meant to centralize & abstract logic that is common to many software components 
+// Ex: logging statements everywhere -> not scalable. Instead use middleware for code tha applies to many if not all actions in the application.
+
+// [5.1] creating a middleware in Redux
+// define the middleware: ./src/middleware/mwName.js ,  const mwExample= store => next => action => {..}
+/// store — use the store object in middleware when you need to make decisions based on an existing state. ex: store.getState(), store.dispatch(someFn) 
+/// next — signifies when the current mw completed its work, and it's time to move on to the next middleware in the chain. ex: return next(action) 
+/// action — the action being dispatched. generally, your middleware will do something with every action (such as logging) or watch for a specific action
+// [5.2] import the middleware into ./src/index.js where your store is
+// register the middleware in the store using applyMiddleware(..) from Redux
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
+  composeWithDevTools(applyMiddleware(thunk, sagaMiddleware))
 );
+
+// ch[6.1] initiate the saga with the run method, and tell redux-saga which saga(s) to run
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>

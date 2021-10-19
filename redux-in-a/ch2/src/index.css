@@ -72,6 +72,8 @@ hr {
   font-size: 18px;
   margin-bottom: 20px;
   text-align: right;
+  display: flex;
+  justify-content: space-between;
 }
 
 /* Task */
@@ -91,6 +93,11 @@ hr {
 .task-body {
   padding: 10px 20px;
   min-height: 60px;
+}
+
+.task-timer {
+  text-align: right;
+  font-weight: bold;
 }
 
 .task-lists {

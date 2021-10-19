@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import TaskList from './TaskList';
 
-import { TASK_STATUSES } from '../constants';
-
 class TasksPage extends Component {
   constructor(props) {
     super(props);
@@ -42,22 +40,42 @@ class TasksPage extends Component {
     this.setState({ showNewCardForm: !this.state.showNewCardForm });
   };
 
+  renderTaskLists() {
+    const { onStatusChange, tasks } = this.props;
+
+    return Object.keys(tasks).map(status => {
+      const tasksByStatus = tasks[status];
+
+      return (
+        <TaskList
+          key={status}
+          status={status}
+          tasks={tasksByStatus}
+          onStatusChange={onStatusChange}
+        />
+      );
+    });
+  }
+
+  onSearch = e => {
+    this.props.onSearch(e.target.value);
+  };
+
   render() {
     if (this.props.isLoading) {
-      return (
-        <div className="tasks-loading">
-          Loading...
-        </div>
-      );
+      return <div className="tasks-loading">Loading...</div>;
     }
 
     return (
       <div className="tasks">
         <div className="tasks-header">
+          <input onChange={this.onSearch} type="text" placeholder="Search..." />
+
           <button className="button button-default" onClick={this.toggleForm}>
             + New task
           </button>
         </div>
+
         {this.state.showNewCardForm &&
           <form className="new-task-form" onSubmit={this.onCreateTask}>
             <input
@@ -78,20 +96,9 @@ class TasksPage extends Component {
               Save
             </button>
           </form>}
+
         <div className="task-lists">
-          {TASK_STATUSES.map(status => {
-            const statusTasks = this.props.tasks.filter(
-              task => task.status === status
-            );
-            return (
-              <TaskList
-                key={status}
-                status={status}
-                tasks={statusTasks}
-                onStatusChange={this.props.onStatusChange}
-              />
-            );
-          })}
+          {this.renderTaskLists()}
         </div>
       </div>
     );

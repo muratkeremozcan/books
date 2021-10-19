@@ -7,6 +7,13 @@ export default function* rootSaga() {
   yield takeLatestById(['TIMER_STARTED', 'TIMER_STOPPED'], handleProgressTimer);
 }
 
+/**
+ * takeLatestById is a generic helper function that is used to create re-discoverable processes. 
+ * The function checks to see if a channel exists for a task, 
+ * and if not, creates one and adds it to the mapping. 
+ * After adding to the mapping, the new channel is immediately instantiated 
+ * and the final line in the listing dispatches the action to the new channel.
+ */
 function* takeLatestById(actionType, saga) {
   const channelsMap = {};
 
@@ -15,6 +22,8 @@ function* takeLatestById(actionType, saga) {
     const { taskId } = action.payload;
 
     if (!channelsMap[taskId]) {
+      // channels are objects used to send and receive messages between processes
+      // here it helps us create unique channel for each Parsnip task that starts a timer
       channelsMap[taskId] = channel();
       yield takeLatest(channelsMap[taskId], saga);
     }
