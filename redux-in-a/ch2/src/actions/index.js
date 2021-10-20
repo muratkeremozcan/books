@@ -1,4 +1,6 @@
 import * as api from '../api';
+import { normalize, schema } from 'normalizr';
+
 
 // ch[2.1]
 // event -> ACTION -(dispatch)-(middleware)-> REDUCER -> STORE(state) -(selector)-> update VIEW
@@ -21,21 +23,86 @@ import * as api from '../api';
 // ACTION_STARTED, ACTION_SUCCEEDED, and ACTION_FAILED
 // With user as actor, you need to worry about the ACTION_SUCCEEDED action type, and maybe ACTION_FAILED
 
-export function fetchTasks() {
+export const SET_CURRENT_PROJECT_ID = 'SET_CURRENT_PROJECT_ID';
+export function setCurrentProjectId(id) {
+  return {
+    type: 'SET_CURRENT_PROJECT_ID',
+    payload: {
+      id,
+    },
+  };
+}
+
+export const FETCH_PROJECTS_STARTED = 'FETCH_PROJECTS_STARTED';
+function fetchProjectsStarted(boards) {
+  return { type: FETCH_PROJECTS_STARTED, payload: { boards } };
+}
+
+export const FETCH_PROJECTS_FAILED = 'FETCH_PROJECTS_FAILED';
+function fetchProjectsFailed(err) {
+  return { type: FETCH_PROJECTS_FAILED, payload: err };
+}
+
+const taskSchema = new schema.Entity('tasks');
+const projectSchema = new schema.Entity('projects', {
+  tasks: [taskSchema],
+});
+
+function receiveEntities(entities) {
+  return {
+    type: 'RECEIVE_ENTITIES',
+    payload: entities,
+  };
+}
+
+export function fetchProjects() {
+  return (dispatch, getState) => {
+    dispatch(fetchProjectsStarted());
+
+    return api
+      .fetchProjects()
+      .then(resp => {
+        const projects = resp.data;
+
+        const normalizedData = normalize(projects, [projectSchema]);
+
+        dispatch(receiveEntities(normalizedData));
+
+        // Pick a board to show on initial page load
+        if (!getState().page.currentProjectId) {
+          const defaultProjectId = projects[0].id;
+          dispatch(setCurrentProjectId(defaultProjectId));
+        }
+      })
+      .catch(err => {
+        fetchProjectsFailed(err);
+      });
+  };
+}
+
+export function fetchTasksStarted() {
   return {
     type: 'FETCH_TASKS_STARTED',
   };
 }
 
-export function createTaskRequested() {
+export function fetchTasksSucceeded() {
   return {
-    type: 'CREATE_TASK_REQUESTED',
+    type: 'FETCH_TASKS_SUCCEEDED',
+  };
+}
+
+export function fetchTasks(boardId) {
+  return dispatch => {
+    return api.fetchTasks(boardId).then(resp => {
+      dispatch(fetchTasksSucceeded(resp.data));
+    });
   };
 }
 
 // (2.1) synchronous action creators just return an action.
 // the store will receive and process the action immediately after dispatch
-export function createTaskSucceeded(task) {
+function createTaskSucceeded(task) {
   // the action
   return {
     // the action type
@@ -58,10 +125,14 @@ export function createTaskSucceeded(task) {
 // async actions need return a function instead of an object.
 //  Within that function, you can make your API call 
 // and dispatch a sync action when a response is available.
-export function createTask({ title, description, status = 'Unstarted' }) {
-  return dispatch => {
-    dispatch(createTaskRequested());
-    api.createTask({ title, description, status }).then(resp => {
+export function createTask({
+  projectId,
+  title,
+  description,
+  status = 'Unstarted',
+}) {
+  return (dispatch, getState) => {
+    api.createTask({ title, description, status, projectId }).then(resp => {
       // KEY: the dispatch to the store only after successful api response
       // the store will receive and process the sync action immediately after dispatch
       dispatch(createTaskSucceeded(resp.data));
@@ -78,24 +149,14 @@ function editTaskSucceeded(task) {
   };
 }
 
-// [6.4] when using sagas: coordinate the sagas with the actions. Note that not all actions are used in sagas.
-function progressTimerStart(taskId) {
-  return { type: 'TIMER_STARTED', payload: { taskId } };
-}
-
-function progressTimerStop(taskId) {
-  return { type: 'TIMER_STOPPED', payload: { taskId } };
-}
-
-export function editTask(id, params = {}) {
+export function editTask(task, params = {}) {
   return (dispatch, getState) => {
     // merges new properties into existing task object
-    const task = getTaskById(getState().tasks.tasks, id);
     const updatedTask = {
       ...task,
       ...params,
     };
-    api.editTask(id, updatedTask).then(resp => {
+    api.editTask(task.id, updatedTask).then(resp => {
       dispatch(editTaskSucceeded(resp.data));
 
       // if task moves into "In Progress", start timer
@@ -111,8 +172,13 @@ export function editTask(id, params = {}) {
   };
 }
 
-function getTaskById(tasks, id) {
-  return tasks.find(task => task.id === id);
+// [6.4] when using sagas: coordinate the sagas with the actions. Note that not all actions are used in sagas.
+function progressTimerStart(taskId) {
+  return { type: 'TIMER_STARTED', payload: { taskId } };
+}
+
+function progressTimerStop(taskId) {
+  return { type: 'TIMER_STOPPED', payload: { taskId } };
 }
 
 export function filterTasks(searchTerm) {

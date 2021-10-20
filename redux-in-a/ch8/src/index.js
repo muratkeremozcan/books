@@ -24,7 +24,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk, sagaMiddleware)),
+  composeWithDevTools(applyMiddleware(thunk, sagaMiddleware))
 );
 
 sagaMiddleware.run(rootSaga);
@@ -33,7 +33,7 @@ ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );
 
 if (module.hot) {
@@ -43,7 +43,7 @@ if (module.hot) {
       <Provider store={store}>
         <NextApp />
       </Provider>,
-      document.getElementById('root'),
+      document.getElementById('root')
     );
   });
 

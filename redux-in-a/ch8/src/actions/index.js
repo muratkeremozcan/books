@@ -58,7 +58,6 @@ export function fetchProjects() {
   };
 }
 
-// TODO: do these get migrated over to fetchBoard
 export function fetchTasksStarted() {
   return {
     type: 'FETCH_TASKS_STARTED',

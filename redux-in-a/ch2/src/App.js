@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Header from './components/Header';
 import TasksPage from './components/TasksPage';
 import FlashMessage from './components/FlashMessage';
-import { createTask, editTask, fetchTasks, filterTasks } from './actions';
-import { getGroupedAndFilteredTasks } from './reducers/';
+import {
+  createTask,
+  editTask,
+  fetchProjects,
+  filterTasks,
+  setCurrentProjectId,
+} from './actions';
+import { getGroupedAndFilteredTasks, getProjects } from './reducers/';
 
 // event -> ACTION -(dispatch)-(middleware)-> REDUCER -> STORE(state) -(selector)-> update VIEW
 
@@ -18,22 +25,32 @@ import { getGroupedAndFilteredTasks } from './reducers/';
 // container components render presentational components, ex: <TasksPage />
 // with this pattern, how the application looks is decoupled from what it does
 
-export class App extends Component {
+class App extends Component {
   // ch[4.1] working with the back-end
   // create the async action creators (they return a function that communicates with the back-end) (4.0)
   // in the browser, use componentDidMount lifecycle callback to initiate AJAX requests
   componentDidMount() {
-    this.props.dispatch(fetchTasks());
+    this.props.dispatch(fetchProjects());
   }
+
+  onCurrentProjectChange = e => {
+    this.props.dispatch(setCurrentProjectId(Number(e.target.value)));
+  };
 
   onCreateTask = ({ title, description }) => {
     // actions are handled by container components
     // container components have access to dispatch thanks to connect
-    this.props.dispatch(createTask({ title, description }));
+    this.props.dispatch(
+      createTask({
+        title,
+        description,
+        projectId: this.props.currentProjectId,
+      })
+    );
   };
 
-  onStatusChange = (id, status) => {
-    this.props.dispatch(editTask(id, { status }));
+  onStatusChange = (task, status) => {
+    this.props.dispatch(editTask(task, { status }));
   };
 
   onSearch = searchTerm => {
@@ -45,6 +62,10 @@ export class App extends Component {
       <div className="container">
         {this.props.error && <FlashMessage message={this.props.error} />}
         <div className="main-content">
+          <Header
+            projects={this.props.projects}
+            onCurrentProjectChange={this.onCurrentProjectChange}
+          />
           <TasksPage
             tasks={this.props.tasks}
             onCreateTask={this.onCreateTask}
@@ -63,12 +84,18 @@ export class App extends Component {
 // * receives state as a parameter
 // * returns an object that is merged into the props for the component, making the property available as this.props
 function mapStateToProps(state) {
-  const { isLoading, error } = state.tasks;
+  const { isLoading, error } = state.projects;
   // ch[7.0] Selectors are functions that accept a state from the Redux store and compute data that will be passed as props to React components
   // Data comes out of the store, you run it through selectors, and the view (React, in your case) accepts selector output and takes care of any rendering
   // without selectors, components would be coupled directly to the shape of the Redux store; if the structure of the store changes, you must update every component
   // selectors prevent business logic from piling up inside components and boost performance by forgoing unnecessary renders via memoization.
-  return { tasks: getGroupedAndFilteredTasks(state), isLoading, error };
+  return {
+    tasks: getGroupedAndFilteredTasks(state),
+    projects: getProjects(state),
+    currentProjectId: state.page.currentProjectId,
+    isLoading,
+    error,
+  };
 }
 
 // * connect — a function used as a bridge between React components and data from the Redux store.

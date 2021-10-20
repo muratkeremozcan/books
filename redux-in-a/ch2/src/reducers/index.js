@@ -16,61 +16,43 @@ import { TASK_STATUSES } from '../constants';
 // once you update your actions (4.0), you also update your reducers
 
 
-const initialState = {
-  tasks: [],
+const initialTasksState = {
+  items: {},
   isLoading: false,
   error: null,
-  searchTerm: '',
 };
 
-export default function tasks(state = initialState, action) {
+export function tasks(state = initialTasksState, action) {
   switch (action.type) {
-    case 'FETCH_TASKS_STARTED': {
-      return {
-        ...state, // include any previous state when updating state
-        isLoading: true,
-      };
-    }
-    case 'FETCH_TASKS_SUCCEEDED': {
-      return { // returns the next state with the the list of tasks from the payload
-        ...state,
-        tasks: action.payload.tasks,
-        isLoading: false,
-      };
-    }
-    case 'FETCH_TASKS_FAILED': {
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload.error,
-      };
-    }
-    case 'CREATE_TASK_SUCCEEDED': {
-      return {
-        ...state,
-        tasks: state.tasks.concat(action.payload.task), // add on to the existing state.property
-      };
+    case 'RECEIVE_ENTITIES': {
+      const { entities } = action.payload;
+      if (entities && entities.tasks) {
+        return {
+          ...state,
+          isLoading: false,
+          items: entities.tasks,
+        };
+      }
+
+      return state;
     }
     case 'EDIT_TASK_SUCCEEDED': {
-      const { payload } = action;
-      // to update the right task iterate over the list of tasks with map
-      // if the current task matches the ID from the payload, update it with the new params.
-      // Because json-server requires a full object to be passed along for PUT requests,
-      // you must grab the task out of the store and merge in the new properties yourself,
-      const nextTasks = state.tasks.map(task => {
-        if (task.id === payload.task.id) {
-          return payload.task;
-        }
+      const { task } = action.payload;
 
-        return task;
-      });
+      const nextTasks = {
+        ...state.items,
+        [task.id]: task,
+      };
+
       return {
         ...state,
-        tasks: nextTasks,
+        items: nextTasks,
       };
     }
     case 'TIMER_INCREMENT': {
-      const nextTasks = state.tasks.map(task => {
+      const nextTasks = Object.keys(state.items).map(taskId => {
+        const task = state.items[taskId];
+
         if (task.id === action.payload.taskId) {
           return { ...task, timer: task.timer + 1 };
         }
@@ -82,8 +64,60 @@ export default function tasks(state = initialState, action) {
         tasks: nextTasks,
       };
     }
-    case 'FILTER_TASKS': {
-      return { ...state, searchTerm: action.payload.searchTerm };
+    default: {
+      return state;
+    }
+  }
+}
+
+const initialProjectsState = {
+  items: {},
+  isLoading: false,
+  error: null,
+};
+
+export function projects(state = initialProjectsState, action) {
+  switch (action.type) {
+    case 'RECEIVE_ENTITIES': {
+      const { entities } = action.payload;
+      if (entities && entities.projects) {
+        return {
+          ...state,
+          isLoading: false,
+          items: entities.projects,
+        };
+      }
+
+      return state;
+    }
+    case 'FETCH_PROJECTS_STARTED': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'FETCH_PROJECTS_SUCCEEDED': {
+      return {
+        ...state,
+        isLoading: false,
+        items: action.payload.projects,
+      };
+    }
+    case 'CREATE_TASK_SUCCEEDED': {
+      const { task } = action.payload;
+
+      const project = state.items[task.projectId];
+
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [task.projectId]: {
+            ...project,
+            tasks: project.tasks.concat(task.id),
+          },
+        },
+      };
     }
     default: {
       return state;
@@ -93,8 +127,19 @@ export default function tasks(state = initialState, action) {
 
 // [7.1] typically selectors are in the related reducer file
  
-export const getTasks = state => state.tasks.tasks;
-export const getSearchTerm = state => state.tasks.searchTerm;
+const getSearchTerm = state => state.page.searchTerm;
+
+const getTasksByProjectId = state => {
+  const { currentProjectId } = state.page;
+
+  if (!currentProjectId || !state.projects.items[currentProjectId]) {
+    return [];
+  }
+
+  const taskIds = state.projects.items[currentProjectId].tasks;
+
+  return taskIds.map(id => state.tasks.items[id]);
+};
 
 // [7.2] reselect library is great for creating selectors, because it provides memoization and composability (like FP)
 // memoization is when a function stores the results of past computations and uses them for future calls.
@@ -105,7 +150,7 @@ export const getSearchTerm = state => state.tasks.searchTerm;
 export const getFilteredTasks = createSelector(
   // input selectors are simple, they are not memoized, but are used as inputs to memoized selectors
   // with this setup, the transform function only runs when the result of the input selectors change
-  [getTasks, getSearchTerm],
+  [getTasksByProjectId, getSearchTerm],
   (tasks, searchTerm) => {
     return tasks.filter(task => task.title.match(new RegExp(searchTerm, 'i')));
   }
@@ -123,3 +168,31 @@ export const getGroupedAndFilteredTasks = createSelector(
     return grouped;
   }
 );
+
+export const getProjects = state => {
+  return Object.keys(state.projects.items).map(id => {
+    return state.projects.items[id];
+  });
+};
+
+const initialPageState = {
+  currentProjectId: null,
+  searchTerm: '',
+};
+
+export function page(state = initialPageState, action) {
+  switch (action.type) {
+    case 'SET_CURRENT_PROJECT_ID': {
+      return {
+        ...state,
+        currentProjectId: action.payload.id,
+      };
+    }
+    case 'FILTER_TASKS': {
+      return { ...state, searchTerm: action.payload.searchTerm };
+    }
+    default: {
+      return state;
+    }
+  }
+}
