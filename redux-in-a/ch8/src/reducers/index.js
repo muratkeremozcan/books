@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { TASK_STATUSES } from '../constants';
 
+
 const initialTasksState = {
   items: {},
   isLoading: false,

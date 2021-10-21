@@ -16,6 +16,8 @@ import { TASK_STATUSES } from '../constants';
 // once you update your actions (4.0), you also update your reducers
 
 
+// [8.3] once data is normalized and actions have changed, adjust the reducers
+// we have 2 top level entities (projects & tasks) they need their own individual state and reducers
 const initialTasksState = {
   items: {},
   isLoading: false,
@@ -103,6 +105,11 @@ export function projects(state = initialProjectsState, action) {
         items: action.payload.projects,
       };
     }
+    // [8.3]
+    // Recall that because you’re tracking related entities in different sections of the store, 
+    // you need to use IDs to maintain these relationships. 
+    // Each project has a tasks property that’s an array of tasks belonging to that project. 
+    //When you create a new task, you have to add the task’s ID to the correct project.
     case 'CREATE_TASK_SUCCEEDED': {
       const { task } = action.payload;
 
@@ -129,15 +136,16 @@ export function projects(state = initialProjectsState, action) {
  
 const getSearchTerm = state => state.page.searchTerm;
 
+// [8.5] (below)
 const getTasksByProjectId = state => {
   const { currentProjectId } = state.page;
-
+  // if there is no project, or no project matching the currentProjectId, return early
   if (!currentProjectId || !state.projects.items[currentProjectId]) {
     return [];
   }
-
+  // get the list of taskIds
   const taskIds = state.projects.items[currentProjectId].tasks;
-
+  // for task ids, get the corresponding project
   return taskIds.map(id => state.tasks.items[id]);
 };
 
@@ -169,6 +177,9 @@ export const getGroupedAndFilteredTasks = createSelector(
   }
 );
 
+// [8.5] update the selectors
+// generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
+/** a selector to convert the object containing all projects into an array */
 export const getProjects = state => {
   return Object.keys(state.projects.items).map(id => {
     return state.projects.items[id];

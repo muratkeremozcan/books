@@ -53,6 +53,10 @@ import './index.css';
 // ch[4.2] the root reducer is needed to integrate the reducers with the Redux store.
 // rootReducer takes in the current state and the action being dispatched
 // then passes the data & action to the reducers
+
+// [8.4] data from the api is normalized and actions are updated [8.1] [8.2], reducers have been adjusted [8.3]
+// now we have to update rootReducer. 
+// This is a generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
 const rootReducer = (state = {}, action) => {
   return {
     projects: projects(state.projects, action),

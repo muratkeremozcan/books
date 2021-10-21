@@ -90,6 +90,8 @@ function mapStateToProps(state) {
   // without selectors, components would be coupled directly to the shape of the Redux store; if the structure of the store changes, you must update every component
   // selectors prevent business logic from piling up inside components and boost performance by forgoing unnecessary renders via memoization.
   return {
+    // [8.6] update mapStateToProps using the new selectors
+    // generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
     tasks: getGroupedAndFilteredTasks(state),
     projects: getProjects(state),
     currentProjectId: state.page.currentProjectId,
