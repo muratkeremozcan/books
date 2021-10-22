@@ -12,13 +12,16 @@ import {
 } from './actions';
 import { getGroupedAndFilteredTasks, getProjects } from './reducers/';
 
-// event -> ACTION -(dispatch)-(middleware)-> REDUCER -> STORE(state) -(selector)-> update VIEW
+// event -> ACTION -(dispatch)-(middleware)-> REDUCER -> container component gets state data out of STORE through selectors -> VIEW is updated
+// generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
 
-// ch[2.2] connecting a component to Redux
+// ch[2.2] connecting a component to Redux.
+// Actions are used by container components, which dispatch them to reducers
 // you took care of the redux boilerplate (2.0)
 // you created the actions & action handlers (2.1) 
 // now, at a container component, dispatch those actions 
-// and create mapStateToProps and mapDispatchToProps, export using connect
+// the container component has to know about state, so use mapStateToProps
+// bridge the component and Redux using connect
 
 // presentational components handle UI and UI-related data (like angular components), ex: TaskPage.js
 // container components (App.js) handle application data via Redux (like Angular services).
@@ -38,7 +41,7 @@ class App extends Component {
   };
 
   onCreateTask = ({ title, description }) => {
-    // actions are handled by container components
+    // [2.2] actions are handled by container components
     // container components have access to dispatch thanks to connect
     this.props.dispatch(
       createTask({
@@ -80,18 +83,16 @@ class App extends Component {
 }
 
 
-// To inject state use mapStateToProps(state). It allows to derive data before making it available to the component, using selectors
+// [2.2] the container component has to know about state, use mapStateToProps(state) 
 // * receives state as a parameter
 // * returns an object that is merged into the props for the component, making the property available as this.props
 function mapStateToProps(state) {
   const { isLoading, error } = state.projects;
-  // ch[7.0] Selectors are functions that accept a state from the Redux store and compute data that will be passed as props to React components
-  // Data comes out of the store, you run it through selectors, and the view (React, in your case) accepts selector output and takes care of any rendering
-  // without selectors, components would be coupled directly to the shape of the Redux store; if the structure of the store changes, you must update every component
-  // selectors prevent business logic from piling up inside components and boost performance by forgoing unnecessary renders via memoization.
+  // you created selectors (usually in reducer file) (7.1)
+  // [7.2] now use the selectors to get state data from the Redux store, derive the data, and pass it as props to the React container components
+  // [8.6] update mapStateToProps using the new selectors
+  // generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
   return {
-    // [8.6] update mapStateToProps using the new selectors
-    // generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
     tasks: getGroupedAndFilteredTasks(state),
     projects: getProjects(state),
     currentProjectId: state.page.currentProjectId,
@@ -100,5 +101,5 @@ function mapStateToProps(state) {
   };
 }
 
-// * connect — a function used as a bridge between React components and data from the Redux store.
+// [2.2] connect — a function used as a bridge between React components and data from the Redux store.
 export default connect(mapStateToProps)(App);

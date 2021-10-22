@@ -16,7 +16,8 @@ import App from './App';
 import rootSaga from './sagas';
 import './index.css';
 
-// event -> ACTION -(dispatch)-(middleware)-> REDUCER -> STORE(state) -(selector)-> update VIEW
+// event -> ACTION -(dispatch)-(middleware)-> REDUCER -> container component gets state data out of STORE through selectors -> VIEW is updated
+// generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
 
 // Actions in Redux represent work being done (fetching user data, logging the user in, and so on),
 // reducers determine how state should change,
@@ -32,30 +33,17 @@ import './index.css';
 // modify it with data from the action, and then return the new state.
 // When the store is updated, view layers (React in our case) can listen to updates and respond accordingly.
 
-
-// ch[2.0] react-redux gives you two primary tools for connecting your Redux store to React: 
-
-// * Provider - a React component that you’ll render at the top of the React app. 
-// takes  the store as a prop and wraps the top-level component in your app
-// any child component rendered within Provider can access the Redux store
-
-// * connect — connect(mapStateToProps)(a Component): a function used as a bridge between React components and data from the Redux store.
-
-
-// ch[3.1] to enable redux dev tools
-// npm i -D redux-devtools-extension
-// import and pass devToolsEnhancer into Redux's createStore 
-
 // Redux’s createStore function takes up to three arguments: a reducer, an initial state, and an enhancer. 
 // In the case that only two arguments are passed, Redux presumes the second argument is an enhancer and there’s no initial state. 
 // Enhancers are a way to augment the Redux store 
 
-// ch[4.2] the root reducer is needed to integrate the reducers with the Redux store.
+// [4.2] we have created actions (2.1) and async actions (4.0), actions now need to talk to reducers
+// the root reducer is needed to integrate the reducers with the Redux store.
 // rootReducer takes in the current state and the action being dispatched
 // then passes the data & action to the reducers
 
-// [8.4] data from the api is normalized and actions are updated [8.1] [8.2], reducers have been adjusted [8.3]
-// now we have to update rootReducer. 
+// data from the api is normalized and actions are updated (8.1) (8.2), reducers have been adjusted (8.3)
+// [8.4] update the rootReducer; reducers will have different shaped arguments
 // This is a generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
 const rootReducer = (state = {}, action) => {
   return {
@@ -65,16 +53,21 @@ const rootReducer = (state = {}, action) => {
   };
 };
 
-// ch[6.0] redux-saga is an alternative to redux-thunk, useful for managing complex side effects
+// ch[6.0]Sagas: a middleware useful for managing complex side effects with flows, it is an alternative to redux-thunk for complex scenarios
 // sagas are built using generators which can be paused and resumed. redux-saga is an alternative to redux-observables or rxjs from Angular
 // use createSagaMiddleware() factory function to create sagaMiddleware
 // register the middleware in the store using applyMiddleware(..) from Redux
+// create the sagas (6.2), (6.3), be aware that they work with actions (6.4)
 const sagaMiddleware = createSagaMiddleware();
 
-// ch [5.0] middleware is any code that runs between two software components
+// ch[3.1] to enable redux dev tools (not very KEY)
+// npm i -D redux-devtools-extension
+// import and pass devToolsEnhancer into Redux's createStore 
+
+// ch [5.0] in Redux middleware is used to modify the flow between action dispatch and reaching the reducer
+// middleware is any code that runs between two software components
 // with Express, you can have middleware that runs after an incoming request is received, and before the framework handles a request. 
 // useful for things such as logging data about each request and response, handling errors in a centralized way, authenticating users etc.
-// in Redux middleware is used to modify the flow between action dispatch and reaching the reducer
 
 // when to use middleware?
 // middleware is meant to centralize & abstract logic that is common to many software components 
@@ -94,6 +87,14 @@ const store = createStore(
 
 // ch[6.1] initiate the saga with the run method, and tell redux-saga which saga(s) to run
 sagaMiddleware.run(rootSaga);
+
+// ch[2.0] redux boilerplate
+//react-redux gives you two primary tools for connecting your Redux store to React: 
+
+// * Provider - a React component that you’ll render at the top of the React app. 
+// takes  the store as a prop and wraps the top-level component in your app
+// any child component rendered within Provider can access the Redux store
+// * connect — connect(mapStateToProps)(a Component): a function used as a bridge between React components and data from the Redux store (App.js).
 
 ReactDOM.render(
   <Provider store={store}>

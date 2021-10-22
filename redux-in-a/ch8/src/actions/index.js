@@ -21,17 +21,7 @@ function fetchProjectsFailed(err) {
   return { type: FETCH_PROJECTS_FAILED, payload: err };
 }
 
-// ch[8.0] redux store schemas, normlizr: normalized vs nested data is the way to go
 
-// nested data is built on hierarchies. It is intuitive because there is no need to manage relationships
-// con: update logic is complex, have to find relevant properties for each operation
-// con: the data is nested, therefore we are forced to re-render the entire app when related state changes 
-
-// normalized data is similar to a relational database; it is flat which means there is no need to update nested resources
-// normalizr package makes normalization easy
-
-// [8.1] how to normalize data (this can go with actions as in here or separate schemas file)
-// define the schema for the top level entries: new.schema.Entity(..)
 const taskSchema = new schema.Entity('tasks');
 // identify what the relationship is, relationships are maintained via IDs (tasks: [1, 3..])  
 const projectSchema = new schema.Entity('projects', {
@@ -39,7 +29,6 @@ const projectSchema = new schema.Entity('projects', {
 });
 
 
-// generic action to help reduce boilerplate by not having to dispatch multiple actions 
 function receiveEntities(entities) {
   return {
     type: 'RECEIVE_ENTITIES',
@@ -56,7 +45,6 @@ export function fetchProjects() {
     .then(resp => {
       const projects = resp.data;
       
-        // [8.2] transform/normalize the API response through normalizr's normalize function(object, schema), and dispatch it
         const normalizedData = normalize(projects, [projectSchema]);
 
         dispatch(receiveEntities(normalizedData));

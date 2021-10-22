@@ -70,7 +70,6 @@ class TasksPage extends Component {
       <div className="tasks">
         <div className="tasks-header">
           <input onChange={this.onSearch} type="text" placeholder="Search..." />
-
           <button className="button button-default" onClick={this.toggleForm}>
             + New task
           </button>

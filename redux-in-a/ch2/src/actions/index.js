@@ -2,10 +2,13 @@ import * as api from '../api';
 import { normalize, schema } from 'normalizr';
 
 
-// ch[2.1]
-// event -> ACTION -(dispatch)-(middleware)-> REDUCER -> STORE(state) -(selector)-> update VIEW
-// KEY ch[4.0]: ACTION can communicate with the back end asynchronously
-// event -> ACTION -(async-communication-with-back-end)-(dispatch)-(middleware)-> REDUCER -> STORE(state) -> update VIEW
+// ch[2.1] create actions and action handlers
+// event -> ACTION -(dispatch)-(middleware)-> REDUCER -> container component gets state data out of STORE through selectors -> VIEW is updated
+// generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
+
+
+// ch[4.0]: asynchronous actions
+// event -> ACTION -(async-communication-with-back-end)-(dispatch)-(middleware)-> REDUCER 
 
 // In Redux, actions are payloads of information that send data from your application to your store.
 // actions return an object with a required type key
@@ -43,17 +46,23 @@ function fetchProjectsFailed(err) {
   return { type: FETCH_PROJECTS_FAILED, payload: err };
 }
 
-// ch[8.0] redux store schemas, normlizr: normalized vs nested data is the way to go
-
-// nested data is built on hierarchies. It is intuitive because there is no need to manage relationships
+// ch[8.0] redux store schemas and normalization. normlizr: normalized vs nested data is the way to go
+// * nested data is built on hierarchies. It is intuitive because there is no need to manage relationships
 // con: update logic is complex, have to find relevant properties for each operation
 // con: the data is nested, therefore we are forced to re-render the entire app when related state changes 
-
-// normalized data is similar to a relational database; it is flat which means there is no need to update nested resources
+// * normalized data is similar to a relational database; it is flat which means there is no need to update nested resources
 // normalizr package makes normalization easy
 
-// [8.1] how to normalize data (this can go with actions as in here or separate schemas file)
-// define the schema for the top level entries: new.schema.Entity(..)
+// [8.0] normalize the data (this can go with actions as in here or separate schemas file)
+// [8.1] define the schema for the top level entries: new.schema.Entity(..)
+// [8.2] transform/normalize the API response through normalizr's normalize function(object, schema), and dispatch it
+// (8.3) once data is normalized and actions have changed, adjust the reducers
+// (8.4) update the rootReducer; reducers will have different shaped arguments
+// (8.5) update the selectors
+// (8.6) update mapStateToProps using the new selectors
+// generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
+
+// [8.1] define the schema for the top level entries: new.schema.Entity(..)
 const taskSchema = new schema.Entity('tasks');
 // identify what the relationship is, relationships are maintained via IDs (tasks: [1, 3..])  
 const projectSchema = new schema.Entity('projects', {
@@ -61,7 +70,7 @@ const projectSchema = new schema.Entity('projects', {
 });
 
 
-// generic action to help reduce boilerplate by not having to dispatch multiple actions 
+/** generic action to help reduce boilerplate by not having to dispatch multiple actions */
 function receiveEntities(entities) {
   return {
     type: 'RECEIVE_ENTITIES',
@@ -115,8 +124,9 @@ export function fetchTasks(boardId) {
   };
 }
 
-// (2.1) synchronous action creators just return an action.
+// [2.1] synchronous action creators just return an action.
 // the store will receive and process the action immediately after dispatch
+// the action creator
 function createTaskSucceeded(task) {
   // the action
   return {
@@ -129,7 +139,7 @@ function createTaskSucceeded(task) {
   };
 }
 
-// ch[4.0] asynchronous action creators return a function that accepts a dispatch argument
+// [4.0] asynchronous action creators return a function that accepts a dispatch argument
 // they do some async work with the back-end, and then call dispatch with a sync action creators
 // For each action that requires a network request (meaning you’re dealing with an async action),
 // you’ll need at least one synchronous action creator to indicate where you are in the request/response lifecycle.
@@ -138,7 +148,7 @@ function createTaskSucceeded(task) {
 // and inside those functions you can make network requests and dispatch additional actions when any requests complete.
 
 // async actions need return a function instead of an object.
-//  Within that function, you can make your API call 
+// Within that function, you can make your API call 
 // and dispatch a sync action when a response is available.
 export function createTask({
   projectId,

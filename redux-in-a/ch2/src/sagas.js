@@ -16,7 +16,7 @@ import * as api from './api';
 // yield fork(watchFetchTasks)
 // yield fork(watchSomethingElse)
 export default function* rootSaga() {
-  // (6.3) takeLatest command cancels the unfinished old request when a new one comes in (like switchMap from RxJs)
+  // [6.3] takeLatest command cancels the unfinished old request when a new one comes in (like switchMap from RxJs)
   yield takeLatest('FETCH_TASKS_STARTED', watchFetchTasks);
   // helper function that passes both actions types in an array to the helper function handleProgressTimer
   yield takeLatestById(['TIMER_STARTED', 'TIMER_STOPPED'], handleProgressTimer);
@@ -33,7 +33,7 @@ function* takeLatestById(actionType, saga) {
   const channelsMap = {};
 
   while (true) {
-    // (6.3) take command waits for an action type, it is a blocking call
+    // [6.3] take command waits for an action type, it is a blocking call
     const action = yield take(actionType);
     const { taskId } = action.payload;
 
@@ -44,17 +44,17 @@ function* takeLatestById(actionType, saga) {
       channelsMap[taskId] = channel();
       yield takeLatest(channelsMap[taskId], saga);
     }
-    // (6.3) put command is like dispatch, takes the action through the middleware & reducers
+    // [6.3] put command is like dispatch, takes the action through the middleware & reducers
     yield put(channelsMap[taskId], action);
   }
 }
 // type and payload are both destructured arguments
-export function* handleProgressTimer({ type, payload }) {
+function* handleProgressTimer({ type, payload }) {
   if (type === 'TIMER_STARTED') {
     while (true) {
-      // (6.3) delay method is blocking, have to use call(delay, xxx) to produce an effect out of it
+      // [6.3] delay method is blocking, have to use call(delay, xxx) to produce an effect out of it
       yield call(delay, 1000);
-      // (6.3) put command is like dispatch, takes the action through the middleware & reducers
+      // [6.3] put command is like dispatch, takes the action through the middleware & reducers
       yield put({
         type: 'TIMER_INCREMENT',
         payload: { taskId: payload.taskId },
@@ -65,9 +65,9 @@ export function* handleProgressTimer({ type, payload }) {
 
 function* watchFetchTasks() {
   try {
-    // (6.3) call command is used to invoke a function, it is a blocking call
+    // [6.3] call command is used to invoke a function, it is a blocking call
     const { data } = yield call(api.fetchTasks);
-    // (6.3) put command is like dispatch, takes the action through the middleware & reducers
+    // [6.3] put command is like dispatch, takes the action through the middleware & reducers
     yield put({
       type: 'FETCH_TASKS_SUCCEEDED',
       payload: { tasks: data },
