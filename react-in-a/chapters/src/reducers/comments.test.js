@@ -3,12 +3,17 @@ import initialState from "../../src/constants/initialState";
 import * as types from "../../src/constants/types";
 
 // [11.2] testing reducers
-// when testing the reducer, always consider the reducer and the related action
+// test for each action case in a switch statement
+// flow the action through the reducer,
+// verify that the final expected state KEY: expect(reducer(state, action).toEqual(newState))
 
 describe("comments", () => {
+  // test the default case
   test("should return the initial state", () => {
     expect(comments(initialState.comments, {})).toEqual(initialState.comments);
   });
+
+  // test each of the action cases
   test(`${types.comments.GET}`, () => {
     const existingState = { 1: { id: 1, content: "content" } };
     const mockComments = [
@@ -35,6 +40,7 @@ describe("comments", () => {
       1: { id: 1, content: "content" },
       2: { id: 2, content: "content" }
     };
+    // flow the action through the reducer, verify that the final state is different
     expect(
       comments(existingState, {
         type: types.comments.CREATE,

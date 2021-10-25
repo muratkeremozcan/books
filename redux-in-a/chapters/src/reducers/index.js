@@ -132,7 +132,11 @@ export function projects(state = initialProjectsState, action) {
   }
 }
 
-// [7.1] typically selectors are in the related reducer file
+// [7.1] selectors are used to get state data from the Redux store, derive the data, and pass it as props to the React container components
+// selectors take a state as input and produce a slice of the state as output. 
+// selectors are created in the related reducer file, or their own
+// they are consumed at the container components mapStateToProps function while getting the data from the store
+// event -> ACTION -(dispatch)-(middleware)-> REDUCER -> STORE(state) -(selector)-> update VIEW
  
 const getSearchTerm = state => state.page.searchTerm;
 

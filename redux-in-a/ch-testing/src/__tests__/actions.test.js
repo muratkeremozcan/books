@@ -3,15 +3,15 @@ import thunk from 'redux-thunk';
 import { createTask, createTaskSucceeded } from '../actions';
 import * as api from '../api';
 
-// ch [9.0] testing actions
+// ch[9.0] testing actions
 
 
-// [9.1] this is the template jest mock of promises that we often use
+// [9.0.1] this is the template jest mock of promises that we often use
 api.createTask = jest.fn(
   () => new Promise((resolve, reject) => resolve({ data: 'foo' }))
 );
 
-// [9.2] to accommodate async actions, use redux-mock-store
+// [9.0.2] to accommodate async actions, use redux-mock-store
 // we do not need it for testing actions that just return an object with type and payload information
 const mockStore = configureStore([thunk]); // alias: configureMockStore
 
@@ -33,7 +33,7 @@ describe('action creators:', () => {
     expect(createTaskSucceeded(task)).toEqual(expectedAction);
   });
 
-  // testing asynchronous actions creators 
+  // [9.0.3] testing asynchronous actions creators 
   
   // what does createTask do?
   // Dispatch an action indicating the request has started - store.dispatch(..)

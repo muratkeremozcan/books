@@ -4,6 +4,8 @@ import TaskList from '../components/TaskList';
 import toJson from 'enzyme-to-json';
 import Adapter from 'enzyme-adapter-react-16';
 
+// ch[9.5] testing components
+
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('the TaskList component', () => {

@@ -1,4 +1,10 @@
-import tasks from '../reducers/';
+import tasks from '../reducers';
+
+// ch[9.3.0] testing reducers
+// [9.3.1] test for each action case in a switch statement
+// [9.3.2] flow the action through the reducer,
+// [9.3.3] verify that the final expected state KEY: expect(reducer(state, action).toEqual(newState))
+
 
 describe('reducer', () => {
   const initialState = {
@@ -8,14 +14,16 @@ describe('reducer', () => {
     searchTerm: '',
   };
 
+  // [9.3.1] test the default case
   it('returns initialState', () => {
     expect(tasks(undefined, {})).toEqual(initialState);
   });
 
+  // [9.3.1] test each of the action cases
   it('FETCH_TASKS_STARTED', () => {
     const action = { type: 'FETCH_TASKS_STARTED' };
     const expectedState = { ...initialState, isLoading: true };
-
+    // [9.3.2] [9.3.3] flow the action through the reducer, verify that the final state is different
     expect(tasks(initialState, action)).toEqual(expectedState);
   });
 
@@ -23,9 +31,9 @@ describe('reducer', () => {
     const taskList = [{ title: 'Test the reducer', description: 'Very meta' }];
     const action = {
       type: 'FETCH_TASKS_SUCCEEDED',
-      payload: { tasks: taskList },
+      payload: { tasks: taskList, isLoading: false },
     };
-    const expectedState = { ...initialState, tasks: taskList };
+    const expectedState = { ...initialState, tasks: taskList, isLoading: false };
 
     expect(tasks(initialState, action)).toEqual(expectedState);
   });
