@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/reducers/index.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/reducers</a> index.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">53.13% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>17/32</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">30.77% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>4/13</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">70% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>7/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>14/28</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { createSelector } from 'reselect';
+import { TASK_STATUSES } from '../constants';
+&nbsp;
+const initialState = {
+  tasks: [],
+  isLoading: false,
+  error: null,
+  searchTerm: '',
+};
+export default function tasks(state = initialState, action) {
+  switch (action.type) {
+    case 'FETCH_TASKS_STARTED': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'FETCH_TASKS_SUCCEEDED': {
+      return {
+        ...state,
+        tasks: action.payload.tasks,
+        isLoading: false,
+      };
+    }
+<span class="branch-2 cbranch-no" title="branch not covered" >    case 'FETCH_TASKS_FAILED': {</span>
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+      };
+    }
+<span class="branch-3 cbranch-no" title="branch not covered" >    case 'CREATE_TASK_SUCCEEDED': {</span>
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        ...state,
+        tasks: state.tasks.concat(action.payload.task),
+      };
+    }
+<span class="branch-4 cbranch-no" title="branch not covered" >    case 'EDIT_TASK_SUCCEEDED': {</span>
+      const { payload } = <span class="cstat-no" title="statement not covered" >action;</span>
+      const nextTasks = <span class="cstat-no" title="statement not covered" >state.tasks.map(<span class="fstat-no" title="function not covered" >ta</span>sk =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        if (task.id === payload.task.id) {</span>
+<span class="cstat-no" title="statement not covered" >          return payload.task;</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return task;</span>
+      });
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        ...state,
+        tasks: nextTasks,
+      };
+    }
+<span class="branch-5 cbranch-no" title="branch not covered" >    case 'TIMER_INCREMENT': {</span>
+      const nextTasks = <span class="cstat-no" title="statement not covered" >state.tasks.map(<span class="fstat-no" title="function not covered" >ta</span>sk =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        if (task.id === action.payload.taskId) {</span>
+<span class="cstat-no" title="statement not covered" >          return { ...task, timer: task.timer + 1 };</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return task;</span>
+      });
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        ...state,
+        tasks: nextTasks,
+      };
+    }
+<span class="branch-6 cbranch-no" title="branch not covered" >    case 'FILTER_TASKS': {</span>
+<span class="cstat-no" title="statement not covered" >      return { ...state, searchTerm: action.payload.searchTerm };</span>
+    }
+    default: {
+      return state;
+    }
+  }
+}
+&nbsp;
+export const getTasks = state =&gt; state.tasks.tasks;
+export const getSearchTerm = state =&gt; state.tasks.searchTerm;
+&nbsp;
+export const getFilteredTasks = createSelector(
+  [getTasks, getSearchTerm],
+  (tasks, searchTerm) =&gt; {
+    return tasks.filter(task =&gt; task.title.match(new RegExp(searchTerm, 'i')));
+  }
+);
+&nbsp;
+export const getGroupedAndFilteredTasks = createSelector(
+  [getFilteredTasks],
+  tasks =&gt; {
+    const grouped = {};
+&nbsp;
+    TASK_STATUSES.forEach(status =&gt; {
+      grouped[status] = tasks.filter(<span class="fstat-no" title="function not covered" >ta</span>sk =&gt; <span class="cstat-no" title="statement not covered" >task.status === status)</span>;
+    });
+&nbsp;
+    return grouped;
+  }
+);
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Oct 26 2021 07:40:20 GMT-0500 (Central Daylight Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

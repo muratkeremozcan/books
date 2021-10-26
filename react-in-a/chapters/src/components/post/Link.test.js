@@ -13,7 +13,9 @@ describe('Link', () => {
         description: 'link-description'
       }
     };
-    // (9.1.1) when not using snapshots use Enzyme's shallow method to render the component
+    // (9.1.1) when not using snapshots, use Enzyme's shallow method to render the component,
+    // the 2 methods for mounting components are shallow and mount
+    // mount renders all children components, use shallow until extra fn is required to be tested by mount
     const wrapper = shallow(<Link {...props} />);
     // const wrapper = shallow(<Link link={props.link} />); // same
     // const wrapper = shallow(<Link link={

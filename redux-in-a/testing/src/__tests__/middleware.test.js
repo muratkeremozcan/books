@@ -23,26 +23,6 @@ const create = () => {
   return { store, next, invokeAction };
 };
 
-it('should make an analytics API call', () => {
-  // [9.2.3] destructure the helper function into next & action invocation
-  const { next, invokeAction } = create();
-  // [9.2.4] create a dummy action
-  const action = {
-    type: 'FOO',
-    meta: {
-      analytics: {
-        event: 'foo',
-        data: { extra: 'stuff' },
-      },
-    },
-  };
-  // [9.2.5] invoke the action
-  invokeAction(action);
-  // [9.2.6] assert that the action was passed on to next
-  expect(next).toHaveBeenCalledWith(action);
-  // [9.2.7] assert whether the dependent service was called or not
-  expect(fakeApi).toHaveBeenCalled();
-});
 
 describe('analytics middleware', () => {
   it('should pass on irrelevant keys', () => {
@@ -57,4 +37,26 @@ describe('analytics middleware', () => {
     // [9.2.7] assert whether the dependent service was called or not
     expect(fakeApi).not.toHaveBeenCalled();
   });
+  
+  it('should make an analytics API call', () => {
+    // [9.2.3] destructure the helper function into next & action invocation
+    const { next, invokeAction } = create();
+    // [9.2.4] create a dummy action
+    const action = {
+      type: 'FOO',
+      meta: {
+        analytics: {
+          event: 'foo',
+          data: { extra: 'stuff' },
+        },
+      },
+    };
+    // [9.2.5] invoke the action
+    invokeAction(action);
+    // [9.2.6] assert that the action was passed on to next
+    expect(next).toHaveBeenCalledWith(action);
+    // [9.2.7] assert whether the dependent service was called or not
+    expect(fakeApi).toHaveBeenCalled();
+  });
+
 });

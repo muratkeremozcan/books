@@ -9,7 +9,7 @@ import CreatePost from "../../../src/components/post/Create";
 // (9.2.2) mock the event if there is an event being passed to the fn
 // (9.2.3) instantiate the component and invoke the fn
 // (9.2.4) make assertions
-  // (9.2.5) if there is any logic in the component, cover those by varying what drives that logic (the props)
+// (9.2.5) if there is any logic in the component, cover those by varying what drives that logic (the props)
 
 describe("CreatePost", () => {
   test("snapshot render", () => {

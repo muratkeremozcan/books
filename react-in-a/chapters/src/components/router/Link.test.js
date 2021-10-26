@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
-
 import Link from '../../../src/components/router/Link';
+
 // (9.2.0) if the component, or one of the child components import external modules, mock out that module
 jest.mock('../../../src/history');
 
@@ -13,7 +13,9 @@ describe('<Link/>', () => {
 
 
   test('should return an element with an onClick method attached', () => {
-    // (9.1.1) when not using snapshots, use Enzyme's shallow method to render the component
+    // (9.1.1) when not using snapshots, use Enzyme's shallow method to render the component,
+    // the 2 methods for mounting components are shallow and mount
+    // mount renders all children components, use shallow until extra fn is required to be tested by mount
     const wrapper = shallow(
       <Link to='/'>
         <ChildComponentStub />

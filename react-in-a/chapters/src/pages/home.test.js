@@ -11,6 +11,19 @@ import {
 import configureStore from "../../src/store/configureStore";
 import initialState from "../../src/constants/initialState";
 
+// ch[9.4] testing container components
+// (they have connect(mapStateToProps)(ComponentName) at the end)
+// they have access to the Redux store: they have props.dispatch, and props made available by mapStateToProps
+// [9.4.1] test that dispatch is called on mount (using Enzyme mount) using <CompName dispatch={spy}
+// [9.4.2] when testing Redux functionality in a component, mock the store and wrap the component with Provider
+// [9.4.3] mount with Enzyme or renderer from "react-test-renderer";
+// [9.4.4] test an action and or snapshot
+
+// Note:  you can log the contents of a component to the console.
+// The debug method allows you to visualize each element in the virtual DOM:
+// console.log(wrapper.debug())
+// Use this line within any test to compare the actual DOM elements with your expectations.
+
 const now = new Date().getTime();
 describe("Single post page", () => {
   const state = Object.assign({}, initialState, {
