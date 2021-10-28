@@ -23,7 +23,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 
 describe('the App container', () => {
-  // [9.6.1] test that dispatch is called using <CompName dispatch={spy}
+  // [9.6.1] test that dispatch is called, using <CompName dispatch={spy}
   it('should render a FlashMessage component if there is an error', () => {
     const spy = jest.fn();
     const wrapper = shallow(<App dispatch={spy} error="Boom!" />);
@@ -51,7 +51,6 @@ describe('the App container', () => {
     };
     // [9.6.2] when testing Redux functionality in a component, mock the store and wrap the component with Provider
     const mockStore = configureStore(middlewares)(initialState);
-
     // [9.6.3] mount with Enzyme or renderer from "react-test-renderer";
     mount(
       <Provider store={mockStore}><ConnectedApp /></Provider>

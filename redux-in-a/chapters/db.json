@@ -14,7 +14,7 @@
       "id": 1,
       "title": "Learn Redux",
       "description": "The store, actions, and reducers, oh my!",
-      "status": "Unstarted",
+      "status": "In Progress",
       "timer": 86,
       "projectId": 1
     },
@@ -35,12 +35,28 @@
       "projectId": 1
     },
     {
-      "title": "new task for me",
-      "description": "dkdkd",
-      "status": "Unstarted",
+      "title": "sicm",
+      "description": "dkdk",
+      "status": "Completed",
       "projectId": 1,
       "timer": 0,
       "id": 4
+    },
+    {
+      "title": "will it add new task",
+      "description": "when",
+      "status": "Unstarted",
+      "projectId": 1,
+      "timer": 0,
+      "id": 5
+    },
+    {
+      "title": "where is my task",
+      "description": "here",
+      "status": "Unstarted",
+      "projectId": 1,
+      "timer": 0,
+      "id": 6
     }
   ]
 }

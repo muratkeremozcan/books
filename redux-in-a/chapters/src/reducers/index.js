@@ -19,7 +19,7 @@ import { TASK_STATUSES } from '../constants';
 // [8.3] once data is normalized and actions have changed, adjust the reducers
 // we have 2 top level entities (projects & tasks) they need their own individual state and reducers
 const initialTasksState = {
-  items: {},
+  items: [],
   isLoading: false,
   error: null,
 };
@@ -54,7 +54,6 @@ export function tasks(state = initialTasksState, action) {
     case 'TIMER_INCREMENT': {
       const nextTasks = Object.keys(state.items).map(taskId => {
         const task = state.items[taskId];
-
         if (task.id === action.payload.taskId) {
           return { ...task, timer: task.timer + 1 };
         }
@@ -73,7 +72,7 @@ export function tasks(state = initialTasksState, action) {
 }
 
 const initialProjectsState = {
-  items: {},
+  items: [],
   isLoading: false,
   error: null,
 };
@@ -117,12 +116,9 @@ export function projects(state = initialProjectsState, action) {
 
       return {
         ...state,
-        items: {
-          ...state.items,
-          [task.projectId]: {
-            ...project,
-            tasks: project.tasks.concat(task.id),
-          },
+        [task.projectId]: {
+          ...project,
+          tasks: project.tasks.concat(task.id),
         },
       };
     }
@@ -183,12 +179,33 @@ export const getGroupedAndFilteredTasks = createSelector(
 
 // [8.5] update the selectors
 // generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
+
+export const getGroupedAndFilteredTaskIds = createSelector(
+  [getFilteredTasks],
+  tasks => {
+    const grouped = {};
+
+    TASK_STATUSES.forEach(status => {
+      grouped[status] = tasks
+        .filter(task => task.status === status)
+        .map(task => task.id);
+    });
+
+    return grouped;
+  }
+);
+
 /** a selector to convert the object containing all projects into an array */
-export const getProjects = state => {
-  return Object.keys(state.projects.items).map(id => {
-    return state.projects.items[id];
-  });
-};
+// [10.2] use memoized selectors. This allows us to avoid unnecessary re-renders 
+// this way Redux's connect gives us free "shouldComponentUpdate"
+export const getProjects = createSelector(
+  [state => state.projects],
+  projects => {
+    return Object.keys(projects.items).map(id => {
+      return projects.items[id];
+    });
+  }
+);
 
 const initialPageState = {
   currentProjectId: null,

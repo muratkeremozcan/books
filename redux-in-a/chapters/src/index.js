@@ -15,6 +15,7 @@ import { projects, tasks, page } from './reducers';
 import App from './App';
 import rootSaga from './sagas';
 import './index.css';
+import { enableBatching } from 'redux-batched-actions';
 
 // event -> ACTION -(dispatch)-(middleware)-> REDUCER -> container component gets state data out of STORE through selectors -> VIEW is updated
 // generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
@@ -81,7 +82,7 @@ const sagaMiddleware = createSagaMiddleware();
 // [5.2] import the middleware into ./src/index.js where your store is
 // register the middleware in the store using applyMiddleware(..) from Redux
 const store = createStore(
-  rootReducer,
+  enableBatching(rootReducer),
   composeWithDevTools(applyMiddleware(thunk, sagaMiddleware))
 );
 

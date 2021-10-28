@@ -8,7 +8,6 @@ import cloneDeep from 'lodash/cloneDeep';
 // they are consumed at the container components mapStateToProps function while getting the data from the store
 // event -> ACTION -(dispatch)-(middleware)-> REDUCER -> STORE(state) -(selector)-> update VIEW
 
-
 describe('selectors', () => {
   // [9.4.1] create a mock state for initial state, usually replicates the initial state at the reducer file
   const state = {
@@ -23,7 +22,7 @@ describe('selectors', () => {
     },
   };
   
-  // [9.4.2] test generic selectors
+  // [9.4.2] test the generic selectors
   it('getTasks', () => {
     // expect(getTasks(state)).toEqual(state.tasks.tasks);
     expect(getTasks(state)).toEqual([

@@ -11,11 +11,13 @@
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
+    "redux-batched-actions": "^0.1.6",
     "redux-saga": "^0.16.0",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1"
   },
   "devDependencies": {
+    "prettier": "^1.9.2",
     "axios-mock-adapter": "^1.10.0",
     "enzyme": "^3.2.0",
     "enzyme-to-json": "^3.3.0",

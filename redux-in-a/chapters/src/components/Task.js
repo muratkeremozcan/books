@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import { TASK_STATUSES } from '../constants';
 
@@ -10,11 +11,11 @@ const Task = props => {
           {props.task.title}
         </div>
         <select value={props.task.status} onChange={onStatusChange}>
-          {TASK_STATUSES.map(status =>
+          {TASK_STATUSES.map(status => (
             <option key={status} value={status}>
               {status}
-            </option>,
-          )}
+            </option>
+          ))}
         </select>
       </div>
       <hr />
@@ -34,4 +35,10 @@ const Task = props => {
   }
 };
 
-export default Task;
+function mapStateToProps(state, ownProps) {
+  return {
+    task: state.tasks.items[ownProps.taskId],
+  };
+}
+
+export default connect(mapStateToProps)(Task);

@@ -1,6 +1,6 @@
 import tasks from '../reducers';
 
-// ch[9.3.0] testing reducers
+// ch[9.3.0] testing reducers, begin with setting the initial state
 // [9.3.1] test for each action case in a switch statement
 // [9.3.2] flow the action through the reducer,
 // [9.3.3] verify that the final expected state KEY: expect(reducer(state, action).toEqual(newState))
@@ -14,7 +14,7 @@ describe('reducer', () => {
     searchTerm: '',
   };
 
-  // [9.3.1] test the default case
+  // [9.3.1] test the initial state
   it('returns initialState', () => {
     expect(tasks(undefined, {})).toEqual(initialState);
   });

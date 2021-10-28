@@ -20,7 +20,7 @@ describe('the TaskList component', () => {
   });
 
   it('should render a Task component for each task', () => {
-    // [9.5.2] find the parent of the presentational component and test the usage
+    // [9.5.2] find the parent of the presentational component and test the usage of the presentational component itself
     const tasks = [
       { id: 1, title: 'A', description: 'a', status: 'Unstarted', timer: 0 },
       { id: 2, title: 'B', description: 'b', status: 'Unstarted', timer: 0 },
@@ -33,7 +33,7 @@ describe('the TaskList component', () => {
 
   it('should match the last snapshot without tasks', () => {
     const wrapper = shallow(<TaskList status="In Progress" tasks={[]} />);
-    // [9.5.3] use toJson or from "enzyme-to-json" or renderer from "react-test-renderer" 
+    // [9.5.3] use toJson from "enzyme-to-json" or renderer from "react-test-renderer" for snapshot testing
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 

@@ -1,6 +1,6 @@
 import * as api from '../api';
 import { normalize, schema } from 'normalizr';
-
+import { batchActions } from 'redux-batched-actions';
 
 // ch[2.1] create actions and action handlers
 // event -> ACTION -(dispatch)-(middleware)-> REDUCER -> container component gets state data out of STORE through selectors -> VIEW is updated
@@ -69,7 +69,6 @@ const projectSchema = new schema.Entity('projects', {
   tasks: [taskSchema],
 });
 
-
 /** generic action to help reduce boilerplate by not having to dispatch multiple actions */
 function receiveEntities(entities) {
   return {
@@ -83,20 +82,22 @@ export function fetchProjects() {
     dispatch(fetchProjectsStarted());
 
     return api
-    .fetchProjects()
-    .then(resp => {
-      const projects = resp.data;
-      
-        // [8.2] transform/normalize the API response through normalizr's normalize function(object, schema), and dispatch it
+      .fetchProjects()
+      .then(resp => {
+        const projects = resp.data;
+
+      // [8.2] transform/normalize the API response through normalizr's normalize function(object, schema), and dispatch it
         const normalizedData = normalize(projects, [projectSchema]);
-
-        dispatch(receiveEntities(normalizedData));
-
-        // Pick a board to show on initial page load, sets a default projectId
-        if (!getState().page.currentProjectId) {
-          const defaultProjectId = projects[0].id;
-          dispatch(setCurrentProjectId(defaultProjectId));
-        }
+        // [10.3] batch the actions that happen in close proximity
+        // each dispatch triggers a re-render in the container/connected components
+        // for this, when too many actions are dispatched close together, we want to batch those actions
+        // this often happens when handling successful requests
+        dispatch(
+          batchActions([
+            receiveEntities(normalizedData),
+            setCurrentProjectId(projects[0].id),
+          ])
+        );
       })
       .catch(err => {
         fetchProjectsFailed(err);

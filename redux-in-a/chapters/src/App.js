@@ -3,14 +3,7 @@ import { connect } from 'react-redux';
 import Header from './components/Header';
 import TasksPage from './components/TasksPage';
 import FlashMessage from './components/FlashMessage';
-import {
-  createTask,
-  editTask,
-  fetchProjects,
-  filterTasks,
-  setCurrentProjectId,
-} from './actions';
-import { getGroupedAndFilteredTasks, getProjects } from './reducers/';
+import { fetchProjects } from './actions';
 
 // event -> ACTION -(dispatch)-(middleware)-> REDUCER -> container component gets state data out of STORE through selectors -> VIEW is updated
 // generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
@@ -36,69 +29,28 @@ class App extends Component {
     this.props.dispatch(fetchProjects());
   }
 
-  onCurrentProjectChange = e => {
-    this.props.dispatch(setCurrentProjectId(Number(e.target.value)));
-  };
-
-  onCreateTask = ({ title, description }) => {
-    // [2.2] actions are handled by container components
-    // container components have access to dispatch thanks to connect
-    this.props.dispatch(
-      createTask({
-        title,
-        description,
-        projectId: this.props.currentProjectId,
-      })
-    );
-  };
-
-  onStatusChange = (task, status) => {
-    this.props.dispatch(editTask(task, { status }));
-  };
-
-  onSearch = searchTerm => {
-    this.props.dispatch(filterTasks(searchTerm));
-  };
-
   render() {
     return (
       <div className="container">
         {this.props.error && <FlashMessage message={this.props.error} />}
         <div className="main-content">
-          <Header
-            projects={this.props.projects}
-            onCurrentProjectChange={this.onCurrentProjectChange}
-          />
-          <TasksPage
-            tasks={this.props.tasks}
-            onCreateTask={this.onCreateTask}
-            onSearch={this.onSearch}
-            onStatusChange={this.onStatusChange}
-            isLoading={this.props.isLoading}
-          />
+          <Header />
+          <TasksPage />
         </div>
       </div>
     );
   }
 }
 
-
-// [2.2] the container component has to know about state, use mapStateToProps(state) 
+// [2.2] actions are handled by container components
+// container components have access to dispatch thanks to connect
+// the container component has to know about state, use mapStateToProps(state) 
 // * receives state as a parameter
 // * returns an object that is merged into the props for the component, making the property available as this.props
 function mapStateToProps(state) {
-  const { isLoading, error } = state.projects;
-  // you created selectors (usually in reducer file) (7.1)
-  // [7.2] now use the selectors to get state data from the Redux store, derive the data, and pass it as props to the React container components
-  // [8.6] update mapStateToProps using the new selectors
-  // generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
-  return {
-    tasks: getGroupedAndFilteredTasks(state),
-    projects: getProjects(state),
-    currentProjectId: state.page.currentProjectId,
-    isLoading,
-    error,
-  };
+  const { error } = state.projects;
+
+  return { error };
 }
 
 // [2.2] connect — a function used as a bridge between React components and data from the Redux store.
