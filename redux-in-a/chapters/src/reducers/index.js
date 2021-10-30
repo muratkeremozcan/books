@@ -11,7 +11,7 @@ import { TASK_STATUSES } from '../constants';
 
 // you took care of the redux boilerplate (2.0)
 // you created the actions & action handlers (2.1) 
-// you linked the a container component (App.js) to Redux, you are dispatching actions (2.2)
+// you linked the a container component (ex: App.js) to Redux, you are dispatching actions (2.2)
 // now you can create the reducers
 // once you update your actions (4.0), you also update your reducers
 
@@ -108,7 +108,7 @@ export function projects(state = initialProjectsState, action) {
     // Recall that because you’re tracking related entities in different sections of the store, 
     // you need to use IDs to maintain these relationships. 
     // Each project has a tasks property that’s an array of tasks belonging to that project. 
-    //When you create a new task, you have to add the task’s ID to the correct project.
+    // When you create a new task, you have to add the task’s ID to the correct project.
     case 'CREATE_TASK_SUCCEEDED': {
       const { task } = action.payload;
 
@@ -136,7 +136,8 @@ export function projects(state = initialProjectsState, action) {
  
 const getSearchTerm = state => state.page.searchTerm;
 
-// [8.5] (below)
+// [8.5] below: update the selectors
+
 const getTasksByProjectId = state => {
   const { currentProjectId } = state.page;
   // if there is no project, or no project matching the currentProjectId, return early

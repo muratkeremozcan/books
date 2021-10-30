@@ -38,7 +38,7 @@ describe('action creators:', () => {
   it('#createTask', () => {
 
     // [9.0.2.1] mock the store
-    // to accommodate async actions, use redux-mock-store
+    // to accommodate async actions, use redux-mock-store's configureStore
     // we do not need it for testing actions that just return an object with type and payload information
     const mockStore = configureStore([thunk]); // alias: configureMockStore
     const store = mockStore({

@@ -22,7 +22,7 @@ import { fetchProjects } from './actions';
 // with this pattern, how the application looks is decoupled from what it does
 
 class App extends Component {
-  // ch[4.1] working with the back-end
+  // ch[4.1] working with the back-end (from the container component)
   // create the async action creators (they return a function that communicates with the back-end) (4.0)
   // in the browser, use componentDidMount lifecycle callback to initiate AJAX requests
   componentDidMount() {

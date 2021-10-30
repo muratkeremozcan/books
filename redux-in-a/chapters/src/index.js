@@ -57,7 +57,7 @@ const rootReducer = (state = {}, action) => {
 // ch[6.0]Sagas: a middleware useful for managing complex side effects with flows, it is an alternative to redux-thunk for complex scenarios
 // sagas are built using generators which can be paused and resumed. redux-saga is an alternative to redux-observables or rxjs from Angular
 // use createSagaMiddleware() factory function to create sagaMiddleware
-// register the middleware in the store using applyMiddleware(..) from Redux
+// register the middleware in the store using applyMiddleware(..) from Redux (5.2)
 // create the sagas (6.2), (6.3), be aware that they work with actions (6.4)
 const sagaMiddleware = createSagaMiddleware();
 
@@ -72,7 +72,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 // when to use middleware?
 // middleware is meant to centralize & abstract logic that is common to many software components 
-// Ex: logging statements everywhere -> not scalable. Instead use middleware for code tha applies to many if not all actions in the application.
+// Ex: logging statements everywhere -> not scalable. Instead use middleware for code that applies to many if not all actions in the application.
 
 // [5.1] creating a middleware in Redux
 // define the middleware: ./src/middleware/mwName.js ,  const mwExample= store => next => action => {..}

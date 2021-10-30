@@ -86,7 +86,7 @@ export function fetchProjects() {
       .then(resp => {
         const projects = resp.data;
 
-      // [8.2] transform/normalize the API response through normalizr's normalize function(object, schema), and dispatch it
+        // [8.2] transform/normalize the API response through normalizr's normalize function(object, schema), and dispatch it
         const normalizedData = normalize(projects, [projectSchema]);
         // [10.3] batch the actions that happen in close proximity
         // each dispatch triggers a re-render in the container/connected components

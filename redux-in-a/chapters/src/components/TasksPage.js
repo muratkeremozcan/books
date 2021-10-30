@@ -123,7 +123,7 @@ function mapStateToProps(state) {
   const { isLoading } = state.projects;
 
   // you created selectors (usually in reducer file) (7.1)
-  // [7.2] now use the selectors to get state data from the Redux store, derive the data, and pass it as props to the React container components
+  // [7.3] now use the selectors to get state data from the Redux store, derive the data, and pass it as props to the container component
   // [8.6] update mapStateToProps using the new selectors
   // generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
   return {
