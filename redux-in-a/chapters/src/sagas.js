@@ -1,6 +1,6 @@
-import { channel, delay } from 'redux-saga';
-import { call, put, take, takeLatest } from 'redux-saga/effects';
-import * as api from './api';
+import { channel, delay } from "redux-saga";
+import { call, put, take, takeLatest } from "redux-saga/effects";
+import * as api from "./api";
 
 // [6.2] create the sagas
 // you created and applied the sagaMiddleware (6.0)
@@ -9,24 +9,22 @@ import * as api from './api';
 // [6.3] use redux-saga/effects to specify how to handle side effects
 // [6.4] coordinate the sagas with the actions. Note that not all actions are used in sagas.
 
-
-
 // the root saga has to yield each of the application's sagas, in sequence
-// if you want to allow rootSaga to move on to the next yield without a resolution, use fork : 
+// if you want to allow rootSaga to move on to the next yield without a resolution, use fork :
 // yield fork(watchFetchTasks)
 // yield fork(watchSomethingElse)
 export default function* rootSaga() {
   // [6.3] takeLatest command cancels the unfinished old request when a new one comes in (like switchMap from RxJs)
-  yield takeLatest('FETCH_TASKS_STARTED', watchFetchTasks);
+  yield takeLatest("FETCH_TASKS_STARTED", watchFetchTasks);
   // helper function that passes both actions types in an array to the helper function handleProgressTimer
-  yield takeLatestById(['TIMER_STARTED', 'TIMER_STOPPED'], handleProgressTimer);
+  yield takeLatestById(["TIMER_STARTED", "TIMER_STOPPED"], handleProgressTimer);
 }
 
 /**
- * takeLatestById is a generic helper function that is used to create re-discoverable processes. 
- * The function checks to see if a channel exists for a task, 
- * and if not, creates one and adds it to the mapping. 
- * After adding to the mapping, the new channel is immediately instantiated 
+ * takeLatestById is a generic helper function that is used to create re-discoverable processes.
+ * The function checks to see if a channel exists for a task,
+ * and if not, creates one and adds it to the mapping.
+ * After adding to the mapping, the new channel is immediately instantiated
  * and the final line in the listing dispatches the action to the new channel. */
 function* takeLatestById(actionType, saga) {
   // stores mapping of created channels
@@ -50,13 +48,13 @@ function* takeLatestById(actionType, saga) {
 }
 // type and payload are both destructured arguments
 function* handleProgressTimer({ type, payload }) {
-  if (type === 'TIMER_STARTED') {
+  if (type === "TIMER_STARTED") {
     while (true) {
       // [6.3] delay method is blocking, have to use call(delay, xxx) to produce an effect out of it
       yield call(delay, 1000);
       // [6.3] put command is like dispatch, takes the action through the middleware & reducers
       yield put({
-        type: 'TIMER_INCREMENT',
+        type: "TIMER_INCREMENT",
         payload: { taskId: payload.taskId },
       });
     }
@@ -69,12 +67,12 @@ function* watchFetchTasks() {
     const { data } = yield call(api.fetchTasks);
     // [6.3] put command is like dispatch, takes the action through the middleware & reducers
     yield put({
-      type: 'FETCH_TASKS_SUCCEEDED',
+      type: "FETCH_TASKS_SUCCEEDED",
       payload: { tasks: data },
     });
   } catch (e) {
     yield put({
-      type: 'FETCH_TASKS_FAILED',
+      type: "FETCH_TASKS_FAILED",
       payload: { error: e.message },
     });
   }

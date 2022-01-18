@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { setCurrentProjectId } from '../actions';
-import { getProjects } from '../reducers/';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { setCurrentProjectId } from "../actions";
+import { getProjects } from "../reducers/";
 
 class Header extends Component {
-
   /** dispatch an action on selecting a new project */
-  onCurrentProjectChange = e => {
+  onCurrentProjectChange = (e) => {
     this.props.setCurrentProjectId(Number(e.target.value));
   };
 
   render() {
-    const projectOptions = this.props.projects.map(project => (
+    const projectOptions = this.props.projects.map((project) => (
       <option key={project.id} value={project.id}>
         {project.name}
       </option>
@@ -30,7 +29,7 @@ class Header extends Component {
 
 // [2.2] actions are handled by container components
 // container components have access to dispatch thanks to connect
-// the container component has to know about state, use mapStateToProps(state) 
+// the container component has to know about state, use mapStateToProps(state)
 // * receives state as a parameter
 // * returns an object that is merged into the props for the component, making the property available as this.props
 function mapStateToProps(state) {

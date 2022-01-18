@@ -10,23 +10,22 @@ class ShallowMerge extends React.Component {
       user: {
         name: "Mark", // name exists in the initial state under the user property
         colors: {
-          favorite: ""
-        }
-      }
+          favorite: "",
+        },
+      },
     };
     this.onButtonClick = this.onButtonClick.bind(this);
   }
   onButtonClick() {
-    
     this.setState({
-      // name does not exist in the state we are setting here 
+      // name does not exist in the state we are setting here
       // if name was at the top level here, it would show undefined ins
-      user: { 
+      user: {
         // name: "buba", // it would overwrite the state here
         colors: {
-          favorite: "blue"
-        }
-      }
+          favorite: "blue",
+        },
+      },
     });
   }
   render() {

@@ -1,10 +1,10 @@
-import React from "react"; 
-import { render } from "react-dom"; 
+import React from "react";
+import { render } from "react-dom";
 import PropTypes from "prop-types";
 
 class Counter extends React.Component {
   // To set PropTypes for a component, you provide a static property called propTypes.
-  
+
   // PropTypes: a utility to validate which properties you’ll be using
   // so you can prevent bugs and plan the sorts of data your components will use.
 
@@ -13,7 +13,7 @@ class Counter extends React.Component {
   };
   // to set default props, you provide a static property called defaultProps.
   static defaultProps = {
-    incrementBy: 1
+    incrementBy: 1,
   };
 
   constructor(props) {
@@ -21,13 +21,13 @@ class Counter extends React.Component {
     // state is similar to default props with the exception that the data is expected to be mutated a
     // and only available on components that inherit from React.Component.
     this.state = {
-      count: 0
+      count: 0,
     };
     this.onButtonClick = this.onButtonClick.bind(this);
   }
   onButtonClick() {
     // as an argument, setState can take either an object or a function that returns an object
-    this.setState(function(prevState, props) {
+    this.setState(function (prevState, props) {
       return { count: prevState.count + props.incrementBy };
     });
   }

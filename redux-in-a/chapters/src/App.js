@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Header from './components/Header';
-import TasksPage from './components/TasksPage';
-import FlashMessage from './components/FlashMessage';
-import { fetchProjects } from './actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Header from "./components/Header";
+import TasksPage from "./components/TasksPage";
+import FlashMessage from "./components/FlashMessage";
+import { fetchProjects } from "./actions";
 
 // event -> ACTION -(dispatch)-(middleware)-> REDUCER -> container component gets state data out of STORE through selectors -> VIEW is updated
 // generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
@@ -11,8 +11,8 @@ import { fetchProjects } from './actions';
 // ch[2.2] connecting a component to Redux.
 // Actions are used by container components, which dispatch them to reducers
 // you took care of the redux boilerplate (2.0)
-// you created the actions & action handlers (2.1) 
-// now, at a container component, dispatch those actions 
+// you created the actions & action handlers (2.1)
+// now, at a container component, dispatch those actions
 // the container component has to know about state, so use mapStateToProps
 // bridge the component and Redux using connect
 
@@ -44,7 +44,7 @@ class App extends Component {
 
 // [2.2] actions are handled by container components
 // container components have access to dispatch thanks to connect
-// the container component has to know about state, use mapStateToProps(state) 
+// the container component has to know about state, use mapStateToProps(state)
 // * receives state as a parameter
 // * returns an object that is merged into the props for the component, making the property available as this.props
 function mapStateToProps(state) {

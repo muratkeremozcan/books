@@ -1,14 +1,13 @@
-import * as api from '../api';
-import { normalize, schema } from 'normalizr';
-import { batchActions } from 'redux-batched-actions';
+import * as api from "../api";
+import { normalize, schema } from "normalizr";
+import { batchActions } from "redux-batched-actions";
 
 // ch[2.1] create actions and action handlers
 // event -> ACTION -(dispatch)-(middleware)-> REDUCER -> container component gets state data out of STORE through selectors -> VIEW is updated
 // generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
 
-
 // ch[4.0]: asynchronous actions
-// event -> ACTION -(async-communication-with-back-end)-(dispatch)-(middleware)-> REDUCER 
+// event -> ACTION -(async-communication-with-back-end)-(dispatch)-(middleware)-> REDUCER
 
 // In Redux, actions are payloads of information that send data from your application to your store.
 // actions return an object with a required type key
@@ -21,27 +20,27 @@ import { batchActions } from 'redux-batched-actions';
 // Users and servers are the two actors that can modify state in your applications
 // optionally, you can group actions in to view actions and server actions
 
-// With network requests (server as actor), there are two moments in time that you care about: when the request starts, and when it completes. 
+// With network requests (server as actor), there are two moments in time that you care about: when the request starts, and when it completes.
 // If you model these events as actions, you end up with three distinct action types that help describe the request-response lifecycle.
 // ACTION_STARTED, ACTION_SUCCEEDED, and ACTION_FAILED
 // With user as actor, you need to worry about the ACTION_SUCCEEDED action type, and maybe ACTION_FAILED
 
-export const SET_CURRENT_PROJECT_ID = 'SET_CURRENT_PROJECT_ID';
+export const SET_CURRENT_PROJECT_ID = "SET_CURRENT_PROJECT_ID";
 export function setCurrentProjectId(id) {
   return {
-    type: 'SET_CURRENT_PROJECT_ID',
+    type: "SET_CURRENT_PROJECT_ID",
     payload: {
       id,
     },
   };
 }
 
-export const FETCH_PROJECTS_STARTED = 'FETCH_PROJECTS_STARTED';
+export const FETCH_PROJECTS_STARTED = "FETCH_PROJECTS_STARTED";
 function fetchProjectsStarted(boards) {
   return { type: FETCH_PROJECTS_STARTED, payload: { boards } };
 }
 
-export const FETCH_PROJECTS_FAILED = 'FETCH_PROJECTS_FAILED';
+export const FETCH_PROJECTS_FAILED = "FETCH_PROJECTS_FAILED";
 function fetchProjectsFailed(err) {
   return { type: FETCH_PROJECTS_FAILED, payload: err };
 }
@@ -49,7 +48,7 @@ function fetchProjectsFailed(err) {
 // ch[8.0] redux store schemas and normalization. normlizr: normalized vs nested data is the way to go
 // * nested data is built on hierarchies. It is intuitive because there is no need to manage relationships
 // con: update logic is complex, have to find relevant properties for each operation
-// con: the data is nested, therefore we are forced to re-render the entire app when related state changes 
+// con: the data is nested, therefore we are forced to re-render the entire app when related state changes
 // * normalized data is similar to a relational database; it is flat which means there is no need to update nested resources
 // normalizr package makes normalization easy
 
@@ -63,16 +62,16 @@ function fetchProjectsFailed(err) {
 // generic flow: update actions -> update reducers -> update rootReducer -> update selectors to get data out of the store, use mapStateToProps -> update view
 
 // [8.1] define the schema for the top level entries: new.schema.Entity(..)
-const taskSchema = new schema.Entity('tasks');
-// identify what the relationship is, relationships are maintained via IDs (tasks: [1, 3..])  
-const projectSchema = new schema.Entity('projects', {
+const taskSchema = new schema.Entity("tasks");
+// identify what the relationship is, relationships are maintained via IDs (tasks: [1, 3..])
+const projectSchema = new schema.Entity("projects", {
   tasks: [taskSchema],
 });
 
 /** generic action to help reduce boilerplate by not having to dispatch multiple actions */
 function receiveEntities(entities) {
   return {
-    type: 'RECEIVE_ENTITIES',
+    type: "RECEIVE_ENTITIES",
     payload: entities,
   };
 }
@@ -83,7 +82,7 @@ export function fetchProjects() {
 
     return api
       .fetchProjects()
-      .then(resp => {
+      .then((resp) => {
         const projects = resp.data;
 
         // [8.2] transform/normalize the API response through normalizr's normalize function(object, schema), and dispatch it
@@ -99,7 +98,7 @@ export function fetchProjects() {
           ])
         );
       })
-      .catch(err => {
+      .catch((err) => {
         fetchProjectsFailed(err);
       });
   };
@@ -107,19 +106,19 @@ export function fetchProjects() {
 
 export function fetchTasksStarted() {
   return {
-    type: 'FETCH_TASKS_STARTED',
+    type: "FETCH_TASKS_STARTED",
   };
 }
 
 export function fetchTasksSucceeded() {
   return {
-    type: 'FETCH_TASKS_SUCCEEDED',
+    type: "FETCH_TASKS_SUCCEEDED",
   };
 }
 
 export function fetchTasks(boardId) {
-  return dispatch => {
-    return api.fetchTasks(boardId).then(resp => {
+  return (dispatch) => {
+    return api.fetchTasks(boardId).then((resp) => {
       dispatch(fetchTasksSucceeded(resp.data));
     });
   };
@@ -132,7 +131,7 @@ function createTaskSucceeded(task) {
   // the action
   return {
     // the action type
-    type: 'CREATE_TASK_SUCCEEDED',
+    type: "CREATE_TASK_SUCCEEDED",
     // the action payload
     payload: {
       task,
@@ -145,20 +144,20 @@ function createTaskSucceeded(task) {
 // For each action that requires a network request (meaning you’re dealing with an async action),
 // you’ll need at least one synchronous action creator to indicate where you are in the request/response lifecycle.
 
-// The redux-thunk package allows you to dispatch functions instead of objects, 
+// The redux-thunk package allows you to dispatch functions instead of objects,
 // and inside those functions you can make network requests and dispatch additional actions when any requests complete.
 
 // async actions need return a function instead of an object.
-// Within that function, you can make your API call 
+// Within that function, you can make your API call
 // and dispatch a sync action when a response is available.
 export function createTask({
   projectId,
   title,
   description,
-  status = 'Unstarted',
+  status = "Unstarted",
 }) {
   return (dispatch, getState) => {
-    api.createTask({ title, description, status, projectId }).then(resp => {
+    api.createTask({ title, description, status, projectId }).then((resp) => {
       // KEY: the dispatch to the store only after successful api response
       // the store will receive and process the sync action immediately after dispatch
       dispatch(createTaskSucceeded(resp.data));
@@ -168,7 +167,7 @@ export function createTask({
 
 function editTaskSucceeded(task) {
   return {
-    type: 'EDIT_TASK_SUCCEEDED',
+    type: "EDIT_TASK_SUCCEEDED",
     payload: {
       task,
     },
@@ -182,16 +181,16 @@ export function editTask(task, params = {}) {
       ...task,
       ...params,
     };
-    api.editTask(task.id, updatedTask).then(resp => {
+    api.editTask(task.id, updatedTask).then((resp) => {
       dispatch(editTaskSucceeded(resp.data));
 
       // if task moves into "In Progress", start timer
-      if (resp.data.status === 'In Progress') {
+      if (resp.data.status === "In Progress") {
         return dispatch(progressTimerStart(resp.data.id));
       }
 
       // if tasks move out of "In Progress", stop timer
-      if (task.status === 'In Progress') {
+      if (task.status === "In Progress") {
         return dispatch(progressTimerStop(resp.data.id));
       }
     });
@@ -200,13 +199,13 @@ export function editTask(task, params = {}) {
 
 // [6.4] when using sagas: coordinate the sagas with the actions. Note that not all actions are used in sagas.
 function progressTimerStart(taskId) {
-  return { type: 'TIMER_STARTED', payload: { taskId } };
+  return { type: "TIMER_STARTED", payload: { taskId } };
 }
 
 function progressTimerStop(taskId) {
-  return { type: 'TIMER_STOPPED', payload: { taskId } };
+  return { type: "TIMER_STOPPED", payload: { taskId } };
 }
 
 export function filterTasks(searchTerm) {
-  return { type: 'FILTER_TASKS', payload: { searchTerm } };
+  return { type: "FILTER_TASKS", payload: { searchTerm } };
 }
