@@ -1,8 +1,9 @@
 // array or object comparison is tricky arrays are compared if they are the same array object in memory
 
-var a = [1, 2, 3] //?
-var b = [1, 2, 3] //?
-var c = '1,2,3';
+var a = [1, 2, 3]; //?
+!!NaN; //?
+var b = [1, 2, 3]; //?
+var c = "1,2,3";
 a == c; //?
 b == c; //?
 a == b; //?
@@ -25,10 +26,12 @@ arraysMatch(a, b); //?
 
 // (3) use ES6
 const arraysMatchEs6 = function (arr1, arr2) {
-  return (arr1.length === arr2.length)
-  && arr1.every(function (arr1Element, arr2index) {
-    return arr1Element === arr2[arr2index];
-  });
+  return (
+    arr1.length === arr2.length &&
+    arr1.every(function (arr1Element, arr2index) {
+      return arr1Element === arr2[arr2index];
+    })
+  );
 };
 arraysMatchEs6(a, b); //?
 
@@ -38,7 +41,7 @@ arraysMatchEs6(a, b); //?
 //// object equality
 
 const obj1 = {
-  name: 'Kristine',
+  name: "Kristine",
   age: 13,
   // favorites: {
   //   food: 'Pizza'
@@ -46,7 +49,7 @@ const obj1 = {
 };
 
 const obj2 = {
-  name: 'Kristine',
+  name: "Kristine",
   age: 13,
   // favorites: {
   //   food: 'Pizza'
@@ -55,9 +58,9 @@ const obj2 = {
 
 // (1) same as array approach : iterate through and compare values
 // problem is this only works for a  data structure is not shallow (1 level)
-// for that just use ._.isEqual() 
+// for that just use ._.isEqual()
 const objectsMatch = (obj1, obj2) => {
-  const obj1Keys = Object.keys(obj1);  
+  const obj1Keys = Object.keys(obj1);
   const obj2Keys = Object.keys(obj2);
 
   if (obj1Keys.length !== obj2Keys.length) return false;
@@ -65,6 +68,6 @@ const objectsMatch = (obj1, obj2) => {
     if (obj1[objKey] !== obj2[objKey]) return false;
   }
   return true;
-}
+};
 
 objectsMatch(obj1, obj2); //?
