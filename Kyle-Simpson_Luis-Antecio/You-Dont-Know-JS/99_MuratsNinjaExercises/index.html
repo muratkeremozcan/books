@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			/* https://drive.google.com/file/d/1Av5kr5EMYQjmEO0IWA70KJ7OrOmeO02I/view */
+			
+			/* UNIVERSAL */
+			/* * {
+				background: red
+			} */
+
+
+			/* TYPE (any tag) */
+			 /* div {
+				background: red;
+			} */
+
+
+			/* CLASS */
+			/* .red {
+				background: red;
+			} */
+
+
+			/* ID (only 1 on a page)*/
+			/* #blueId{
+				background: blue;
+			} */
+
+
+			/* ATTRIBUTE */
+			[data-red] {
+				background: red;
+			}
+			[data-blue=true] {
+				background: blue;
+			}
+			[data-cy^="12"] {
+				background: cyan;
+			}
+			[data-cy$="45"] {
+				background: teal;
+			}
+			[data-cy*="3"] {
+				background: green;
+			}
+
+
+			/* COMBINATIONS */
+
+			/* AND logic */
+			/* div.red {
+				background: red
+			} */
+			
+			/* OR logic */
+			/* div, ul {
+				background: blue;
+			} */
+			
+			/* AND OR combined */
+			/* span, li.red{
+				background: red
+			} */
+
+
+			/* DESCENDANTs */
+
+			/* any child */
+			/* ul li {
+				background: red
+			}
+			div strong {
+				background: blue;
+			} */
+			/* direct child */
+			/* span > strong {
+				background: blue;
+			} */
+
+
+			/* SIBLINGS */
+			
+			/* General sibling: elements that are siblings of the first element and come after the first element */
+			/* li.red ~ li {
+				background: red
+			} */
+
+			/* Adjacent sibling: elements that are siblings of the first element and come DIRECTLY after the first element */
+			/* li.red + li {
+				background: red
+			} */
+
+
+			/* PSEUDO class: state */
+			/* li:hover {
+				background: red
+			}
+			button:focus {
+				background: green
+			}
+			input:required:focus {
+				background: blue
+			}
+			input:disabled{
+				margin: 50px
+			} */
+
+			/* PSEUDO classes*/
+			/* li:first-child{
+				background: purple
+			}
+			li:nth-child(2n) {
+				background: yellow
+			}
+			li:nth-child(3){
+				background: green
+			}
+			li:nth-last-child(3) {
+				background: gray;
+			}
+			span:only-child{
+				background: red
+			}
+			li:last-of-type{
+				background: black
+			} */
+			/* li:not(.red){
+				background: yellow
+			} */
+
+
+			/* PSEUDO elements */
+			/* div.red::before {
+				content: 'Before';
+				background: red;
+			}
+			div.red::after {
+				content: 'After';
+				background: blue
+			} */
+
+
+		</style>
+	</head>
+
+		<div class="red" data-red>This is a div</div>
+		<span id="blueId" data-blue="true">This is a span</span>
+		<div>
+			<span >
+				<strong data-cy="12">nested text 1</strong>
+				<strong data-cy="23">nested text 2</strong>
+				<strong data-cy="34">nested text 3</strong>
+				<strong data-cy="45">nested text 4</strong>
+			</span>
+		</div>
+		<ul>
+			<li>Item 1</li>
+			<li class="red">Item 1</li>
+			<li>Item 3</li>
+			<li>Item 4</li>
+			<li>Item 5</li>
+			<li>Item 6</li>
+			<li>Item 7</li>
+			<li>Item 8</li>
+			<li>Item 9</li>
+		</ul>
+		<button>click me</button>
+		<button>click me too</button>
+		<input type="text"/>
+		<input type="checkbox" disabled="true"/>
+	</body>
+
+</html>
