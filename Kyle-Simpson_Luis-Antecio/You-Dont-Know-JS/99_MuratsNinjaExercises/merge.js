@@ -16,8 +16,8 @@ const obj2 = {
 };
 
 // lodash merge example
-// (obj1 <- obj2), shallow merge, source takes precedence on duplicates
-_.merge(obj1, obj2) 
+// (obj1 <- obj2), deep merge, obj2 takes precedence on duplicates
+_.merge(obj1, obj2);
 
-// (ob1j -> obj2), obj2 takes precedence and takes in the extra keys from obj1
-R.merge(obj1, obj2) 
+// (ob1j -> obj2), shallow merge, obj2 takes precedence and takes in the extra keys from obj1
+R.merge(obj1, obj2);
