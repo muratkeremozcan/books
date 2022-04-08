@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <title>Null Object</title>
+</head>
+
+<body class="container">
+  <br>
+  <label>Select a User</label>
+  <select id="user-select" class="form-control">
+    <option></option>
+    <option>Bob</option>
+    <option>Joe</option>
+  </select>
+  <br>
+  <button id="loginBtn" role="button" class="btn btn-primary">Log In</button>
+  <div id="content"></div>
+
+  <script>
+
+    class User {
+      constructor(name) {
+        this.name = name
+      }
+
+      hasAccess() {
+        return true
+      }
+    }
+
+    class NullUser {
+      constructor() {
+        this.name = 'Guest'
+      }
+
+      hasAccess() {
+        return false
+      }
+    }
+
+    function authenticate(user) {
+      const content = user.hasAccess()
+        ? `<p>Congrats you are logged in</p>`
+        : `<p class="text-danger">You must be logged in to view this</p>`
+
+      return document.getElementById('content').innerHTML =
+        `
+          <hr>
+          <h3 class="text-center">Welcome ${user.name}</h3>
+          ${content}
+        `
+    }
+
+    function getUser(name) {
+      return name ? new User(name) : new NullUser()
+    }
+
+    function login() {
+      const name = document.getElementById('user-select').value
+        ? document.getElementById('user-select').value
+        : null
+
+      return authenticate(getUser(name))
+    }
+
+    // so that we can render the welcome code on the initial screen
+    login()
+
+    // so that we can call the main function login() on click
+    document.getElementById('loginBtn').addEventListener('click', login)
+
+  </script>
+</body>
+
+</html>
