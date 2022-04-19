@@ -29,6 +29,7 @@
     constructor(public name: string) {}
   }
 
+  /** Lame helper to address duplication between Character and Wall */
   const damageHelper = (amount, health, name) => {
     health -= amount;
     console.log(`${name} has ${health} health remaining`);
