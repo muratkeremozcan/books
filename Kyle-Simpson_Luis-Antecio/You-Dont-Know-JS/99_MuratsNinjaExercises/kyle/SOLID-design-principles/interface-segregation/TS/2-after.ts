@@ -1,75 +1,85 @@
 // Interface Segregation Principle: break apart your interfaces
 
-// solution: break apart the interfaces
-{
-  class Entity {
-    public name: any;
+// solution: create smaller interfaces and a base class, have all classes compose from them
+// (1) create smaller interfaces
+// (2) create the main entity
+// (2.1) classes extend the main entity
+// (3) attach the smaller interfaces to the classes as needed
 
-    constructor(name) {
-      this.name = name;
-    }
+{
+  // (1) create smaller interfaces
+  interface IEntity {
+    name: string;
   }
 
-  // (1) create smaller interfaces
+  interface IMover extends IEntity {
+    move(): string;
+  }
 
-  const mover = {
+  interface IAttacker extends IEntity {
+    attack(targetEntity: Entity): string;
+  }
+
+  interface IHasHealth extends IEntity {
+    takeDamage(damage: number): void;
+  }
+
+  // (2.0) create the main entity
+  class Entity implements IEntity {
+    constructor(public name: string) {}
+  }
+
+  // (2.1) classes extend the main entity
+  // (3) attach the smaller interfaces to the classes as needed
+  class Character extends Entity implements IHasHealth, IMover, IAttacker {
+    constructor(
+      public name: string,
+      public attackDamage: number,
+      public health: number
+    ) {
+      super(name);
+    }
+
     move() {
       return `${this.name} moved`;
-    },
-  };
+    }
 
-  const attacker = {
-    attack(targetEntity) {
+    attack(targetEntity: Wall) {
       targetEntity.takeDamage(this.attackDamage);
       return `${this.name} attacked ${targetEntity.name} for ${this.attackDamage} damage`;
-    },
-  };
+    }
 
-  const hasHealth = {
     takeDamage(amount) {
       this.health -= amount;
       console.log(`${this.name} has ${this.health} health remaining`);
-    },
-  };
-
-  // (2) classes extend the main entity and add on their own properties
-  class Character extends Entity {
-    public attackDamage: any;
-    public health: any;
-
-    constructor(name, attackDamage, health) {
-      super(name);
-      this.attackDamage = attackDamage;
-      this.health = health;
     }
   }
 
+  // (2) classes extend the main entity
   // (3) attach the smaller interfaces to the classes as needed
-  Object.assign(Character.prototype, mover);
-  Object.assign(Character.prototype, attacker);
-  Object.assign(Character.prototype, hasHealth);
-
-  class Wall extends Entity {
-    public health: any;
-
-    constructor(name, health) {
+  class Wall extends Entity implements IHasHealth {
+    constructor(public name: string, public health: number) {
       super(name);
-      this.health = health;
+    }
+
+    takeDamage(amount) {
+      this.health -= amount;
+      console.log(`${this.name} has ${this.health} health remaining`);
     }
   }
 
-  Object.assign(Wall.prototype, hasHealth);
-
-  class Turret extends Entity {
-    public attackDamage: any;
-
-    constructor(name, attackDamage) {
+  // (2) classes extend the main entity
+  // (3) attach the smaller interfaces to the classes as needed
+  class Turret extends Entity implements IAttacker {
+    constructor(public name: string, public attackDamage: number) {
       super(name);
-      this.attackDamage = attackDamage;
+    }
+
+    attack(targetEntity) {
+      targetEntity.takeDamage(this.attackDamage);
+      return `${this.name} attacked ${targetEntity.name} for ${this.attackDamage} damage`;
     }
   }
-
-  Object.assign(Turret.prototype, attacker);
 
   const turret = new Turret("turret", 5);
   const wall = new Wall("wall", 200);

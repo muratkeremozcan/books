@@ -3,24 +3,32 @@
 // problem: when a class implements an interface, it has to define all the properties and methods of that interface
 // although it may not use some of the properties and methods of the interface
 
-// in JS there are no interfaces, so we use classes and inheritance
-{
-  class Entity {
-    public name: any;
-    public attackDamage: any;
-    public health: any;
+// note: you can use some of js-to-ts-converter
+// npx js-to-ts-converter ./kyle/SOLID-design-principles/interface-segregation/TS
 
-    constructor(name, attackDamage, health) {
-      this.name = name;
-      this.attackDamage = attackDamage;
-      this.health = health;
-    }
+{
+  interface IEntity {
+    name: string;
+    attackDamage: number;
+    health: number;
+
+    move(): string;
+    attack(targetEntity: Entity): string;
+    takeDamage(amount: number): void;
+  }
+
+  class Entity implements IEntity {
+    constructor(
+      public name: string,
+      public attackDamage: number,
+      public health: number
+    ) {}
 
     move() {
       return `${this.name} moved`;
     }
 
-    attack(targetEntity) {
+    attack(targetEntity: Entity) {
       targetEntity.takeDamage(this.attackDamage);
       return `${this.name} attacked ${targetEntity.name} for ${this.attackDamage} damage`;
     }
@@ -31,10 +39,10 @@
     }
   }
 
-  class Character extends Entity {}
+  class Character extends Entity implements IEntity {}
 
-  // Wall cannot move or attack
-  class Wall extends Entity {
+  // problem: wall only takes damage, still has to implement move and attack
+  class Wall extends Entity implements IEntity {
     constructor(name, health) {
       super(name, 0, health);
     }
@@ -48,8 +56,8 @@
     }
   }
 
-  // Turret cannot move and take damage
-  class Turret extends Entity {
+  //  problem: turret only attacks, still has to implement move and takeDamage
+  class Turret extends Entity implements IEntity {
     constructor(name, attackDamage) {
       super(name, attackDamage, -1);
     }
