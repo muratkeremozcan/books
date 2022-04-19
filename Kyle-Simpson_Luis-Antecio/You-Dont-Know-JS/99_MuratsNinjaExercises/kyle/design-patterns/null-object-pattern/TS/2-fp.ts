@@ -5,7 +5,6 @@ const { always, ifElse } = require("ramda");
 // (1) create a class that represents a non-existent entity
 // (2) null check for that entity, and return a NullObject if it is so
 
-// @ts-expect-error
 class User {
   // use the TS constructor shorthand instead of the lengthy constructor
   // https://dev.to/satansdeer/typescript-constructor-shorthand-3ibd
@@ -40,7 +39,6 @@ class NullUser {
 const findUser = (id, users) => users.find((user) => user.id === id);
 
 // (2) null check for that entity, and return a NullObject if it is so
-// @ts-expect-error
 function getUser(id, users) {
   const user = findUser(id, users);
 
@@ -51,7 +49,6 @@ function getUser(id, users) {
   )();
 }
 
-// @ts-expect-error
 function greetUser(id, users) {
   const user = getUser(id, users);
 

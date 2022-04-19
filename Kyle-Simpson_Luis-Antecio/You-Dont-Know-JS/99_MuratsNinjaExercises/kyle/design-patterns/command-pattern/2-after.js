@@ -91,3 +91,24 @@ calculator.executeCommand(new SubtractCommand(5)); //?
 calculator.executeCommand(new DivideCommand(2)); //?
 calculator.undoCommand(); //?
 calculator.undoCommand(); //?
+
+class AddThenMultiplyCommand {
+  constructor(valueToAdd, valueToMultiply) {
+    this.addCommand = new AddCommand(valueToAdd);
+    this.multiplyCommand = new MultiplyCommand(valueToMultiply);
+  }
+
+  execute(currentValue) {
+    const newValue = this.addCommand.execute(currentValue);
+    return this.multiplyCommand.execute(newValue);
+  }
+
+  undo(currentValue) {
+    const newValue = this.multiplyCommand.undo(currentValue);
+    return this.addCommand.undo(newValue);
+  }
+}
+
+calculator.executeCommand(new AddThenMultiplyCommand(10, 2)); //?
+calculator.undoCommand(); //?
+
