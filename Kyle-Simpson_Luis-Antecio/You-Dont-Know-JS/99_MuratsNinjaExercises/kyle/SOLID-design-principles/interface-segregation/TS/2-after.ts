@@ -29,6 +29,11 @@
     constructor(public name: string) {}
   }
 
+  const damageHelper = (amount, health, name) => {
+    health -= amount;
+    console.log(`${name} has ${health} health remaining`);
+  };
+
   // (2.1) classes extend the main entity
   // (3) attach the smaller interfaces to the classes as needed
   class Character extends Entity implements IHasHealth, IMover, IAttacker {
@@ -50,8 +55,7 @@
     }
 
     takeDamage(amount) {
-      this.health -= amount;
-      console.log(`${this.name} has ${this.health} health remaining`);
+      return damageHelper(amount, this.health, this.name);
     }
   }
 
@@ -63,8 +67,7 @@
     }
 
     takeDamage(amount) {
-      this.health -= amount;
-      console.log(`${this.name} has ${this.health} health remaining`);
+      return damageHelper(amount, this.health, this.name);
     }
   }
 
