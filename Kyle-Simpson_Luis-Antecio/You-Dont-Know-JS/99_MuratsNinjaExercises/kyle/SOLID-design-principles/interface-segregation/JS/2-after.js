@@ -1,4 +1,4 @@
-// Interface Segregation Principle: break apart your interfaces
+// Interface Segregation Principle: TL, DR; compose small shit into bigger shit vs inherit BIG shit partially in the children
 
 // solution: create smaller interfaces and a base class, have all classes compose from them
 // (1) create smaller interfaces

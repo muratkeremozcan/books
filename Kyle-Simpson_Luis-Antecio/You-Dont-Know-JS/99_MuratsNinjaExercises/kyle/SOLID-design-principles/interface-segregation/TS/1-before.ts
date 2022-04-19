@@ -1,4 +1,4 @@
-// Interface Segregation Principle: isolate your interfaces
+// Interface Segregation Principle: TL, DR; compose small shit into bigger shit vs inherit BIG shit partially in the children
 
 // problem: when a class implements an interface, it has to define all the properties and methods of that interface
 // although it may not use some of the properties and methods of the interface
