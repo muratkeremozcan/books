@@ -8,9 +8,9 @@ fib(40); /*?.*/
 fib(2); //?
 
 // with memoization it's instant
-// (1) hold state somewhere (held in the arg)
+// (1) hold cache somewhere (held in the arg)
 function fibMemo(n, cache = []) {
-  // (3) if we have the result somewhere, use that
+  // (3) if we have the result in the cache, use that
   if (cache[n]) return cache[n];
 
   let result;
@@ -21,7 +21,7 @@ function fibMemo(n, cache = []) {
     result = fibMemo(n - 1, cache) + fibMemo(n - 2, cache);
   }
 
-  // (2) every time we call the function, we store the result
+  // (2) every time we call the function, we store the result in the cache
   cache[n] = result;
   return result;
 }

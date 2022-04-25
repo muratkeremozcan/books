@@ -6,11 +6,11 @@
 // another example at Functional-Light-JS/ch5-reducing-side-effects/1_memoization.js
 
 const efficientSquare = (function () {
-  // (1) hold the state somewhere
+  // (1) hold the cache somewhere
   const cache = [];
 
   return function square(n) {
-    // (3) if we have the result somewhere, use that
+    // (3) if we have the result in the cache, use that
     if (cache[n]) return cache[n];
 
     let result = 0;
@@ -21,7 +21,7 @@ const efficientSquare = (function () {
       }
     }
 
-    // (2) every time we call the function, we store the result
+    // (2) every time we call the function, we store the result in the cache
     cache[n] = result;
     return result;
   };
