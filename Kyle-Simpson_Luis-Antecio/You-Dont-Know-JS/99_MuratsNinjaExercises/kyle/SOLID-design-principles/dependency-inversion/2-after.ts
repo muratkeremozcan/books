@@ -19,7 +19,7 @@
     }
   }
 
-  // (2)  we insert an intermediate X, and it includes wrappers per an external api
+  // (2)  we insert an intermediate X, and it includes wrappers per external apis
   class StripePaymentProcessor {
     stripe: Stripe;
     constructor(public user: string) {
