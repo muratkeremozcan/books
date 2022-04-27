@@ -5,7 +5,7 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "ejs": "^2.3.1",
+    "ejs": "^3.1.7",
     "express": "5.0.0-alpha.2",
     "forecastio": "^0.2.0",
     "zippity-do-dah": "0.0.x"
