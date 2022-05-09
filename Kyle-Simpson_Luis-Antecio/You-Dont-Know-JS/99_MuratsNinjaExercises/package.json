@@ -20,9 +20,11 @@
     "xml2js": "^0.4.17"
   },
   "devDependencies": {
-    "jest": "^28.0.2",
+    "@types/jest": "^27.5.0",
+    "jest": "^28.1.0",
     "lodash": "^4.17.20",
     "mocha": "^3.5.3",
-    "ramda": "^0.27.1"
+    "ramda": "^0.27.1",
+    "ts-jest": "^28.0.2"
   }
 }
