@@ -7,18 +7,26 @@ Alt + <n> : change tabs
 Ctrl + Alt + F<n> : change terminals
 cd ~ : home directory
 cd / : root directory
+cd - : teleport directories back and forth
+cd   : back to home
+cd /home/murat: absolute path navigation
+cd test/directory : relative path navigation
+cd ./test/directory : relative path navigation
 pwd : current directory
 ls : view files in pwd
 ls -a/-al/-alh <path>: hidden files, long list, long list in kilobytes
 ls | grep sometext > list : pipe, search and output to a file
-ls >> list : output without overwrite, but aggregate
+ls >> list : output without overwrite, but aggregate to the end
+echo <whatever>: print out whatever
+echo <whatever> > <path> : write <whatever> to the end of a file
 touch 'my list' : create file with space in name
 mkdir ghost : create a folder using relative path
 mkdir /home/vagrant/ghosts  : create using absolute path
 rmdir /home/vagrant/ghosts  : remove (empty) directory
 rm <path>: remove file
 rm -rf <path> : remove file or folder recursively and force
-cp <path> <absolute path> : copy file or folder
+cp <path> <path> : copy single file or folder
+cp <path> -R <path> : recursively copy a folder with everything inside it
 mv <path> <path> : move file/folder
 mv list mylist : rename file/folder
 tar -czvf <name>.tar <path> : create,zip,verbose& name 
@@ -36,6 +44,7 @@ sudo chmod 750 . : current directory,  full for user, rx for group, nothing for 
 sudo !!  :  run the previous command with sudo
 cat <path> | more : view txt file contents, optionally pipe for longer files
 cat -b <path> | grep : appear numbered, search the contents
+cat <path> <path> > <path> : combine multiple files into a new one
 wc -l/-w/-c < hola.txt  : word count line,word,char and take input from a file
 cat hola.txt | wc  : same as above
 <command> && <command>  :  and logic (all should succeed)
@@ -50,6 +59,7 @@ vim normal mode: ctrl+g / : view file, search
 vim normal mode: dw de d$ dd p u: delete word+space, word, until eol, whole lines, paste the deletion undo
 vim command mode:  :  enter command mode, :w to save  :q to quit  :q!  force quit  :wq  save& quit
 vim insert mode:  INSERT key, esc to get out  . vim replace mode:  INSERTx2
+nano <path>  : enter nano
 ifconfig | grep inet  : filter for ip address
 nslookup <url/IP> : test your DNS vs a target
 traceroute <url/IP> :  shows all hops to target

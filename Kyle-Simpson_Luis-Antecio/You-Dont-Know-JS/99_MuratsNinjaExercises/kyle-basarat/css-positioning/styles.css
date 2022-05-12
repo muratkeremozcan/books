@@ -1,0 +1,53 @@
+/* https://www.youtube.com/watch?v=jx5jmI0UlXU&list=WL&index=4&t=27s */
+.parent {
+	position: relative;
+}
+
+.child-one {
+	/* (0) static: the default positioning */
+
+	/* (1) relative: like static, but you can position it using top, left, bottom, right based on itself */
+	/* position: relative; */
+	/* left: 10px; */
+	/* top: 10px; */
+
+	/* (2) absolute: like relative, but moves based on its parent vs itself
+	completely removes the element from the document flow, all the other elements ignore it
+	It is useful when you don't want anything else to move */
+
+	position: absolute;
+	top: 0
+
+	/* (3) fixed: moves with the page as you scroll and stays where it is in the page*/
+	
+	/* (4) sticky: by default it's relative, as soon as it scrolls out of the page it becomes fixed */
+}
+
+.child-two {
+
+}
+
+.child-three {
+
+}
+
+.parent {
+  padding: 5px;
+  background-color: #00AAFF;
+}
+
+.child {
+  padding: 5px;
+}
+
+.child-one {
+  background-color: rgb(116, 255, 116);
+}
+
+.child-two {
+  background-color: rgb(248, 117, 117);
+}
+
+.child-three {
+  background-color: rgb(255, 116, 232);
+}
