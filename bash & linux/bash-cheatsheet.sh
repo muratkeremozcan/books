@@ -139,3 +139,16 @@ function javatest() {
 javatest $number
 
 
+# Regex support
+
+BASE_URL_EXISTS=true
+BASEURL_REGEX='(http:\/\/|https:\/\/)?[^\/\?]*$'
+COMMIT_MSG='we just need the baseUrl baseUrl=https://localhost:3000'
+
+if [[ (${BASE_URL_EXISTS} == true) ]] && [[ ${BASH_REMATCH[0]} ]]; then
+    NEW_VAR=${BASH_REMATCH[0]}
+else
+    echo "shit pants"
+fi
+
+echo $NEW_VAR
