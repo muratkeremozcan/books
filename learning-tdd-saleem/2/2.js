@@ -19,20 +19,20 @@ class Money {
   }
 }
 
-// 1
+// [1]
 let fiveDollars = new Money(5, 'USD')
 let tenDollars = fiveDollars.times(2)
 assert.strictEqual(tenDollars.amount, 10)
 assert.deepStrictEqual(fiveDollars.times(2), tenDollars)
 
-// 2
+// [2]
 let tenEuros = new Money(10, 'EUR')
 let twentyEuros = tenEuros.times(2)
 assert.strictEqual(twentyEuros.amount, 20)
 // Red (1) add a failing test
 assert.strictEqual(twentyEuros.currency, 'EUR')
 
-// 3
+// [3]
 let originalMoney = new Money(4002, 'KRW')
 // Red (4) add a failing test with new method
 let actualMoneyAfterDivision = originalMoney.divide(4) //?
