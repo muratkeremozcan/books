@@ -18,8 +18,8 @@ test('#times amount, currency', () => {
 
 test('#divide', () => {
   const originalMoney = new Money(4002, 'KRW')
-  const actualMoneyAfterDivision = originalMoney.divide(4) //?
-  const expectedMoneyAfterDivision = new Money(1000.5, 'KRW') //?
+  const actualMoneyAfterDivision = originalMoney.divide(4)
+  const expectedMoneyAfterDivision = new Money(1000.5, 'KRW')
 
   expect(actualMoneyAfterDivision).toEqual(expectedMoneyAfterDivision)
 })

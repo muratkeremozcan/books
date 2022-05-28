@@ -41,7 +41,7 @@ describe('Portfolio', () => {
 })
 
 describe('PortfolioPure', () => {
-  test('#add, #evaluate', () => {
+  test('#evaluate', () => {
     const fifteenDollars = new Money(15, 'USD') //?
     const fiveDollars = new Money(5, 'USD')
     const tenDollars = fiveDollars.times(2)

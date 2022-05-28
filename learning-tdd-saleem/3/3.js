@@ -35,9 +35,9 @@ class Portfolio {
     // Refactor (9) use an arg for currency
     // return new Money(15, currency)
     // Red (10) now need a way to sum up the amounts in the moneys
-    const total = this.moneys.reduce((sum, money) => sum + money.amount, 0) //?
+    const total = this.moneys.reduce((sum, money) => sum + money.amount, 0)
     // Red (12) our array is empty, we need a way to keep building it with new moneys
-    return new Money(total, currency) //?
+    return new Money(total, currency)
   }
 }
 
@@ -54,17 +54,17 @@ assert.strictEqual(twentyEuros.amount, 20)
 assert.strictEqual(twentyEuros.currency, 'EUR')
 
 const originalMoney = new Money(4002, 'KRW')
-const actualMoneyAfterDivision = originalMoney.divide(4) //?
-const expectedMoneyAfterDivision = new Money(1000.5, 'KRW') //?
+const actualMoneyAfterDivision = originalMoney.divide(4)
+const expectedMoneyAfterDivision = new Money(1000.5, 'KRW')
 assert.deepStrictEqual(actualMoneyAfterDivision, expectedMoneyAfterDivision)
 
 // [3]
-const fifteenDollars = new Money(15, 'USD') //?
+const fifteenDollars = new Money(15, 'USD')
 // Red (1) declare a new entity
 const portfolio = new Portfolio()
 // Red (3) propose a new method for the entity
-portfolio.add(fiveDollars, tenDollars) //?
+portfolio.add(fiveDollars, tenDollars)
 // Red (5) declare a new method for the entity
-portfolio.evaluate('USD') //?
+portfolio.evaluate('USD')
 // Red (7) assert
 assert.deepStrictEqual(portfolio.evaluate('USD'), fifteenDollars)
