@@ -5,7 +5,7 @@ const Portfolio = require('./portfolio')
 class MoneyTest {
   testMultiplication() {
     const tenEuros = new Money(10, 'EUR')
-    const twentyEuros = tenEuros.times(2)
+    const twentyEuros = new Money(20, 'EUR')
     assert.deepStrictEqual(tenEuros.times(2), twentyEuros)
   }
 
@@ -18,39 +18,47 @@ class MoneyTest {
 
   testAddition() {
     const fiveDollars = new Money(5, 'USD')
-    const tenDollars = fiveDollars.times(2)
+    const tenDollars = new Money(10, 'USD')
     const fifteenDollars = new Money(15, 'USD')
     const portfolio = new Portfolio()
     portfolio.add(fiveDollars, tenDollars)
     assert.deepStrictEqual(portfolio.evaluate('USD'), fifteenDollars)
   }
 
-  // Red (1) write the failing test
   testAdditionOfDollarsAndEuros() {
     const fiveDollars = new Money(5, 'USD')
     const tenEuros = new Money(10, 'EUR')
     const portfolio = new Portfolio()
-    portfolio.add(fiveDollars, tenEuros) //?
+    portfolio.add(fiveDollars, tenEuros)
     const expectedValue = new Money(17, 'USD')
     assert.deepStrictEqual(portfolio.evaluate('USD'), expectedValue)
+  }
+
+  testAdditionOfDollarsAndWons() {
+    const oneDollar = new Money(1, 'USD')
+    const elevenHundredWon = new Money(1100, 'KRW')
+    const portfolio = new Portfolio()
+    portfolio.add(oneDollar, elevenHundredWon)
+    const expectedValue = new Money(2200, 'KRW')
+    assert.deepStrictEqual(portfolio.evaluate('KRW'), expectedValue)
   }
 
   getAllTestMethods() {
     const moneyPrototype = MoneyTest.prototype
     const allProps = Object.getOwnPropertyNames(moneyPrototype)
-    return allProps.filter((p) => {
+    const testMethods = allProps.filter((p) => {
       return typeof moneyPrototype[p] === 'function' && p.startsWith('test')
     })
+    return testMethods
   }
 
   runAllTests() {
-    return this.getAllTestMethods().map((m) => {
-      console.log('Running:', m)
-      // get the object for each method via reflection
+    const testMethods = this.getAllTestMethods()
+    testMethods.forEach((m) => {
+      console.log('Running: %s()', m)
       const method = Reflect.get(this, m)
-      // invoke the method with no arguments on this object (MoneyTest)
       try {
-        return Reflect.apply(method, this, [])
+        Reflect.apply(method, this, [])
       } catch (e) {
         if (e instanceof assert.AssertionError) {
           console.log(e)

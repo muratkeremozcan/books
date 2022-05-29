@@ -35,16 +35,14 @@ describe('Money', () => {
     const expectedValue = new Money(17, 'USD')
     expect(portfolio.evaluate('USD')).toEqual(expectedValue)
   })
-})
 
-describe('PortfolioPure', () => {
-  test('#evaluate', () => {
-    const fifteenDollars = new Money(15, 'USD')
-    const fiveDollars = new Money(5, 'USD')
-    const tenDollars = fiveDollars.times(2)
+  test('testAdditionOfDollarsAndWons', () => {
+    const oneDollar = new Money(1, 'USD')
+    const elevenHundredWon = new Money(1100, 'KRW')
+    const portfolio = new Portfolio()
+    portfolio.add(oneDollar, elevenHundredWon)
 
-    const portfolio = new PortfolioPure([fiveDollars, tenDollars])
-
-    expect(portfolio.evaluate('USD')).toEqual(fifteenDollars)
+    const expectedValue = new Money(2200, 'KRW')
+    expect(portfolio.evaluate('KRW')).toEqual(expectedValue)
   })
 })

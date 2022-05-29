@@ -21,6 +21,17 @@ export default class Portfolio {
   convert(money, currency) {
     if (money.currency === currency) return money.amount
 
-    return money.amount * 1.2
+    // return money.amount * 1.2
+    // return money.amount * 1100
+
+    const exchangeRates = new Map()
+    exchangeRates.set('EUR->USD', 1.2)
+    exchangeRates.set('USD->KRW', 1100)
+
+    // return money.amount * exchangeRates.get('EUR->USD')
+    // return money.amount * exchangeRates.get('USD->KRW')
+
+    const key = `${money.currency}->${currency}`
+    return money.amount * exchangeRates.get(key)
   }
 }
