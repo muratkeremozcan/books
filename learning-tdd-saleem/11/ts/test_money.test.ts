@@ -1,5 +1,6 @@
 import Money from './money'
 import Portfolio from './portfolio'
+import Bank from './bank'
 
 describe('Money', () => {
   test('testMultiplication', () => {
@@ -60,5 +61,16 @@ describe('Money', () => {
     // otherwise the assert statement would itself fail to execute successfully.
     // Instead, we pass an anonymous function object as the first parameter, which calls the method under test.
     expect(() => portfolio.evaluate('Kalganid')).toThrow(expectedError)
+  })
+
+  test('testConversion', () => {
+    const bank = new Bank()
+    const tenEuros = new Money(10, 'EUR')
+
+    bank.addExchangeRate('EUR', 'USD', 1.2)
+
+    const convertedAmount = bank.convert(tenEuros, 'USD')
+
+    expect(convertedAmount).toEqual(new Money(12, 'USD'))
   })
 })

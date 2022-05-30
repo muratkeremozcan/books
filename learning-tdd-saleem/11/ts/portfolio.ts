@@ -28,7 +28,7 @@ export default class Portfolio {
     throw new Error(`Missing exchange rate(s):[${failures.join()}]`)
   }
 
-  convert(money, currency) {
+  convert(money, currency): number {
     if (money.currency === currency) return money.amount
 
     const exchangeRates = new Map()

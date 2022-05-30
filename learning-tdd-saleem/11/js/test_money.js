@@ -1,6 +1,7 @@
 const assert = require('assert')
 const Money = require('./money')
 const Portfolio = require('./portfolio')
+const Bank = require('./bank')
 
 class MoneyTest {
   testMultiplication() {
@@ -51,7 +52,7 @@ class MoneyTest {
     })
     return testMethods
   }
-
+  Í
   testAdditionWithMultipleMissingExchangeRates() {
     const oneDollar = new Money(1, 'USD')
     const oneEuro = new Money(10, 'EUR')
@@ -67,6 +68,17 @@ class MoneyTest {
     // otherwise the assert statement would itself fail to execute successfully.
     // Instead, we pass an anonymous function object as the first parameter, which calls the method under test.
     assert.throws(() => portfolio.evaluate('Kalganid'), expectedError)
+  }
+
+  testConversion() {
+    const bank = new Bank()
+    const tenEuros = new Money(10, 'EUR')
+    // Red (1) add a test for the feature we want (addExchangeRate)
+    bank.addExchangeRate('EUR', 'USD', 1.2)
+    // Red (3) add a test for the feature we want (convert)
+    const convertedAmount = bank.convert(tenEuros, 'USD') //?
+
+    assert.deepStrictEqual(convertedAmount, new Money(12, 'USD'))
   }
 
   runAllTests() {
