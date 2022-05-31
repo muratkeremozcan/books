@@ -4,7 +4,8 @@ const Portfolio = require('./portfolio')
 const Bank = require('./bank')
 
 class MoneyTest {
-  constructor() {
+  // (2) to ensure the instantiation before each test, we can rename the constructor to setup, and call it beforeEach
+  setup() {
     this.bank = new Bank()
     this.bank.addExchangeRate('EUR', 'USD', 1.2)
     this.bank.addExchangeRate('USD', 'KRW', 1100)
@@ -50,15 +51,6 @@ class MoneyTest {
     assert.deepStrictEqual(portfolio.evaluate(this.bank, 'KRW'), expectedValue)
   }
 
-  getAllTestMethods() {
-    const moneyPrototype = MoneyTest.prototype
-    const allProps = Object.getOwnPropertyNames(moneyPrototype)
-    const testMethods = allProps.filter((p) => {
-      return typeof moneyPrototype[p] === 'function' && p.startsWith('test')
-    })
-    return testMethods
-  }
-
   testAdditionWithMultipleMissingExchangeRates() {
     const oneDollar = new Money(1, 'USD')
     const oneEuro = new Money(10, 'EUR')
@@ -66,13 +58,9 @@ class MoneyTest {
     const portfolio = new Portfolio()
     portfolio.add(oneDollar, oneEuro, oneWon)
 
-    // Red (1) write the failing test
     const expectedError = new Error(
       'Missing exchange rate(s):[USD->Kalganid,EUR->Kalganid,KRW->Kalganid]'
     )
-    // note: In JavaScript, we don’t call the method under test as part of the assert.throws()
-    // otherwise the assert statement would itself fail to execute successfully.
-    // Instead, we pass an anonymous function object as the first parameter, which calls the method under test.
     assert.throws(
       () => portfolio.evaluate(this.bank, 'Kalganid'),
       expectedError
@@ -80,17 +68,29 @@ class MoneyTest {
   }
 
   testConversion() {
-    const bank = new Bank()
     const tenEuros = new Money(10, 'EUR')
-    // Red (1) add a test for the feature we want (addExchangeRate)
-    bank.addExchangeRate('EUR', 'USD', 1.2)
-    // Red (3) add a test for the feature we want (convert)
-    const convertedAmount = bank.convert(tenEuros, 'USD') //?
-
+    this.bank.addExchangeRate('EUR', 'USD', 1.2)
+    let convertedAmount = this.bank.convert(tenEuros, 'USD') //?
     assert.deepStrictEqual(convertedAmount, new Money(12, 'USD'))
+
+    // test changing the exchange rate
+    this.bank.addExchangeRate('EUR', 'USD', 1.3)
+    convertedAmount = this.bank.convert(tenEuros, 'USD') //?
+    assert.deepStrictEqual(convertedAmount, new Money(13, 'USD'))
   }
 
-  // here we added a test for the edge cases under the if logic
+  // (1) to ensure there is no order dependency in the tests
+  // we are not declaring a new instance of the bank, and we are not specifying an exchange rate
+  // and things still work, because they are order independent
+  testWhatIsTheConversionRateFromEURToUSD() {
+    let tenEuros = new Money(10, 'EUR')
+    this.bank.addExchangeRate('EUR', 'USD', 1.2)
+    assert.deepStrictEqual(
+      this.bank.convert(tenEuros, 'USD'),
+      new Money(12, 'USD')
+    )
+  }
+
   testConversionWithMissingExchangeRate() {
     const bank = new Bank()
     const tenEuros = new Money(10, 'EUR')
@@ -99,12 +99,22 @@ class MoneyTest {
     assert.throws(() => bank.convert(tenEuros, 'Kalganid'), expectedError)
   }
 
+  getAllTestMethods() {
+    const moneyPrototype = MoneyTest.prototype
+    const allProps = Object.getOwnPropertyNames(moneyPrototype)
+    return allProps.filter((p) => {
+      return typeof moneyPrototype[p] === 'function' && p.startsWith('test')
+    })
+  }
+
   runAllTests() {
     const testMethods = this.getAllTestMethods()
     testMethods.forEach((m) => {
       console.log('Running: %s()', m)
       const method = Reflect.get(this, m)
       try {
+        // (3), call the setup beforeEach
+        this.setup()
         Reflect.apply(method, this, [])
       } catch (e) {
         if (e instanceof assert.AssertionError) {

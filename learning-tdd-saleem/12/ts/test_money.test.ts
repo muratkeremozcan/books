@@ -3,6 +3,7 @@ import Portfolio from './portfolio'
 import Bank from './bank'
 
 describe('Money', () => {
+  // (1) order independence is easy with Jest, we achieve it like this
   let bank: Bank
 
   beforeAll(() => {
@@ -61,13 +62,9 @@ describe('Money', () => {
     const portfolio = new Portfolio()
     portfolio.add(oneDollar, oneEuro, oneWon)
 
-    // Red (1) write the failing test
     const expectedError = new Error(
       'Missing exchange rate(s):[USD->Kalganid,EUR->Kalganid,KRW->Kalganid]'
     )
-    // note: In JavaScript, we don’t call the method under test as part of the assert.throws()
-    // otherwise the assert statement would itself fail to execute successfully.
-    // Instead, we pass an anonymous function object as the first parameter, which calls the method under test.
     // @ts-expect-error
     expect(() => portfolio.evaluate(bank, 'Kalganid')).toThrow(expectedError)
   })
@@ -77,7 +74,6 @@ describe('Money', () => {
     const tenEuros = new Money(10, 'EUR')
 
     bank.addExchangeRate('EUR', 'USD', 1.2)
-
     const convertedAmount = bank.convert(tenEuros, 'USD')
 
     expect(convertedAmount).toEqual(new Money(12, 'USD'))
@@ -88,7 +84,6 @@ describe('Money', () => {
     const tenEuros = new Money(10, 'EUR')
 
     bank.addExchangeRate('EUR', 'EUR', 1)
-
     const convertedAmount = bank.convert(tenEuros, 'EUR')
 
     expect(convertedAmount).toEqual(new Money(10, 'EUR'))
@@ -101,5 +96,15 @@ describe('Money', () => {
 
     // @ts-expect-error
     expect(() => bank.convert(tenEuros, 'Kalganid')).toThrow(expectedError)
+  })
+
+  test('orderIndependence', () => {
+    // (2) we are not declaring a new instance of the bank, and we are not specifying an exchange rate
+    // and things still work, because they are order independent
+    let tenEuros = new Money(10, 'EUR')
+
+    const convertedAmount = bank.convert(tenEuros, 'USD')
+
+    expect(convertedAmount).toEqual(new Money(12, 'USD'))
   })
 })

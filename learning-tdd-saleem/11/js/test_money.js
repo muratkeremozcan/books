@@ -66,13 +66,9 @@ class MoneyTest {
     const portfolio = new Portfolio()
     portfolio.add(oneDollar, oneEuro, oneWon)
 
-    // Red (1) write the failing test
     const expectedError = new Error(
       'Missing exchange rate(s):[USD->Kalganid,EUR->Kalganid,KRW->Kalganid]'
     )
-    // note: In JavaScript, we don’t call the method under test as part of the assert.throws()
-    // otherwise the assert statement would itself fail to execute successfully.
-    // Instead, we pass an anonymous function object as the first parameter, which calls the method under test.
     assert.throws(
       () => portfolio.evaluate(this.bank, 'Kalganid'),
       expectedError
