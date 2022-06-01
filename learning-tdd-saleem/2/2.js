@@ -32,7 +32,6 @@ assert.strictEqual(twentyEuros.amount, 20)
 // Red (1) add a failing test
 assert.strictEqual(twentyEuros.currency, 'EUR')
 
-// [3]
 let originalMoney = new Money(4002, 'KRW')
 // Red (4) add a failing test with new method
 let actualMoneyAfterDivision = originalMoney.divide(4)

@@ -11,7 +11,7 @@ class Portfolio {
   }
 
   evaluate(currency) {
-    // Red(1.1) we need a conversion here that takes money an converts to USD
+    // Red(1.1) we need a conversion here that takes money and converts to USD
     const total = this.moneys.reduce(
       // Green (3) use the method with hardcoded value to get a passing test
       (sum, money) => sum + this.convert(money, currency),

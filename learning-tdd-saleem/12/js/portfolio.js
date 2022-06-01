@@ -10,8 +10,6 @@ class Portfolio {
     return this.moneys
   }
 
-  // Refactor (5) we want portfolio.evaluate to use Bank with Dependency Injection
-  // and we want convert to come from Bank
   evaluate(bank, currency) {
     let failures = []
     const total = this.moneys.reduce((sum, money) => {
