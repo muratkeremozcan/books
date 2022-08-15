@@ -18,7 +18,7 @@
 
 {
   // nullish coalescing helps with valid falsy values we want to show: 0 '' false NaN
-  let foo = false;
+  let foo = 0;
 
   let someDummyText = foo ?? "Hello";
 
