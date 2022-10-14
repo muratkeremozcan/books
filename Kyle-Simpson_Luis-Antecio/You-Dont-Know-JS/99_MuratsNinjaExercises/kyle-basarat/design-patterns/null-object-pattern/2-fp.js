@@ -31,14 +31,20 @@ class NullUser {
 const findUser = (id, users) => users.find((user) => user.id === id);
 
 // (2) null check for that entity, and return a NullObject if it is so
+// function getUser(id, users) {
+//   const user = findUser(id, users);
+
+//   return ifElse(
+//     () => user == null,
+//     () => new NullUser(),
+//     () => user
+//   )();
+// }
+
 function getUser(id, users) {
   const user = findUser(id, users);
 
-  return ifElse(
-    () => user == null,
-    () => new NullUser(),
-    () => user
-  )();
+  return ifElse(() => user == null, always(new NullUser()), always(user))();
 }
 
 function greetUser(id, users) {
