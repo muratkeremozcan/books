@@ -42,13 +42,15 @@ const getNamesV0 = users => users.map(user => user.name) // data => data.map(cal
 const getNamesR1 = R.map(user => user.name, users) // R.map(callback, data)          - notice no extra data arg with Ramda
 const getNamesR2 = R.map(user => user.name) ///////// R.map(callback)                - better curried, pass the arg later
 const getNamesR3 = R.map(R.prop('name'), users) ///// R.map(R.prop('propertyName'), data) - R.prop is a nice shorthand
-const getNamesR4 = R.map(R.prop('name')) //////////// R.map(R.prop('propertyName'))  - best version
+const getNamesR4 = R.map(R.prop('name')) //////////// R.map(R.prop('propertyName'))  - better version
+const getNamesR5 = R.pluck('name') //////////////// R.pluck('propertyName') - shorthand for R.map(R.prop('propertyName'))
 
 getNamesV0(users) //?
 getNamesR1 //?
 getNamesR2(users) //?
 getNamesR3 //?
 getNamesR4(users) //?
+getNamesR5(users) //?
 
 /// purify array push
 const list = [1, 2, 3, 4, 5]

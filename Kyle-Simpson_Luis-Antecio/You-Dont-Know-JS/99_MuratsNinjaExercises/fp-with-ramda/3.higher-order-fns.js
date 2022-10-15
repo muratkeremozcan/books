@@ -45,9 +45,12 @@ nums.reduce((acc, total) => acc + total, 0) //?
 R.reduce((acc, total) => acc + total, 0, nums) //?
 R.reduce((acc, total) => acc + total, 0)(nums) //?
 
+///////////////
 // array methods vs ramda
+
 // const getSalaries = employees => employees.map(employee => employee.salary)
-const getSalaries = R.map(R.prop('salary')) //?
+// const getSalaries = R.map(R.prop('salary'))
+const getSalaries = R.pluck('salary')
 
 // const isBelowSixFigures = salary => salary < 100000
 const isBelowSixFigures = R.lt(R.__, 100000) //?
