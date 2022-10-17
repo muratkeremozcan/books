@@ -24,8 +24,8 @@ const greet = (greeting, first, last) => `${greeting}, ${first} ${last}`
 const add3CurriedClassic = x => y => z => x + y + z
 const greetCurriedClassic = greeting => first => last =>
   `${greeting}, ${first} ${last}`
-const add3CurriedR = R.curry(add3) // jus wrap the function
-const greetCurriedR = R.curry(greet) // jus wrap the function
+const add3CurriedR = R.curry(add3) // just wrap the function
+const greetCurriedR = R.curry(greet) // just wrap the function
 
 add3CurriedClassic(2)(3) //?
 add3CurriedClassic(2)(3)(4) //?

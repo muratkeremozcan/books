@@ -15,19 +15,19 @@ import employees from './employees.json'
 // Pass them as arguments
 // Return them from other functions
 
+///// map filter reduce vs R.map R.filter R.reduce
 const isEven = num => num % 2 === 0
 
 ;[1, 2, 3, 4, 5].filter(isEven) //?
 R.filter(isEven, [1, 2, 3, 4, 5]) //?
 R.filter(isEven)([1, 2, 3, 4, 5]) //?
 
-///
+/// currying
 const addNumbers = x => y => x + y
 
 addNumbers(1) //?
 addNumbers(1)(2) //?
 
-/////
 const nums = [1, 2, 3, 4, 5, 6, 7, 8]
 
 // doubled
@@ -45,8 +45,7 @@ nums.reduce((acc, total) => acc + total, 0) //?
 R.reduce((acc, total) => acc + total, 0, nums) //?
 R.reduce((acc, total) => acc + total, 0)(nums) //?
 
-///////////////
-// array methods vs ramda
+///// R.pluck, R.pipe, R.tap
 
 // const getSalaries = employees => employees.map(employee => employee.salary)
 // const getSalaries = R.map(R.prop('salary'))
@@ -60,7 +59,7 @@ const calculateMonthlyPaycheck = R.divide(R.__, 12) //?
 
 const toUSD = amount =>
   amount.toLocaleString('en-US', {style: 'currency', currency: 'USD'})
-// const toUSD = R.curry(amount =>
+// const toUSD = R.curry(amount => // optional to curry here
 //   amount.toLocaleString('en-US', {style: 'currency', currency: 'USD'}),
 // ) //?
 
