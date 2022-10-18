@@ -71,7 +71,7 @@ const getTop3MealsFor = (maxPrice, meals) =>
 const getTop3MealsForR = R.pipe(
   (maxPrice, meals) => meals.filter(R.propSatisfies(R.gte(maxPrice), 'price')),
   // (maxPrice, meals) => meals.filter(meal => meal.price <= maxPrice),
-  R.sort(R.descend(R.prop('rating'))), // R.descend(R.prop('rating')) is the same as (a,b) => b.rating - a.rating
+  R.sort(R.descend(R.prop('rating'))), // R.descend(R.prop('rating')) is the same as R.sort((a,b) => b.rating - a.rating)
   // R.sort((a, b) => b.rating - a.rating),
   R.take(3), // R.take(3)(list) is the same as list => list.slice(0, 3)
   // R.slice(0, 3),

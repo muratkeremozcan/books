@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-// a array is a FP type; a container that holds any value (string, date, boolean, array, object, etc.)
+// a functor is a FP type; a container that holds any value (string, date, boolean, array, object, etc.)
 // the container must have a map method
 
 const Identity = x => ({
@@ -16,12 +16,12 @@ const newName = name.map(v => `My name is not ${v}!`).map(v => v.toUpperCase())
 newName //?
 newName.value //?
 
-/// R.map works on arrays, objects or strings
+/// R.map works on arrays, objects or strings (which can all be mapped over and transformed)
 const arr = [1, 2, 3, 4, 5]
 R.map(R.multiply(2), arr) //?
 
 const obj = {a: 1, b: 2, c: 3, d: 4, e: 5}
 R.map(R.multiply(2), obj) //?
 
-const str = 'hello'
+const str = 'Hello'
 R.map(R.concat('yay'), str) //?
