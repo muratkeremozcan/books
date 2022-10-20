@@ -1,12 +1,18 @@
 const hi = name => `Hi ${name}`
 // same
 // const greeting = name => hi(name)
-const greeting = hi
+const greeting = hi // try toggling
 
-// hi // a fn waiting for invocation
 hi('Joe') //?
-// greeting // a fn waiting for invocation
 greeting('Joe') //?
+
+const bye = () => 'Bye'
+// same
+// const goodBye = () => bye()
+const goodBye = bye // try toggling
+
+bye() //?
+goodBye() //?
 
 // same:
 // ajaxCall(json => callback(json));

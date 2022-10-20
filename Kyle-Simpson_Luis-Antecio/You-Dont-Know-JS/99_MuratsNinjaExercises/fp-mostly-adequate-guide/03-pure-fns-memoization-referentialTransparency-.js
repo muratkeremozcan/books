@@ -4,7 +4,8 @@ import memoize from 'memoizee'
 // Cacheable (memoization)
 // Portable / Self-Documenting (they don't depend on the state of the world, they come with what they need)
 // Testable (input -> output)
-// Referentially transparent (can be replaced with its value without changing the result of the program)
+// Referentially transparent (can be replaced with hard-coded values without changing the result of the program)
+// Stateless / Atomic (no side effects, parallel code is possible)
 
 // pure vs impure: slice vs splice
 const xs = [1, 2, 3, 4, 5]
