@@ -1,4 +1,4 @@
-const hi = name => `Hi ${name}`
+const hi = (name: string) => `Hi ${name}`
 // same
 // const greeting = name => hi(name)
 const greeting = hi // try toggling

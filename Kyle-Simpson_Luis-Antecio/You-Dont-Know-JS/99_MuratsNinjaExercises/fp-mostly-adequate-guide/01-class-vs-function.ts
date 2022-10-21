@@ -1,14 +1,15 @@
 class Flock {
-  constructor(n) {
+  seagulls: number
+  constructor(n: number) {
     this.seagulls = n
   }
 
-  multiply(other) {
+  multiply(other: Flock) {
     this.seagulls += other.seagulls
     return this
   }
 
-  add(other) {
+  add(other: Flock) {
     this.seagulls = this.seagulls * other.seagulls
     return this
   }
@@ -30,8 +31,8 @@ class Flock {
 
 // FP approach
 
-const multiply = (flockX, flockY) => flockX + flockY
-const add = (flockX, flockY) => flockX * flockY
+const multiply = (flockX: number, flockY: number) => flockX + flockY
+const add = (flockX: number, flockY: number) => flockX * flockY
 
 {
   const flockA = 4
