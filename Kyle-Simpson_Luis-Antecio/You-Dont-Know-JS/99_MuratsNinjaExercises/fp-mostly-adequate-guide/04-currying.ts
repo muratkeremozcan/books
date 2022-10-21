@@ -1,4 +1,4 @@
-import {curry} from 'ramda'
+import {curry, ifElse} from 'ramda'
 import * as _ from 'lodash'
 
 // When we spoke about pure functions, we said they take 1 input to 1 output.
@@ -96,3 +96,22 @@ const filterQsR = filter(matchQR)
 filterQs(['quick', 'camels', 'quarry', 'over', 'quails']) //?
 filterQs2(['quick', 'camels', 'quarry', 'over', 'quails']) //?
 filterQsR(['quick', 'camels', 'quarry', 'over', 'quails']) //?
+
+///
+
+const keepHighest = (x: number, y: number) => (x >= y ? x : y)
+
+const compare = (x: number, y: number) => (x >= y ? x : y)
+const keepHighestR = curry(compare)
+keepHighestR(5) //?
+keepHighestR(3, 10) //?
+
+const compareR = ifElse(
+  (x: number, y: number) => x >= y,
+  (x: number) => x,
+  (_, y: number) => y,
+)
+
+const keepHighestR2 = curry(compareR)
+keepHighestR2(5) //?
+keepHighestR2(3, 10) //?
