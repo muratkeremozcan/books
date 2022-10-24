@@ -28,7 +28,7 @@ require(['jquery', 'ramda'], ($, {compose, curry, map, prop, tap}) => {
   /*
 
   
-  // KEY: We can inline the call to mediaUrls in images thanks to equational reasoning and purity.
+  // KEY: composes can move out due to equational reasoning and purity
   const mediaUrl = compose(prop('m'), prop('media'))
   const mediaUrls = compose(map(mediaUrl), prop('items'))
   const images = compose(map(img), compose(map(mediaUrl), prop('items')))

@@ -10,11 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "@mostly-adequate/support": "^2.0.1",
+    "@swan-io/boxed": "^0.12.0",
     "@types/ramda": "^0.28.18",
     "@types/sinon": "^10.0.13",
     "axios": "^1.1.2",
     "chai": "^4.3.6",
     "chai-as-promised": "^7.1.1",
+    "folktale": "^2.3.2",
     "immutable": "^4.1.0",
     "istanbul": "^0.4.5",
     "memoizee": "^0.4.15",
