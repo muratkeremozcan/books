@@ -20,6 +20,7 @@
     "immutable": "^4.1.0",
     "istanbul": "^0.4.5",
     "memoizee": "^0.4.15",
+    "moment": "^2.29.4",
     "node-fetch": "^3.2.10",
     "sinon": "^14.0.1",
     "sinon-chai": "^3.7.0",
