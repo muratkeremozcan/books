@@ -1,4 +1,4 @@
-import {pipe, add, prop, compose, head, map, append} from 'ramda'
+import {tap, pipe, add, prop, head, map, concat} from 'ramda'
 import {Result, Option} from '@swan-io/boxed'
 
 // Use add and map to make a function that increments a value inside a functor.
@@ -17,15 +17,14 @@ initial(user) //?
 // Write a function that uses checkActive and showWelcome to grant access or return the error.
 
 // showWelcome :: User -> String
-const showWelcome = compose(append('Welcome '), prop('name'))
-// checkActive :: User -> Either String User
-const checkActive = function checkActive(user) {
-  return user.active
-    ? Result.Ok(user)
-    : Result.Error('Your account is not active')
-}
-// eitherWelcome :: User -> Either String String
-const eitherWelcome = pipe(checkActive, map(showWelcome))
+const showWelcome = pipe(prop('name'), concat('Welcome '))
+// checkActive :: User -> Result String User
+const checkActive = user =>
+  user.active ? Result.Ok(user) : Result.Error('Your account is not active')
 
-eitherWelcome(user) //?
-eitherWelcome('foo') //?
+// resultWelcome :: User -> Result String String
+// const resultWelcome = pipe(checkActive, map(showWelcome))
+const resultWelcome = pipe(checkActive, map(showWelcome))
+
+resultWelcome(user) //?
+resultWelcome('foo') //?

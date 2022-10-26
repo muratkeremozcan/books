@@ -1,11 +1,9 @@
-import {prop, append, pipe, match, map, curry} from 'ramda'
+import {prop, concat, pipe, match, map, curry} from 'ramda'
 import {inspect, add} from '@mostly-adequate/support'
 import {Option} from '@swan-io/boxed'
 
 // Container
-
 // the container is for  control flow, error handling, asynchronous actions, state and effects.
-// Container is an object with one property.
 // Lots of containers just hold one thing, though they aren't limited to one. We've arbitrarily named its property $value.
 // Once data goes into the Container it stays there. We could get it out by using .$value
 
@@ -24,9 +22,13 @@ Container.of(3) //?
 Container.of('hotdogs') //?
 Container.of(Container.of({name: 'yoda'})) //?
 
+///////////////
 // Functor (aka Mappable):  a type that implements map and obeys some laws
-
 // Once our value, whatever it may be, is in the container, we need a way to run functions on it (via map)
+// What do we gain from asking our container to apply functions for us? Well, abstraction of function application.
+// When we map a function, we ask the container type to run it for us. This is a very powerful concept, indeed.
+
+// just like array.map; we have Container a instead of [a]
 // (a -> b) -> Container a -> Container b
 Container.prototype.map = function (f) {
   return Container.of(f(this.$value))
@@ -35,9 +37,9 @@ Container.prototype.map = function (f) {
 // When we map a function, we ask the container type to run it for us
 Container.of(2).map(two => two + 2) //?
 Container.of('flamethrowers').map(s => s.toUpperCase()) //?
-Container.of('bombs').map(append(' away')).map(prop('length')) //?
+Container.of('bombs').map(concat(' away')).map(prop('length')) //?
 
-//////////////
+////////////// Here we start talking about classic functors
 // Maybe
 
 // Maybe : a functor that either contains a value or null
@@ -71,13 +73,15 @@ Maybe.of(null).map(match(/a/gi)) //?
 Maybe.of({name: 'Boris'}).map(prop('age')).map(add(10)) //?
 Maybe.of({name: 'Dinah', age: 14}).map(prop('age')).map(add(10)) //?
 
+// Boxed is a nice lib that provides functional utility types and functions for TypeScript and JavaScript
+// https://swan-io.github.io/boxed/
 // swan-io/boxed: Option is similar to Maybe; Maybe.of == Option.fromNullable
 Option.fromNullable('Malkovich Malkovich').map(match(/a/gi)) //?
 Option.fromNullable(null).map(match(/a/gi)) //?
 Option.fromNullable({name: 'Boris'}).map(prop('age')).map(add(10)) //?
 Option.fromNullable({name: 'Dinah', age: 14}).map(prop('age')).map(add(10)) //?
 
-// use cases
+// Maybe / Option use cases
 // In the wild, we'll typically see Maybe used in functions which might fail to return a result
 
 // safeHead :: [a] -> Maybe(a)
@@ -114,6 +118,7 @@ const finishTransaction = pipe(remainingBalance, updateLedger)
   const withdraw = curry((amount, {balance}) =>
     Maybe.of(balance >= amount ? {balance: balance - amount} : null),
   )
+  // with map, it is like:  if (x !== null) { return f(x) }.
   // getTwenty :: Account -> Maybe(String)
   const getTwenty = pipe(withdraw(20), map(finishTransaction))
 
@@ -131,6 +136,7 @@ const finishTransaction = pipe(remainingBalance, updateLedger)
     return f(m.$value)
   })
 
+  // with maybe it is like:  if/else
   // getTwenty :: Account -> String
   const getTwentyMaybe = pipe(
     withdraw(20),
@@ -147,6 +153,7 @@ const finishTransaction = pipe(remainingBalance, updateLedger)
     Option.fromNullable(balance >= amount ? {balance: balance - amount} : null),
   )
 
+  // with map, it is like:  if (x !== null) { return f(x) }.
   const getTwenty = pipe(withdraw(20), map(finishTransaction))
 
   getTwenty({balance: 200.0}).value //?
@@ -160,6 +167,7 @@ const finishTransaction = pipe(remainingBalance, updateLedger)
     return f(m.value)
   })
 
+  // with maybe it is like:  if/else
   const getTwentyMaybe = pipe(
     withdraw(20),
     maybe("You're broke!", finishTransaction),

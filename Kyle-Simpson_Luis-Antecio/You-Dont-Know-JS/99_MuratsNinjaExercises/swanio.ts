@@ -1,5 +1,5 @@
 import {Option, Result, AsyncData} from '@swan-io/boxed'
-// Option is like Maybe
+// Option is like Maybe, additionally like Some(x) / None or Just(x) / Nothing
 // https://swan-io.github.io/boxed/option
 
 // You can enforce the type using a type parameter

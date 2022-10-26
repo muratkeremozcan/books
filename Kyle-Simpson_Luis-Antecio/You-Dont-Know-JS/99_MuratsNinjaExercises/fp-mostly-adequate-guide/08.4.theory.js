@@ -1,5 +1,5 @@
 import {map, identity, append, compose, pipe, reverse, toUpper} from 'ramda'
-import {Option, Result, AsyncData} from '@swan-io/boxed'
+import {Option, Result} from '@swan-io/boxed'
 
 // identity
 // map(id) === id;
@@ -20,11 +20,11 @@ compLaw1(Option.Some('hello')) //?
 compLaw2(Option.Some('hello')) //?
 
 /////
-// f -> Maybe.of
+// f -> F.of
 const topRoute = pipe(reverse, Option.Some)
-// Maybe.of -> map(f)
+// F.of -> map(f)
 const bottomRoute = pipe(Option.Some, map(reverse))
-// are the same (but seems like you can remove map or add it in both places)
+// are the same (
 topRoute('hi') //?
 bottomRoute('hi') //?
 

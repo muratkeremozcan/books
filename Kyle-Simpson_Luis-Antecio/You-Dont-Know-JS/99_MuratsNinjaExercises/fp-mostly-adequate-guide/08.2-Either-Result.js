@@ -1,4 +1,4 @@
-import {prop, curry} from 'ramda'
+import {prop, curry, compose, concat, add, map, identity, toString} from 'ramda'
 import {inspect} from '@mostly-adequate/support'
 import {Result, Option} from '@swan-io/boxed'
 import moment from 'moment'
@@ -45,7 +45,7 @@ left('rain').map(str => `It's gonna ${str}, better bring your umbrella!`) //?
 Either.of({host: 'localhost', port: 80}).map(prop('host')) //?
 left('rolls eyes...').map(prop('host')) //?
 
-// swan-io Either
+// swan-io Result is like Either, Left, Right bundled into one
 Result.Ok('rain').map(str => `b${str}`) //?
 Result.Error('rain').map(str => `b${str}`) //?
 Result.Ok({host: 'localhost', port: 80}).map(prop('host')) //?
@@ -60,28 +60,60 @@ const getAge = curry((now, user) => {
   const birthDate = moment(user.birthDate, 'YYYY-MM-DD')
 
   return birthDate.isValid()
-    ? Either.of(birthDate.diff(now, 'days'))
+    ? Either.of(Math.abs(birthDate.diff(now, 'years')))
     : left('Birth date could not be parsed')
 })
-// with swan-io Either
-const getAgeS = curry((now, user) => {
+// with swan-io Result
+const getAgeR = curry((now, user) => {
   const birthDate = moment(user.birthDate, 'YYYY-MM-DD')
   return birthDate.isValid()
-    ? Result.Ok(birthDate.diff(now, 'days'))
+    ? Result.Ok(Math.abs(birthDate.diff(now, 'years')))
     : Result.Error('Birth date could not be parsed')
 })
-const getAgeSO = curry((now, user) => {
+// Compare Result to Option
+// KEY: the distinction in Result is that we have a clue as to why our program has derailed,
+// with Option.fromNullable, it may have gone either way, not necessarily an error
+const getAgeO = curry((now, user) => {
   const birthDate = moment(user.birthDate, 'YYYY-MM-DD')
   return birthDate.isValid()
-    ? Option.Some(birthDate.diff(now, 'days'))
+    ? Option.Some(Math.abs(birthDate.diff(now, 'years')))
     : Option.fromNullable('Birth date could not be parsed')
 })
 
-getAge(moment(), {birthDate: '2005-12-12'}) //?
+getAge(moment(), {birthDate: '2022-12-12'}) //?
 getAge(moment(), {birthDate: 'July 4, 2001'}) //?
-getAgeS(moment(), {birthDate: '2005-12-12'}) //?
-getAgeS(moment(), {birthDate: 'July 4, 2001'}) //?
-getAgeSO(moment(), {birthDate: '2005-12-12'}) //?
-getAgeSO(moment(), {birthDate: 'July 4, 2001'}) //?
+getAgeR(moment(), {birthDate: '2005-12-12'}) //?
+getAgeR(moment(), {birthDate: 'July 4, 2001'}) //?
+getAgeO(moment(), {birthDate: '2005-12-12'}) //?
+getAgeO(moment(), {birthDate: 'July 4, 2001'}) //?
 
-/////
+///// example 2
+// branching our control flow depending on the validity of the birth date,
+// yet it reads as one linear motion from right to left rather than climbing through the curly braces of a conditional statement
+
+// fortune :: Number -> String
+const fortune = compose(
+  concat('If you survive, you will be '),
+  toString,
+  add(1),
+)
+
+// KEY: notice that the function fortune is is completely ignorant of any functors milling about (similar to finishTransaction)
+// Lifting: At the time of calling, a function can be surrounded by map,
+// which transforms it from a non-functory function to a functory one
+
+// zoltar :: User -> Either(String, _)
+const zoltar = compose(map(console.log), map(fortune), getAgeR(moment()))
+
+moment() //?
+
+zoltar({birthDate: '2005-12-12'}) //?
+// 'If you survive, you will be 17'
+// Right(undefined)
+
+// Usually, we'd move the console.log out of our zoltar function and map it at the time of calling
+const zoltar2 = compose(map(fortune), getAgeR(moment()))
+map(console.log, zoltar2({birthDate: '2005-12-12'})) //?
+
+zoltar({birthDate: 'balloons!'}) //?
+// Left('Birth date could not be parsed')
