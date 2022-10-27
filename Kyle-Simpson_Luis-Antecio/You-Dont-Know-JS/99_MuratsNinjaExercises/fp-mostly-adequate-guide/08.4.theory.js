@@ -1,4 +1,13 @@
-import {map, identity, append, compose, pipe, reverse, toUpper} from 'ramda'
+import {
+  map,
+  identity,
+  append,
+  compose,
+  pipe,
+  reverse,
+  toUpper,
+  chain,
+} from 'ramda'
 import {Option, Result} from '@swan-io/boxed'
 
 // identity
