@@ -10,8 +10,7 @@ import {
   chain,
 } from 'ramda'
 import {Option, Result, AsyncData} from '@swan-io/boxed'
-import {Maybe, IO} from '@mostly-adequate/support'
-const fs = require('fs').promises
+import {Maybe} from '@mostly-adequate/support'
 
 // Pointed functor: a functor with an of method
 // drop-in any value into the functor and start mapping away, aka. Lift any value in our type
