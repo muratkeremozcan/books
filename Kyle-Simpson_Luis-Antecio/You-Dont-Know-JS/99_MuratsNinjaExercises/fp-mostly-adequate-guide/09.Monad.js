@@ -101,7 +101,7 @@ firstAddressStreetRC({
 }) //?
 
 // just keep in mind that chain is flattened version of map with ramda
-// prefer to map when returning a "normal" value and chain when we're returning another functor.
+// KEY: prefer to map when returning a "normal" value and chain when we're returning another functor.
 const duplicate = n => [n, n]
 map(duplicate)([1, 2, 3]) //?
 chain(duplicate)([1, 2, 3]) //?
