@@ -1,11 +1,11 @@
 function makePromises(val) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => return 
 
     setTimeout(() => resolve(val), Math.random() * 1000);
 
     setTimeout(() => reject('cannot keep my promise'), Math.random() * 4000);
 
-  });
+  );
 }
 
 function timeoutPromise(delay) {
