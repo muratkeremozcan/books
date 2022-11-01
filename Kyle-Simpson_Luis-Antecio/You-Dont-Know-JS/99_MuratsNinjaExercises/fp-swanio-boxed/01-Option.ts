@@ -45,7 +45,7 @@ option.match({
 // use map when returning a normal value,
 // user flatMap when we're returning another Box (Container-Functor-Monad)
 
-/// map
+/// map(f)
 
 const some = Option.Some(1)
 const none = Option.None()
@@ -61,7 +61,7 @@ doubledSomething //?
 Option.Some<number>(2).map(x => x * 2) //?
 Option.None().map(x => x * 2) //?
 
-/// flatMap
+/// flatMap(f)
 // returns another Box. It used for nested values
 Option.Some(3).flatMap(x => (x > 2 ? Option.None() : Option.Some(2))) //?
 

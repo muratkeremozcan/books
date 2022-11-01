@@ -19,12 +19,12 @@ AsyncData.Done(1) //?
 // use map when returning a normal value,
 // user flatMap when we're returning another Box (Container-Functor-Monad)
 
-/// map()
+/// map(f)
 AsyncData.Done(2).map(x => x * 2) //?
 AsyncData.Loading().map(x => x * 2) //?
 AsyncData.NotAsked().map(x => x * 2) //?
 
-/// flatMap()
+/// flatMap(f)
 AsyncData.Done(3).flatMap(x =>
   x > 2 ? AsyncData.NotAsked() : AsyncData.Done(2),
 ) //?
@@ -40,7 +40,7 @@ AsyncData.Loading().flatMap(x =>
   x > 2 ? AsyncData.NotAsked() : AsyncData.Done(2),
 ) //?
 
-/// getWithDefault()
+/// getWithDefault(defaultValue)
 // If the async data is Done(value) returns value, otherwise returns defaultValue.
 
 AsyncData.Done(2).getWithDefault(1) //?
@@ -137,7 +137,7 @@ const valueToDisplay = asyncdata.match({
 })
 valueToDisplay //?
 
-/// tap()
+/// tap(f)
 // for logging and debugging
 
 asyncdata.tap(value => {
