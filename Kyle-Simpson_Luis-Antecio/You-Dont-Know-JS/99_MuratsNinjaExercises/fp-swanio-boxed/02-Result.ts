@@ -62,13 +62,13 @@ Result.fromPromise(promise(2)) //?
 // use map when returning a normal value,
 // user flatMap when we're returning another Box (Container-Functor-Monad)
 
-/// map
+/// map(f)
 // If the result is Ok(value) returns Ok(f(value)), otherwise returns Error(error)
 
 Result.Ok(2).map(x => x * 2) //?
 Result.Ok(2).map(x => Result.Ok(x * 2)) //?
 
-/// mapError
+/// mapError(f)
 // If the result is Error(error) returns Error(f(error)), otherwise returns Ok(value).
 Result.Error(2).mapError(x => x * 2) //?
 Result.Error(2).mapError(x => Result.Ok(x * 2)) //?
@@ -83,7 +83,7 @@ Result.Error('initial error').flatMap(x =>
 ) //?
 Result.Ok(2).flatMap(x => (x > 2 ? Result.Error('some error') : Result.Ok(2))) //?
 
-/// flatMapError
+/// flatMapError(f)
 Result.Error(1).flatMapError(x =>
   x > 2 ? Result.Error('some error') : Result.Ok(2),
 ) //?
@@ -94,7 +94,7 @@ Result.Ok('ok').flatMapError(x =>
   x > 2 ? Result.Error('some error') : Result.Ok(2),
 ) //?
 
-/// getWithDefault()
+/// getWithDefault(defaultValue)
 // If the result is Ok(value) returns value, otherwise returns defaultValue.
 
 Result.Ok(2).getWithDefault(1) //?
