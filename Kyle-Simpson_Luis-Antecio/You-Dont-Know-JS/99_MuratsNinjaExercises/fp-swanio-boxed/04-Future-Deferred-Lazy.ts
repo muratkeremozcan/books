@@ -1,4 +1,4 @@
-import {Future, Deferred, Result} from '@swan-io/boxed'
+import {Future, Deferred, Lazy, Result} from '@swan-io/boxed'
 
 // Future is a replacement for Promise.
 
@@ -169,4 +169,14 @@ future10.onResolve(x => {
   x //?
   return x
 })
-// resolve('hello') //? // toggle to see it working
+resolve('hello') //? // toggle to see it working
+
+/// Lazy
+// Creates a lazy value. The computation won't happen until the first access.
+// A lazy type exposes a get method that'll return the result from the computation.
+
+const myComputation = Lazy(() => {
+  console.log('computing')
+  return 1
+})
+myComputation.get() //? // toggle to see it working
