@@ -1,4 +1,4 @@
-import {Future, Result} from '@swan-io/boxed'
+import {Future, Deferred, Result} from '@swan-io/boxed'
 
 // Future is a replacement for Promise.
 
@@ -159,3 +159,14 @@ Future.value(Result.Error('Error')).flatMapOk(ok =>
 /// tapError(f)
 Future.value(Result.Ok(7)).tapOk(console.log) //?
 Future.value(Result.Error('tap Error')).tapError(console.log) //?
+
+/// Deferred
+// Returns a Future and its resolver
+const [future10, resolve] = Deferred.make<string>()
+
+// subscribe to the future
+future10.onResolve(x => {
+  x //?
+  return x
+})
+// resolve('hello') //? // toggle to see it working
