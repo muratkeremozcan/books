@@ -1,5 +1,10 @@
 import * as R from 'ramda'
-const bobo = {
+type User = {
+  firstName: string
+  lastName: string
+}
+
+const bobo: User = {
   firstName: 'Bobo',
   lastName: 'Flakes',
 }
@@ -18,8 +23,8 @@ const firstName = R.prop('firstName')
 
 // composition
 // reverse(toUpperCase(firstName(bobo))) //?
-
-const upperAndReverseFirstName = user => reverse(toUpperCase(firstName(user)))
+const upperAndReverseFirstName = (user: User) =>
+  reverse(toUpperCase(firstName(user)))
 const upperAndReverseFirstNameR = R.pipe(firstName, toUpperCase, reverse) //?
 // const  upperAndReverseFirstNameR = R.compose(reverse, toUpperCase, firstName) //?
 
@@ -42,9 +47,8 @@ const users = [
   },
 ]
 
-// const mapUsers = users =>
 // const mapUsers = users => users.map(user => reverse(toUpperCase(firstName(user))))
-const mapUsers = users => users.map(upperAndReverseFirstName)
+const mapUsers = (users: User[]) => users.map(upperAndReverseFirstName)
 const mapUsersR = R.map(upperAndReverseFirstNameR)
 
 mapUsers(users) //?
@@ -61,10 +65,10 @@ const doMath = R.pipe(
 )
 doMath(1) //?
 
-const double = x => x * 2 // double
-const triple = x => x * 3 // triple
-const square = x => x * x // square
-const increment = x => x + 1 // increment
+const double = (x: number) => x * 2 // double
+const triple = (x: number) => x * 3 // triple
+const square = (x: number) => x * x // square
+const increment = (x: number) => x + 1 // increment
 
 // composition is right to left, as in the mathematical composition
 increment(square(triple(double(1)))) //?

@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 
-const add = (x, y) => x + y
+const add = (x: number, y: number) => x + y
 
 const result = add(2, 3)
 result //?
@@ -10,7 +10,7 @@ result //?
 
 // So we curry:  return a new function per expected parameter
 const addCurried = R.curry(add) // jus wrap the function
-const addCurriedClassic = x => y => x + y
+const addCurriedClassic = (x: number) => (y: any) => x + y
 
 addCurried(2) //?
 addCurried(2)(3) //? 5
@@ -18,11 +18,12 @@ addCurriedClassic(2) //?
 addCurriedClassic(2)(3) //?
 
 //
-const add3 = (x, y, z) => x + y + z
-const greet = (greeting, first, last) => `${greeting}, ${first} ${last}`
+const add3 = (x: any, y: any, z: any) => x + y + z
+const greet = (greeting: any, first: any, last: any) =>
+  `${greeting}, ${first} ${last}`
 
-const add3CurriedClassic = x => y => z => x + y + z
-const greetCurriedClassic = greeting => first => last =>
+const add3CurriedClassic = (x: number) => (y: any) => (z: any) => x + y + z
+const greetCurriedClassic = (greeting: string) => (first: any) => (last: any) =>
   `${greeting}, ${first} ${last}`
 const add3CurriedR = R.curry(add3) // just wrap the function
 const greetCurriedR = R.curry(greet) // just wrap the function

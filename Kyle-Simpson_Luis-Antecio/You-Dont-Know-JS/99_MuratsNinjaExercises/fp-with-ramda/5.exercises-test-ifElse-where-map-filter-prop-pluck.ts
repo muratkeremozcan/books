@@ -4,22 +4,28 @@ import R from 'ramda'
 
 const sentence = 'Bobo is a bobo'
 
-const countBobs = sentence => /bobo/gi.test(sentence)
+const countBobs = (sentence: string) => /bobo/gi.test(sentence)
 const countBobsR = R.test(/bobo/gi)
 
 countBobs(sentence) //?
 countBobsR(sentence) //?
 
 ////////
+type Person = {
+  name: string
+  age: number
+  lovesTech: boolean
+  worksHard: boolean
+}
 
-const person = {
+const person: Person = {
   name: 'Joe',
   age: 30,
   lovesTech: true,
   worksHard: true,
 }
 
-const shouldCode = person =>
+const shouldCode = (person: Person) =>
   person.lovesTech && person.worksHard
     ? `${person.name} may enjoy a tech career!                                                    `
     : `${person.name} wouldn't enjoy a tech career.`
@@ -31,8 +37,8 @@ const shouldCodeR = R.ifElse(
     lovesTech: R.equals(true),
     worksHard: R.equals(true),
   }), // best
-  person => `${person.name} may enjoy a tech career`,
-  person => `${person.name} doesn't enjoy a tech career`,
+  (person: Person) => `${person.name} may enjoy a tech career`,
+  (person: Person) => `${person.name} doesn't enjoy a tech career`,
 )
 
 shouldCode(person) //?
@@ -46,7 +52,7 @@ const people = [
   {name: 'Boe', age: 20, lovesTech: true, worksHard: false},
 ]
 
-const getAges = people => people.map(person => person.age)
+const getAges = (people: Person[]) => people.map(person => person.age)
 const getAgesR = R.map(R.prop('age'))
 const getAgesR2 = R.pluck('age')
 
@@ -56,17 +62,15 @@ getAgesR2(people) //?
 
 ////////
 
-const keepYoungAdults = people => people.filter(p => p.age >= 18 && p.age <= 25)
-const keepYoungAdultsR = R.filter(p => p.age >= 18 && p.age <= 25)
+const keepYoungAdults = (people: Person[]) =>
+  people.filter(p => p.age >= 18 && p.age <= 25)
+const keepYoungAdultsR = R.filter((p: Person) => p.age >= 18 && p.age <= 25)
 
 keepYoungAdults(people) //?
 keepYoungAdultsR(people) //?
 
-// I dislike these solutions, because they don't translate well from the original
-// R.gt, R.lt etc. compares the first arg to the incoming arg,
-// it makes sense by itself, but the way it is used in a pipeline makes you wish it was reserved
-// wish: is 20 bigger than 10?
-// reality: is 10 bigger than 20?
+// R.gt, R.lt etc. compares the first arg to the incoming arg, Rt.gt(18) : is 18 gt then data coming in?
+
 R.gt(10)(20) //?
 
 const notYoungAdultAge = R.either(R.gt(18), R.lt(25))
@@ -75,16 +79,21 @@ const keepYoungAdultsR2 = R.reject(isNotYoungAdult)
 
 keepYoungAdultsR2(people) //?
 
+// I like this better     18 lte data && 25 gt data
 const youngAdultAge = R.both(R.lte(18), R.gt(25))
 const isYoungAdult = R.propSatisfies(youngAdultAge, 'age') //?
 const keepYoungAdultsR3 = R.filter(isYoungAdult)
+
+// is 18 lte 24 && is 25 gt 24
+youngAdultAge(24) //?
 
 keepYoungAdultsR3(people) //?
 
 ///////
 // If val is null or undefined, return defaultVal.
 // Else, return val.
-const defaultTo = (defaultVal, val) => (val != null ? val : defaultVal)
+const defaultTo = (defaultVal: number, val: number | null | undefined) =>
+  val != null ? val : defaultVal
 
 defaultTo(3, 5) //?
 defaultTo(3, null) //?
