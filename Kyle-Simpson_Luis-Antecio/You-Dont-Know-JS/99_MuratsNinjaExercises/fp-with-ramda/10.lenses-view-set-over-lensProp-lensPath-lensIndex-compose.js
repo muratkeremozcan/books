@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-
+import {merge} from 'lodash'
 // lenses let you “zoom in” on a particular piece of a data structure
 {
   const person = {
@@ -10,10 +10,10 @@ import * as R from 'ramda'
   const firstNameLens = R.lensProp('firstName') // finds any object's firstName property
 
   // view and set a property
-  R.view(firstNameLens, person) //?
-  R.set(firstNameLens, 'Bobo Jr.', person) //?
+  R.view(firstNameLens)(person) //?
+  R.set(firstNameLens, 'Bobo Jr.')(person) //?
   // change a property using a function
-  R.over(firstNameLens, R.concat('Mr. '), person) //?
+  R.over(firstNameLens, R.concat('Mr. '))(person) //?
 
   // person is unchanged
   person //?
@@ -52,12 +52,23 @@ import * as R from 'ramda'
     },
   }
 
-  person.position.department.departmentManager.lastName //?
-  const correctedLastName =
-    correctPerson.position.department.departmentManager.lastName //?
-  console.log({correctedLastName}) //?
+  // easy with lodash merge
+  const correctPerson2 = merge(person, {
+    position: {
+      department: {
+        departmentManager: {
+          lastName: 'Flakes',
+        },
+      },
+    },
+  })
+  correctPerson2 //?
 
-  // using R.lens
+  person.position.department.departmentManager.lastName //?
+  correctPerson.position.department.departmentManager.lastName //?
+  correctPerson2.position.department.departmentManager.lastName //?
+
+  // you can also do it using R.lens
 
   const managerLastNameLens = R.lensPath([
     'position',
@@ -65,10 +76,9 @@ import * as R from 'ramda'
     'departmentManager',
     'lastName',
   ])
-
   // since it’s curried, a single lens can be used to view and update a property.
   // We used managerLastNameLens in both set and view.
-  const correctPersonR = R.set(managerLastNameLens, 'Flakes', person) //?
+  const correctPersonR = R.set(managerLastNameLens, 'Flakes')(person) //?
   const correctPersonRLastName = R.view(managerLastNameLens, correctPersonR) //?
 
   correctPersonRLastName //?
@@ -103,27 +113,21 @@ import * as R from 'ramda'
   // Compose lenses to handle objects and arrays at the same time (lensProp + lensIndex).
   // compose lets you write lenses left-to-right
 
-  const getThirdFriendP = R.compose(
-    R.lensProp('friends'),
-    // R.tap((fn) => {
-    // fn(person.friends) //?
-    // fn.toString() //?
-    // }),
-    R.lensIndex(2),
-  )
+  const getThirdFriendP = R.pipe(R.lensIndex(2), R.lensProp('friends'))
 
-  R.view(getThirdFriendP, person) //?
+  R.view(getThirdFriendP)(person) //?
 }
 
 // longhand lenses
 {
+  R.assoc('c', 3, {a: 1, b: 2}) //?
   // R.prop  lets you get object properties.
   // R.assoc lets you set them without mutating the original object.
   // Since lenses need a getter and a setter to perform their duties,
   // prop and assoc make the perfect combination to immutably handle and change lenses
   const name = R.lensProp('name')
-  R.view(name, {name: 'Bobo'}) //?
+  R.view(name)({name: 'Bobo'}) //?
 
   const name2 = R.lens(R.prop('name'), R.assoc('name'))
-  R.view(name2, {name: 'Bobo'}) //?
+  R.view(name2)({name: 'Bobert'}) //?
 }

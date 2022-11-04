@@ -6,15 +6,21 @@ import scores from './scores.json'
 
 /// 1. cart total
 
-const toUSD = amount =>
-  amount.toLocaleString('en-US', {style: 'currency', currency: 'USD'})
+const toUSD = (amount: {
+  toLocaleString: (arg0: string, arg1: {style: string; currency: string}) => any
+}) => amount.toLocaleString('en-US', {style: 'currency', currency: 'USD'})
 
-const getTotalPrice = cart => {
-  const total = cart.reduce((acc, item) => acc + item.price, 0)
+const getTotalPrice = (cart: any[]) => {
+  const total = cart.reduce(
+    (acc: any, item: {price: any}) => acc + item.price,
+    0,
+  )
   return toUSD(total)
 }
+
+// favorite
 const getTotalPriceR = R.pipe(
-  R.reduce((acc, item) => acc + item.price, 0),
+  R.reduce((acc, item: {name: string; price: number}) => acc + item.price, 0),
   toUSD,
 )
 
@@ -22,6 +28,7 @@ getTotalPrice(cart) //?
 getTotalPriceR(cart) //?
 
 const getTotalPriceR2 = R.pipe(
+  // @ts-ignore
   R.pluck('price'),
   // R.tap(console.log),
   // R.reduce(R.add, 0),
@@ -33,24 +40,33 @@ getTotalPriceR2(cart) //?
 /// 2. cheapest item
 
 // solution with reduce
-const getCheapestItem = cart =>
-  cart.reduce((acc, item) => (item.price < acc.price ? item : acc))
+const getCheapestItem = (cart: any[]) =>
+  cart.reduce((acc: {price: number}, item: {price: number}) =>
+    item.price < acc.price ? item : acc,
+  )
 // reduce with ramda (mind the comparator object we need)
 const getCheapestItemR = R.pipe(
+  // @ts-ignore
   R.reduce((acc, item) => (item.price < acc.price ? item : acc), {
     price: Infinity,
   }),
 )
 // solution with sort
-const getCheapestItem2 = cart => {
-  const byPrice = cart.sort((a, b) => a.price - b.price)
+const getCheapestItem2 = (cart: any[]) => {
+  const byPrice = cart.sort(
+    (a: {price: number}, b: {price: number}) => a.price - b.price,
+  )
   return byPrice[0] //?
 }
+// favorite
 const getCheapestItemR2 = R.pipe(
   R.sort(R.ascend(R.prop('price'))), // R.ascend(R.prop('price')) is the same as (a,b) => a.price - b.price
   // R.sort((a, b) => a.price - b.price),
   // list => list[0],
   R.head, // R.head is the same as list => list[0] or like first() in Cypress
+  R.tap(x => {
+    return x //?
+  }),
 )
 
 getCheapestItem(cart) //?
@@ -61,14 +77,15 @@ getCheapestItemR2(cart) //?
 
 //// get the 3 top rated meals
 
-const getTop3MealsFor = (maxPrice, meals) =>
+const getTop3MealsFor = (maxPrice: number, meals: any[]) =>
   meals
-    .filter(meal => meal.price <= maxPrice)
-    .sort((a, b) => b.rating - a.rating)
+    .filter((meal: {price: number}) => meal.price <= maxPrice)
+    .sort((a: {rating: number}, b: {rating: number}) => b.rating - a.rating)
     .slice(0, 3)
 
 // the 2 args are being fed in to the pipe
 const getTop3MealsForR = R.pipe(
+  // @ts-ignore
   (maxPrice, meals) => meals.filter(R.propSatisfies(R.gte(maxPrice), 'price')),
   // (maxPrice, meals) => meals.filter(meal => meal.price <= maxPrice),
   R.sort(R.descend(R.prop('rating'))), // R.descend(R.prop('rating')) is the same as R.sort((a,b) => b.rating - a.rating)
@@ -91,8 +108,10 @@ getTop3MealsForR(12, meals) //?
 //     : sorted[middle]
 // }
 
-const getMedianPaycheck = employees => {
-  const sortedEmployees = employees.map(e => e.salary).sort((a, b) => a - b)
+const getMedianPaycheck = (employees: any[]) => {
+  const sortedEmployees = employees
+    .map((e: {salary: any}) => e.salary)
+    .sort((a: number, b: number) => a - b)
   const middle = Math.floor(sortedEmployees.length / 2)
   const median =
     sortedEmployees.length % 2 === 0
@@ -105,7 +124,8 @@ const getMedianPaycheck = employees => {
 // get median paycheck with ramda
 const getMedianPaycheckR = R.pipe(
   R.pluck('salary'),
-  R.sort(R.ascend(R.identity)), // R.ascend(R.identity) is the same as R.sort((a,b) => a - b)
+  // @ts-ignore
+  R.sort(R.ascend), // R.ascend is the same as (a,b) => a - b
   // R.sort((a, b) => a - b),
   R.median,
   toUSD,
@@ -116,7 +136,7 @@ getMedianPaycheckR(employees) //?
 
 //// 4. credit scores
 
-const reviewCreditScore = score => {
+const reviewCreditScore = (score: number) => {
   if (score >= 800) return `${score} is excellent!`
   if (score >= 700) return `${score} is good`
   if (score >= 650) return `${score} is fair`
@@ -124,9 +144,9 @@ const reviewCreditScore = score => {
 }
 
 const reviewCreditScoreR = R.cond([
-  [score => score >= 800, score => `${score} is excellent!`],
-  [score => score >= 700, score => `${score} is good`],
-  [score => score >= 650, score => `${score} is fair`],
+  [(score: number) => score >= 800, score => `${score} is excellent!`],
+  [(score: number) => score >= 700, score => `${score} is good`],
+  [(score: number) => score >= 650, score => `${score} is fair`],
   [R.always(true), score => `${score} is poor`],
 ])
 
@@ -144,7 +164,7 @@ reviewCreditScore(500) //?
 reviewCreditScoreR(500) //?
 reviewCreditScoreR2(500) //?
 
-const reviewCreditScores = scores => scores.map(reviewCreditScore)
+const reviewCreditScores = (scores: any[]) => scores.map(reviewCreditScore)
 const reviewCreditScoresR = R.map(reviewCreditScoreR2)
 
 reviewCreditScores(scores) //?

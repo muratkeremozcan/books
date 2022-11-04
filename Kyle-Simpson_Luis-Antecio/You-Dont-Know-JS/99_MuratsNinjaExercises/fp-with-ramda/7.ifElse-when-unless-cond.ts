@@ -18,19 +18,19 @@ const hasAccess = true
 // Ramda provides ifElse, letting you handle branching logic with functions
 {
   const logAccess = ifElse(
-    () => false,
+    () => true, // toggle between true and false
     () => 'Access granted',
     () => 'Access denied',
   )
 
-  logAccess(hasAccess) //?
+  logAccess() //?
 }
 
 // One advantage is that you can package the logic away into a function
 // Instead of hard coding the hasAccess variable, make it a parameter
 {
   const logAccess = ifElse(
-    hasAccess => hasAccess,
+    (hasAccess: boolean) => hasAccess,
     () => 'Access granted',
     () => 'Access denied',
   )
@@ -54,9 +54,9 @@ const hasAccess = true
 /////// when / unless
 // Sometimes you only need the if statement, and the else simply returns the value unchanged
 
-const isEven = num => num % 2 === 0
+const isEven = (num: number) => num % 2 === 0
 {
-  const doubleIfEven = num => {
+  const doubleIfEven = (num: number) => {
     if (isEven(num)) {
       return num * 2
     }
@@ -69,7 +69,7 @@ const isEven = num => num % 2 === 0
 }
 // ternary also works
 {
-  const doubleIfEven = num => (isEven(num) ? num * 2 : num)
+  const doubleIfEven = (num: number) => (isEven(num) ? num * 2 : num)
 
   doubleIfEven(2) //?
   doubleIfEven(3) //?
@@ -81,8 +81,9 @@ const isEven = num => num % 2 === 0
   const doubleIfEvenR = when(isEven, multiply(2))
 
   doubleIfEven(2) //?
-  doubleIfEven(3) //?
   doubleIfEvenR(2) //?
+  // returns the arg as is if predicate is false
+  doubleIfEven(3) //?
 
   const doubleIfOdd = unless(isEven, multiply(2))
   doubleIfOdd(2) //?
@@ -93,7 +94,7 @@ const isEven = num => num % 2 === 0
 // cond is like switch
 
 {
-  const findAnimal = animal => {
+  const findAnimal = (animal: string) => {
     switch (animal) {
       case 'lion':
         return 'Africa and India'

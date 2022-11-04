@@ -52,7 +52,7 @@ const users: User[] = [
 // native map vs R.map
 // with Ramda the callback comes first, and the data comes later. the data can also be passed a curried arg (preferred)
 // R.prop('propertyName') is a function that takes an object and returns the value of the property
-const getNamesV0 = (users: any[]) => users.map((user: {name: any}) => user.name) // data => data.map(callback)
+const getNamesV0 = (users: User[]) => users.map((user: User) => user.name) // data => data.map(callback)
 const getNamesR1 = R.map(user => user.name, users) // R.map(callback, data)          - notice no extra data arg with Ramda
 const getNamesR2 = R.map((user: User) => user.name) ///////// R.map(callback)                - better curried, pass the arg later
 const getNamesR3 = R.map(R.prop('name')) //////////// R.map(R.prop('propertyName'))  - better version

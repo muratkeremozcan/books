@@ -11,6 +11,7 @@ const e = {
   },
 }
 R.path(['target', 'value'])(e) //?
+// returns the path or default value
 R.pathOr(7, ['target', 'value'])(e) //?
 R.pathOr(7, ['target', 'val'])(e) //?
 R.pathOr(7, ['target', 'value'])(null) //?
