@@ -1,6 +1,7 @@
 import {tap, pipe, add, prop, head, map, concat} from 'ramda'
 import {Result, Option} from '@swan-io/boxed'
 
+// KEY: to work on a Functor you have to map over it
 // Use add and map to make a function that increments a value inside a functor.
 // incrementFunctor :: Functor f => f Int -> f Int
 const incrementFunctor = map(add(1))
@@ -22,8 +23,8 @@ const showWelcome = pipe(prop('name'), concat('Welcome '))
 const checkActive = user =>
   user.active ? Result.Ok(user) : Result.Error('Your account is not active')
 
+// KEY: to work on a Functor you have to map over it
 // resultWelcome :: User -> Result String String
-// const resultWelcome = pipe(checkActive, map(showWelcome))
 const resultWelcome = pipe(checkActive, map(showWelcome))
 
 resultWelcome(user) //?

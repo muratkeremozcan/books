@@ -27,6 +27,7 @@ const myMemoize = f => {
 
   return (...args) => {
     const argStr = JSON.stringify(args)
+    // toggle to see the cached values
     cache //?
     cache[argStr] = cache[argStr] || f(...args)
     return cache[argStr]
@@ -61,7 +62,7 @@ const michael = Map({name: 'Michael', hp: 20, team: 'green'})
 const decrementHP = p => p.set('hp', p.get('hp') - 1)
 const isSameTeam = (p1, p2) => p1.get('team') === p2.get('team')
 // const punch = (a, t) => (isSameTeam(a, t) ? t : decrementHP(t))
-const punch = (a, t) => ('red' === 'green' ? t : decrementHP(t)) // same!
-// const punch = (a, t) => ('red' === 'red' ? t : decrementHP(t)) // try it out
+// const punch = (a, t) => ('red' === 'green' ? t : decrementHP(t)) // we can replace the function with the hard-coded value
+const punch = (a, t) => ('red' === 'red' ? t : decrementHP(t)) // we can replace the function with the hard-coded value
 
 punch(joe, michael) //?

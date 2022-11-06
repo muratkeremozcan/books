@@ -25,6 +25,8 @@ const compose2 =
 const toUpperCase = x => x.toUpperCase()
 const exclaim = x => `${x}!`
 
+// KEY
+// x => f(g(x)) is compose(f, g)  and pass (x) later
 const shoutC = str => exclaim(toUpperCase(str))
 const shout1 = compose1(exclaim, toUpperCase)
 const shout2 = compose2(exclaim, toUpperCase)
@@ -48,8 +50,7 @@ shoutR('send in the clowns') //?
 
 /////
 const head = x => x[0]
-// const reverseC = arr => arr.reverse()
-const reverseC = arr => arr.reduce((acc, curr) => [curr, ...acc], [])
+const reverseC = arr => arr.reverse()
 const reverse = reduce((acc, curr) => [curr, ...acc], [])
 const last = compose(head, reverse)
 
@@ -87,8 +88,9 @@ betterUpperP(arg) //?
 // not pointfree because we mention the data: word
 const snakeCase = word => word.toLowerCase().replace(/\s+/gi, '_')
 
-const snakeCaseRC = compose(replace(/\s+/gi, '_'), toLower)
 // pointfree
+const snakeCaseRC = compose(replace(/\s+/gi, '_'), toLower)
+// pipe version
 const snakeCaseR = pipe(toLower, replace(/\s+/gi, '_'))
 
 snakeCase('Hello World') //?
@@ -98,13 +100,13 @@ snakeCaseRC('Hello World') //?
 // not pointfree because we mention the data: name
 const initials = name =>
   name.split(' ').map(compose(toUpperCase, head)).join('. ')
-const initialsR = compose(
+const initialsR = pipe(
   // tap(d => {
   //   console.log(d)
   // }),
-  join('. '),
-  map(compose(toUpperCase, head)),
   split(' '),
+  map(compose(toUpperCase, head)),
+  join('. '),
 )
 
 initials('hunter stockton thompson') //?

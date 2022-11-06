@@ -1,15 +1,19 @@
 const hi = (name: string) => `Hi ${name}`
-// same
-// const greeting = name => hi(name)
-const greeting = hi // try toggling
+
+// (x) => cb(x) isJust cb
+// these tow are the same, try toggling
+const greeting = (name: string) => hi(name)
+// const greeting = hi
 
 hi('Joe') //?
 greeting('Joe') //?
 
 const bye = () => 'Bye'
-// same
+
+// () => cb() isJust cb
+// these tow are the same, try toggling
 // const goodBye = () => bye()
-const goodBye = bye // try toggling
+const goodBye = bye
 
 bye() //?
 goodBye() //?
