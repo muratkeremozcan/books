@@ -55,12 +55,15 @@ const users: User[] = [
 const getNamesV0 = (users: User[]) => users.map((user: User) => user.name) // data => data.map(callback)
 const getNamesR1 = R.map(user => user.name, users) // R.map(callback, data)          - notice no extra data arg with Ramda
 const getNamesR2 = R.map((user: User) => user.name) ///////// R.map(callback)                - better curried, pass the arg later
+const getNamesR5 = R.map(({name}: User) => name) //?
 const getNamesR3 = R.map(R.prop('name')) //////////// R.map(R.prop('propertyName'))  - better version
 const getNamesR4 = R.pluck('name') //////////////// R.pluck('propertyName') - shorthand for R.map(R.prop('propertyName'))
+// with destructuring
 
 getNamesV0(users) //?
 getNamesR1 //?
 getNamesR2(users) //?
+getNamesR5(users) //?
 getNamesR3(users) //?
 getNamesR4(users) //?
 
