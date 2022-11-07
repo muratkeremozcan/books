@@ -77,7 +77,7 @@ AsyncData.Done(2).toOption().toResult('not found') //?
 Result.fromOption(AsyncData.Done(2).toOption(), 'not found') //?
 
 /// there are some result helpers instead
-// A AsyncData can contain a Result (e.g. to represent an asynchronous value that can fail).
+// An AsyncData can contain a Result (e.g. to represent an asynchronous value that can fail).
 // We provide some utility functions to deal with that case without having to unwrap the AsyncData result.
 
 /// mapResult(f)

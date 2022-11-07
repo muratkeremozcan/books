@@ -21,11 +21,13 @@ Result.Error('something happened') //?
 
 /// Option.toResult(errorWhenNone)
 // converts Option to Result type. Result.Ok if option is Some, Result.Error otherwise
+// (note that option does not have a fromResult(), but it has a  toResult() function)
 Option.Some(2).toResult('not found') //?
 Option.None().toResult('not found') //?
 // (option, value when none)
 Result.fromOption(Option.Some(2), 'not found') //?
 Result.fromOption(Option.None(), 'not found') //?
+Result.Ok(2).toOption() //?
 
 /// example 2
 
@@ -48,14 +50,14 @@ const promise = (val: number) =>
   new Promise((resolve, reject) => {
     return (
       setTimeout(() => resolve(`Resolved: ${val}`), val * 10),
-      setTimeout(() => reject(`Rejected: ${val}`), val * 11) // change to 9 to see the difference
+      setTimeout(() => reject(`Rejected: ${val}`), val * 11) // toggle to 9 to see the difference
     )
   })
 
 // `value` will either be:
 // - Ok(res)
 // - Error(error)
-Result.fromPromise(promise(2)) //?
+Result.fromPromise(promise(21)) //?
 
 //// Data Manipulation
 // KEY: map and flatMap functions allow you to transform data in a typesafe way
@@ -76,18 +78,17 @@ Result.Error(2).mapError(x => Result.Error('something went wrong')) //?
 Result.Ok(2).mapError(x => Result.Error('something went wrong')) //?
 
 /// flatMap is used for nested values
-Result.Ok(1).flatMap(x => (x > 2 ? Result.Error('some error') : Result.Ok(2))) //?
 Result.Ok(3).flatMap(x => (x > 2 ? Result.Error('some error') : Result.Ok(2))) //?
+Result.Ok(1).flatMap(x => (x > 2 ? Result.Error('some error') : Result.Ok(2))) //?
 Result.Error('initial error').flatMap(x =>
   x > 2 ? Result.Error('some error') : Result.Ok(2),
 ) //?
-Result.Ok(2).flatMap(x => (x > 2 ? Result.Error('some error') : Result.Ok(2))) //?
 
 /// flatMapError(f)
-Result.Error(1).flatMapError(x =>
+Result.Error(3).flatMapError(x =>
   x > 2 ? Result.Error('some error') : Result.Ok(2),
 ) //?
-Result.Error(3).flatMapError(x =>
+Result.Error(1).flatMapError(x =>
   x > 2 ? Result.Error('some error') : Result.Ok(2),
 ) //?
 Result.Ok('ok').flatMapError(x =>
@@ -123,7 +124,7 @@ if (resultErr.isError()) {
 }
 
 /// toOption()
-// converts Result type to Option (note that option does not have a fromResult(), but it has a  toResult() function)
+// converts Result type to Option
 Result.Ok(2).toOption() //?
 Result.Error('error').toOption() //?
 
@@ -178,7 +179,7 @@ Result.all([Result.Ok(1), Result.Ok(2), Result.Ok(3)]) //?
 Result.all([Result.Ok(1), Result.Error('error'), Result.Ok(3)]) //?
 
 /// allFromDict(options)
-// dict of results to one result
+// object of results to one result
 Result.allFromDict({a: Result.Ok(1), b: Result.Ok(2), c: Result.Ok(3)}) //?
 Result.allFromDict({
   a: Result.Ok(1),
@@ -202,7 +203,7 @@ const promise2 = (val: number) =>
   new Promise(
     (resolve, reject) => (
       setTimeout(() => resolve(`Resolved: ${val}`), val * 10),
-      setTimeout(() => reject(`Rejected: ${val}`), val * 2) // change to 9 to see the difference
+      setTimeout(() => reject(`Rejected: ${val}`), val * 11) // change to 9 to see the difference
     ),
   )
 

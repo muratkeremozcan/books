@@ -32,13 +32,13 @@ Option.fromUndefined(undefined) //?
 const option = Option.fromNullable<number>(null) // toggle between null and 5
 
 // returns the value if present or the fallback otherwise
-option.getWithDefault(0) //?
+option.getWithDefault(7) //?
 
 // or with match
 option.match({
   Some: value => value,
   None: () => 0,
-})
+}) //?
 
 //// Data Manipulation
 // KEY: map and flatMap functions allow you to transform data in a typesafe way
@@ -167,7 +167,7 @@ Option.all([Option.Some(1), Option.Some(2), Option.Some(3)]) //?
 Option.all([Option.None(), Option.Some(2), Option.Some(3)]) //?
 
 /// allFromDict(options)
-// dict of options to one option
+// object of options to one option
 Option.allFromDict({a: Option.Some(1), b: Option.Some(2), c: Option.Some(3)}) //?
 Option.allFromDict({a: Option.None(), b: Option.Some(2), c: Option.Some(3)}) //?
 
