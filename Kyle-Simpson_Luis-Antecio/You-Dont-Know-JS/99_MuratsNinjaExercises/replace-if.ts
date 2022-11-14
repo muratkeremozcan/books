@@ -3,6 +3,11 @@ import {ifElse, when, unless, cond, always, equals, multiply} from 'ramda'
 
 const PageSpinner = 'PageSpinner'
 const ErrorComp = 'ErrorComp'
+const MainComp = 'MainComp'
+
+// render main component
+// const Status = 'done'
+// const isUpdating = false
 
 // triggerPageSpinner
 const Status = 'loading'
@@ -24,6 +29,8 @@ function comp() {
   if (postError || isUpdateError) {
     return ErrorComp
   }
+
+  return MainComp
 }
 comp() //?
 
@@ -31,6 +38,7 @@ comp() //?
 const compSwanR = cond([
   [() => Status === 'loading' || isUpdating, always(PageSpinner)],
   [() => postError || isUpdateError, always(ErrorComp)],
+  [always(true), always(MainComp)],
 ])
 
 compSwanR() //?
@@ -48,7 +56,7 @@ const compSwanS = ifElse(
 )
 compSwanS() //?
 
-//// ramda when
+// ramda when
 const compSwanRWhen = when(
   () => Status === 'loading' || isUpdating,
   always(PageSpinner),
@@ -62,7 +70,7 @@ const compSwanUnless = unless(
 )
 compSwanUnless(null) //?
 
-/// rewrite using swan-io Result monad
+// rewrite using swan-io Result monad
 const renderResult = (c: any) => (c ? Result.Ok(c) : Result.Error(c))
 
 renderResult(Status === 'loading' || isUpdating) //?

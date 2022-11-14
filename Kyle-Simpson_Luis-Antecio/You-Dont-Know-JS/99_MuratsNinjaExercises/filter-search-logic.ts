@@ -1,3 +1,5 @@
+import {indexOf, filter, find, curry, toLower, pipe, values} from 'ramda'
+
 const heroes = [
   {
     id: 'HeroAslaug',
@@ -37,26 +39,31 @@ interface Hero {
   description: string
 }
 
+Object.values(heroes[4]).find(
+  (property: HeroProperty) => property === 'Ragnar Lothbrok',
+)
+
+find((property: HeroProperty) => property === 'Ragnar Lothbrok')(
+  values(heroes[4]),
+) //?
+
 type HeroProperty = Hero['name'] | Hero['description'] | Hero['id']
 
-{
-  /** returns a boolean whether the hero properties exist in the search field */
-  const searchExists = (searchField: string, searchProperty: HeroProperty) =>
-    String(searchProperty).toLowerCase().indexOf(searchField.toLowerCase()) !==
-    -1
+/** returns a boolean whether the hero properties exist in the search field */
+const searchExistsC = (searchField: string, searchProperty: HeroProperty) =>
+  String(searchProperty).toLowerCase().indexOf(searchField.toLowerCase()) !== -1
 
-  const searchProperties = (data: Hero[], searchField: string) =>
-    [...data].filter((item: Hero) =>
-      Object.values(item).find((property: HeroProperty) =>
-        searchExists(searchField, property),
-      ),
-    )
+const propertyExistsC = (searchField: string, item: Hero) =>
+  Object.values(item).find((property: HeroProperty) =>
+    searchExistsC(searchField, property),
+  )
 
-  searchProperties(heroes, textToSearch) //?
-}
+const searchPropertiesC = (data: Hero[], searchField: string) =>
+  [...data].filter((item: Hero) => propertyExistsC(searchField, item))
+
+searchPropertiesC(heroes, textToSearch) //?
 
 // rewrite in ramda
-import {indexOf, filter, find, curry, toLower, pipe, values} from 'ramda'
 
 const searchExists = (searchField: string, searchProperty: HeroProperty) =>
   indexOf(toLower(searchField), toLower(searchProperty)) !== -1
@@ -75,23 +82,15 @@ const propertyExistsNew = curry((searchField: string, item: Hero) =>
 )
 
 // refactor in better ramda
-{
-  const searchProperties = (searchField: string) =>
-    pipe(filter((item: Hero) => propertyExists(searchField, item)))
+const searchProperties = (searchField: string, data: Hero[]) =>
+  filter((item: Hero) => propertyExists(searchField, item), [...data])
 
-  searchProperties(textToSearch)(heroes) //?
-}
+const searchPropertiesBetter = (searchField: string, data: Hero[]) =>
+  filter((item: Hero) => propertyExistsNew(searchField, item))(data)
 
-{
-  const searchProperties = (searchField: string, data: Hero[]) =>
-    filter((item: Hero) => propertyExists(searchField, item), [...data])
+const searchPropertiesBest = (searchField: string) =>
+  filter(propertyExistsNew(searchField))
 
-  searchProperties(textToSearch, heroes) //?
-}
-
-{
-  const searchProperties = (searchField: string, data: Hero[]) =>
-    pipe(filter((item: Hero) => propertyExists(searchField, item)))(data)
-
-  searchProperties(textToSearch, heroes) //?
-}
+searchProperties(textToSearch, heroes) //?
+searchPropertiesBetter(textToSearch, heroes) //?
+searchPropertiesBest(textToSearch)(heroes) //?
