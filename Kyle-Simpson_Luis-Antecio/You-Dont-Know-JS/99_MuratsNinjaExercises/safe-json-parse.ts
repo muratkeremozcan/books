@@ -24,5 +24,5 @@ safeJSONParse('hola') //?
 safeJSONParseBoxed(data) //?
 safeJSONParseBoxed('hola') //?
 
-safeJSONParseBoxed(data) === safeJSONParse(data) //?
-safeJSONParseBoxed('hola') === safeJSONParse('hola') //?
+safeJSONParseBoxed(data) === safeJSONParse(data) // true
+safeJSONParseBoxed('hola') === safeJSONParse('hola') // true
