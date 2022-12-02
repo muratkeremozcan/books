@@ -11,7 +11,7 @@ greeting('Joe') //?
 const bye = () => 'Bye'
 
 // () => cb() isJust cb
-// these tow are the same, try toggling
+// these rows are the same, try toggling
 // const goodBye = () => bye()
 const goodBye = bye
 
