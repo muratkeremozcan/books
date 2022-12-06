@@ -5,47 +5,6 @@ import data from './notificationData.json'
 // assume the data is coming in from the network as JSON
 const notificationDataJSON = JSON.stringify(data)
 
-// both Just and Nothing return an object with a map method, hence they are functors
-// we have reduce to get our value out of the Just wrapper at the end
-
-const OK = val => ({
-  map: f => OK(f(val)),
-  reduce: (f, x0) => f(x0, val),
-  peekErr: () => OK(val),
-})
-
-const Err = e => {
-  const err = {
-    map: _ => err,
-    reduce: (_, x0) => x0,
-    peekErr: f => {
-      f(x)
-      return err
-    },
-  }
-  return err
-}
-
-const parseJSON = dataFromServer => {
-  try {
-    return OK(JSON.parse(dataFromServer)).reduce((_, x) => x, undefined)
-  } catch (e) {
-    return Err(e)
-  }
-}
-// try-catch version
-// const parseJSON = dataFromServer => {
-//   try {
-//     const parsed = JSON.parse(dataFromServer)
-//     return parsed
-//   } catch (_) {
-//     return undefined
-//   }
-// }
-
-// get the value out
-const notificationData = parseJSON(notificationDataJSON)
-
 const getSet = (getKey, setKey, transform) => obj => ({
   ...obj,
   [setKey]: transform(obj[getKey]),
@@ -108,6 +67,19 @@ const scan = (f, x0) => scannable => scannable.scan(f, x0)
 const peekErr = f => result => result.peekErr(f)
 const fallbackValue = 'something went wrong'
 
+// re-write parseJSON with Task
+const parseJSON = dataFromServer =>
+  Task((resolve, reject) => {
+    try {
+      const parsed = JSON.parse(dataFromServer)
+      resolve(parsed)
+    } catch (e) {
+      reject(e)
+    }
+  })
+
+const notificationData = parseJSON(notificationDataJSON)
+
 const taskForTemplateData = pipe(
   notificationData,
   map(addReadableDate),
@@ -115,7 +87,13 @@ const taskForTemplateData = pipe(
   map(buildLinkToSender),
   map(buildLinkToSource),
   map(addIcon),
-  // trouble after here
-  // peekErr(console.warn),
-  // scan((_, val) => val, fallbackValue),
+  peekErr(console.warn),
+  scan((_, val) => val, fallbackValue),
 )
+
+// where did renderNotifications come from?
+
+// taskForTemplateData.run(
+//   renderNotifications,
+//   handleError
+// );
