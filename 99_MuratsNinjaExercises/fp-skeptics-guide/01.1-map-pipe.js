@@ -63,14 +63,6 @@ const dataForTemplateR = R.pipe(
 )(notificationData)
 R.equals(dataForTemplateR, dataForTemplate) //?
 
-////// use functors
-// terminology:
-// Container : a type that wraps a value
-// Functor : Container + has map
-// Pointed Functor : Functor + has of
-// Monad : Pointed Functor + has flatten
-// all Boxed types are Monads
-
 const map = f => functor => functor.map(f)
 /** The pipe function uses the spread operator to turn all but the first argument into an array.
  * Then it passes that first argument to the first function. And the result of that to the next function. And so on. */
