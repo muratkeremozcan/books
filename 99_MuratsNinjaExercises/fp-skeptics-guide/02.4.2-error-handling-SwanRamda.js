@@ -1,7 +1,7 @@
 // from https://cs.github.com/iq-mschmeets/js-pqyskd/blob/bb0fe315b7ef24e4044157b880deb7df4646d31d/Utils.js
 
 import R from 'ramda'
-import {Result} from '@swan-io/boxed'
+import {Result, AsyncData} from '@swan-io/boxed'
 import data from './notificationData.json'
 // assume the data is coming in from the network as JSON
 const notificationDataJSON = JSON.stringify(data)
@@ -54,6 +54,21 @@ const dataForTemplateR = R.pipe(
   R.map(buildLinkToSender),
   R.map(buildLinkToSource),
   R.map(addIcon),
-)(notificationData)
+)
 
-dataForTemplateR //?
+dataForTemplateR(notificationData) //?
+
+// async version
+// note that there is no toResult(), you can convert to Option first then to Result
+const parseJSONAsync = dataFromServer =>
+  AsyncData.Done(dataFromServer)
+    .toOption()
+    .toResult()
+    .match({
+      Ok: dataFromServer => JSON.parse(dataFromServer),
+      Error: e => `${e}: error`,
+    })
+
+const notificationDataAsync = parseJSONAsync(notificationDataJSON) //?
+
+dataForTemplateR(notificationDataAsync) //?
