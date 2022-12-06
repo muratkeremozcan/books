@@ -1,6 +1,48 @@
 import R from 'ramda'
-import notificationData from './notificationData.json'
-// const notificationData = require('./notificationData.json')
+import data from './notificationData.json'
+// assume the data is coming in from the network as JSON
+const notificationDataJSON = JSON.stringify(data)
+
+// both Just and Nothing return an object with a map method, hence they are functors
+// we have reduce to get our value out of the Just wrapper at the end
+
+const OK = val => ({
+  map: f => OK(f(val)),
+  reduce: (f, x0) => f(x0, val),
+  peekErr: () => OK(val),
+})
+
+const Err = e => {
+  const err = {
+    map: _ => err,
+    reduce: (_, x0) => x0,
+    peekErr: f => {
+      f(x)
+      return err
+    },
+  }
+  return err
+}
+
+const parseJSON = dataFromServer => {
+  try {
+    return OK(JSON.parse(dataFromServer)).reduce((_, x) => x, undefined)
+  } catch (e) {
+    return Err(e)
+  }
+}
+// try-catch version
+// const parseJSON = dataFromServer => {
+//   try {
+//     const parsed = JSON.parse(dataFromServer)
+//     return parsed
+//   } catch (_) {
+//     return undefined
+//   }
+// }
+
+// get the value out
+const notificationData = parseJSON(notificationDataJSON)
 
 const getSet = (getKey, setKey, transform) => obj => ({
   ...obj,
@@ -36,7 +78,6 @@ const addIcon = getSet(
   sourceType => `${urlPrefix}${sourceType}${iconSuffix}`,
 )
 
-/////
 // use variable assignments (basic)
 const withDates = notificationData.map(addReadableDate)
 const sanitized = withDates.map(sanitizeMessage)
@@ -64,23 +105,22 @@ const dataForTemplateR = R.pipe(
 R.equals(dataForTemplateR, dataForTemplate) //?
 
 // use functors
-// terminology:
-// Container : a type that wraps a value
-// Functor : Container + has map
-// Pointed Functor : Functor + has of
-// Monad : Pointed Functor + has flatten
-
 const map = f => functor => functor.map(f)
-/** The pipe function uses the spread operator to turn all but the first argument into an array.
- * Then it passes that first argument to the first function. And the result of that to the next function. And so on. */
 const pipe = (x0, ...fns) => fns.reduce((x, f) => f(x), x0)
+const reduce = (f, x0) => foldable => foldable.reduce(f, x0)
+// having trouble after this
+const peekErr = f => result => result.peekErr(f)
+const fallbackValue = 'something went wrong'
 
-const dataFoTemplateF = pipe(
+const dataForTemplateF = pipe(
   notificationData,
   map(addReadableDate),
   map(sanitizeMessage),
   map(buildLinkToSender),
   map(buildLinkToSource),
   map(addIcon),
+  // peekErr(console.warn),
+  // reduce((_, val) => val, fallbackValue),
 )
-R.equals(dataFoTemplateF, dataForTemplate) //?
+
+R.equals(dataForTemplateF, dataForTemplate) //?
