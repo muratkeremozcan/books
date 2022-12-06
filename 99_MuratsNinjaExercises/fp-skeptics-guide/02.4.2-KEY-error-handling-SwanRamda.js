@@ -48,7 +48,7 @@ const parseJSON = dataFromServer =>
 
 const notificationData = parseJSON(notificationDataJSON) //?
 
-const dataForTemplateR = R.pipe(
+const dataForTemplate = R.pipe(
   R.map(addReadableDate),
   R.map(sanitizeMessage),
   R.map(buildLinkToSender),
@@ -56,7 +56,7 @@ const dataForTemplateR = R.pipe(
   R.map(addIcon),
 )
 
-dataForTemplateR(notificationData) //?
+dataForTemplate(notificationData) //?
 
 // async version
 // note that there is no toResult(), you can convert to Option first then to Result
@@ -71,4 +71,4 @@ const parseJSONAsync = dataFromServer =>
 
 const notificationDataAsync = parseJSONAsync(notificationDataJSON) //?
 
-dataForTemplateR(notificationDataAsync) //?
+dataForTemplate(notificationDataAsync) //?
