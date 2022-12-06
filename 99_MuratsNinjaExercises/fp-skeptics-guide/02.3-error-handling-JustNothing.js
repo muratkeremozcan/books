@@ -119,6 +119,7 @@ const dataForTemplateF = pipe(
   map(buildLinkToSender),
   map(buildLinkToSource),
   map(addIcon),
+  // trouble after here
   // peekErr(console.warn),
   // reduce((_, val) => val, fallbackValue),
 )
