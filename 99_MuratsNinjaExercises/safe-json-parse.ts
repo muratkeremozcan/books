@@ -3,6 +3,9 @@ import {Option} from '@swan-io/boxed'
 
 data //?
 
+// the data gets auto converted to an array... If you stringify it above, Boxed will throw a an error with 'hola' arg
+// meaning, you still need try catch...
+
 function safeJSONParse(body: string | object) {
   try {
     return JSON.parse(body as string)

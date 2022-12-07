@@ -16,7 +16,7 @@ const parseJSON = dataFromServer => {
 const notificationData = parseJSON(notificationDataJSON)
 
 // PROBLEM 1: each of the fns needs to get littered with error handling
-// PROBLEM 2: we have to pass the notificationData as arg to all functions but buildLinkToSource (it had it before already)
+// PROBLEM 2: we have to pass the notificationData as arg to all functions but buildLinkToSource (that one had the arg before)
 
 const getSet = (getKey, setKey, transform) => obj => ({
   ...obj,

@@ -122,6 +122,28 @@ const dataForTemplateF = pipe(
   // trouble after here
   // peekErr(console.warn),
   // reduce((_, val) => val, fallbackValue),
-)
+) /*?.*/
 
 R.equals(dataForTemplateF, dataForTemplate) //?
+
+// law of composition
+// compose(map(f), map(g)) === map(compose(f, g))
+// a.map(f).map(g) == a.map(x => g(f(x)))
+
+// second version will be more efficient.
+// The first version will produce at least five intermediate arrays as it passes data through the pipe.
+// The second version does it all in one pass.
+// test it with Quokka /*?.*/
+
+const dataForTemplate2 = map(x =>
+  pipe(
+    x,
+    addReadableDate,
+    sanitizeMessage,
+    buildLinkToSender,
+    buildLinkToSource,
+    addIcon,
+  ),
+)(notificationData) /*?.*/
+
+R.equals(dataForTemplate2, dataForTemplateF) //?

@@ -78,7 +78,7 @@ const parseJSON = dataFromServer =>
     }
   })
 
-const notificationData = parseJSON(notificationDataJSON)
+const notificationData = parseJSON(notificationDataJSON) //?
 
 const taskForTemplateData = pipe(
   notificationData,
@@ -87,9 +87,10 @@ const taskForTemplateData = pipe(
   map(buildLinkToSender),
   map(buildLinkToSource),
   map(addIcon),
-  peekErr(console.warn),
-  scan((_, val) => val, fallbackValue),
+  // peekErr(console.warn),
+  // scan((_, val) => val, fallbackValue),
 )
+// taskForTemplateData.run(console.log, console.warn)
 
 // where did renderNotifications come from?
 
