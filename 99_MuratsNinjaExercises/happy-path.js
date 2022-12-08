@@ -59,5 +59,6 @@ const Either = require('data.either')
     asTask(processBuffer), // Task(Either(Number))
   )
 
+  // test.split is not a function...
   processFile('./text.txt') //?
 }
