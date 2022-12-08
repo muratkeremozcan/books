@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha kyle/**/*.test.js"
+    "test": "mocha kyle/**/*.test.js",
+    "start:api": "json-server --watch db.json --port 4000 --delay 1000"
   },
   "author": "",
   "license": "ISC",
@@ -13,13 +14,15 @@
     "@swan-io/boxed": "^0.12.0",
     "@types/ramda": "^0.28.18",
     "@types/sinon": "^10.0.13",
-    "axios": "^1.1.2",
+    "axios": "^1.2.1",
     "chai": "^4.3.6",
     "chai-as-promised": "^7.1.1",
+    "concurrently": "^7.6.0",
     "dayjs": "^1.11.6",
     "folktale": "^2.3.2",
     "immutable": "^4.1.0",
     "istanbul": "^0.4.5",
+    "json-server": "^0.17.1",
     "memoizee": "^0.4.15",
     "moment": "^2.29.4",
     "node-fetch": "^3.2.10",

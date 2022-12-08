@@ -1,6 +1,7 @@
 import R from 'ramda'
 import {Result, AsyncData, Serializer} from '@swan-io/boxed'
 import data from './notificationData.json'
+import axios from 'axios'
 
 // Assume the data is coming in from the network as JSON.
 const notificationDataJSON = JSON.stringify(data)
@@ -49,7 +50,10 @@ const addIcon = getSet(
   (sourceType: string) => `${urlPrefix}${sourceType}${iconSuffix}`,
 )
 
-// sync data
+////// Sync data
+
+// KEY: we use monads so that if there is an error, it flows through the pipeline
+// this way we do not have to litter the above functions with if else statements
 
 const parseJSON = (dataFromServer: string | Error) => {
   try {
@@ -60,10 +64,11 @@ const parseJSON = (dataFromServer: string | Error) => {
 }
 
 // error works
-parseJSON(new Error('I am error')) //?
+const erroneousData = parseJSON(new Error('I am error')) //?
 // parse works
 const notificationData = parseJSON(notificationDataJSON) //?
 
+// we can get the data through the pipe, and ramda is performant (measure performance with quokka /*?.*/)
 const dataForTemplate = R.pipe(
   R.map(addReadableDate),
   R.map(sanitizeMessage),
@@ -75,6 +80,9 @@ const dataForTemplate = R.pipe(
 dataForTemplate(notificationData) //?
 
 // AsyncData
+// to simulate truly async data, we use json server
+// at repo root run the script: yarn start:api
+// at your browser, try the url: http://localhost:4000/notificationData
 
 const parseJSONAsync = (dataFromServer: string | Error) => {
   try {
@@ -93,5 +101,21 @@ const parseJSONAsync = (dataFromServer: string | Error) => {
 
 parseJSONAsync(new Error('I am error')) //?
 
-const notificationDataAsync = parseJSONAsync(notificationDataJSON) //?
-dataForTemplate(notificationDataAsync) //?
+const getAsyncData = axios({
+  method: 'GET',
+  baseURL: 'http://localhost:4000/notificationData',
+})
+  .then(res => {
+    // try using the non async version, parseJSON, it won't work
+    const notificationDataAsync = parseJSONAsync(res.data) //?
+    return dataForTemplate(notificationDataAsync) //?
+
+    // note: you can also try replacing res.data with new Error('I am error')
+    // note: you can stringify the data again, and that works too:  const responseData = JSON.stringify(res.data), and use it in the next line
+  })
+  .catch(err => {
+    throw Error(`There was a problem fetching data: ${err}`)
+  })
+
+// works
+getAsyncData //?

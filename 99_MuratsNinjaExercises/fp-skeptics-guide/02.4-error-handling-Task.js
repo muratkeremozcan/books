@@ -65,7 +65,15 @@ const map = f => functor => functor.map(f)
 const pipe = (x0, ...funcs) => funcs.reduce((x, f) => f(x), x0)
 const scan = (f, x0) => scannable => scannable.scan(f, x0)
 const peekErr = f => result => result.peekErr(f)
-const fallbackValue = 'something went wrong'
+const reduce = (f, x0) => foldable => foldable.reduce(f, x0)
+const curriedReduce = reducerFn => x0 => mx => mx.reduce(reducerFn, x0)
+const fallbackOnEmpty = fallbackVal => mx => mx.reduce((_, x) => x, fallbackVal)
+const flow =
+  (...fns) =>
+  x0 =>
+    fns.reduce((f, x) => f(x), x0)
+const fallback = 'something went wrong'
+const secondArg = (_, val) => val
 
 // re-write parseJSON with Task
 const parseJSON = dataFromServer =>
@@ -88,7 +96,7 @@ const taskForTemplateData = pipe(
   map(buildLinkToSource),
   map(addIcon),
   // peekErr(console.warn),
-  // scan((_, val) => val, fallbackValue),
+  // scan((_, val) => val, fallback),
 )
 // taskForTemplateData.run(console.log, console.warn)
 
@@ -98,3 +106,27 @@ const taskForTemplateData = pipe(
 //   renderNotifications,
 //   handleError
 // );
+
+const processNotifications = flow(
+  map(addReadableDate),
+  map(sanitizeMessage),
+  map(buildLinkToSender),
+  map(buildLinkToSource),
+  map(addIcon),
+  reduce((_, val) => val, fallback),
+)
+
+// f is not a function
+// processNotifications(fallback)(notifications)//?
+
+const processNotificationsA = rawNotifications =>
+  rawNotifications
+    .map(addReadableDate)
+    .map(sanitizeMessage)
+    .map(buildLinkToSender)
+    .map(buildLinkToSource)
+    .map(addIcon)
+    .reduce((_, val) => val, fallback)
+
+// not working
+// processNotificationsA(notificationDataJSON) //?
