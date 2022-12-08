@@ -117,5 +117,6 @@ const getAsyncData = axios({
     throw Error(`There was a problem fetching data: ${err}`)
   })
 
-// works
+// YOU MUST START THE API to get a good response
+// and turn it off to simulate error
 getAsyncData //?
