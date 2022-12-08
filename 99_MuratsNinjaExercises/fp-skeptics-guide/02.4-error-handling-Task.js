@@ -98,9 +98,7 @@ const taskForTemplateData = pipe(
   // peekErr(console.warn),
   // scan((_, val) => val, fallback),
 )
-// taskForTemplateData.run(console.log, console.warn)
-
-// where did renderNotifications come from?
+// how can we see the above work?
 
 // taskForTemplateData.run(
 //   renderNotifications,
@@ -116,7 +114,7 @@ const processNotifications = flow(
   reduce((_, val) => val, fallback),
 )
 
-// f is not a function
+// error: f is not a function
 // processNotifications(fallback)(notifications)//?
 
 const processNotificationsA = rawNotifications =>
