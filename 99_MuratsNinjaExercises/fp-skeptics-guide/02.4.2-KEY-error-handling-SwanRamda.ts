@@ -2,6 +2,7 @@ import R from 'ramda'
 import {Result, AsyncData, Serializer} from '@swan-io/boxed'
 import data from './notificationData.json'
 import axios from 'axios'
+import {Either, tryCatch} from 'fp-ts/Either'
 
 // Assume the data is coming in from the network as JSON.
 const notificationDataJSON = JSON.stringify(data)
@@ -120,3 +121,13 @@ const getAsyncData = axios({
 // YOU MUST START THE API to get a good response
 // and turn it off to simulate error
 getAsyncData //?
+
+////// fp-ts
+
+const parseJSONFpTs = (s: string): Either<Error, unknown> =>
+  tryCatch(
+    () => JSON.parse(s),
+    reason => new Error(String(reason)),
+  )
+
+const notificationDataFpTs = parseJSONFpTs(notificationDataJSON) //?
