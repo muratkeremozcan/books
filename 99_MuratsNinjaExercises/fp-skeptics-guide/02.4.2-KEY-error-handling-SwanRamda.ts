@@ -3,26 +3,35 @@ import {Result, AsyncData, Serializer} from '@swan-io/boxed'
 import data from './notificationData.json'
 import axios from 'axios'
 import {Either, tryCatch} from 'fp-ts/Either'
+// import JSON data as type
+import type notification from './notificationData.json'
+type Notification = typeof notification[number] // how do we use it on L15?
 
 // Assume the data is coming in from the network as JSON.
 const notificationDataJSON = JSON.stringify(data)
 
 // TypeScript equivalent of getSet
 const getSet =
-  (getKey: string, setKey: string, transform: Function) => (obj: any) => ({
+  (getKey: string, setKey: string, transform: Function) =>
+  (obj: Notification) => ({
     ...obj,
-    [setKey]: transform(obj[getKey]),
+    [setKey]: transform(obj[getKey as keyof Notification]),
   })
 
 /** Generate a readable date */
-const addReadableDate = getSet('date', 'readableDate', (t: string) =>
-  // @ts-ignore
-  new Date(t * 1000).toGMTString(),
+const addReadableDate = getSet(
+  'date',
+  'readableDate',
+  (t: Notification['date']) =>
+    // @ts-ignore
+    new Date(t * 1000).toGMTString(),
 )
 
 /**  Sanitize the message to prevent cross-site scripting (XSS) attacks */
-const sanitizeMessage = getSet('message', 'message', (msg: string) =>
-  msg.replace(/</g, '&lt;'),
+const sanitizeMessage = getSet(
+  'message',
+  'message',
+  (msg: Notification['message']) => msg.replace(/</g, '&lt;'),
 )
 
 /**  Build a link to the sender’s profile page */
@@ -33,10 +42,7 @@ const buildLinkToSender = getSet(
 )
 
 /**  Build a link to the source of the notification */
-const buildLinkToSource = (notification: {
-  sourceType: string
-  sourceId: string
-}) => ({
+const buildLinkToSource = (notification: Notification) => ({
   ...notification,
   source: `https://example.com/${notification.sourceType}/${notification.sourceId}`,
 })
