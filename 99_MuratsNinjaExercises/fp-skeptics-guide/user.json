@@ -1,0 +1,12 @@
+{
+  "email": "james@example.com",
+  "accountDetails": {
+    "address": {
+      "street": "123 Fake St",
+      "city": "Exampleville",
+      "province": "NS",
+      "postcode": "1234"
+    }
+  },
+  "preferences": {}
+}
