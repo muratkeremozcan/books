@@ -46,8 +46,6 @@ function getUserBanner(user) {
 }
 getUserBanner(user) //?
 
-//////// couldn't find a swan equivalent after this point, look into fp-ts
-
 Maybe.prototype.orElse = function (dflt) {
   if (this.isNothing()) {
     return Maybe.of(dflt)

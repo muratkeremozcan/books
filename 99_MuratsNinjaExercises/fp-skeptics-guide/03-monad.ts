@@ -1,19 +1,18 @@
 import user from './user.json'
 import banners from './banners.json'
-import {prop, path, pipe, __, identity} from 'ramda'
+import {prop, path, pipe, __, curry} from 'ramda'
 import {Option} from '@swan-io/boxed'
 
 prop(__, banners)
 type User = typeof user
 type Banners = typeof banners
 
-const getUserBanner = (banners: Banners, user: User) =>
+const getUserBanner = (user: User, banners: Banners) =>
   banners[user.accountDetails.address.province as keyof Banners]
-
-getUserBanner(banners, user) //?
+getUserBanner(user, banners) //?
 
 // what if user is {} or null? We need error checking
-const getUserBannerErrCheck = (banners: Banners, user: User) => {
+const getUserBannerErrCheck = (user: User, banners: Banners) => {
   if (
     user != null &&
     user.accountDetails != null &&
@@ -22,7 +21,7 @@ const getUserBannerErrCheck = (banners: Banners, user: User) => {
     return banners[user.accountDetails.address.province as keyof Banners]
   }
 }
-getUserBannerErrCheck(banners, user) //?
+getUserBannerErrCheck(user, banners) //?
 
 /////
 // with ramda
@@ -36,23 +35,27 @@ getUserBannerR(user) //?
 // A Promise lets us write code without worrying about whether data is asynchronous or not.
 // The Maybe (Option in swan) monad lets us write code without worrying whether data is empty or not.
 // There are no if-statements below because we don’t need to check every possible little thing that might be missing.
-//  If a value is missing, the next step just isn’t executed.
+//  If a value is missing, we get a default value instead
 
-const getUserBannerS = (banners: Banners, user: User) =>
+const getUserBannerS = (user: User, banners: Banners) =>
   Option.fromNullable(user)
     .map(path(['accountDetails', 'address', 'province']))
     .flatMap(prop(__, banners))
+getUserBannerS(user, banners) //?
 
-getUserBannerS(banners, user) //?
+// the equivalent of orElse is getWithDefault (bannerSrc)
+// swan applies ap automatically
+const getProvinceBanner = curry((province: keyof Banners, banners) =>
+  Option.fromNullable(banners[province]).getWithDefault(
+    '/assets/banners/default-banner.jpg',
+  ),
+)
+getProvinceBanner('NT', banners) //?
 
-const getProvinceBanner = (province: keyof Banners) =>
-  Option.fromNullable(banners[province]).flatMap(
-    identity as (value: string) => Option<unknown>,
-  )
-getProvinceBanner('NT') //?
-
-const getUserBannerS2 = (user: User) =>
+const getUserBannerS2 = (user: User, banners: Banners) =>
   Option.fromNullable(user)
     .map(path(['accountDetails', 'address', 'province']))
-    .flatMap(getProvinceBanner as (value: unknown) => Option<unknown>)
-getUserBannerS2(user) //?
+    .flatMap(getProvinceBanner(__, banners))
+getUserBannerS2(user, banners) //?
+// @ts-ignore : if we have a bad value, we get the default
+getUserBannerS2('err', banners) //?
