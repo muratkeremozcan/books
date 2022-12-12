@@ -1,6 +1,6 @@
 import user from './user.json'
 import banners from './banners.json'
-import {prop, path, pipe, __, identity, curry} from 'ramda'
+import {liftN, prop, path, pipe, __, identity, curry} from 'ramda'
 import {Option} from '@swan-io/boxed'
 
 const Maybe = function (val) {
@@ -79,4 +79,6 @@ const liftA2 = curry(function (fn, m1, m2) {
 })
 
 const applyBannerMaybe = liftA2(applyBanner)
+const applyBannerMaybeR = liftN(2, applyBanner)
 const mutatedBanner = applyBannerMaybe(bannerEl, bannerSrc) //?
+applyBannerMaybeR(bannerEl, bannerSrc) //?

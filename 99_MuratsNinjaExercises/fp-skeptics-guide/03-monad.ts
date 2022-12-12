@@ -1,6 +1,18 @@
 import user from './user.json'
 import banners from './banners.json'
-import {prop, path, pipe, __, curry} from 'ramda'
+import {
+  lift,
+  tap,
+  map,
+  chain,
+  liftN,
+  sum,
+  prop,
+  path,
+  pipe,
+  __,
+  curry,
+} from 'ramda'
 import {Option} from '@swan-io/boxed'
 
 prop(__, banners)
@@ -59,3 +71,20 @@ const getUserBannerS2 = (user: User, banners: Banners) =>
 getUserBannerS2(user, banners) //?
 // @ts-ignore : if we have a bad value, we get the default
 getUserBannerS2('err', banners) //?
+
+////// lift
+
+const applyBanner = curry(function (el, banner) {
+  el.src = banner
+  return el
+})
+const bannerEl = Option.Some('.banner > img')
+
+// needs work
+const customizeBanner = pipe(
+  // @ts-ignore
+  Option.fromNullable,
+  map(path(['accountDetails', 'address', 'province'])),
+  lift(applyBanner(bannerEl)),
+)
+customizeBanner(user) //?
