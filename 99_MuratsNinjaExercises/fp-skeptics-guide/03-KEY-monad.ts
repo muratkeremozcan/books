@@ -55,7 +55,7 @@ const getUserBannerS = (user: User, banners: Banners) =>
     .flatMap(prop(__, banners))
 getUserBannerS(user, banners) //?
 
-// the equivalent of orElse is getWithDefault (bannerSrc)
+// the equivalent of orElse is getWithDefault in Swan
 // swan applies ap automatically
 const getProvinceBanner = curry((province: keyof Banners, banners) =>
   Option.fromNullable(banners[province]).getWithDefault(
@@ -63,14 +63,16 @@ const getProvinceBanner = curry((province: keyof Banners, banners) =>
   ),
 )
 getProvinceBanner('NT', banners) //?
+// @ts-expect-error demoing bad value and getWithDefault in Swan
+getProvinceBanner('TR', banners) //?
 
 const getUserBannerS2 = (user: User, banners: Banners) =>
   Option.fromNullable(user)
     .map(path(['accountDetails', 'address', 'province']))
     .flatMap(getProvinceBanner(__, banners))
 getUserBannerS2(user, banners) //?
-// @ts-ignore : if we have a bad value, we get the default
-getUserBannerS2('err', banners) //?
+// @ts-expect-error demoing bad value and getWithDefault in Swan
+getUserBannerS2('TR', banners) //?
 
 ////// lift
 

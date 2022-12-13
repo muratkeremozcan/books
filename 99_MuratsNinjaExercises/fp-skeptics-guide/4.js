@@ -98,7 +98,7 @@ const incDoubleCube = pipe(increment, double, cube)
 const eight2 = Effect(fZero).map(incDoubleCube)
 eight2.runEffects() //?
 
-//// instead if just a function as Effect's argument, we can have any value
+//// instead of just a function as Effect's argument, we can have any value
 // of :: a -> Effect a
 Effect.of = function of(val) {
   return Effect(() => val)

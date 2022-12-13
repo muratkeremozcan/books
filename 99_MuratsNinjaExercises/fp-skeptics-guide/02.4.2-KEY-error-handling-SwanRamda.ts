@@ -5,7 +5,7 @@ import axios from 'axios'
 import {Either, tryCatch} from 'fp-ts/Either'
 // import JSON data as type
 import type notification from './notificationData.json'
-type Notification = typeof notification[number] // how do we use it on L15?
+type Notification = typeof notification[number]
 
 // Assume the data is coming in from the network as JSON.
 const notificationDataJSON = JSON.stringify(data)
@@ -22,9 +22,7 @@ const getSet =
 const addReadableDate = getSet(
   'date',
   'readableDate',
-  (t: Notification['date']) =>
-    // @ts-ignore
-    new Date(t * 1000).toGMTString(),
+  (t: Notification['date']) => new Date(t * 1000).toString(),
 )
 
 /**  Sanitize the message to prevent cross-site scripting (XSS) attacks */
@@ -49,7 +47,6 @@ const buildLinkToSource = (notification: Notification) => ({
 
 const urlPrefix = 'https://example.com/assets/icons/'
 const iconSuffix = '-small.svg'
-
 // Tell the template what icon to display, based on the source type.
 const addIcon = getSet(
   'sourceType',
@@ -83,7 +80,6 @@ const dataForTemplate = R.pipe(
   R.map(buildLinkToSource),
   R.map(addIcon),
 ) /*?.*/
-
 dataForTemplate(notificationData) //?
 
 // AsyncData
@@ -105,7 +101,6 @@ const parseJSONAsync = (dataFromServer: string | Error) => {
       .flatMapError(_ => Result.Error(e)).value
   }
 }
-
 parseJSONAsync(new Error('I am error')) //?
 
 const getAsyncData = axios({
