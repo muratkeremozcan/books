@@ -21,14 +21,15 @@ const castFromBool = bool as unknown as number //?
 const assertFromStr = <number>(<unknown>str) //?
 const assertFromBool = <number>(<unknown>bool) //?
 
-/////////
-interface ICast1 {
-  m1: string
+
+/**
+ * @see https://jira.foo/123
+ */
+function outputMessage(message: string) {
+  if (typeof message === 'string') {
+    console.log(message)
+  } else {
+    let invalid = message
+    console.error(invalid)
+  }
 }
-interface ICast2 {
-  m1: string
-  m2: string
-}
-let icast1: ICast1 = {m1: 'm1'}
-let icast2: ICast2 = {m1: 'm1', m2: 'm2'}
-let icast3: ICast1 = icast2
