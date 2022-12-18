@@ -8,6 +8,9 @@ type Person = {
   address: string
 }
 
+//// Partial :  take the same properties as T, but all of them are optional.
+//// Readonly : you can't modify the properties of the original type
+
 type PersonPartial = Partial<Person>
 type ReadonlyPerson = Readonly<Person>
 
@@ -45,7 +48,8 @@ interface Feline extends Animal {
   runningSpeed: number
 }
 
-// and sometimes you need to create a dynamic type, that's when you need Pick
+///////// Pick
+// sometimes you need to create a dynamic type, that's when you need Pick
 type WildCat = Pick<Feline, 'age' | 'name' | 'runningSpeed'>
 
 function buyACheetah(cheetah: WildCat) {
@@ -68,8 +72,8 @@ buyACat({
 
 ////////// Record
 // Record is a generic type that takes two types as parameters <key, value>
-// used to create a type that maps keys to values.
-// Useful when getting data from an API, and you need to map it to a type
+// K representing property names in the resulting type,
+// T representing the type of values of these properties.
 
 function receiveInput(dataIn: Record<keyof Feline, string>): Feline {
   return {
@@ -81,7 +85,7 @@ function receiveInput(dataIn: Record<keyof Feline, string>): Feline {
     gender: dataIn.gender,
   }
 }
-// suppose we get some JSON, it's all strings, but we want a Feline at the end
+// suppose we get some JSON, it's all string values, but we want the types of a Feline at the end
 const dataIn = {
   age: '1',
   name: 'Cat',
@@ -114,13 +118,19 @@ const human: Human = {age: 10, consciousness: true, gender: 'female'}
 howOld(human) //?
 howOld(animal) //?
 
-///// Exclude : how is it different than Omit? Omit specifies properties to leave out, Exclude gets rid of the non-common properties
-type SomeThingsName = Exclude<keyof Animal, keyof Human> // only name is common
+///// Exclude : how is it different than Omit? Omit specifies properties to leave out,
+// Takes a type T, and removes the members that are assignable to U.
+type Conscious = Exclude<keyof Human, keyof Animal> // only consciousness is not assignable to Animal
 
-function whatName(what: Record<SomeThingsName, string | boolean>) {
-  return what.name
+function isConscious(what: Record<Conscious, string | boolean>) {
+  return what.consciousness
 }
-whatName(animal) //?
+isConscious(human) //?
+
+/// other examples
+type MyExclude<T, U> = T extends U ? never : T
+type AB = Exclude<'A' | 'B' | 'C', 'C'> // 'A' | 'B'
+type SomeNumbers = MyExclude<'A' | 'B' | 1 | 2, string> // 1 | 2
 
 ////// ReturnType : makes it easy to reference the return type of a function
 
@@ -148,34 +158,8 @@ type functionType2 = ReturnType<typeof asyncFunction> // Promise<number>
 type ReturnTypeFromPromise<T> = T extends Promise<infer U> ? U : T // conditional type
 type functionType3 = ReturnTypeFromPromise<functionType2> // number
 
-///////// custom types
-// NonNullable
-// if it extends null or undefined, should never happen, otherwise return the type
-type NonNullValue<T> = T extends null | undefined ? never : T
+////// Parameters : makes it easy to reference the parameters of a function
 
-function print<T>(p: NonNullValue<T>): void {
-  console.log(p)
-}
-
-print('Test') // Compile
-// print(null); // Does not compile
-
-/// Adding a property conditionally
-interface Persona {
-  name: string
-  dateCreated: Date
-}
-interface Animala {
-  name: string
-}
-
-// if dateCreated exists in the type, add a new property modifiedDate
-type Modified<T> = T extends {dateCreated: Date}
-  ? T & {modifiedDate: Date}
-  : never
-
-const pp: Persona = {name: 'Pat', dateCreated: new Date()}
-const aa: Animala = {name: 'Jack'}
-
-const persona: Modified<Persona> = {...pp, modifiedDate: new Date()}
-// const animala: Modified<Animala> = {...aa, modifiedDate: new Date()} // error
+const sayHello = (name: string, age: number) =>
+  `Hello ${name}, your age is ${age}`
+type SayHelloParams = Parameters<typeof sayHello> // [string, number]
