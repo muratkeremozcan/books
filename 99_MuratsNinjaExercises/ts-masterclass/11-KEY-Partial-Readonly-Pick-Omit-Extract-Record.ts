@@ -1,15 +1,12 @@
 ////// Mapped Types
-// With Partial you can have less of the properties of the original type
-// With Readonly you can't modify the properties of the original type
+//// Partial :  take the same properties as T, but all of them are optional.
+//// Readonly : you can't modify the properties of the original type
 
 type Person = {
   name: string
   age: number
   address: string
 }
-
-//// Partial :  take the same properties as T, but all of them are optional.
-//// Readonly : you can't modify the properties of the original type
 
 type PersonPartial = Partial<Person>
 type ReadonlyPerson = Readonly<Person>

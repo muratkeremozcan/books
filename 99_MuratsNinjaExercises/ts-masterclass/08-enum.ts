@@ -25,7 +25,7 @@ MyEnum2.ChoiceD //?
 
 /////// bitwise enum
 // enum is a good candidate for bitwise operations since the value can be explicitly set
-// You can use the bit shift operator
+// You can use the bit shift operator (<<) to set the value of an enum.
 // Once defined, you can use it as any variable to determine if it contains the one you need
 // or use the ampersand (&) to check if the one you want is present.
 // The pipe symbol (|) lets you add many enum choices to a variable.
@@ -72,7 +72,7 @@ enum Orientation {
 // Access with the Enum
 Orientation.East //?
 // Access the Enum string from number
-Orientation[0] //?
+Orientation[2] //?
 // not possible with an enum that has strings for value
 // Orientation['s'] // error
 // Orientation[3] // undefined

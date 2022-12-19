@@ -3,21 +3,20 @@ import * as R from 'ramda'
 ///// Generics
 
 // before
-/*
-	function map(items, mappingFunction) {
-  const results = []
-  for (let item of items) {
-    results.push(mappingFunction(item))
+{
+  function map(items, mappingFunction) {
+    const results = []
+    for (let item of items) {
+      results.push(mappingFunction(item))
+    }
+    return results
   }
-  return results
+
+  const persons = [{name: 'John'}, {name: 'Alice'}]
+  console.log(map(persons, person => person.name))
 }
 
-const persons = [{name: 'John'}, {name: 'Alice'}]
-console.log(map(persons, person => person.name))
-*/
-
 /// Generic types (relations between parameter types and return type)
-// T[] still means that it is an array of anything.
 // lets us establish relationships between types of function parameters and the return type
 
 {
@@ -36,17 +35,17 @@ console.log(map(persons, person => person.name))
   map(persons, person => person.name) //?
 }
 
-/// Exercise: at types to the function below
-/*
-function zip(array1, array2) {
-  const length = Math.min(array1.length, array2.length)
-  const result = []
-  for (let i = 0; i < length; i++) {
-    result.push([array1[i], array2[i]])
+/// Exercise: add types to the function below
+{
+  function zip(array1, array2) {
+    const length = Math.min(array1.length, array2.length)
+    const result = []
+    for (let i = 0; i < length; i++) {
+      result.push([array1[i], array2[i]])
+    }
+    return result
   }
-  return result
 }
-*/
 function zip<T, K>(array1: T[], array2: K[]) {
   const length = Math.min(array1.length, array2.length)
   const result = []
