@@ -86,3 +86,11 @@
     }
   }
 }
+
+{
+  function asNumber(val: number | string): number {
+    // return val as number
+    // better way
+    return typeof val === 'string' ? Number(val) : val
+  }
+}

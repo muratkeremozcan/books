@@ -117,6 +117,7 @@ howOld(animal) //?
 
 ///// Exclude : how is it different than Omit? Omit specifies properties to leave out,
 // Exclude takes a type T, and removes the members that are assignable to U.
+
 type Conscious = Exclude<keyof Human, keyof Animal> // only consciousness is not assignable to Animal
 
 function isConscious(what: Record<Conscious, string | boolean>) {
