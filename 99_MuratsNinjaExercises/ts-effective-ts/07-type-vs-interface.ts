@@ -1,4 +1,5 @@
 // do not use I or T prefix in the real world, it came from C# and Java, it's bad style today
+// here the prefixes are used to easily differentiate between type and interface
 
 // A type is, in general, more capable than an interface.
 // It can be a union, and it can also take advantage of more advanced features like mapped or conditional types.
@@ -34,6 +35,21 @@
     second: T
   }
 
+  // they can extend themselves
+  interface IPerson {
+    firstName: string
+    lastName: string
+  }
+  interface IPersonWithBirthDate extends Person {
+    birth: Date
+  }
+
+  type TPerson = {
+    firstName: string
+    lastName: string
+  }
+  type TPersonWithBirthDate = Person & {birth: Date}
+
   // they can extend each other
   interface IStateWithPop extends TState {
     population: number
@@ -64,7 +80,7 @@
   interface VariableMap {
     [name: string]: Input | Output
   }
-  // if you wanted a type that attaches the name to the variable, you can use types but not interfaces
+  // if you want to add some additional properties to a union type, you have to use type (cannot use interface and extend).
   type NamedVariable = (Input | Output) & {name: string}
 
   // expressing tuples is easier with types
@@ -78,9 +94,12 @@
     length: 2
   }
   const t: Tuple = [10, 20] // OK
+
+  // discriminated unions are only possible with types
+  // check out ts-masterclass/09-KEY-discriminated-union.ts
 }
 
-// KEY: the single advantage of interfaces over types is augmentation, aka declaration merging
+// the single advantage of interfaces over types is augmentation, aka declaration merging
 {
   interface IState {
     name: string

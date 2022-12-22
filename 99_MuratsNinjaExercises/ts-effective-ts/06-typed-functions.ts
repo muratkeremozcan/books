@@ -35,3 +35,23 @@ const rollDice3: DiceRollFn = (sides: number): number => {
     return response
   }
 }
+
+{
+  interface Options {}
+
+  function get(url: string, opts: Options): Promise<Response> {
+    /* COMPRESS */ return Promise.resolve(new Response()) /* END */
+  }
+  function post(url: string, opts: Options): Promise<Response> {
+    /* COMPRESS */ return Promise.resolve(new Response()) /* END */
+  }
+
+  type HTTPFunction = (url: string, options: Options) => Promise<Response>
+
+  const get2: HTTPFunction = (url, options) => {
+    return Promise.resolve(new Response())
+  }
+  const post2: HTTPFunction = (url, options) => {
+    return Promise.resolve(new Response())
+  }
+}
