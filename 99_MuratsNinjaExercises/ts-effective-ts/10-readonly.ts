@@ -6,7 +6,7 @@
 // If your function does not modify its parameters then declare them readonly.
 /// This makes its contract clearer and prevents inadvertent mutations in its implementation.
 // Use readonly to prevent errors with mutation and to find the places in your code where mutations occur.
-// for deep readonly, check out DeepReadonly generic in ts-essentials
+// For deep readonly, check out DeepReadonly generic in ts-essentials
 
 {
   const a: number[] = [1, 2, 3]

@@ -3,13 +3,13 @@ type DiceRollFn = (sides: number) => number
 
 function rollDice1(sides: number): number {
   return 0
-} // Statement
+} // function statement
 const rollDice2: DiceRollFn = function (sides: number): number {
   return 0
-} // Expression
+} // function expression
 const rollDice3: DiceRollFn = (sides: number): number => {
   return 0
-} // Also expression
+} // Also function expression
 
 // typing this entire function expression is more concise and has better safety
 {
@@ -40,12 +40,13 @@ const rollDice3: DiceRollFn = (sides: number): number => {
   interface Options {}
 
   function get(url: string, opts: Options): Promise<Response> {
-    /* COMPRESS */ return Promise.resolve(new Response()) /* END */
+    return Promise.resolve(new Response())
   }
   function post(url: string, opts: Options): Promise<Response> {
-    /* COMPRESS */ return Promise.resolve(new Response()) /* END */
+    return Promise.resolve(new Response())
   }
 
+  // better to type the entire function
   type HTTPFunction = (url: string, options: Options) => Promise<Response>
 
   const get2: HTTPFunction = (url, options) => {

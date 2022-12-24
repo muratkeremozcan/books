@@ -12,6 +12,7 @@
   "dependencies": {
     "@mostly-adequate/support": "^2.0.1",
     "@swan-io/boxed": "^0.12.0",
+    "@types/express": "^4.17.15",
     "@types/ramda": "^0.28.18",
     "@types/sinon": "^10.0.13",
     "axios": "^1.2.1",
@@ -21,6 +22,7 @@
     "data.either": "^1.5.2",
     "data.task": "^3.1.2",
     "dayjs": "^1.11.6",
+    "express": "^4.18.2",
     "folktale": "^2.3.2",
     "immutable": "^4.1.0",
     "istanbul": "^0.4.5",

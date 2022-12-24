@@ -90,7 +90,7 @@
     }
   }
 
-  // meta: use Partial
+  // meta: use Partial (makes everything optional)
   class UIWidget3 {
     constructor(init: Options) {
       /*... */

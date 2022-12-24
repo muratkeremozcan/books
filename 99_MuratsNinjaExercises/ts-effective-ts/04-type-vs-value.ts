@@ -5,7 +5,7 @@
 // Some constructs such as class or enum introduce both a type and a value.
 
 {
-  interface Cylinder {
+  interface ICylinder {
     radius: number
     height: number
   }
@@ -13,21 +13,20 @@
   // symbols after a type or interface are in type space
   // symbols in a const or let declaration are values
 
-  const Cylinder = (radius: number, height: number) => ({radius, height})
+  const VCylinder = (radius: number, height: number) => ({radius, height})
 
   function calculateVolume(shape: unknown) {
-    if (shape instanceof Cylinder) {
+    if (shape instanceof VCylinder) {
       shape.radius
       // ~~~~~~ Property 'radius' does not exist on type '{}'
     }
   }
 
   // the interface/type
-  function calculateVolume2(shape: Cylinder) {
+  function calculateVolume2(shape: ICylinder) {
     // the value
-    if (shape instanceof Cylinder) {
+    if (shape instanceof VCylinder) {
       shape.radius
-      // ~~~~~~ Property 'radius' does not exist on type '{}'
     }
   }
 }

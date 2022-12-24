@@ -3,6 +3,7 @@
 
 // A type is, in general, more capable than an interface.
 // It can be a union, and it can also take advantage of more advanced features like mapped or conditional types.
+// the single advantage of interfaces over types is augmentation, aka declaration merging
 
 // type and interface similarities
 {

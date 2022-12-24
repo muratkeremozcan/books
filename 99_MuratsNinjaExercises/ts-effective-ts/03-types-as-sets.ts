@@ -1,6 +1,6 @@
 // think of types as sets, and the extends keyword as "is a subset of"
-// & represents the intersection of two sets
-// | represents the union of two sets
+// & represents the intersection of two sets (I think of this as "add" or "expand")
+// | represents the union of two sets (I think of this as "or")
 
 {
   type AB = 'A' | 'B'
@@ -99,9 +99,7 @@
   type PointKeys = keyof Point // Type is "x" | "y"
 
   function sortBy<T, K extends keyof T>(vals: T[], key: K): T[] {
-    vals.sort((a: T, b: T) =>
-      a[key] === b[key] ? 0 : a[key] < b[key] ? -1 : +1,
-    )
+    vals.sort((a: T, b: T) => (a[key] === b[key] ? 0 : a[key] < b[key] ? -1 : +1))
     return vals
   }
   const pts: Point[] = [
