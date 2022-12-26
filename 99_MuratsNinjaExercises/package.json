@@ -38,7 +38,7 @@
   "devDependencies": {
     "@js-temporal/polyfill": "^0.4.2",
     "@types/jest": "^29.1.2",
-    "@types/lodash": "^4.14.186",
+    "@types/lodash": "^4.14.191",
     "fp-ts": "^2.13.1",
     "jest": "^29.2.0",
     "jsdom": "^20.0.1",
