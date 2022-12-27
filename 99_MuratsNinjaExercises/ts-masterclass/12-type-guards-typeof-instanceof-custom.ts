@@ -58,24 +58,3 @@ fetch('http://example.com')
       throw new Error('This is not an article')
     }
   })
-
-// bonus: Nominal types
-// in TS, you can have 2 interfaces that have the same structure but are not the same type
-// this is called structural typing
-// in other languages that's not ok, all interfaces must be unique in their structure
-// if we want to replicate this behavior in TS, we can use a trick called Branded types
-
-type UserId = string & {__brand: 'UserId'}
-type ArticleId = string & {__brand: 'ArticleId'}
-
-declare const userId: UserId
-
-function getArticle(articleId: ArticleId) {}
-
-// getArticle(userId); // 🔴 Error!
-
-// We can generalize nominal types with a generic type
-type Nominal<T, K extends string> = T & {__brand: K}
-
-type UserId2 = Nominal<string, 'UserId'>
-type ArticleId2 = Nominal<string, 'ArticleId'>
