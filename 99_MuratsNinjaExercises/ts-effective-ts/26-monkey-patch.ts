@@ -40,3 +40,5 @@ interface MonkeyDocument extends Document {
 }
 
 ;(document as MonkeyDocument).monkey = 'Macaque'
+
+// npx type-coverage
