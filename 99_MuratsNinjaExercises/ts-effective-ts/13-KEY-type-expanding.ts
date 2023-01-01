@@ -27,7 +27,7 @@
   function getComponent(vector: Vector3, axis: 'x' | 'y' | 'z') {
     return vector[axis]
   }
-  const x = 'x'
+  const x = 'x' // just use const, why would you use let?
   let vec = {x: 10, y: 20, z: 30}
   getComponent(vec, x)
 }

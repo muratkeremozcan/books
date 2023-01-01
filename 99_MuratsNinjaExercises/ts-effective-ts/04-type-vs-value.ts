@@ -1,7 +1,5 @@
 // Every value has a type, but types do not have values.
-
 // Constructs such as type and interface exist only in the type space.
-
 // Some constructs such as class or enum introduce both a type and a value.
 
 {
@@ -17,6 +15,7 @@
 
   function calculateVolume(shape: unknown) {
     if (shape instanceof VCylinder) {
+      shape // type is {}
       shape.radius
       // ~~~~~~ Property 'radius' does not exist on type '{}'
     }
@@ -26,6 +25,7 @@
   function calculateVolume2(shape: ICylinder) {
     // the value
     if (shape instanceof VCylinder) {
+      shape // type is ICylinder
       shape.radius
     }
   }

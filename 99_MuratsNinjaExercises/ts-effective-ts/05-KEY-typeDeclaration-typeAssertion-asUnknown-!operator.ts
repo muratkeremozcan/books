@@ -7,6 +7,7 @@
   interface Person {
     name: string
   }
+  // type declaration
   const alice: Person = {
     name: 'Alice',
     occupation: 'TypeScript developer',
@@ -14,7 +15,7 @@
     //           and 'occupation' does not exist in type 'Person'
   }
 
-  // not recommended
+  // type assertion (not recommended in this case)
   const bob = {
     name: 'Bob',
     occupation: 'JavaScript developer',

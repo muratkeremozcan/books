@@ -41,7 +41,7 @@ type ArticleId2 = Nominal<string, 'ArticleId'>
     y: number
   }
   // we can also use nominal types, but that can't be an interface
-  type TVector2D = Nominal<{x: number; y: number}, 'Vector2D'>
+  type TVector2D = Nominal<{x: number; y: number}, '2d'>
 
   function vec2D(x: number, y: number): Vector2D {
     return {x, y, _brand: '2d'}

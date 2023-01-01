@@ -22,12 +22,18 @@
     recentFiles: string[]
   }
   // can remove some duplication by indexing
+  interface ITopNavState2 {
+    userId: State['userId']
+    pageTitle: State['pageTitle']
+    recentFiles: State['recentFiles']
+  }
+  // can remove some duplication by indexing
   type TTopNavState = {
     userId: State['userId']
     pageTitle: State['pageTitle']
     recentFiles: State['recentFiles']
   }
-  // can remove more duplication with mapped type
+  // can remove more duplication with mapped type (only available with types)
   type TTopNavState2 = {
     [k in 'userId' | 'pageTitle' | 'recentFiles']: State[k]
   }

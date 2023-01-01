@@ -5,6 +5,7 @@ const el = document.getElementById('status')
 el.textContent = 'Ready'
 // ~~ Object is possibly 'null'
 
+// KEY: to fix this, we need to conditionally access the property
 if (el) {
   el.textContent = 'Ready' // OK, null has been excluded
 }

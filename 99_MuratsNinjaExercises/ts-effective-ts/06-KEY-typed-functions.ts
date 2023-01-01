@@ -1,16 +1,23 @@
+// Consider applying type annotations to entire function expressions, rather than to their parameters and return type.
+// If you’re writing the same type signature repeatedly, factor out a function type or look for an existing one.
+// Use typeof fn to match the signature of another function.
+
 // with function expressions we can apply a type declaration to the function at once
 type DiceRollFn = (sides: number) => number
 
+// function statement
 function rollDice1(sides: number): number {
   return 0
-} // function statement
+}
+// function expression
 const rollDice2: DiceRollFn = function (sides: number): number {
   return 0
-} // function expression
+}
+// Also function expression
 const rollDice3: DiceRollFn = (sides: number): number => {
   return 0
-} // Also function expression
-
+}
+/*  */
 // typing this entire function expression is more concise and has better safety
 {
   async function checkedFetch(input: RequestInfo, init?: RequestInit) {
@@ -20,10 +27,8 @@ const rollDice3: DiceRollFn = (sides: number): number => {
     }
     return response
   }
-}
 
-{
-  const checkedFetch: typeof fetch = async (input, init) => {
+  const checkedFetch2: typeof fetch = async (input, init) => {
     //  ~~~~~~~~~~~~   Type 'Promise<Response | HTTPError>'
     //                     is not assignable to type 'Promise<Response>'
     //                   Type 'Response | HTTPError' is not assignable
@@ -31,6 +36,8 @@ const rollDice3: DiceRollFn = (sides: number): number => {
     const response = await fetch(input, init)
     if (!response.ok) {
       return new Error('Request failed: ' + response.status)
+      // should be throw new Error! TS catches the mistake
+      // throw new Error('Request failed: ' + response.status)
     }
     return response
   }

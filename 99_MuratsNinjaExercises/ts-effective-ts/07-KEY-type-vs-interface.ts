@@ -56,6 +56,7 @@
     population: number
   }
   type TStateWithPop = IState & {population: number}
+  // although I admit that & can get verbose vs interface's extends keyword
 
   // classes can implement either
   class StateT implements TState {
@@ -101,6 +102,7 @@
 }
 
 // the single advantage of interfaces over types is augmentation, aka declaration merging
+// I'd also say extends keyword is less verbose than  & {a very large object literal}
 {
   interface IState {
     name: string
