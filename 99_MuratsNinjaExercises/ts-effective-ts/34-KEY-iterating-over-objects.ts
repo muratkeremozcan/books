@@ -24,8 +24,7 @@ import _ from 'lodash'
   }
 }
 
-// you can use Object.entries to convert an object to an array of key-value pairs
-// either way, you have to use as keyof typeof obj to get the type of the keys of an object
+// you have to use as keyof typeof obj to get the type of the keys of an object
 {
   interface ABC {
     a: string
@@ -48,6 +47,7 @@ import _ from 'lodash'
   foo({a: 'a', b: 'b', c: 1})
 }
 
+// you can use Object.entries to convert an object to an array of key-value pairs
 {
   interface ABC {
     a: string

@@ -17,7 +17,7 @@
   ;(diary as any).secret //?
 }
 
-// // a newer alternative is to use # to mark private fields, can't be cheated
+//  a newer alternative is to use # to mark private fields, can't be cheated
 {
   class Diary {
     #secret = 'cheated on my English test'
@@ -32,7 +32,7 @@
   ;(diary as any).secret //?
 }
 
-// a newer alternative is to use # to mark private fields
+// another example of # to mark private fields
 {
   declare function hash(text: string): number
   class PasswordChecker {

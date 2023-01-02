@@ -1,7 +1,6 @@
 // Make your uses of any as narrowly scoped as possible to avoid undesired loss of type safety elsewhere in your code.
 // Never return an any type from a function. This will silently lead to the loss of type safety for any client calling the function.
-
-// you can force TypeScript to accept the error in 3 ways
+// you can force TypeScript to accept the error in 3 ways: //  : any, @ts-ignore, as any
 
 // suppose you have an assignment error
 interface Foo {

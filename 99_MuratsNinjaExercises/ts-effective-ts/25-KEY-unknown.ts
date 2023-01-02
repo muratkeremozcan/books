@@ -45,6 +45,7 @@
   alert(book2.title)
   book2('read')
 
+  /////////
   // use instanceof type check with unknown
   // A type assertion isn’t the only way to recover a type from an unknown object. An instanceof check will do:
   function processValue(val: unknown) {

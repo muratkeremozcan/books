@@ -10,7 +10,7 @@ ageEl.value = '12' // OK
 
 // add jsdoc comments to functions to get type checking
 // to specify the type of the parameters and the return type, use { }
-// remember, no need to do this with TS, only with JS using JSDocfor type checking
+// remember, no need to do this with TS, only with JS using JSDoc for type checking
 {
   /**
    * Gets the size (in pixels) of an element.
