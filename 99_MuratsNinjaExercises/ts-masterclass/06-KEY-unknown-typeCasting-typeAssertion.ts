@@ -16,10 +16,10 @@ variable2 = 1
 // with unknown, we can only access properties by type casting or using a type assertion.
 let variable3: unknown
 variable3 = 'It is a string'
-let variable3String = variable3 as string // type casting
+let variable3String = variable3 as string // type assertion
 console.log(variable3String.substr(0, 2))
 
-// access properties with type assertion
+// type casting
 let variable4: unknown
 variable4 = 'It is a string'
 let variable4String = (<string>variable4).substr(0, 2)
