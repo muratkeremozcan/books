@@ -11,7 +11,7 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "react-scripts": "1.0.17",
+    "react-scripts": "5.0.1",
     "redux-devtools-extension": "^2.13.2"
   },
   "scripts": {
