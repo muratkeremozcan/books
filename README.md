@@ -3,6 +3,7 @@
 When starting, I did not get the privilege of deciding which resource would be the best to learn first. Usually I would start a book and realize I do not know the foundational information needed to understand it. For example, you should really know Functional Programming before trying to understand RxJs.
 
 For a new learner, I would recommend a better approach.
+
 **You have not worked with Cypress and want to get oriented:**
 
 Go through these resources for quick onboarding:
