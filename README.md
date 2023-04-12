@@ -43,7 +43,7 @@ Pick any book, optionally more depending how deep you want to go.
 
 ## 4. Learn testing
 
-- [[[Test Methodologies]]](https://helloextend.atlassian.net/wiki/spaces/ENG/pages/1264189502 "/wiki/spaces/ENG/pages/1264189502")
+- [Test Methodologies](https://dev.to/muratkeremozcan/mostly-incomplete-list-of-test-methodologies-52no)
 - Understand and start applying best practices we strive for:
 
   - [UI testing best practices](https://github.com/NoriSte/ui-testing-best-practices "https://github.com/NoriSte/ui-testing-best-practices")

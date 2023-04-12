@@ -1,5 +1,4 @@
 import * as jwt from 'jsonwebtoken'
-import {v4 as uuid} from 'uuid'
 import {faker} from '@faker-js/faker/locale/en'
 
 const defaults = {
@@ -15,11 +14,13 @@ const defaults = {
 }
 // const {user} = Cypress._.merge(defaults, {})
 
+faker.internet.exampleEmail() //?
+
 jwt.sign(
   {
     // ...user,
     // jti: uuid(),
-  },
+  } /*  */,
   'secret',
   // {
   // algorithm: 'RS256',
@@ -28,3 +29,16 @@ jwt.sign(
   //   subject: sub,
   // },
 )
+
+faker.internet.userName() //?
+
+const dotRegex = /[.]/g
+const plusRegex = /[+]/g
+const dashRegex = /[-]/g
+const underScoreRegex = /[_]/g
+
+const unformatUrlEmail = (email: string): string => {
+  return email.replace(dashRegex, '.').replace(underScoreRegex, '+')
+}
+
+unformatUrlEmail('merchanttest@test.com') //?
