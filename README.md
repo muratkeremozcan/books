@@ -41,8 +41,6 @@ Pick any book, optionally more depending how deep you want to go.
 
 ## 3. After that, you can tackle the front-end or the back-end path. The order depends on your immediate needs.
 
-You can utilize [Info & Resources in Engineering Onboarding](https://helloextend.atlassian.net/wiki/spaces/ENG/pages/1115816012/Info+Resources "https://helloextend.atlassian.net/wiki/spaces/ENG/pages/1115816012/Info+Resources") or follow [Murat’s recommended reading](https://github.com/muratkeremozcan/books "https://github.com/muratkeremozcan/books").
-
 ## 4. Learn testing
 
 - [[[Test Methodologies]]](https://helloextend.atlassian.net/wiki/spaces/ENG/pages/1264189502 "/wiki/spaces/ENG/pages/1264189502")
