@@ -125,4 +125,4 @@ The difference below is half the time.
 
 vs
 
-![image-20230414064526731](/Users/murat/Library/Application Support/typora-user-images/image-20230414064526731.png)
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nicx4bosev128k2w3n3r.png)
