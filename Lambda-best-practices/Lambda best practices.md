@@ -165,7 +165,7 @@ For SQS, the lambda concurrency is determined by the number of pollers the lambd
 
 Compared to SNS and EventBridge, with SQS the concurrency of the worker lambda function will go up more gradually.
 
-With Kinesis, where you have 1 execution for every shard, so the concurrency goes up in discrete steps.
+With Kinesis, we have 1 execution for every shard, so the concurrency goes up in discrete steps.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dmavd52cuzcfljb08wix.png)
 
@@ -234,3 +234,22 @@ Click [here](https://lumigo.io/blog/the-why-when-and-how-of-api-gateway-service-
 Click [here](https://github.com/horike37/serverless-apigateway-service-proxy) for the serverless-apigateway-service-proxy plugin for the Serverless framework.
 
 Click [here](https://github.com/ToQoz/api-gateway-mapping-template) for the api-gateway-mapping-template project.
+
+### Load testing
+
+Commonly perceived performance standard for web apps:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dusvoujiec2gowwb13aq.png)
+
+When load testing, ensure to have a gradual increase because we may run into lambda throttling. Instead of unrealistic sharp spikes, simulate a gradual increase.
+
+Test realistic user journeys, not individual functions. Otherwise all you are testing is AWS. Don't forget to load test the asynchronous parts of the system.
+
+Click [here](https://docs.aws.amazon.com/lambda/latest/dg/scaling.html) for the official AWS documentation on Lambda's scaling behavior.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ypjneayqnjcq7q23g8zz.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9qdl4w7loazdkv485mgq.png)
+
+## Security
+
