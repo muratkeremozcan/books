@@ -253,3 +253,48 @@ Click [here](https://docs.aws.amazon.com/lambda/latest/dg/scaling.html) for the 
 
 ## Security
 
+### Principle of least privilege
+
+Avoid *.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n1zci924pyvulh7ouha5.png)
+
+Click [here](https://iam.cloudonaut.io/) for the Complete AWS IAM Reference.
+
+Click [here](https://www.npmjs.com/package/serverless-iam-roles-per-function) for the serverless-iam-roles-per-function plugin on NPM.
+
+### Secret management
+
+Storing secrets: SSM Parameter Store vs Secrets Manager
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fvnwa5fnh8vjrw99tad6.png)
+
+Click [here](https://aws.amazon.com/secrets-manager/pricing) for Secrets Manager pricing.
+
+Click [here](https://aws.amazon.com/systems-manager/pricing/#Parameter_Store) for SSM Parameter Store pricing.
+
+Click [here](https://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_limits.html) for Secrets Manager limits.
+
+Click [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-throughput.html) for SSM Parameter Store's user guide on throughput tiers.
+
+**Distribution of secrets:** secrets should never be in plain text in env variables
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2axsk5ht29nlgharqqet.png)
+
+Instead fetch at cold start, cache & invalidate every x minutes 
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/j53f24wdl0fnfcgs0fbd.png)
+
+Middy has a middleware that helps with that
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6459l8xue1k3mnxdtj6e.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jyw82ifnd1rkarw44o3h.png)
+
+### API Gateway
+
+The max requests per second for a default API gateway is set to 10k, which is also the default for the region. If an attacker attacks 1 api, therefore they can take out the entire region by reaching the limit. So limit the maxRequestsPerSecond.
+
+Click [here](https://github.com/DianaIonita/serverless-api-gateway-throttling) for the serverless-api-gateway-throttling plugin.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i1guf7cwoaoxwxreicgs.png)
