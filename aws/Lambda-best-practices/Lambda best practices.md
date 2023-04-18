@@ -298,3 +298,51 @@ The max requests per second for a default API gateway is set to 10k, which is al
 Click [here](https://github.com/DianaIonita/serverless-api-gateway-throttling) for the serverless-api-gateway-throttling plugin.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i1guf7cwoaoxwxreicgs.png)
+
+## Resilience
+
+### Multi-region, active-active
+
+API example; Route 53, API Gateway, Lambda, DDB:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gdr63ml9a093xsn7sox2.png)
+
+Data processing pipeline example with [static availability zones](https://lumigo.io/blog/amazon-builders-library-in-focus-5-static-stability-using-availability-zones/) :
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fhdx3aivd965w6ht6vr3.png)
+
+### Handling partial failures
+
+With Kinesis -> Lambda, things retry until success. Make sure to take advantage of configurable fields here, so things do not get stuck retrying.
+
+Click [here](https://lumigo.io/blog/amazon-builders-library-in-focus-4-avoiding-insurmountable-queue-backlogs) for my summary of the Amazon Builders' Library article on avoiding insurmountable queue backlogs.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/atw5dm1u6kboh5rfcs2f.png)
+
+With SQS -> Lambda, the problem comes up when the lambda errors and some of the messages are not deleted successfully.
+
+Click [here](https://lumigo.io/blog/sqs-and-lambda-the-missing-guide-on-failure-modes) for my post on the failure modes of SQS and Lambda.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8iy7px1bhkqrgvuu4189.png)
+
+There are 3 ways to deal with it; 3rd one preferred.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jxlpfz9jvsjwx6dprc3a.png)
+
+### Standardize error handling through middleware / wrappers
+
+Wrap all this inside middleware, share it as a package and share it across the org.
+
+![Screen Shot 2023-04-18 at 7.49.21 AM](/Users/murat/Desktop/Screen Shot 2023-04-18 at 7.49.21 AM.png)
+
+### When to use Lambda Destinations
+
+LD allows to configure a destination / target, so that when an even succeeds the target receives a notification.
+
+Click [here](https://www.trek10.com/blog/lambda-destinations-what-we-learned-the-hard-way) for the Trek10 blog post on Lambda Destinations and some of its caveats.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3hutz57bkuqbl7i33u7e.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1k0zoojnodk1txhwiy6m.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b72oycbjajofswaa5v1p.png)
