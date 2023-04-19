@@ -346,3 +346,54 @@ Click [here](https://www.trek10.com/blog/lambda-destinations-what-we-learned-the
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1k0zoojnodk1txhwiy6m.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b72oycbjajofswaa5v1p.png)
+
+## Observability
+
+### Alerts you can't do without
+
+Use alarms to alert you that something is wrong, not necessarily what is wrong.
+
+**ConcurrentExecutions**: set to 80% of the regional limit.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bpz9fowelkbfzev7aq3g.png)
+
+**IteratorAge**: for lambda functions that process against Kinesis streams, you need an alarm for IteratorAge. Should be in milliseconds usually, but can fall behind.
+
+**DeadLetterErrors**: for functions that are triggered by an async event source (SNS, EventBridge) you should have dead letter queues setup, and have an alarm against DeadLetterErrors, which indicates that lambda has trouble sending error events to DLQ. 
+
+**Throttles**: for business critical functions you need an alarm that will fire as soon as the fn gets throttled. Maybe there's a rouge fn that's consuming the concurrency in the region, and causing business critical fns to get throttled.
+
+**Error count & success rate %**: occurring to your SLA 
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i5jbkjmxgvzhb0atmjsp.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0vkj8by1thojr440r27t.png)
+
+### Logging
+
+Use Lambda's built-in log collection
+
+Use structured logging with JSON. Click [here](https://www.loggly.com/blog/8-handy-tips-consider-logging-json/) for 8 handy tips to consider when logging in JSON.
+
+Traditional loggers are too heavy for Lambda. Click [here](https://github.com/getndazn/dazn-lambda-powertools) for the DAZN Lambda powertools.
+
+It's not easy to query logs in CloudWatch Logs. Many use 3rd party services. But all logging 3rd party logging consumes concurrency limit. You can either limit concurrency the log shipping function (and potentially lose logs due to throttling), or have CloudWatch Logs stream the logs to a Kinesis stream first, then process them via lambda.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hjvjpobr9llkea6c9k9t.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fevp6fs7m7ch1nj7yvhg.png)
+
+Keep in mind that every time you create a new function, a new log group is created. You don't want to manually subscribe the log group to a function or kinesis stream. Instead use the auto-subscribe-log-group-to-arn SAR app [here](http://bit.ly/auto-subscribe-log-group-to-arn) .
+
+### Distributed tracing
+
+Imagine you have a non-trivial system. Something somewhere goes wrong, and it's hard to figure out where. Or you're not reaching your SLA, you need to optimize somewhere. DT helps with these.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q2926l4j9ycadvyhajak.png)
+
+Click [here](https://github.com/theburningmonk/lambda-distributed-tracing-demo) for the demo project.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3gj3s6kp0c3wrdb8rzkn.png)
+
+### Distributed tracing with X-ray
+
