@@ -391,9 +391,21 @@ Imagine you have a non-trivial system. Something somewhere goes wrong, and it's 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q2926l4j9ycadvyhajak.png)
 
-Click [here](https://github.com/theburningmonk/lambda-distributed-tracing-demo) for the demo project.
+Click [here](https://github.com/theburningmonk/lambda-distributed-tracing-demo) for the demo project comparing the 4.
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3gj3s6kp0c3wrdb8rzkn.png)
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lubj5o99hisqt9fcxx8a.png)
 
-### Distributed tracing with X-ray
+### [Lambda powertools](https://github.com/getndazn/dazn-lambda-powertools)
+
+Check out the [demo usage](https://github.com/theburningmonk/lambda-distributed-tracing-demo/tree/master/lambda-powertools/functions).
+
+## Cost
+
+
+
+
+
+
+
+
 
