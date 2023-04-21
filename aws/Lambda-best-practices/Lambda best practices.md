@@ -401,6 +401,176 @@ Check out the [demo usage](https://github.com/theburningmonk/lambda-distributed-
 
 ## Cost
 
+### Tuning function memory
+
+Lambda cost is per request and duration. 
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5ggwikosv8ld41t3jx62.png)
+
+A function that just does IO does not benefit much from memory. These are prime targets for cost reduction by reducing memory consumption.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ydlbgp7036oj8v3nd4wd.png)
+
+A CPU bound function sees significant improvements as memory is added. Use a balanced approach.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hsrgsebi05qn210vn763.png) 
+
+If we combine the above 2 functions, and get a function that  both does IO and is CPU intensive, we get interesting results. 
+We can exploit a cheaper and faster combination. Look out for these free upgrades.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/l789oqzgzlyi28rth02j.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/huo4hkuzeyje2sc60emb.png)
+
+Click [here](https://www.npmjs.com/package/lumigo-cli) for the Lumigo CLI. Install via NPM by running "npm i -g lumigo-cli".
+
+Click [here](https://github.com/alexcasalboni/aws-lambda-power-tuning) for the aws-lambda-power-tuning project.
+
+Click [here](https://www.gigaspaces.com/blog/amazon-found-every-100ms-of-latency-cost-them-1-in-sales/) for the post on how latency affects revenue and conversion rate.
+
+Click [here](https://gist.github.com/theburningmonk/96ef775566d27f6072bc575c44d1d573) for the code for the io-and-cpu-example function.
+
+### Cost monitoring tools
+
+TL, DR; don't optimize prematurely, use data to identify the critical 3%.
+
+Take advantage of cost allocation tags and AWS Cost Management to understand your AWS bill. AWS billing is great for macro-level trends and decisions.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/256mfovc4yjmoeodxr8b.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ho52m2z6ckqlqi1foj2o.png)
+
+Whereas AWS Cost Explorer is great for tracking what we are spending where, CloudZero is a tool that helps find interesting cost trends and anomolies, then figure out contributing factors which could be the team or feature that causes it. Click [here](https://www.cloudzero.com/) to check out CloudZero.
+
+Lumigo CLI has an analyze lambda command that gives a cost outlook of all your functions. Click [here](https://www.npmjs.com/package/lumigo-cli) for the lumigo-cli on NPM. But Lambda is the cheapest cost in any stack, so focusing on lambda alone isn't enough.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xhykg7enhe2oyjhce7es.png)
+
+Lumigo can give a complete outlook to cost. Click [here](https://lumigo.io/) to check out Lumigo.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/axvcph5r09xo6s0v3exg.png)
+
+
+
+### Watch out for costs of peripheral services
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/trh0rf18mkpp726egyz9.png)
+
+Lambda cost is small part of the whole. API gateway is expensive. Prefer to do caching at CloudFront. Click [here](https://theburningmonk.com/2019/10/all-you-need-to-know-about-caching-for-serverless-applications/) for all you need to know about caching for serverless applications. Caching at the edge is very cost-efficient as it cuts out most of the calls to API Gateway and Lambda. Skipping these calls also improve the end-to-end latency and ultimately the user experience. Also, by caching at the edge, you don’t need to modify your application code to enable caching.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gbe3l5jsjli7ose7lstl.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0jbhxz1c3206ubz9j3n4.png)
+
+Click [here](https://aws.amazon.com/api-gateway/pricing/) for API Gateway pricing.
+
+Click [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html) for API Gateway HTTP APIs vs REST APIs.
+
+Click [here](https://aws.amazon.com/step-functions/pricing/) for Step Functions pricing.
+
+### Keeping CloudWatch costs in check
+
+Don't log debug in production. Sample debug logs instead. Sample rate should give you coverage of every scenario, tweak it based on your traffic. (DAZN Lambda Powertools has these settings out of the box. Click [here](https://github.com/getndazn/dazn-lambda-powertools))
+
+By default, CloudWatch logs does not expire your logs, ever. Keeping them forever is costly. To help manage the log retention policy in one central place, deploy this app [here](https://go.aws/2TAQhno); the auto-set-log-group-retention SAR app.
+
+### SNS vs SQS vs EventBridge vs Kinesis
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6juj6pdnk5w4oitlnuet.png)
+
+But, at High throughput, Kinesis is much cost effective (as seen in Scalability section above).
+As a general rule, services that pay by uptime are orders-of-magnitude cheaper when running at scale.
+
+### API gateway service proxies (as a last resort)
+
+As discussed in the Scalability chapter above, you should consider API gateway service proxies for performance and scalability reasons; when you are concerned about cold start overhead or burst limit (and you have already considered Provisioned Concurrency), or when you're running a very spiky workload.
+
+What you lose with service proxies:
+
+* Retry and exponential backoff
+* Contextual logging
+* Error handling
+* fallbacks
+* tracing
+* Chaos tools
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/44hbndx27w5rc4wsm3st.png)
+
+Click [here](https://lumigo.io/blog/the-why-when-and-how-of-api-gateway-service-proxies/) for my blog post on the why, when and how of API Gateway service proxies.
+
+Click [here](https://github.com/horike37/serverless-apigateway-service-proxy) for the serverless-apigateway-service-proxy plugin for Serverless framework.
+
+Click [here](https://aws.amazon.com/elasticloadbalancing/pricing) for ALB pricing.
+
+Click [here](https://aws.amazon.com/api-gateway/pricing) for API Gateway pricing.
+
+### API Gateway: REST API vs HTTP API vs ALB (application load balancer)
+
+Click [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html) for a comparison of API Gateway REST APIs vs HTTP APIs
+
+HTTP API is 70% cheaper and less powerful than REST API.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ccbwtsc7l1fkbf4yswk6.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pzh9q6zua2uym7wvmkw9.png)
+
+### Use Batching to reduce cost
+
+This is often related to the discussion of SNS, SQS and Kinesis, also it is only relevant at scale.
+
+Both Kinesis Data Stream and Kinesis Firehose help by processing messages in large batches. Bigger batches are more efficient but slower. 
+
+Kinesis Data Stream is better bet if you need close-to-real-time batching.
+If you want to maximize savings and don't need close-to-real-time batching, Kinesis Firehose is a better choice. 
+
+Firehose is all managed for you, there's no need to manage the number of shards.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lx6104do3vbc3aqvteq7.png)
+
+Click [here](https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis.html) for the AWS documentation on how Lambda works with Kinesis.
+
+Click [here](https://aws.amazon.com/kinesis/data-firehose/pricing) for Kinesis Firehose pricing.
+
+Click [here](https://docs.aws.amazon.com/firehose/latest/dev/create-configure.html) for Kinesis Firehose configuration options.
+
+Click [here](https://docs.aws.amazon.com/firehose/latest/dev/limits.html) for Kinesis Firehose limits.
+
+### Provisioned Concurrency and Cost
+
+Provisioned concurrency has an uptime cost, but the on demand cost is less. 60% is the break even point.
+
+When there is sustained high throughput, PC can reduce lambda invocation cost.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k9wxhxwxipxvd9atisdw.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
