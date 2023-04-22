@@ -10,7 +10,7 @@ Lambda memory allocation is the only way to control the performance and cost of 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2kym4dcu40nbmjqi2kw3.png)
 
-We do not want to do manual tuning, but take advantage of the below utils. Identify the sweet spot for you needs. It's a cost vs execution time decision.
+We do not want to do manual tuning, but take advantage of the below utilities. Identify the sweet spot for you needs. It's a cost vs execution time decision.
 
 1. [aws-lambda-power-tuning project](https://github.com/alexcasalboni/aws-lambda-power-tuning) - **KEY**
 
@@ -77,9 +77,9 @@ Mind that when provisioned concurrency happens, the init duration does not seem 
 **Difference between Provisioned Concurrency and warm starts**: It's about the instances. Warm start is 1 instance of the lambda, and the rest still cold start. P.C. can be set to scale
 
 From Yan:
-*The actual problem with them is that they don't scale beyond keeping a handful of instances of your functions warm because there's no way to direct an invocation to specific instances (ie. worker) of a function. So if you have a handful of functions and you just need to keep 1 instance of each warm for a low throughput API, then warmers are a good, cheap way to do it compared to using Provisioned Concurrency. But if you need an enterprise-scale solution that can keep 50, 100 instances of your functions warm, and auto-scale the no. of warm instances based on traffic patterns or based on a schedule, and you don't mind (potentially) paying extra for these, then use Provisioned Concurrency. I said potentially paying extra, because Provisioned Concurrency can actually work out cheaper than on-demand concurrency if you have good utilization of the Provisioned Concurrency you have (~60% is the break-even point).*
+*The actual problem with warm starts is that they don't scale beyond keeping a handful of instances of your functions warm because there's no way to direct an invocation to specific instances (ie. worker) of a function. So if you have a handful of functions and you just need to keep 1 instance of each warm for a low throughput API, then warmers are a good, cheap way to do it compared to using Provisioned Concurrency. But if you need an enterprise-scale solution that can keep 50, 100 instances of your functions warm, and auto-scale the no. of warm instances based on traffic patterns or based on a schedule, and you don't mind (potentially) paying extra for these, then use Provisioned Concurrency. I said potentially paying extra, because Provisioned Concurrency can actually work out cheaper than on-demand concurrency if you have good utilization of the Provisioned Concurrency you have (~60% is the break-even point).*
 
-P.C. happens against a version - not sure why they have both alias and version there.
+>  P.C. happens against a version - not sure why they have both alias and version there.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q025m29weskbfzithk44.png)
 
@@ -90,7 +90,7 @@ After invoking the function with Test, things can be verified in Cloudwatch metr
 
 ### When to use Provisioned Concurrency
 
-Let's say you optimized your lambdas (requiring less, webpack...), and cannot optimize. 
+Let's say you optimized your lambdas (requiring less, webpack...), and cannot optimize further. 
 
 Maybe you have so many services and cold starts add up.
 
@@ -140,7 +140,7 @@ vs
 
 Used to improve the throughput of our system. The goal is to keep pace with the number of messages coming in, by increasing the concurrency.
 
-We have a ventilator that splits a large task into smaller tasks and distributes them across a pool of workers.
+In this pattern, we have a ventilator that splits a large task into smaller tasks and distributes them across a pool of workers.
 
 Lambda auto scales the number of executions for the workers. But for the ventilator, we have to decide what do we use as the queue between the function that splits up the large task and the individual workers. We have many choices for that.
 
@@ -216,7 +216,7 @@ In AWS, an API Gateway proxy is a type of integration that allows you to create 
 
 When using the proxy integration, the API Gateway acts as a "passthrough" for the request, meaning that it forwards the entire request and its headers, query parameters, and body to the backend resource. Similarly, it returns the backend's response without any modifications, unless you configure additional processing through middleware or other configurations.
 
-When you are concerned about cold start overhead (and Provisioned concurrency is also considered) , or burst limit, consider API gateway service proxies.
+When you are concerned about cold start overhead (and Provisioned concurrency has already been considered) , or burst limit, consider API gateway service proxies.
 
 What you lose:
 
@@ -303,7 +303,7 @@ Click [here](https://github.com/DianaIonita/serverless-api-gateway-throttling) f
 
 ### Multi-region, active-active
 
-API example; Route 53, API Gateway, Lambda, DDB:
+API example: Route 53, API Gateway, Lambda, DDB:
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gdr63ml9a093xsn7sox2.png)
 
@@ -331,13 +331,17 @@ There are 3 ways to deal with it; 3rd one preferred.
 
 ### Standardize error handling through middleware / wrappers
 
-Wrap all this inside middleware, share it as a package and share it across the org.
+Wrap all this inside middleware, share it as a package and share it across the org:
 
-![Screen Shot 2023-04-18 at 7.49.21 AM](/Users/murat/Desktop/Screen Shot 2023-04-18 at 7.49.21 AM.png)
+* Log error message
+* Classify the error type, can it be retried, etc.
+* Return error code, request ID, etc.
+* Track error count metric by type
+* Implement fallbacks
 
 ### When to use Lambda Destinations
 
-LD allows to configure a destination / target, so that when an even succeeds the target receives a notification.
+Lambda Destinations allows to configure a destination / target, so that when an event succeeds the target receives a notification.
 
 Click [here](https://www.trek10.com/blog/lambda-destinations-what-we-learned-the-hard-way) for the Trek10 blog post on Lambda Destinations and some of its caveats.
 
@@ -363,7 +367,7 @@ Use alarms to alert you that something is wrong, not necessarily what is wrong.
 
 **Throttles**: for business critical functions you need an alarm that will fire as soon as the fn gets throttled. Maybe there's a rouge fn that's consuming the concurrency in the region, and causing business critical fns to get throttled.
 
-**Error count & success rate %**: occurring to your SLA 
+**Error count & success rate %**: according to your SLA 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i5jbkjmxgvzhb0atmjsp.png)
 
@@ -375,9 +379,9 @@ Use Lambda's built-in log collection
 
 Use structured logging with JSON. Click [here](https://www.loggly.com/blog/8-handy-tips-consider-logging-json/) for 8 handy tips to consider when logging in JSON.
 
-Traditional loggers are too heavy for Lambda. Click [here](https://github.com/getndazn/dazn-lambda-powertools) for the DAZN Lambda powertools.
+Traditional loggers are too heavy for Lambda. Take advantage of DAZN Lambda powertools (check it out [here](https://github.com/getndazn/dazn-lambda-powertools)).
 
-It's not easy to query logs in CloudWatch Logs. Many use 3rd party services. But all logging 3rd party logging consumes concurrency limit. You can either limit concurrency the log shipping function (and potentially lose logs due to throttling), or have CloudWatch Logs stream the logs to a Kinesis stream first, then process them via lambda.
+It's not easy to query logs in CloudWatch Logs. Many use 3rd party services. But all logging 3rd party logging consumes concurrency limit. You can either limit concurrency for the log shipping function (and potentially lose logs due to throttling), or have CloudWatch Logs stream the logs to a Kinesis stream first, then process them via lambda.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hjvjpobr9llkea6c9k9t.png)
 
@@ -413,22 +417,43 @@ A function that just does IO does not benefit much from memory. These are prime 
 
 A CPU bound function sees significant improvements as memory is added. Use a balanced approach.
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hsrgsebi05qn210vn763.png) 
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7vd9epu8towei30lt87j.png) 
 
 If we combine the above 2 functions, and get a function that  both does IO and is CPU intensive, we get interesting results. 
 We can exploit a cheaper and faster combination. Look out for these free upgrades.
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/l789oqzgzlyi28rth02j.png)
+```js
+const https = require('https')
+
+exports.handler = ({ n }, context, callback) => {
+  https.get('https://google.com', (res) => {
+    console.log('statusCode:', res.statusCode);
+    
+    let a = 1, b = 0, temp;
+
+    while (n > 0) {
+      temp = a;
+      a = a + b;
+      b = temp;
+      n--;
+    }
+
+    callback(null, b);
+  }).on('error', (e) => {
+    console.error(e);
+  });    
+};
+```
+
+
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/huo4hkuzeyje2sc60emb.png)
 
+Click [here](https://github.com/alexcasalboni/aws-lambda-power-tuning) for the aws-lambda-power-tuning project. Easiest way: deploy at [AWS Applications](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:451282441545:applications~aws-lambda-power-tuning) then execute the state machine per lambda.
+
 Click [here](https://www.npmjs.com/package/lumigo-cli) for the Lumigo CLI. Install via NPM by running "npm i -g lumigo-cli".
 
-Click [here](https://github.com/alexcasalboni/aws-lambda-power-tuning) for the aws-lambda-power-tuning project.
-
 Click [here](https://www.gigaspaces.com/blog/amazon-found-every-100ms-of-latency-cost-them-1-in-sales/) for the post on how latency affects revenue and conversion rate.
-
-Click [here](https://gist.github.com/theburningmonk/96ef775566d27f6072bc575c44d1d573) for the code for the io-and-cpu-example function.
 
 ### Cost monitoring tools
 
@@ -518,7 +543,7 @@ HTTP API is 70% cheaper and less powerful than REST API.
 
 This is often related to the discussion of SNS, SQS and Kinesis, also it is only relevant at scale.
 
-Both Kinesis Data Stream and Kinesis Firehose help by processing messages in large batches. Bigger batches are more efficient but slower. 
+AWS Kinesis enables users to collect, process, and analyze large amounts of data in real-time, allowing for real-time analytics and decision making. Both Kinesis Data Stream and Kinesis Firehose help by processing messages in large batches. Bigger batches are more efficient but slower. 
 
 Kinesis Data Stream is better bet if you need close-to-real-time batching.
 If you want to maximize savings and don't need close-to-real-time batching, Kinesis Firehose is a better choice. 
