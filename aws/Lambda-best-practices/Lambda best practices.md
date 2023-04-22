@@ -269,9 +269,7 @@ Storing secrets: SSM Parameter Store vs Secrets Manager
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fvnwa5fnh8vjrw99tad6.png)
 
-Click [here](https://aws.amazon.com/secrets-manager/pricing) for Secrets Manager pricing.
-
-Click [here](https://aws.amazon.com/systems-manager/pricing/#Parameter_Store) for SSM Parameter Store pricing.
+Click [here](https://aws.amazon.com/secrets-manager/pricing) for Secrets Manager pricing. Click [here](https://aws.amazon.com/systems-manager/pricing/#Parameter_Store) for SSM Parameter Store pricing.
 
 Click [here](https://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_limits.html) for Secrets Manager limits.
 
@@ -487,11 +485,9 @@ Lambda cost is small part of the whole. API gateway is expensive. Prefer to do c
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0jbhxz1c3206ubz9j3n4.png)
 
-Click [here](https://aws.amazon.com/api-gateway/pricing/) for API Gateway pricing.
+Click [here](https://aws.amazon.com/api-gateway/pricing/) for API Gateway pricing. Click [here](https://aws.amazon.com/step-functions/pricing/) for Step Functions pricing.
 
 Click [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html) for API Gateway HTTP APIs vs REST APIs.
-
-Click [here](https://aws.amazon.com/step-functions/pricing/) for Step Functions pricing.
 
 ### Keeping CloudWatch costs in check
 
@@ -525,9 +521,7 @@ Click [here](https://lumigo.io/blog/the-why-when-and-how-of-api-gateway-service-
 
 Click [here](https://github.com/horike37/serverless-apigateway-service-proxy) for the serverless-apigateway-service-proxy plugin for Serverless framework.
 
-Click [here](https://aws.amazon.com/elasticloadbalancing/pricing) for ALB pricing.
-
-Click [here](https://aws.amazon.com/api-gateway/pricing) for API Gateway pricing.
+Click [here](https://aws.amazon.com/elasticloadbalancing/pricing) for ALB pricing. Click [here](https://aws.amazon.com/api-gateway/pricing) for API Gateway pricing.
 
 ### API Gateway: REST API vs HTTP API vs ALB (application load balancer)
 
