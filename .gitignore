@@ -16,7 +16,9 @@ types & grammar/
 CONTRIBUTING.md
 LICENSE.txt
 PULL_REQUEST_TEMPLATE.md
-README.md
+react-hooks-in-a/**/README.md
+redux-in-a/**/README.md
+react-in-a/**/README.md
 preface.md
 
 
