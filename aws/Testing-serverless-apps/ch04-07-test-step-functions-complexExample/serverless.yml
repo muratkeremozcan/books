@@ -1,0 +1,193 @@
+service: tsa-chp04ln07
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-step-functions
+  - serverless-export-outputs
+  - serverless-iam-roles-per-function
+  - serverless-plugin-extrinsic-functions
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+package:
+  exclude:
+    - .step-functions-local/**
+
+custom:
+  exportOutputs:
+    include:
+      - AwsRegion
+      - StateMachineArn
+      - OrdersTableName
+      - UserNotificationTopicArn
+      - RestaurantNotificationTopicArn
+      - ApiUrl
+      - E2eTestQueueUrl
+    output:
+      file: ./.env-outputs
+
+functions:
+  accept-order:
+    handler: functions/accept-order.handler
+    environment:
+      ORDERS_TABLE: !Ref OrdersTable
+    events:
+      - http:
+          path: order/accept
+          method: post
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:GetItem
+        Resource: !GetAtt OrdersTable.Arn
+      - Effect: Allow
+        Action: states:SendTaskSuccess
+        Resource: "*"
+
+  reject-order:
+    handler: functions/reject-order.handler
+    environment:
+      ORDERS_TABLE: !Ref OrdersTable
+    events:
+      - http:
+          path: order/reject
+          method: post
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:GetItem
+        Resource: !GetAtt OrdersTable.Arn
+      - Effect: Allow
+        Action: states:SendTaskSuccess
+        Resource: "*"
+
+  wait-for-delivery:
+    handler: functions/wait-for-delivery.handler
+    environment:
+      ORDERS_TABLE: !Ref OrdersTable
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:UpdateItem
+        Resource: !GetAtt OrdersTable.Arn
+
+  confirm-delivery:
+    handler: functions/confirm-delivery.handler
+    environment:
+      ORDERS_TABLE: !Ref OrdersTable
+    events:
+      - http:
+          path: order/confirm
+          method: post
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:GetItem
+        Resource: !GetAtt OrdersTable.Arn
+      - Effect: Allow
+        Action: states:SendTaskSuccess
+        Resource: "*"
+
+stepFunctions:
+  stateMachines:
+    ComplexExample: ${file(state_machines/complex.yml)}
+
+resources:
+  Conditions:
+    IsE2eTest:
+      Fn::StartsWith: 
+        - ${sls:stage}
+        - dev
+
+  Resources:    
+    OrdersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+
+    UserNotificationTopic:
+      Type: AWS::SNS::Topic
+
+    RestaurantNotificationTopic:
+      Type: AWS::SNS::Topic
+
+    E2eTestQueue:
+      Type: AWS::SQS::Queue
+      Condition: IsE2eTest
+      Properties:
+        MessageRetentionPeriod: 60
+        VisibilityTimeout: 1
+
+    E2eTestQueuePolicy:
+      Type: AWS::SQS::QueuePolicy
+      Condition: IsE2eTest
+      Properties:
+        Queues:
+          - !Ref E2eTestQueue
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal: "*"
+              Action: SQS:SendMessage
+              Resource: !GetAtt E2eTestQueue.Arn
+              Condition:
+                ArnEquals:
+                  aws:SourceArn: !Ref RestaurantNotificationTopic
+            - Effect: Allow
+              Principal: "*"
+              Action: SQS:SendMessage
+              Resource: !GetAtt E2eTestQueue.Arn
+              Condition:
+                ArnEquals:
+                  aws:SourceArn: !Ref UserNotificationTopic
+
+    E2eTestRestaurantNotificationTopicSubscription:
+      Type: AWS::SNS::Subscription
+      Condition: IsE2eTest
+      Properties:
+        Protocol: sqs
+        Endpoint: !GetAtt E2eTestQueue.Arn
+        RawMessageDelivery: false
+        Region: !Ref AWS::Region
+        TopicArn: !Ref RestaurantNotificationTopic
+
+    E2eTestUserNotificationTopicSubscription:
+      Type: AWS::SNS::Subscription
+      Condition: IsE2eTest
+      Properties:
+        Protocol: sqs
+        Endpoint: !GetAtt E2eTestQueue.Arn
+        RawMessageDelivery: false
+        Region: !Ref AWS::Region
+        TopicArn: !Ref UserNotificationTopic
+
+  Outputs:
+    AwsRegion:
+      Value: ${aws:region}
+
+    StateMachineArn:
+      Value: !Ref ComplexExampleStateMachine
+
+    OrdersTableName:
+      Value: !Ref OrdersTable
+
+    ApiUrl:
+      Value: !Sub https://${ApiGatewayRestApi}.execute-api.${aws:region}.amazonaws.com/${sls:stage}
+
+    UserNotificationTopicArn:
+      Value: !Ref UserNotificationTopic
+
+    RestaurantNotificationTopicArn:
+      Value: !Ref RestaurantNotificationTopic
+
+    E2eTestQueueUrl:
+      Condition: IsE2eTest
+      Value: !Ref E2eTestQueue

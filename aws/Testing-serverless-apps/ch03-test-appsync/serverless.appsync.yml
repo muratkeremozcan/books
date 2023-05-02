@@ -1,0 +1,62 @@
+name: tsa-chp03
+schema: schema.graphql
+authenticationType: AMAZON_COGNITO_USER_POOLS
+userPoolConfig:
+  awsRegion: ${aws:region}
+  defaultAction: ALLOW
+  userPoolId: !Ref CognitoUserPool
+mappingTemplatesLocation: mapping-templates
+mappingTemplates:
+  - type: Query
+    field: getMyTimeline
+    dataSource: timelinesTable
+  - type: Query
+    field: getFollowers
+    kind: PIPELINE
+    functions:
+      - getFollowers
+      - hydrateFollowers
+  - type: Mutation
+    field: tweet
+    dataSource: tweetFunction
+    request: false
+    response: false
+  - type: Mutation
+    field: follow
+    dataSource: relationshipsTable
+
+  # NESTED FIELDS
+  - type: TweetsPage
+    field: tweets
+    dataSource: tweetsTable
+
+functionConfigurations:
+  - name: getFollowers
+    dataSource: relationshipsTable
+  - name: hydrateFollowers
+    dataSource: usersTable
+
+dataSources:
+  - type: AMAZON_DYNAMODB
+    name: usersTable
+    config:
+      tableName: !Ref UsersTable
+  - type: AMAZON_DYNAMODB
+    name: tweetsTable
+    config:
+      tableName: !Ref TweetsTable
+  - type: AMAZON_DYNAMODB
+    name: timelinesTable
+    config:
+      tableName: !Ref TimelinesTable
+  - type: AMAZON_DYNAMODB
+    name: relationshipsTable
+    config:
+      tableName: !Ref RelationshipsTable
+  - type: AWS_LAMBDA
+    name: tweetFunction
+    config:
+      functionName: tweet
+substitutions:
+  TweetsTable: !Ref TweetsTable
+  UsersTable: !Ref UsersTable

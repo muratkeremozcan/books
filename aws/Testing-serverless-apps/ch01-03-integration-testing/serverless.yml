@@ -1,0 +1,71 @@
+service: lesson-3-demo
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+custom:
+  export-env:
+    overwrite: true
+  serverless-iam-roles-per-function:
+    defaultInherit: true
+
+functions:
+  getCart:
+    handler: functions/get-cart.handler
+    environment:
+      CARTS_TABLE: !Ref CartsTable
+    events:
+      - http:
+          path: /{userId}
+          method: get
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:GetItem
+        Resource: !GetAtt CartsTable.Arn
+
+  addItem:
+    handler: functions/add-item.handler
+    environment:
+      CARTS_TABLE: !Ref CartsTable
+      EVENT_BUS_NAME: !Ref EventBus
+    events:
+      - http:
+          path: /{userId}/items
+          method: post
+          request:
+            schemas:
+              application/json: ${file(schemas/add-item.json)}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+        Resource: !GetAtt CartsTable.Arn
+      - Effect: Allow
+        Action: events:PutEvents
+        Resource: !GetAtt EventBus.Arn
+
+resources:
+  Resources:
+    CartsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+
+    EventBus:
+      Type: AWS::Events::EventBus
+      Properties:
+        Name: events_${sls:stage}
+
+plugins:
+  - serverless-export-env
+  - serverless-iam-roles-per-function

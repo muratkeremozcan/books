@@ -1,0 +1,30 @@
+name: tsa-chp04ln04-is-big-html
+id: SimpleExampleStateMachine
+definition:
+  StartAt: GetHtml
+  States:
+    GetHtml:
+      Type: Task
+      Resource: !GetAtt get-html.Arn
+      Next: IsHtmlBig?
+      Catch: 
+        - ErrorEquals: 
+            - States.ALL
+          Next: Dunno
+    IsHtmlBig?:
+      Type: Choice
+      Choices:
+        - Variable: $.size
+          NumericGreaterThan: 10240 # 10kb
+          Next: IsBig
+      Default: IsNotBig
+    IsBig:
+      Type: Pass
+      Result: true
+      End: true
+    IsNotBig:
+      Type: Pass
+      Result: false
+      End: true
+    Dunno:
+      Type: Fail

@@ -1,0 +1,36 @@
+service: tsa-chp04ln08
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-step-functions
+  - serverless-export-outputs
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+custom:
+  exportOutputs:
+    include:
+      - AwsRegion
+      - StateMachineArn
+    output:
+      file: ./.env-outputs
+
+functions:
+  call-paypal:
+    handler: functions/call-paypal.handler
+
+stepFunctions:
+  stateMachines:
+    PaymentExample: ${file(state_machines/payment.yml)}
+
+resources:
+  Outputs:
+    AwsRegion:
+      Value: ${aws:region}
+
+    StateMachineArn:
+      Value: !Ref PaymentStateMachine

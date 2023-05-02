@@ -1,0 +1,207 @@
+service: tsa-chp05ln06
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-iam-roles-per-function
+  - serverless-export-outputs
+  - serverless-export-env
+  - serverless-plugin-extrinsic-functions
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+custom:
+  export-env:
+    overwrite: true
+    
+  exportOutputs:
+    include:
+      - AwsRegion
+      - AwsAccountId
+      - EventCatcherUrl
+      - SnsTopicName
+      - ApiUrl
+    output:
+      file: ./.env-outputs
+
+functions:
+  api:
+    handler: functions/api.handler
+    events:
+      - http:
+          path: /
+          method: post
+    environment:
+      EVENT_BUS: !Ref EventBus
+    iamRoleStatements:
+      - Effect: Allow
+        Action: events:PutEvents
+        Resource: !GetAtt EventBus.Arn
+
+  eventbridge:
+    handler: functions/eventbridge.handler
+    events:
+      - eventBridge:
+          eventBus: !Ref EventBus
+          pattern:
+            source:
+              - api-function
+    environment:
+      SNS_TOPIC_ARN: !Ref SnsTopic
+      DYNAMODB_TABLE: !Ref DynamoDBTable
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource: !Ref SnsTopic
+      - Effect: Allow
+        Action: dynamodb:PutItem
+        Resource: !GetAtt DynamoDBTable.Arn
+  
+  dynamodb:
+    handler: functions/dynamodb.handler
+    events:
+      - stream:
+          type: dynamodb
+          arn: !GetAtt DynamoDBTable.StreamArn
+    environment:
+      EVENT_BUS: !Ref EventBus
+    iamRoleStatements:
+      - Effect: Allow
+        Action: events:PutEvents
+        Resource: !GetAtt EventBus.Arn
+
+  sns:
+    handler: functions/sns.handler
+    events:
+      - sns:
+          arn: !Ref SnsTopic
+          topicName: ${self:service}-${sls:stage}-topic
+    environment:
+      DYNAMODB_TABLE: !Ref DynamoDBTable
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:GetItem
+          - dynamodb:UpdateItem
+        Resource: !GetAtt DynamoDBTable.Arn
+
+resources:
+  Conditions:
+    IsE2eTest:
+      Fn::StartsWith:
+        - ${sls:stage}
+        - dev
+
+  Resources:
+    EventBus:
+      Type: AWS::Events::EventBus
+      Properties:
+        Name: ${self:service}-${sls:stage}
+
+    EventBusEventCatcherIamRole:
+      Type: AWS::IAM::Role
+      Condition: IsE2eTest
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action: sts:AssumeRole
+              Principal:
+                Service: events.amazonaws.com
+        Policies:
+          - PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action: execute-api:Invoke
+                  Resource: ${ssm:/eventcatcher/${sls:stage}/rest-api-arn}/*
+            PolicyName: invoke_api_gateway
+
+    EventBusToEventCather:
+      Type: AWS::Events::Rule
+      Condition: IsE2eTest
+      Properties:
+        EventBusName: !Ref EventBus
+        EventPattern:
+          account: 
+            - ${aws:accountId}
+        State: ENABLED
+        Targets:
+          - Arn: ${ssm:/eventcatcher/${sls:stage}/rest-api-arn}/POST/*/*
+            Id: eventcatcher
+            RoleArn: !GetAtt EventBusEventCatcherIamRole.Arn
+            HttpParameters:
+              PathParameterValues:
+                - ${aws:accountId} # accountId
+                - !Sub eventbridge-${EventBus} # target
+
+    SnsTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${self:service}-${sls:stage}-topic
+
+    SnsToEventCatcher:
+      Type: AWS::SNS::Subscription
+      Condition: IsE2eTest
+      Properties:
+        Protocol: https
+        Endpoint: !Sub https://${ssm:/eventcatcher/${sls:stage}/rest-api-url}/${aws:accountId}/sns-${self:service}-${sls:stage}-topic
+        TopicArn: !Ref SnsTopic
+
+    EventBusToSnsTopic:
+      Type: AWS::Events::Rule
+      Properties:
+        EventBusName: !Ref EventBus
+        EventPattern:
+          source:
+            - api-function
+        State: ENABLED
+        Targets:
+          - Arn: !Ref SnsTopic
+            Id: snstopic
+
+    SnsTopicPolicy:
+      Type: AWS::SNS::TopicPolicy
+      Properties:
+        PolicyDocument:
+          Statement:
+            - Effect: Allow
+              Action: sns:Publish
+              Resource: !Ref SnsTopic
+              Principal: 
+                Service: events.amazonaws.com
+        Topics:
+          - !Ref SnsTopic
+
+    DynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+
+  Outputs:
+    AwsRegion:
+      Value: ${aws:region}
+
+    AwsAccountId:
+      Value: ${aws:accountId}
+
+    SnsTopicName:
+      Value: ${self:service}-${sls:stage}-topic
+
+    EventCatcherUrl:
+      Condition: IsE2eTest
+      Value: ${ssm:/eventcatcher/${sls:stage}/graphql-api-url}
+
+    ApiUrl:
+      Value: !Sub https://${ApiGatewayRestApi}.execute-api.${aws:region}.amazonaws.com/${sls:stage}

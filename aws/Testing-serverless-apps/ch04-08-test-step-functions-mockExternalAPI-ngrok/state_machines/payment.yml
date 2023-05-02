@@ -1,0 +1,28 @@
+name: tsa-chp04ln08-payment
+id: PaymentStateMachine
+definition:
+  # expected input 
+  # { 
+  #   authorizationId: string 
+  #   overridePaypalUrl: url [optional]
+  #   amount: int
+  #   invoiceId: string
+  #   requestId: guid
+  # }
+  StartAt: Call Paypal
+  States:
+    Call Paypal:
+      Type: Task
+      Resource: !GetAtt call-paypal.Arn
+      Next: Payment succeeded?
+    Payment succeeded?:
+      Type: Choice
+      Choices:
+        - Variable: $.success
+          BooleanEquals: true
+          Next: Success
+      Default: Fail
+    Success:
+      Type: Succeed
+    Fail:
+      Type: Fail

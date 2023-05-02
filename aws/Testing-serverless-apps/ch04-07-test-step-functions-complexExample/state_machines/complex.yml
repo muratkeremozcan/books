@@ -1,0 +1,144 @@
+name: tsa-chp04ln07-order-flow
+id: ComplexExampleStateMachine
+definition:
+  # expected input { orderId: string }
+  StartAt: Add order
+  States:
+    Add order:
+      Type: Task
+      Resource: arn:aws:states:::dynamodb:putItem
+      Parameters:
+        TableName: !Ref OrdersTable
+        Item:
+          id:
+            S.$: $.orderId
+          status:
+            S: PLACED
+      ResultPath: null # keep original input
+      Next: Notify restaurant
+    Notify restaurant:
+      Type: Task
+      Resource: arn:aws:states:::sns:publish.waitForTaskToken
+      Parameters:
+        Message:
+          OrderId.$: $.orderId        
+          TaskToken.$: $$.Task.Token
+        TopicArn: !Ref RestaurantNotificationTopic
+      TimeoutSeconds: 300
+      Catch:
+        - ErrorEquals:
+            - States.Timeout
+          Next: Set order status to NO_RESPONSE
+          ResultPath: $.notifyRestaurantError
+      Next: Is order accepted?
+    Set order status to NO_RESPONSE:
+      Type: Task
+      Resource: arn:aws:states:::dynamodb:updateItem
+      Parameters:
+        TableName: !Ref OrdersTable
+        Key:
+          id:
+            S.$: $.orderId
+        UpdateExpression: "SET #status = :status"
+        ExpressionAttributeNames:
+          "#status": status
+        ExpressionAttributeValues:
+          ":status":
+            S: NO_RESPONSE
+      Next: Notify user of cancelled order
+    Notify user of cancelled order:
+      Type: Task
+      Resource: arn:aws:states:::sns:publish
+      Parameters:
+        Message:
+          OrderId.$: $.orderId
+          Status: CANCELLED
+          Message: We're sorry, but your order has been cancelled
+        TopicArn: !Ref UserNotificationTopic
+      Next: Order cancelled
+    Is order accepted?:
+      Type: Choice
+      Choices:
+        - Variable: $.accepted
+          BooleanEquals: true
+          Next: Order is accepted
+      Default: Set order status to REJECTED
+    Set order status to REJECTED:
+      Type: Task
+      Resource: arn:aws:states:::dynamodb:updateItem
+      Parameters:
+        TableName: !Ref OrdersTable
+        Key:
+          id:
+            S.$: $.orderId
+        UpdateExpression: "SET #status = :status"
+        ExpressionAttributeNames:
+          "#status": status
+        ExpressionAttributeValues:
+          ":status":
+            S: REJECTED
+      ResultPath: null
+      Next: Notify user of cancelled order
+    Order is accepted:
+      Type: Parallel
+      Branches:
+        - StartAt: Notify user
+          States:
+            Notify user:
+              Type: Task
+              Resource: arn:aws:states:::sns:publish
+              Parameters:
+                Message:
+                  OrderId.$: $.orderId
+                  Status: ACCEPTED
+                  Message: Good news! The restaurant has accepted your order
+                TopicArn: !Ref UserNotificationTopic
+              End: true
+        - StartAt: Set order status to ACCEPTED
+          States:
+            Set order status to ACCEPTED:
+              Type: Task
+              Resource: arn:aws:states:::dynamodb:updateItem
+              Parameters:
+                TableName: !Ref OrdersTable
+                Key:
+                  id:
+                    S.$: $.orderId
+                UpdateExpression: "SET #status = :status"
+                ExpressionAttributeNames:
+                  "#status": status
+                ExpressionAttributeValues:
+                  ":status":
+                    S: ACCEPTED
+              End: true
+        - StartAt: Wait for Restaurant to confirm delivery
+          States:
+            Wait for Restaurant to confirm delivery:
+              Type: Task
+              Resource: arn:aws:states:::lambda:invoke.waitForTaskToken
+              Parameters:
+                Payload:
+                  orderId.$: $.orderId
+                  taskToken.$: $$.Task.Token
+                FunctionName: !GetAtt wait-for-delivery.Arn
+              End: true
+      ResultPath: null
+      Next: Set order status to DELIVERED
+    Set order status to DELIVERED:
+      Type: Task
+      Resource: arn:aws:states:::dynamodb:updateItem
+      Parameters:
+        TableName: !Ref OrdersTable
+        Key:
+          id:
+            S.$: $.orderId
+        UpdateExpression: "SET #status = :status"
+        ExpressionAttributeNames:
+          "#status": status
+        ExpressionAttributeValues:
+          ":status":
+            S: DELIVERED
+      ResultPath: null
+      End: true
+    Order cancelled:
+      Type: Fail

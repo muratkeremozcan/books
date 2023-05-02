@@ -1,0 +1,44 @@
+name: lesson-4-demo
+schema: schema.graphql
+authenticationType: AMAZON_COGNITO_USER_POOLS
+userPoolConfig:
+  awsRegion: ${aws:region}
+  defaultAction: ALLOW
+  userPoolId: !Ref CognitoUserPool
+mappingTemplatesLocation: mapping-templates
+mappingTemplates:
+  - type: Query
+    field: getMyTimeline
+    dataSource: timelinesTable
+  - type: Mutation
+    field: tweet
+    dataSource: tweetFunction
+    request: false
+    response: false
+  - type: Mutation
+    field: follow
+    dataSource: relationshipsTable
+
+  # NESTED FIELDS
+  - type: TweetsPage
+    field: tweets
+    dataSource: tweetsTable
+dataSources:
+  - type: AMAZON_DYNAMODB
+    name: tweetsTable
+    config:
+      tableName: !Ref TweetsTable
+  - type: AMAZON_DYNAMODB
+    name: timelinesTable
+    config:
+      tableName: !Ref TimelinesTable
+  - type: AMAZON_DYNAMODB
+    name: relationshipsTable
+    config:
+      tableName: !Ref RelationshipsTable
+  - type: AWS_LAMBDA
+    name: tweetFunction
+    config:
+      functionName: tweet
+substitutions:
+  TweetsTable: !Ref TweetsTable

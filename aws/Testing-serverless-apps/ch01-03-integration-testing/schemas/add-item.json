@@ -1,0 +1,15 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Add Item Schema",
+  "required": ["name", "count"],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "count": {
+      "type": "number"
+    }
+  }
+}

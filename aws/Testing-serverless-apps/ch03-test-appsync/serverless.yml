@@ -1,0 +1,192 @@
+service: tsa-chp03
+
+plugins:
+  - serverless-export-outputs
+  - serverless-appsync-plugin
+  - serverless-iam-roles-per-function
+  - serverless-export-env
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+custom:
+  appSync:
+    - ${file(serverless.appsync.yml)}
+
+  export-env:
+    overwrite: true
+
+  exportOutputs:
+    include:
+      - AwsRegion
+      - ApiUrl
+      - CognitoUserPoolId
+      - CognitoWebClientId
+    output:
+      file: ./.env-outputs
+
+functions:
+  confirmUserSignup:
+    handler: functions/confirm-user-signup.handler
+    environment:
+      USERS_TABLE: !Ref UsersTable
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:PutItem
+        Resource: !GetAtt UsersTable.Arn
+
+  tweet:
+    handler: functions/tweet.handler
+    environment:
+      TWEETS_TABLE: !Ref TweetsTable
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:PutItem
+        Resource: !GetAtt TweetsTable.Arn
+
+  distributeTweets:
+    handler: functions/distribute-tweets.handler
+    environment:
+      RELATIONSHIPS_TABLE: !Ref RelationshipsTable
+      TIMELINES_TABLE: !Ref TimelinesTable
+    events:
+      - stream:
+          type: dynamodb
+          arn: !GetAtt TweetsTable.StreamArn
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:PutItem
+          - dynamodb:DeleteItem
+          - dynamodb:BatchWriteItem
+        Resource: !GetAtt TimelinesTable.Arn
+      - Effect: Allow
+        Action: dynamodb:Query
+        Resource: !Sub "${RelationshipsTable.Arn}/index/byOtherUser"
+
+resources:
+  Resources:
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+
+    TweetsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+
+    TimelinesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: tweetId
+            KeyType: RANGE
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: tweetId
+            AttributeType: S
+
+    RelationshipsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: sk
+            KeyType: RANGE
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: sk
+            AttributeType: S
+          - AttributeName: otherUserId
+            AttributeType: S
+        GlobalSecondaryIndexes:
+          - IndexName: byOtherUser
+            KeySchema:
+              - AttributeName: otherUserId
+                KeyType: HASH
+              - AttributeName: sk
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        AutoVerifiedAttributes:
+          - email
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireLowercase: false
+            RequireNumbers: false
+            RequireUppercase: false
+            RequireSymbols: false
+        UsernameAttributes:
+          - email
+        Schema:
+          - AttributeDataType: String
+            Name: name
+            Required: false
+            Mutable: true
+        LambdaConfig:
+          PostConfirmation: !GetAtt ConfirmUserSignupLambdaFunction.Arn
+
+    UserPoolInvokeConfirmUserSignupLambdaPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        Action: lambda:invokeFunction
+        FunctionName: !Ref ConfirmUserSignupLambdaFunction
+        Principal: cognito-idp.amazonaws.com
+        SourceArn: !GetAtt CognitoUserPool.Arn
+
+    WebUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        UserPoolId: !Ref CognitoUserPool
+        ClientName: web
+        ExplicitAuthFlows:
+          - ALLOW_USER_SRP_AUTH
+          - ALLOW_USER_PASSWORD_AUTH
+          - ALLOW_REFRESH_TOKEN_AUTH
+        PreventUserExistenceErrors: ENABLED
+
+  Outputs:
+    AwsRegion:
+      Value: ${aws:region}
+
+    CognitoUserPoolId:
+      Value: !Ref CognitoUserPool
+      
+    CognitoWebClientId:
+      Value: !Ref WebUserPoolClient
+
+    ApiUrl:
+      Value: 
+        Fn::GetAtt:
+          - Tsachp03GraphQlApi
+          - GraphQLUrl

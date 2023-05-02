@@ -1,0 +1,39 @@
+service: tsa-chp04ln04
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-step-functions
+  - serverless-export-outputs
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+package:
+  exclude:
+    - .step-functions-local/**
+
+custom:
+  exportOutputs:
+    include:
+      - AwsRegion
+      - StateMachineArn
+    output:
+      file: ./.env-outputs
+
+functions:
+  get-html:
+    handler: functions/get-html.handler
+
+stepFunctions:
+  stateMachines:
+    SimpleExample: ${file(state_machines/simple.yml)}
+
+resources:
+  Outputs:
+    AwsRegion:
+      Value: ${aws:region}
+
+    StateMachineArn:
+      Value: !Ref SimpleExampleStateMachine

@@ -1,0 +1,25 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  getMyTimeline(limit: Int!, nextToken: String): TweetsPage!
+}
+
+type Mutation {
+  tweet(text: String!): Tweet!
+
+  follow(userId: ID!): Boolean!
+}
+
+type TweetsPage {
+  tweets: [Tweet!]
+  nextToken: String
+}
+
+type Tweet {
+  id: ID!
+  createdAt: AWSDateTime!
+  text: String!
+}
