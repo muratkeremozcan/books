@@ -1,0 +1,97 @@
+service: epsagon-demo
+
+plugins:
+  - serverless-iam-roles-per-function
+  - serverless-plugin-epsagon
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    STAGE: ${opt:stage, self:provider.stage}
+
+custom:
+  epsagon:
+    token: ${env:EPSAGON_TOKEN}
+    appName: epsagon-demo
+
+functions:
+  entry:
+    handler: functions/entry.handler
+    events:
+      - http:
+          path: /
+          method: post
+
+  secondary:
+    handler: functions/secondary.handler
+    environment:
+      QUEUE_URL: !Ref MyQueue
+    events:
+      - http:
+          path: /secondary
+          method: post
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sqs:SendMessage
+        Resource: !GetAtt MyQueue.Arn
+
+  sqs:
+    handler: functions/sqs.handler
+    environment:
+      TOPIC_ARN: !Ref MyTopic
+    events:
+      - sqs:
+          arn: !GetAtt MyQueue.Arn
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource: !Ref MyTopic
+
+  sns:
+    handler: functions/sns.handler
+    events:
+      - sns: 
+          arn: !Ref MyTopic
+          topicName: My-Epsagon-Topic
+    iamRoleStatements:
+      - Effect: Allow
+        Action: events:PutEvents
+        Resource: "*"
+
+  eventBridge:
+    handler: functions/eventBridge.handler
+    environment:
+      STREAM_NAME: !Ref MyStream
+    events:
+      - eventBridge:
+          pattern:
+            source:
+              - my.events
+    iamRoleStatements:
+      - Effect: Allow
+        Action: kinesis:PutRecord
+        Resource: !GetAtt MyStream.Arn
+
+  kinesis:
+    handler: functions/kinesis.handler
+    events:
+      - stream:
+          type: kinesis
+          arn: !GetAtt MyStream.Arn
+
+resources:
+  Resources:
+    MyQueue:
+      Type: AWS::SQS::Queue
+
+    MyTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: My-Epsagon-Topic
+
+    MyStream:
+      Type: AWS::Kinesis::Stream
+      Properties:
+        ShardCount: 1
+

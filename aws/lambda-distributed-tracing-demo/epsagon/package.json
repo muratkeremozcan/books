@@ -1,0 +1,20 @@
+{
+  "name": "epsagon-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-iam-roles-per-function": "^2.0.2",
+    "serverless-plugin-epsagon": "^1.6.1"
+  },
+  "dependencies": {
+    "axios": "^0.19.1",
+    "epsagon": "^1.48.0"
+  }
+}

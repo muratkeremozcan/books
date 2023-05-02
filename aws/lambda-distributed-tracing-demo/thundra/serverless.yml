@@ -1,0 +1,103 @@
+service: thundra-demo
+
+plugins:
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: nodejs12.x  
+  environment:
+    STAGE: ${opt:stage, self:provider.stage}
+    thundra_apiKey: ${env:THUNDRA_KEY}
+
+functions:
+  entry:
+    handler: functions/entry.handler
+    events:
+      - http:
+          path: /
+          method: post
+    layers:
+      - arn:aws:lambda:${self:provider.region}:269863060030:layer:thundra-lambda-node-layer:34
+
+  secondary:
+    handler: functions/secondary.handler
+    environment:
+      QUEUE_URL: !Ref MyQueue
+    events:
+      - http:
+          path: /secondary
+          method: post
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sqs:SendMessage
+        Resource: !GetAtt MyQueue.Arn
+    layers:
+      - arn:aws:lambda:${self:provider.region}:269863060030:layer:thundra-lambda-node-layer:34
+
+  sqs:
+    handler: functions/sqs.handler
+    environment:
+      TOPIC_ARN: !Ref MyTopic
+    events:
+      - sqs:
+          arn: !GetAtt MyQueue.Arn
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource: !Ref MyTopic
+    layers:
+      - arn:aws:lambda:${self:provider.region}:269863060030:layer:thundra-lambda-node-layer:34
+
+  sns:
+    handler: functions/sns.handler
+    events:
+      - sns: 
+          arn: !Ref MyTopic
+          topicName: My-Thundra-Topic
+    iamRoleStatements:
+      - Effect: Allow
+        Action: events:PutEvents
+        Resource: "*"
+    layers:
+      - arn:aws:lambda:${self:provider.region}:269863060030:layer:thundra-lambda-node-layer:34
+
+  eventBridge:
+    handler: functions/eventBridge.handler
+    environment:
+      STREAM_NAME: !Ref MyStream
+    events:
+      - eventBridge:
+          pattern:
+            source:
+              - my.events
+    iamRoleStatements:
+      - Effect: Allow
+        Action: kinesis:PutRecord
+        Resource: !GetAtt MyStream.Arn
+    layers:
+      - arn:aws:lambda:${self:provider.region}:269863060030:layer:thundra-lambda-node-layer:34
+
+  kinesis:
+    handler: functions/kinesis.handler
+    events:
+      - stream:
+          type: kinesis
+          arn: !GetAtt MyStream.Arn
+    layers:
+      - arn:aws:lambda:${self:provider.region}:269863060030:layer:thundra-lambda-node-layer:34
+
+resources:
+  Resources:
+    MyQueue:
+      Type: AWS::SQS::Queue
+
+    MyTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: My-Thundra-Topic
+
+    MyStream:
+      Type: AWS::Kinesis::Stream
+      Properties:
+        ShardCount: 1
