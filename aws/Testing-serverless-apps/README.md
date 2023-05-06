@@ -251,7 +251,7 @@ Orchestration approach with step functions:
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kvo6ubaza9zzmzue8fzd.png)
 
-Example of when step functions is a better fit (don't do this):
+Example of when step functions is a better fit (don't do this, prefer step function instead):
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ew49wa8pa8v24ujbq3es.png)
 
