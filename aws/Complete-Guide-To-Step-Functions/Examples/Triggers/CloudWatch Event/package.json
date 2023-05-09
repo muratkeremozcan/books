@@ -1,0 +1,15 @@
+{
+    "name": "cloudwatch event",
+    "private": true,
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Yan Cui",
+    "license": "ISC",
+    "devDependencies": {
+        "serverless-step-functions": "^1.18.0"
+    }
+}

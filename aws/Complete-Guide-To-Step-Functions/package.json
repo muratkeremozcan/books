@@ -1,0 +1,27 @@
+{
+  "name": "step-functions",
+  "version": "1.0.0",
+  "description": "[The state language spec](https://states-language.net/spec.html)",
+  "main": "handler.js",
+  "scripts": {
+    "sls": "sls",
+    "deploy": "sls deploy",
+    "invoke:fn": "sls invoke stepf"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muratkeremozcan/step-functions.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muratkeremozcan/step-functions/issues"
+  },
+  "homepage": "https://github.com/muratkeremozcan/step-functions#readme",
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "serverless": "^3.30.1",
+    "serverless-step-functions": "^3.13.1"
+  }
+}

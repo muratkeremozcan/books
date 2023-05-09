@@ -1,0 +1,37 @@
+service: step-functions-guide
+
+plugins:
+  - serverless-step-functions
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+
+stepFunctions:
+  stateMachines:
+    snsExample:
+      name: sqs-example
+      definition:
+        Comment: Demonstrate how the SQS integration works
+        StartAt: Publish SQS message
+        States:
+          Publish SQS message:
+            Type: Task
+            Resource: arn:aws:states:::sqs:sendMessage
+            Parameters:
+              QueueUrl:
+                Ref: MyQueue
+              MessageBody: This is a static message
+              MessageAttributes:
+                foo:
+                  DataType: String
+                  StringValue: bar
+            End: true
+
+resources:
+  Resources:
+    MyQueue:
+      Type: AWS::SQS::Queue
+      Properties :
+        QueueName : my-queue

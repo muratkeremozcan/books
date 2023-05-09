@@ -1,0 +1,30 @@
+name: modify-execution-state
+definition:
+  Comment: example to demo how to modify execution state
+  StartAt: ModifyExecutionState
+  States:
+    ModifyExecutionState:
+      Type: Parallel
+      Branches:
+        - StartAt: AddZ
+          States:
+            AddZ:
+              Type: Pass
+              Result: 42 # Add the result 42 
+              ResultPath: $.z # attach it to z
+              End: true
+                 
+        - StartAt: OverrideX
+          States:
+            OverrideX:
+              Type: Pass
+              Result: 42 # add the result 42
+              ResultPath: $.x # override x
+              End: true
+
+      Next: Head
+    
+    Head: 
+      Type: Pass
+      InputPath: $[0] # array of 2 objects [{x: 1, y: 2, z: 42}, {x: 42, y: 4}], selects the first object
+      End: true

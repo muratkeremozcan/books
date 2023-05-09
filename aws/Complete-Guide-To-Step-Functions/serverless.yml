@@ -1,0 +1,26 @@
+service: hello-world
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-step-functions
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  add:
+    handler: handler.add
+  double:
+    handler: handler.double
+  doubleBigNumber:
+    handler: handler.doubleBigNumber
+
+stepFunctions:
+  stateMachines:
+    simple-math: ${file(state_machines/simple-math.yml)}
+    parallel-example: ${file(state_machines/parallel-example.yml)}
+    modify-execution-state: ${file(state_machines/modify-execution-state.yml)}
+    map-example: ${file(state_machines/map-example.yml)}
+          

@@ -1,0 +1,116 @@
+service: step-functions-guide-nested-workflows
+
+plugins:
+  - serverless-step-functions
+  - serverless-pseudo-parameters
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  iamRoleStatements:
+    - Effect: Allow
+      Action: states:SendTaskSuccess
+      Resource: '*'
+
+functions:
+  sqs:
+    handler: handler.sqs
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt: [MyQueue, Arn]
+          batchSize: 1
+
+  throw:
+    handler: handler.throw    
+
+stepFunctions:
+  validate: true
+  stateMachines:
+    root:
+      id: RootStateMachine
+      name: nested-example-root
+      definition:
+        Comment: Demonstrate how the use nested workflows
+        StartAt: Fire and Forget
+        States:
+          Fire and Forget:
+            Type: Task
+            Resource: arn:aws:states:::states:startExecution
+            Parameters:  
+              Input: "42"                
+              StateMachineArn: arn:aws:states:#{AWS::Region}:#{AWS::AccountId}:stateMachine:wait-and-error
+              Name.$: $.name
+            ResultPath: $.lastResponse
+            Next: Sync
+          Sync:
+            Type: Task
+            Resource: arn:aws:states:::states:startExecution.sync
+            Parameters:  
+              Input: "42"
+              StateMachineArn: arn:aws:states:#{AWS::Region}:#{AWS::AccountId}:stateMachine:wait-and-respond
+              Name.$: $.name
+            ResultPath: $.lastResponse
+            Next: Callback
+          Callback:
+            Type: Task
+            Resource: arn:aws:states:::states:startExecution.waitForTaskToken
+            Parameters:  
+              Input:
+                Token.$: $$.Task.Token
+              StateMachineArn: arn:aws:states:#{AWS::Region}:#{AWS::AccountId}:stateMachine:callback-and-wait
+              Name.$: $.name
+            End: true
+    waitAndError:
+      id: WaitAndErrorStateMachine
+      name: wait-and-error
+      definition:
+        StartAt: Wait
+        States:
+          Wait:
+            Type: Wait
+            Seconds: 10
+            Next: Respond
+          Respond:
+            Type: Task
+            Resource:
+              Fn::GetAtt: [throw, Arn]
+            End: true
+    waitAndRespond:
+      id: WaitAndRespondStateMachine
+      name: wait-and-respond
+      definition:
+        StartAt: Wait
+        States:
+          Wait:
+            Type: Wait
+            Seconds: 10
+            Next: Respond
+          Respond:
+            Type: Pass
+            Result: 42
+            End: true
+    callbackAndWait:
+      id: WaitAndCallbackStateMachine
+      name: callback-and-wait
+      definition:
+        StartAt: Publish SQS Message
+        States:
+          Publish SQS Message:
+            Type: Task
+            Resource: arn:aws:states:::sqs:sendMessage
+            Parameters:
+              QueueUrl:
+                Ref: MyQueue
+              MessageBody:
+                Token.$: $.Token
+            Next: Wait
+          Wait:
+            Type: Wait
+            Seconds: 300
+            End: true
+
+resources:
+  Resources:
+    MyQueue:
+      Type: AWS::SQS::Queue

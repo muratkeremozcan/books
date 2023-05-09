@@ -1,0 +1,12 @@
+{
+    "name": "api gateway",
+    "private": ,
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {},
+    "author": "Yan Cui",
+    "devDependencies": {
+        "serverless-step-functions": "^1.18.0"
+    }
+}

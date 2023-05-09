@@ -1,0 +1,37 @@
+name: parallel-example
+definition:
+  Comment: parallel example
+  StartAt: GottaDoThemAll
+  States:
+    GottaDoThemAll:
+      Type: Parallel # PARALLEL TASKS
+      Branches:
+        - StartAt: Add
+          States:
+            Add:
+              Type: Task
+              Resource: !GetAtt add.Arn
+              Next: Double # CHAINING
+            Double:
+              Type: Task
+              Resource: !GetAtt doubleBigNumber.Arn
+              End: true
+              
+        - StartAt: Wait5Seconds
+          States:
+            Wait5Seconds:
+              Type: Wait # WAITING
+              Seconds: 5
+              End: true
+              
+        - StartAt: PickX
+          States:
+            PickX:
+              Type: Pass
+              InputPath: $.x
+              Next: Double2 # CHAINING
+            Double2:
+              Type: Task
+              Resource: !GetAtt doubleBigNumber.Arn
+              End: true
+      End: true

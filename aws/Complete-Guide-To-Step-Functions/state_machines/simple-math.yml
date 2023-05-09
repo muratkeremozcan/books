@@ -1,0 +1,35 @@
+name: simple-math
+definition: 
+  Comment: example to demo function chaining
+  StartAt: Add
+  States:
+    Add:
+      Type: Task
+      Resource: !GetAtt add.Arn
+      Next: IsBigNumber
+      
+    IsBigNumber:
+      Type: Choice # BRANCHING
+      Choices:
+        - Variable: $
+          NumericGreaterThan: 50
+          Next: DoubleBigNumber
+      Default: Double
+      
+    Double:
+      Type: Task
+      Resource: !GetAtt double.Arn
+      End: true
+      Retry: # RETRY
+        - ErrorEquals: [NumberIsTooBig]
+          MaxAttempts: 0 
+        - ErrorEquals: [States.ALL]
+          MaxAttempts: 3
+      Catch: # CATCH
+        - ErrorEquals: [NumberIsTooBig]
+          Next: DoubleBigNumber # CHAINING
+          
+    DoubleBigNumber:
+      Type: Task
+      Resource: !GetAtt doubleBigNumber.Arn
+      End: true

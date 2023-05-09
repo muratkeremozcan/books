@@ -1,0 +1,19 @@
+name: map-example
+definition: 
+  Comment: example to demo map state
+  StartAt: MapExample
+  States:
+    MapExample:
+      Type: Map # MAP STATE
+      Iterator:
+        StartAt: Wait
+        States:
+          Wait:
+            Type: Wait
+            SecondsPath: $.delay
+            Next: Pass
+          Pass:
+            Type: Pass
+            InputPath: $.delay
+            End: true
+      End: true
