@@ -917,3 +917,32 @@ With lambda handle these 3 errors.
 ### Setup alerts on Step Function executions
 
  ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zn37p0gxt47ip96jn5of.png)
+
+## Design Patterns
+
+### try-catch
+
+Wrapping multiple states in a Catch using Parallel states.
+
+Here every step is duplicating the error handling at TerminalFailure:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c0yph0j5vis6d7p3mniy.png)
+
+Instead, we wrap the states in Parallel (although they are not serial) and apply a single Catch to them:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/m73ph1quo2kopb6pxf35.png)
+
+Much simpler to implement:
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1xnucl35drhdne9saimn.png)
+
+### recursion
+
+Consider using an ECS (Elastic Container Service) task instead.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/myd1jda4ulwd5e1xicix.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/o7lxnkle29tc7kgt7urz.png)
+
+### sagas
+
+Managing failures in a distributed transaction.
