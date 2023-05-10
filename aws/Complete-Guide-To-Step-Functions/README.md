@@ -483,9 +483,13 @@ stepFunctions:
 
 
 
-## Activities
+## Activities (prefer Callbacks...)
 
-State machine waits for activity to be complete. Once the activity is done, the state machine resumes execution.![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cii51apmpu9yl3ojeavf.png)
+State machine waits for activity to be complete. Once the activity is done, the state machine resumes execution.
+
+With Activities you need to run pollers. This is way Callbacks are preferred.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cii51apmpu9yl3ojeavf.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q8foh8uubu9kztiq4zc3.png)
 
@@ -530,3 +534,386 @@ We have a task that's waiting for an activity to complete.
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qjfulsbox51syc118w83.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/39860calytnvfxnkei00.png)
+
+## Other AWS services
+
+### SNS
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jg3oxz7odlflahc5fu24.png)
+
+```yml
+# ./Examples/Other services/SNS/serverless.yml
+service: step-functions-guide
+
+plugins:
+  - serverless-step-functions
+  - serverless-pseudo-parameters
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+
+functions:
+  hello:
+    handler: index.handler
+
+stepFunctions:
+  stateMachines:
+    snsExample:
+      name: sns-example
+      definition:
+        Comment: Demonstrate how the SNS integration works
+        StartAt: Publish SNS message
+        States:
+          Publish SNS message:
+            Type: Task
+            Resource: arn:aws:states:::sns:publish
+            Parameters:
+              Message: "{ \"answer\": 42 }"
+              TopicArn:
+                Ref: AlarmTopic
+              MessageAttributes:
+                foo:
+                  DataType: String
+                  StringValue: bar
+            End: true
+      alarms:
+        topics:
+          ok: 'arn:aws:sns:us-east-1:374852340823:NotifyMe'
+          alarm: 'arn:aws:sns:us-east-1:374852340823:NotifyMe'
+          insufficientData: 'arn:aws:sns:us-east-1:374852340823:NotifyMe'
+        metrics:
+          - executionsTimeOut
+          - executionsFailed
+          - executionsAborted
+          - executionThrottled
+
+resources:
+  Resources:
+    AlarmTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        DisplayName: my-topic
+        TopicName: my-topic
+```
+
+### SQS
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/le2htcoe8aae7cil3lo5.png)
+
+```yml
+# ./Examples/Other services/SQS/serverless.yml
+service: step-functions-guide
+
+plugins:
+  - serverless-step-functions
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+
+stepFunctions:
+  stateMachines:
+    snsExample:
+      name: sqs-example
+      definition:
+        Comment: Demonstrate how the SQS integration works
+        StartAt: Publish SQS message
+        States:
+          Publish SQS message:
+            Type: Task
+            Resource: arn:aws:states:::sqs:sendMessage
+            Parameters:
+              QueueUrl:
+                Ref: MyQueue
+              MessageBody: This is a static message
+              MessageAttributes:
+                foo:
+                  DataType: String
+                  StringValue: bar
+            End: true
+
+resources:
+  Resources:
+    MyQueue:
+      Type: AWS::SQS::Queue
+      Properties :
+        QueueName : my-queue
+```
+
+### DynamoDB
+
+Cumbersome. Hopefully by now it got better.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fv3k9f5208lvg7hnz0fa.png)
+
+## Callbacks (much better than Activities)
+
+With Activities we need to run pollers. This is way Callbacks are preferred.
+
+With callbacks, our state machine can send a token to, for example SQS query, can wait until a success call
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tkg6227qfbvg20attcl9.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dlihkqeo7pve7zny2v7i.png)
+
+Add a `.waitForTaskToken` to the end of the Resource, and specify the `TaskToken`. $$ is to access the context object.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q8v5405aw0dl5ruq4ee7.png)
+
+Example:
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nr34d498ad6x26i7wmpp.png)
+
+```yml
+# ./Examples/Callbacks/serverless.yml
+service: step-functions-guide-callbacks
+
+plugins:
+  - serverless-step-functions
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  iamRoleStatements:
+    - Effect: Allow
+      Action: states:SendTaskSuccess
+      Resource: '*'
+
+functions:
+  sqs:
+    handler: handler.sqs
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt: [MyQueue, Arn]
+          batchSize: 1
+
+  lambda:
+    handler: handler.lambda
+
+  sns:
+    handler: handler.sns
+    events:
+      - sns:
+          arn:
+            Ref: MyTopic
+          topicName: callback-topic
+
+stepFunctions:
+  validate: true
+  stateMachines:
+    callbackExample:      
+      name: callback-example
+      definition:
+        Comment: Demonstrate how the use callbacks by sending Token
+        StartAt: Publish SQS message
+        States:
+          Publish SQS message:
+            Type: Task
+            Resource: arn:aws:states:::sqs:sendMessage.waitForTaskToken
+            Parameters:
+              QueueUrl:
+                Ref: MyQueue
+              MessageBody:
+                StateMachineId.$: $$.StateMachine.Id
+                ExecutionId.$: $$.Execution.Id
+                StateName.$: $$.State.Name
+                Token.$: $$.Task.Token
+            Next: Invoke Lambda
+          Invoke Lambda:
+            Type: Task
+            Resource: arn:aws:states:::lambda:invoke.waitForTaskToken
+            Parameters:
+              FunctionName:
+                Ref: lambda
+              Payload:
+                StateMachineId.$: $$.StateMachine.Id
+                ExecutionId.$: $$.Execution.Id
+                StateName.$: $$.State.Name
+                Token.$: $$.Task.Token
+            Next: Publish SNS message
+          Publish SNS message:
+            Type: Task
+            Resource: arn:aws:states:::sns:publish.waitForTaskToken
+            Parameters:
+              TopicArn:
+                Ref: MyTopic
+              Message:
+                StateMachineId.$: $$.StateMachine.Id
+                ExecutionId.$: $$.Execution.Id
+                StateName.$: $$.State.Name
+                Token.$: $$.Task.Token
+            End: true
+
+resources:
+  Resources:
+    MyQueue:
+      Type: AWS::SQS::Queue
+
+    MyTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        DisplayName: callback-topic
+        TopicName: callback-topic
+```
+
+## Nested workflows
+
+3 kinds.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/invzuf4xpy1ecpcduzon.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/523leuiox4w05ty97kna.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pf3hpyt1eofwg9rjyz7p.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lhd3ea9kwj5pqv1gsibr.png)
+
+
+
+```yml
+# ./Examples/Nested workflows/serverless.yml
+
+service: step-functions-guide-nested-workflows
+
+plugins:
+  - serverless-step-functions
+  - serverless-pseudo-parameters
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  iamRoleStatements:
+    - Effect: Allow
+      Action: states:SendTaskSuccess
+      Resource: '*'
+
+functions:
+  sqs:
+    handler: handler.sqs
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt: [MyQueue, Arn]
+          batchSize: 1
+
+  throw:
+    handler: handler.throw    
+
+stepFunctions:
+  validate: true
+  stateMachines:
+    root:
+      id: RootStateMachine
+      name: nested-example-root
+      definition:
+        Comment: Demonstrate how the use nested workflows
+        StartAt: Fire and Forget
+        States:
+          Fire and Forget:
+            Type: Task
+            Resource: arn:aws:states:::states:startExecution
+            Parameters:  
+              Input: "42"                
+              StateMachineArn: arn:aws:states:#{AWS::Region}:#{AWS::AccountId}:stateMachine:wait-and-error
+              Name.$: $.name
+            ResultPath: $.lastResponse
+            Next: Sync
+          Sync:
+            Type: Task
+            Resource: arn:aws:states:::states:startExecution.sync
+            Parameters:  
+              Input: "42"
+              StateMachineArn: arn:aws:states:#{AWS::Region}:#{AWS::AccountId}:stateMachine:wait-and-respond
+              Name.$: $.name
+            ResultPath: $.lastResponse
+            Next: Callback
+          Callback:
+            Type: Task
+            Resource: arn:aws:states:::states:startExecution.waitForTaskToken
+            Parameters:  
+              Input:
+                Token.$: $$.Task.Token
+              StateMachineArn: arn:aws:states:#{AWS::Region}:#{AWS::AccountId}:stateMachine:callback-and-wait
+              Name.$: $.name
+            End: true
+    waitAndError:
+      id: WaitAndErrorStateMachine
+      name: wait-and-error
+      definition:
+        StartAt: Wait
+        States:
+          Wait:
+            Type: Wait
+            Seconds: 10
+            Next: Respond
+          Respond:
+            Type: Task
+            Resource:
+              Fn::GetAtt: [throw, Arn]
+            End: true
+    waitAndRespond:
+      id: WaitAndRespondStateMachine
+      name: wait-and-respond
+      definition:
+        StartAt: Wait
+        States:
+          Wait:
+            Type: Wait
+            Seconds: 10
+            Next: Respond
+          Respond:
+            Type: Pass
+            Result: 42
+            End: true
+    callbackAndWait:
+      id: WaitAndCallbackStateMachine
+      name: callback-and-wait
+      definition:
+        StartAt: Publish SQS Message
+        States:
+          Publish SQS Message:
+            Type: Task
+            Resource: arn:aws:states:::sqs:sendMessage
+            Parameters:
+              QueueUrl:
+                Ref: MyQueue
+              MessageBody:
+                Token.$: $.Token
+            Next: Wait
+          Wait:
+            Type: Wait
+            Seconds: 300
+            End: true
+
+resources:
+  Resources:
+    MyQueue:
+      Type: AWS::SQS::Queue
+```
+
+## Best Practices
+
+### Use Timeouts to avoid getting stuck.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/iju4ct40sat4mv38v3is.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7hzyyp0oyq44tucodbxc.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/a5gvgbwxx5psurnvtn7w.png)
+
+### Store data in S3 instead of passing large payloads
+
+Because step functions has a modest size limit on the payload.
+
+### Handle service exceptions
+
+With lambda handle these 3 errors.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hojbsb42kdqqxhbkob0f.png)
+
+### Setup alerts on Step Function executions
+
+ ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zn37p0gxt47ip96jn5of.png)
