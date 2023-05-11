@@ -945,4 +945,37 @@ Consider using an ECS (Elastic Container Service) task instead.
 
 ### sagas
 
-Managing failures in a distributed transaction.
+Managing failures in a distributed transaction, where each action is from a different system.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rr4e0j2vi7q23rcrcg57.png)
+
+We represent each action as a state, and have a complementary state in case of its failure.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ebn4kh7dtyeonsjxp9hf.png)
+
+We have to roll back the changes in case of a failure.
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dgqni494af1pbpsfnch9.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6adnynomretjkw31blzw.png)
+
+```yml
+# ./Examples/lambda-saga-pattern/package.json
+```
+
+### de-dupe
+
+When you don't want to process the same input twice. Start execution is idempotent. We can use it to our advantage by having a consistent way to derive the execution name from the input.
+
+`400 ExecutionAlreadyExists === de-duped`
+
+### semaphores
+
+Problem: what do you do when you want to limit the number of concurrent state machine executions?
+
+We can set the lambda concurrency limit, but step function is not aware of that.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/br1jjfxkfhnzwd0nwjv6.png)
+
+Better way is to introduce 2 new states for acquiring and releasing the semaphore, but this approach also has shortcomings.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0fcjf91nwjzov8nqplq2.png)
