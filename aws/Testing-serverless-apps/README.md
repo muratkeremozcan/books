@@ -63,7 +63,7 @@ module.exports.handler = async (event) => {
 }
 ```
 
-The above unit test would work but would not work in integration, because DDB returns an object with both the Item and Consumed Capacity
+The above unit test would work, but would not work in integration, because DDB returns an object with both the Item and Consumed Capacity
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vdfacciwognm4o5q8w2q.png)
 
@@ -97,10 +97,10 @@ Brittle & hard to fix.
 
 Let the code talk to the real resources. Yan's preferred way.
 
-Cons (covered by e2e):
+Cons (these are covered by e2e):
 
 - We cannot test if we have config issues, for example API gateway configuration (`events`)
-- IAM permissions of the functions are not tested (`iamRolStatements`).
+- IAM permissions of the functions are not tested (`iamRoleStatements`).
 - Must have temporary branches / ephemeral instances
 
 ```yaml
@@ -136,7 +136,7 @@ functions:
 
 ### Troubleshooting e2e `ch01-04-e2e-troubleshoot`
 
-E2e is the perfect place for things to fail. If you can't debug failed e2e tests in a controlled environment, in production it will be more difficult.
+**E2e is the perfect place for things to fail. If you can't debug failed e2e tests in a controlled environment, in production it will be more difficult.**
 
 Observability: a measure of how well the internal state of an application can be inferred from its external outputs. Observability is as useful during development (ex: debugging failed e2e tests) as in production.
 
@@ -168,7 +168,7 @@ Overall test strategy:
 
 The return-on-investment of testing caching and resource policy is questionable.
 
-For load testing, Serverless gives you a lot of scalability out of the box. But it's not free, and it's not infinitely scalable. You still have to worry about service limits (regional limit on API Gateway # of requests/sec, regional limit on lambda concurrency). Architect with service limits in mind. Load test to make sure.
+For load testing, Serverless gives you a lot of scalability out of the box. But it's not free, and it's not infinitely scalable. You still have to worry about service limits (regional limit on API Gateway, # of requests/sec, regional limit on lambda concurrency). Architect with service limits in mind. Load test to make sure.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gapeuzdmebgj7r461i33.png)
 
@@ -178,7 +178,7 @@ For load testing, Serverless gives you a lot of scalability out of the box. But 
 
 **Integrations**: integration test locally against real AWS services (fast feedback from local testing, better confidence from testing in the cloud)
 
-**IAM permissions**: e2e tests (too much hassle to try to test IAM via integration tests)
+**IAM permissions**: e2e tests 
 
 #### Auth
 
@@ -206,7 +206,7 @@ The pattern is as follows:
 - Feed it to the handler (the handler causes a DDB interaction, hence the "integration")
 - Check that the result matches the expectation (by checking the response, and/or by reading from DDB, hence "integration")
 
-The key difference between integration vs e2e is that testing via handler vs testing via http.
+**The key difference between integration vs e2e is that testing via handler vs testing via http.**
 
 ## Ch03 Testing AppSync
 
@@ -279,7 +279,7 @@ For example the right most path in the complex step function has a 5 minute wait
 
 You may also have cases you are hitting external apis with side effects. Assume you have a step function, and you do not want to cause a side effect with e2e. You also do not want to use SFNLocal because the coverage is weak.
 
-Check out [APIDOG](https://apidog.com/?utm_source=google_search&utm_medium=g&utm_campaign=18544428894&utm_content=141031187734&utm_term=apidog&gad=1&gclid=Cj0KCQjwgLOiBhC7ARIsAIeetVDIA1DgNNOXhpMVpV3vJVVn6ugP7jjW0u4zxzj3dWukDnrjHoA1ApQaAmLlEALw_wcB) and [ngrok](https://ngrok.com/). In `ch04-08-test-step-functions-mockExternalAPI-ngrok` we use ngrok to mock the api. The lambda used with an argument to `overridePaypalUrl` which changes the baseUrl to a custom locally served webserver, and in the tests things are mocked this way.
+Check out [APIDOG](https://apidog.com/?utm_source=google_search&utm_medium=g&utm_campaign=18544428894&utm_content=141031187734&utm_term=apidog&gad=1&gclid=Cj0KCQjwgLOiBhC7ARIsAIeetVDIA1DgNNOXhpMVpV3vJVVn6ugP7jjW0u4zxzj3dWukDnrjHoA1ApQaAmLlEALw_wcB) and [ngrok](https://ngrok.com/). In `ch04-08-test-step-functions-mockExternalAPI-ngrok` we use ngrok to mock the api. The lambda is used with an argument to `overridePaypalUrl` which changes the baseUrl to a custom locally served webserver, and in the tests things are mocked this way.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b4xmwz16bl4q0er5pci7.png)
 
@@ -342,7 +342,7 @@ Integration test: invoke the lambda handler locally (just passing an event objec
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/x3z4zlr8yxbm4t7sfr8d.png)
 
-Strategy to test published events being sent out from individual components (Difficulty #3 - hard to get feedback on what's been sent)
+Strategy to test published events being sent out from individual components (Difficulty #3 - hard to get feedback on what's been sent) - imo this is overkill, just cover it with e2e.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ehpc2qtlv537zuwbgg0r.png)
 
@@ -356,7 +356,7 @@ Difficulty #5 (hard to test failure paths and dead letter queue). Use e2e, remov
 
 Difficulty #6 (how to test direct service integrations) - e2e.
 
-Difficulty #7 (how to reset breaking changes before the cause problems) - no meta solution yet, we are looking at https://www.useoptic.com/ and Pact.
+Difficulty #7 (how to reset breaking changes before the cause problems) - no meta solution yet, we are looking at [Optic](https://www.useoptic.com/) and Pact.
 
 ### How to capture published events (Difficulty #3) `ch05-06-capturing-published-events`
 
@@ -412,7 +412,7 @@ Use Cypress. You can also check out ClouWatch Synthetic Canaries (meh).
 
 Ad-hoc prod post deployment.
 
-### Blue-Green deployment
+### Blue-Green deployment (meh)
 
 Deploy the new version of your code (green).
 When fully deployed, switch the traffic to the new version.
@@ -422,7 +422,7 @@ You get blue-green deployment out of the box with lambda. Once a new version is 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/prbqmr8ieub3ppgh7880.png)
 
-### Canary deployment
+### Canary deployment (meh)
 
 Minimize the blast radius of uncaught bugs in production.
 
@@ -447,7 +447,7 @@ Limitations:
 
 This is why using feature flags is a better approach to canary deployment
 
-### Feature Flags
+### Feature Flags (meta)
 
 Releases vs deployments; the deployment has already happened with a FF.
 
@@ -475,7 +475,7 @@ Architect with service limits in mind. Load test to make sure.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tellu3asexos2q1hztct.png)
 
-### Chaos engineering
+### Chaos engineering (meh in AWS, multi region is meta)
 
 _Chaos engineering is the discipline of experimenting on a distributed system in order to build confidence in the system's capability to withstand turbulent conditions in production._ [Principles of Chaos Engineering](https://principlesofchaos.org/), [Russ Miles: Chaos Engineering for the Business](https://www.russmiles.com/chaos-engineering-for-the-business-17b723f26361).
 

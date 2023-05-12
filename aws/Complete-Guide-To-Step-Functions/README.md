@@ -90,7 +90,7 @@ Passes input to output without doing any work
 
 Hard wait. This is useful because hard waiting in lambda can hit the lambda
 execution duration limit (15 minutes). With step fns, an execution can run up to
-a year, without having to wait for idle time.
+a year, without having to pay for idle time.
 
 ```json
 "WaitTenSeconds": {
@@ -653,7 +653,7 @@ Cumbersome. Hopefully by now it got better.
 
 With Activities we need to run pollers. This is way Callbacks are preferred.
 
-With callbacks, our state machine can send a token to, for example SQS query, can wait until a success call
+With callbacks, our state machine can send a token to, for example SQS query, can wait until a success call.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tkg6227qfbvg20attcl9.png)
 
@@ -928,7 +928,7 @@ Here every step is duplicating the error handling at TerminalFailure:
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c0yph0j5vis6d7p3mniy.png)
 
-Instead, we wrap the states in Parallel (although they are not serial) and apply a single Catch to them:
+Instead, we wrap the states in Parallel (although they are serial) and apply a single Catch to them:
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/m73ph1quo2kopb6pxf35.png)
 
