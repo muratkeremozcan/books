@@ -1,0 +1,26 @@
+service: twentyfour-hour-video-ps                          
+
+provider:
+  name: aws                                       
+  runtime: nodejs14.x                               
+  region: us-east-1                                 
+
+custom:
+  upload-bucket: upload-video-bucket-mko # a different bucket name that is not in use                  
+  transcode-bucket: serverless-video-upload-mko # the bucket name you have already created      
+  transcode-video: arn:aws:iam::721520867440:role/transcode-video # your Lambda role
+  media-endpoint: https://q25wbt2lc.mediaconvert.us-east-1.amazonaws.com # your endpoint
+  media-role: arn:aws:iam::721520867440:role/media-convert-role
+
+functions:
+  transcode-video:                                    
+    handler: transcode-video/index.handler
+    role: ${self:custom.transcode-video}              
+    package:                                      
+      individually: true
+    environment:
+      MEDIA_ENDPOINT: ${self:custom.media-endpoint}      
+      MEDIA_ROLE: ${self:custom.media-role}  
+      TRANSCODED_VIDEO_BUCKET: ${self:custom.transcode-bucket}
+    events:
+      - s3: ${self:custom.upload-bucket}

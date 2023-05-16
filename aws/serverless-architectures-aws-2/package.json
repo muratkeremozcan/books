@@ -1,0 +1,16 @@
+{
+  "name": "serverless-architectures-aws-2",
+  "version": "1.0.0",
+  "description": "Serverless Architectures (2nd Edition) :: Manning Publications",
+  "main": "index.js",
+  "scripts": {
+    "sls": "sls",
+    "deploy": "sls deploy",
+    "invoke:fn": "sls invoke stepf"
+  },
+  "devDependencies": {
+    "aws-sdk": "2.1377.0",
+    "prettier": "2.8.8",
+    "serverless": "2.63.0"
+  }
+}
