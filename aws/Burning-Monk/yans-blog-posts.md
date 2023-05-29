@@ -34,12 +34,141 @@ For some of these scenarios, we can use mock APIs and return dummy results for o
 
 ### [Why you should use temporary CloudFormatoin stacks when you do serverless](https://theburningmonk.com/2019/09/why-you-should-use-temporary-stacks-when-you-do-serverless/)
 
+Personally, I have never felt the need to have one account per developer. After all, there is some overhead for having an AWS account. Instead, I usually settle for one AWS account per team per environment. 
+
+But what do you do when you need to deploy and test some unfinished changes? I can deploy the feature branch to a dedicated environment, e.g. `dev-my-feature`. Using the [Serverless framework](https://serverless.com/framework/), that is as easy as running the command `sls deploy -s dev-my-feature`. This would deploy all the Lambda functions, API Gateway and any other related resources (DynamoDB, etc.) in its own CloudFormation stack. I would be able to test my work-in-progress feature in a live AWS environment. When the developer is done with the feature, the temporary stack can be easily removed by running `sls remove -s dev-my-feature`.
+
+**running localstack vs talking to AWS**
+
+Instead of spending lots of time to get tools such as [localstack](https://github.com/localstack/localstack) working, I find it much more productive to deploy a temporary CloudFormation stack in AWS and run against the real thing.
+
+The main downsides are: you need an internet connection, deploying to AWS is slower than running code locally, which slows down the feedback loop. To compensate for the loss of feedback loop, I also use tests as well as `sls invoke local` to run my functions locally while talking to the real AWS services.
+
+Another common use of temporary CloudFormation stacks is for running end-to-end tests. One of the common problems with these tests is that you need to insert test data into a live, shared AWS environment. As a rule of thumb; insert the data a test case needs before the test, delete the data after the test finishes. Sometimes data may get left behind by incomplete tests. As a countermeasure teams use cron jobs to clean up data. An emerging best practice removing the temporary environment at the end of the tests, this way there is no need to clean test data, except on dev & stage deployments.
 
 
-- [How to handle serverful resources when using ephemeral environments](https://theburningmonk.com/2023/02/how-to-handle-serverful-resources-when-using-ephemeral-environments/)
-- [This is why you should keep stateful and stateless resources together](https://theburningmonk.com/2023/01/this-is-why-you-should-keep-stateful-and-stateless-resources-together/)
-- [Hit the 6MB Lambda payload limit? Here’s what you can do.](https://theburningmonk.com/2020/04/hit-the-6mb-lambda-payload-limit-heres-what-you-can-do/)
-- [Write recursive AWS Lambda functions the right way](https://theburningmonk.com/2017/08/write-recursive-aws-lambda-functions-the-right-way/)
+
+### [How to handle serverful resources when using ephemeral environments](https://theburningmonk.com/2023/02/how-to-handle-serverful-resources-when-using-ephemeral-environments/)
+
+When your serverless architecture relies on **serverful** resources such as RDS or OpenSearch, it can be a challenge to use ephemeral environments. You wouldn’t want to have lots of RDS instances sitting around and paying for uptime for all of them. As such, I don’t include these serverful resources as part of the ephemeral environments and would share them instead. For example, I would have one RDS cluster in the dev account. All ephemeral environments in the dev account would use the same cluster but have their own tables/databases. This lets me keep the ephemeral environments self-contained without multiplying my RDS cost.
+
+### [This is why you should keep stateful and stateless resources together](https://theburningmonk.com/2023/01/this-is-why-you-should-keep-stateful-and-stateless-resources-together/)
+
+Loose coupling and high cohesion are two of the most essential software engineering principles. Unrelated things should stay apart, while related elements should be kept together.
+
+I’m very much in the monolith stack camp. I prefer to keep stateful (databases, queues, etc.) and stateless (Lambda functions, API Gateway, etc.) resources together. Assuming the CloudFormation stack encapsulates an entire service, which includes both stateful and stateless resources, then it makes sense to define all the resources in a single CloudFormation stack. This makes managing and deploying the service easier; resource reference is easier, can update both stateless and stateful components in a single deployment, CI/CD is simpler, ephemeral environments are easier.
+
+### [Hit the 6MB Lambda payload limit? Here’s what you can do.](https://theburningmonk.com/2020/04/hit-the-6mb-lambda-payload-limit-heres-what-you-can-do/)
+
+> ```
+> Execution failed: 6294149 byte payload is too large for the RequestResponse invocation type (limit 6291456 bytes)
+> ```
+
+You’ve hit the 6MB invocation payload limit for synchronous Lambda invocations. You can’t POST more than 6MB of data to Lambda through API Gateway.
+
+Option1: use API Gateway service proxy. You can remove Lambda from the equation and go straight from API Gateway to S3 using API Gateway service proxies. The problem with this approach is that you’re limited by the API Gateway payload limit of 10MB.
+
+Option2: use pre-signed S3 URL instead. Since the client will upload the files to S3 directly, you will not be bound by payload size limits imposed by API Gateway or Lambda.
+
+Option 3: Lambda@Edge to forward to S3
+
+Option 4: use pre-signed POST instead
+
+### [Write recursive AWS Lambda functions the right way](https://theburningmonk.com/2017/08/write-recursive-aws-lambda-functions-the-right-way/)
+
+AWS Lambda [limits](http://docs.aws.amazon.com/lambda/latest/dg/limits.html) the maximum execution time of a single invocation to **5 minutes**. You should write Lambda functions that perform long-running tasks as **recursive functions** – eg. [processing a large S3 file](https://hackernoon.com/yubls-road-to-serverless-part-4-building-a-scalable-push-notification-system-62b38924ed61). Suppose you have an expensive task that can be broken into small tasks that can be processed in batches. At the end of each batch, use `context.getRemainingTimeInMillis()` to check if there’s still enough time to keep processing. Otherwise, `recurse` and pass along the current position so the next invocation can continue from where it left off.
+
+Have a look at this [example](https://github.com/theburningmonk/lambda-recursive-s3-demo/blob/master/batch-processor.js) Lambda function that recursively processes a S3 file, using the approach outlined in this post.
+
+```js
+const _       = require('lodash');
+const AWS     = require('aws-sdk');
+const Promise = require('bluebird');
+const lambda  = new AWS.Lambda();
+const s3      = new AWS.S3();
+
+// Data loaded from S3 and chached in case of recursion.
+let cached;
+
+let loadData = async (bucket, key) => {
+  try {
+    console.log('Loading data from S3', { bucket, key });
+
+    let req = { 
+      Bucket: bucket, 
+      Key: key, 
+      IfNoneMatch: _.get(cached, 'etag') 
+    };
+    let resp = await s3.getObject(req).promise();
+
+    console.log('Caching data', { bucket, key, etag: resp.ETag });
+    let data = JSON.parse(resp.Body);
+    cached = { bucket, key, data, etag: resp.ETag };
+    return data;
+  } catch (err) {
+    if (err.code === "NotModified") {
+      console.log('Loading cached data', { bucket, key, etag: cached.etag });
+      return cached.data;
+    } else {
+      throw err;
+    }
+  }
+};
+
+let recurse = async (payload) => {
+  let req = {
+    FunctionName: process.env.AWS_LAMBDA_FUNCTION_NAME,
+    InvocationType: 'Event',
+    Payload: JSON.stringify(payload)
+  };
+
+  console.log('Recursing...', req);
+  let resp = await lambda.invoke(req).promise();
+  console.log('Invocation complete', resp);
+
+  return resp;
+};
+
+module.exports.handler = async (event, context) => {
+  console.log(JSON.stringify(event));
+
+  let bucket   = _.get(event, 'Records[0].s3.bucket.name');
+  let key      = _.get(event, 'Records[0].s3.object.key');
+  let position = event.position || 0;
+  let data     = await loadData(bucket, key);
+
+  let totalTaskCount = data.tasks.length;
+  let batchSize      = process.env.BATCH_SIZE || 5;
+
+  try {
+    do {
+      console.log('Processing next batch...');
+      let batch = data.tasks.slice(position, position + batchSize);
+      position = position + batch.length;
+      
+      for (let task of batch) {
+        await Promise.delay(1000); // each task takes a second to process
+      }
+    } while (position < totalTaskCount && 
+            context.getRemainingTimeInMillis() > 10000);
+
+    if (position < totalTaskCount) {
+      let newEvent = Object.assign(event, { position });
+      await recurse(newEvent);
+      return `to be continued...[${position}]`;
+    } else {
+      return "all done";
+    }
+  } catch (err) {
+    throw err;
+  }
+};
+```
+
+
+
+
+
 - [Use ](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)`context.getRemainingTimeInMillis()`[ to adjust client-side request timeout based on actual invocation time left](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)
 - [Should you have few monolithic functions or many single-purposed functions?](https://theburningmonk.com/2018/01/aws-lambda-should-you-have-few-monolithic-functions-or-many-single-purposed-functions/)
 - [How best to manage shared code and shared infrastructure](https://theburningmonk.com/2018/02/aws-lambda-how-best-to-manage-shared-code-and-shared-infrastructure/)
