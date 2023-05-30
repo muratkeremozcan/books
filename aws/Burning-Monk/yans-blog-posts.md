@@ -14,6 +14,8 @@ Must have temporary branches / ephemeral instances for integration and e2e testi
 
 **Testing in prod**: Spot e2e tests. Feature flags. Observability.
 
+
+
 ### [A practical guide to testing AWS Step Functions](https://theburningmonk.com/2022/12/a-practical-guide-to-testing-aws-step-functions/)
 
 **Testing with Step Functions Local**: [Step Functions Local](https://docs.aws.amazon.com/step-functions/latest/dg/sfn-local.html) is a local simulator for Step Functions and can execute our state machines locally. I generally avoid local simulators (such as [localstack](https://localstack.cloud/)) because they are usually more trouble than they are worth. However, I make an exception for Step Functions Local because its mocking capability is almost a necessity if you want to achieve a good test coverage for error cases or hard to reach paths with e2e. The rest of it is e2e. (The blog says simulating wait is not possible with SFL, but the course Ch04 Testing Step Functions in Testing Serverless Application course says otherwise.)
@@ -31,6 +33,8 @@ For some of these scenarios, we can use mock APIs and return dummy results for o
 `serverless invoke local --function functionName`
 
 [invoke local](https://serverless.com/framework/docs/providers/aws/cli-reference/invoke-local/)  runs your code locally by emulating the AWS Lambda environment. (Check out [internal link](https://github.com/muratkeremozcan/books/tree/master/aws/Burning-Monk/Serverless-architectures-aws-2#serverless-framework))
+
+
 
 ### [Why you should use temporary CloudFormatoin stacks when you do serverless](https://theburningmonk.com/2019/09/why-you-should-use-temporary-stacks-when-you-do-serverless/)
 
@@ -52,11 +56,15 @@ Another common use of temporary CloudFormation stacks is for running end-to-end 
 
 When your serverless architecture relies on **serverful** resources such as RDS or OpenSearch, it can be a challenge to use ephemeral environments. You wouldn’t want to have lots of RDS instances sitting around and paying for uptime for all of them. As such, I don’t include these serverful resources as part of the ephemeral environments and would share them instead. For example, I would have one RDS cluster in the dev account. All ephemeral environments in the dev account would use the same cluster but have their own tables/databases. This lets me keep the ephemeral environments self-contained without multiplying my RDS cost.
 
+
+
 ### [This is why you should keep stateful and stateless resources together](https://theburningmonk.com/2023/01/this-is-why-you-should-keep-stateful-and-stateless-resources-together/)
 
 Loose coupling and high cohesion are two of the most essential software engineering principles. Unrelated things should stay apart, while related elements should be kept together.
 
 I’m very much in the monolith stack camp. I prefer to keep stateful (databases, queues, etc.) and stateless (Lambda functions, API Gateway, etc.) resources together. Assuming the CloudFormation stack encapsulates an entire service, which includes both stateful and stateless resources, then it makes sense to define all the resources in a single CloudFormation stack. This makes managing and deploying the service easier; resource reference is easier, can update both stateless and stateful components in a single deployment, CI/CD is simpler, ephemeral environments are easier.
+
+
 
 ### [Hit the 6MB Lambda payload limit? Here’s what you can do.](https://theburningmonk.com/2020/04/hit-the-6mb-lambda-payload-limit-heres-what-you-can-do/)
 
@@ -73,6 +81,8 @@ Option2: use pre-signed S3 URL instead. Since the client will upload the files t
 Option 3: Lambda@Edge to forward to S3
 
 Option 4: use pre-signed POST instead
+
+
 
 ### [Write recursive AWS Lambda functions the right way](https://theburningmonk.com/2017/08/write-recursive-aws-lambda-functions-the-right-way/)
 
@@ -167,13 +177,193 @@ module.exports.handler = async (event, context) => {
 
 
 
+### [Use ](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)`context.getRemainingTimeInMillis()`[ to adjust client-side request timeout based on actual invocation time left](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)
+
+**API Gateway have a 30s max timeout** on all integration points. Serverless framework uses a default of 6s for AWS Lambda functions. This poses a problem hard coded timeout values in functions, when a function calls another function and so on, and the original function is waiting for a response.
+
+Instead, we should **set the request timeout based on the amount of invocation time left**, whilst taking into account the time required to perform any recovery steps – e.g. return a meaningful error with application specific error code in the response body, or return a fallback result instead. You can easily find out how much time is left in the current invocation through the `context` object your function is invoked with using `context.getRemainingTimeInMillis()`.
+
+With this approach, we get the best of both worlds: allow requests the best chance to succeed based on the actual amount of invocation time we have left; and prevent slow responses from timing out the function, which allows us a window of opportunity to perform recovery actions.
+
+Check out [Netflix Hystrix](https://github.com/Netflix/Hystrix/wiki). Most of the patterns that are baked into *Hystrix* can be easily adopted in our serverless applications to help make them more resilient to failures
 
 
-- [Use ](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)`context.getRemainingTimeInMillis()`[ to adjust client-side request timeout based on actual invocation time left](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)
-- [Should you have few monolithic functions or many single-purposed functions?](https://theburningmonk.com/2018/01/aws-lambda-should-you-have-few-monolithic-functions-or-many-single-purposed-functions/)
-- [How best to manage shared code and shared infrastructure](https://theburningmonk.com/2018/02/aws-lambda-how-best-to-manage-shared-code-and-shared-infrastructure/)
-- [The best ways to save money on Lambda](https://theburningmonk.com/2022/07/the-best-ways-to-save-money-on-lambda/)
-- [Common Node8 mistakes in Lambda](https://serverless.com/blog/common-node8-mistakes-in-lambda)
+
+### [Should you have few monolithic functions or many single-purposed functions?](https://theburningmonk.com/2018/01/aws-lambda-should-you-have-few-monolithic-functions-or-many-single-purposed-functions/)
+
+TL, DR; prefer the latter.
+
+By “monolithic functions”, I meant functions that have internal branching logic based on the invocation event and can do one of several things. Example; one function to handle several HTTP endpoints:
+
+```js
+module.exports.handler = (event, context, cb) => {
+  const path = event.path;
+  const method = event.httpMethod;
+  if (path === '/user' && method === 'GET') {
+    .. // get user
+  } else if (path === '/user' && method === 'DELETE') {
+    .. // delete user
+  } else if (path === '/user' && method === 'POST') {
+    .. // create user
+  } else if ... // other endpoints & methods
+}
+```
+
+Evaluation:
+
+- **discoverability**: how do I find out what features and capabilities exist in our system already, and through which functions?
+
+- **debugging**: how do I quickly identify and locate the code I need to look at to debug a problem? e.g. there are errors in system X’s logs, where do I find the relevant code to start debugging the system?
+
+- **scaling the team**: how do I minimize friction and allow me to grow the engineering team?
+
+  
+
+Utilize a naming convention and tagging on functions. The other 2 are no brainer.
+
+
+
+### [How best to manage shared code and shared infrastructure](https://theburningmonk.com/2018/02/aws-lambda-how-best-to-manage-shared-code-and-shared-infrastructure/)
+
+When you have a group of functions that are highly cohesive and are organised into the same repo then sharing code is easy, you just do it via a module inside the repo. To share code more generally between functions across the service boundary, it can be done through shared libraries, perhaps published as private NPM packages so they’re only available to your team. Or, you can share business logic by encapsulating them into a service.
+
+Visibility is better with library vs service. Backward compatibility is also better. Failures are easier to deal with. Latency is better.
+
+Deployment is easier with service. Versioning is easier with service (feature flags).
+
+
+
+### [The best ways to save money on Lambda](https://theburningmonk.com/2022/07/the-best-ways-to-save-money-on-lambda/)
+
+Cost = resources x duration x invocations
+
+Do not allocate more memory (resources) than necessary. 
+
+**You should always optimize the memory setting for functions that use provisioned concurrency**, because provisioned concurrency has an uptime cost per month per unit of concurrency.
+
+Optimize the frequently invoked functions that have a long execution time (the 3%).
+
+Use [aws-lambda-power-tuning](https://github.com/alexcasalboni/aws-lambda-power-tuning). Install it [**here**](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:451282441545:applications~aws-lambda-power-tuning). If you use Lumigo, you can sort your functions by cost.
+
+
+
+### [Common Node8 mistakes in Lambda](https://serverless.com/blog/common-node8-mistakes-in-lambda)
+
+The main idea is separating out the `await` to make use of concurrency, instead of premature awaiting and running things sequentially.
+
+Example 1:
+
+`teamModel.fetch` doesn't depend on the result of `fixtureModel.fetchAll`, so they should run concurrently.
+
+```js
+async function getFixturesAndTeam(teamId) {
+  const fixtures = await fixtureModel.fetchAll()
+  const team = await teamModel.fetch(teamId)
+  return {
+    team,
+    fixtures: fixtures.filter(x => x.teamId === teamId)
+  }
+}
+```
+
+Here is how you can improve it. In this version, both `fixtureModel.fetchAll` and `teamModel.fetch` are started concurrently:
+
+```js
+async function getFixturesAndTeam(teamId) {
+  const fixturesPromise = fixtureModel.fetchAll()
+  const teamPromise = teamModel.fetch(teamId)
+ 
+  const fixtures = await fixturesPromise
+  const team = await teamPromise
+ 
+  return {
+    team,
+    fixtures: fixtures.filter(x => x.teamId === teamId)
+  }
+}
+```
+
+Example 2:
+
+You also need to watch out when using `map` with `async/await`. The following will call `teamModel.fetch` one after another:
+
+```js
+async function getTeams(teamIds) {
+  const teams = _.map(teamIds, id => await teamModel.fetch(id))
+  return teams
+}
+```
+
+Instead, you should write it as the following:
+
+```js
+async function getTeams(teamIds) {
+  const promises = _.map(teamIds, id => teamModel.fetch(id))
+  const teams = await Promise.all(promises)
+  return teams
+}
+```
+
+Example 3:
+Async await inside forEach doesn't behave the way you'd expect it to:
+
+```js
+[ 1, 2, 3 ].forEach(async (x) => {
+  await sleep(x)
+  console.log(x)
+})
+
+console.log('all done.')
+
+// you only get 
+// all done.
+```
+
+The problem here is that `Array.prototype.forEach` does not wait for async functions to complete before moving on to the next iteration. If you want to execute an async function for each item in an array in a sequential manner (i.e., waiting for the previous async operation to complete before starting the next), you should use a `for...of` loop instead.
+
+```js
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms * 1000)); 
+
+async function processArray(array) {
+  for (const item of array) {
+    await sleep(item);
+    console.log(item);
+  }
+  console.log('all done.');
+}
+
+processArray([1, 2, 3]);
+
+```
+
+Example 4:
+Use AWS SDK’s .promise(). AWS SDK clients support both callbacks and promises. To use `async/await` with the AWS SDK, add `.promise()` to client methods like this:
+
+```js
+	
+const AWS = require('aws-sdk')
+const Lambda = new AWS.Lambda()
+ 
+async function invokeLambda(functionName) {
+  const req = {
+    FunctionName: functionName,
+    Payload: JSON.stringify({ message: 'hello world' })
+  }
+  await Lambda.invoke(req).promise()
+}
+```
+
+Example 5:
+Use node's promisify. Before Node8, [bluebird](http://bluebirdjs.com/docs/getting-started.html) filled a massive gap. It provided the utility to convert callback-based functions to promise-based. But Node8's built-in `util` module has filled that gap with the `promisify` function. For example, we can now transform the `readFile` function from the `fs` module like this:
+
+```js
+const fs = require('fs')
+const { promisify } = require('util')
+const readFile = promisify(fs.readFile)
+```
+
+
+
 - [Monorepo vs one repo per service](https://lumigo.io/blog/mono-repo-vs-one-per-service/)
 - [How to share code in a monorepo](https://theburningmonk.com/2019/06/aws-lambda-how-to-share-code-between-functions-in-a-monorepo/)
 - [Lambda deployment frameworks compared](https://lumigo.io/blog/comparison-of-lambda-deployment-frameworks/)
