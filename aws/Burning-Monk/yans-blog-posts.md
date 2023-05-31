@@ -364,16 +364,99 @@ const readFile = promisify(fs.readFile)
 
 
 
-- [Monorepo vs one repo per service](https://lumigo.io/blog/mono-repo-vs-one-per-service/)
-- [How to share code in a monorepo](https://theburningmonk.com/2019/06/aws-lambda-how-to-share-code-between-functions-in-a-monorepo/)
-- [Lambda deployment frameworks compared](https://lumigo.io/blog/comparison-of-lambda-deployment-frameworks/)
-- [When to use Lambda Layers](https://lumigo.io/blog/lambda-layers-when-to-use-it/)
-- [Lambda layers: not a package manager, but a deployment optimization](https://theburningmonk.com/2021/05/lambda-layer-not-a-package-manager-but-a-deployment-optimization/)
-- [How to log timed out Lambda invocations](https://theburningmonk.com/2019/05/how-to-log-timed-out-lambda-invocations/)
-- [How to detect and stop accidental infinite recursions](https://theburningmonk.com/2019/06/aws-lambda-how-to-detect-and-stop-accidental-infinite-recursions/)
-- [Canary deployment for AWS Lambda](https://lumigo.io/blog/canary-deployment-for-aws-lambda/)
-- [Canary deployment with LaunchDarkly and AWS Lambda](https://lumigo.io/blog/canary-deployment-with-launchdarkly-and-aws-lambda/)
-- [How to include SNS and Kinesis in your e2e tests](https://theburningmonk.com/2019/09/how-to-include-sns-and-kinesis-in-your-e2e-tests/)
+### [Monorepo vs one repo per service](https://lumigo.io/blog/mono-repo-vs-one-per-service/)
+
+#### Monorepo
+
+Monorepo approach is very productive when you are a small team. It removes a lot of the boilerplate and plumbing involved with setting up new repos. Since the number of people involved is small, there is very little coherence penalty. It’s therefore great for small teams to get started and allows them to move quickly. The cost of maintaining a monorepo follows an exponential curve. The cost starts to quickly outweigh its benefits after the organization grows to around 100-150 people
+
+- The amount of knowledge a new joiner needs to acquire grows with the overall complexity of the overall system. Michael Nygard’s post on [coherence penalty](https://www.michaelnygard.com/blog/2018/01/coherence-penalty-for-humans/) offers a really good explanation for this.
+- It’s easy to create leaky abstractions and therefore accidental coupling between services. Because it’s easy to share code inside the same repo, which has less friction than to share code through shared libraries.
+- When sharing code between services this way, it makes tracking changes more difficult. As changes in shared code can mean a change in a service’s behaviour, but it’s hard to correlate these changes outside the service’s folder.
+
+ As these companies (Google, Twitter, etc.) all went through a period of rapid growth, it was simply unfeasible to split the monorepo at that point. What does Google do now?
+
+- You need to invest heavily in automation. Without the internal tools these companies have developed, the monorepo approach would never have worked at their scale. 
+- You need engineers who are brave enough to change shared code and create pull requests to hundreds, even thousands of services.
+
+#### One repo per service
+
+With the one repo per service approach, you do incur the overhead with setting up plenty of new repos. This overhead can be largely amortised with scaffolds and smart defaults. Monorepo approach offers small teams a great opportunity to gain early momentum. But you need to keep in mind that the cost of this approach would skyrocket as the organization grows beyond a certain point. By comparison, the one repo per service approach doesn’t have these extremes. There is a constant and small overhead for bootstrapping new repos, but the approach scales well as the number of engineers goes up.
+
+A frequently asked question is “how do I share resources between services, and how do services reference each other’s stack output. My preferred solution is to [manage the shared resources separately](https://theburningmonk.com/2018/02/aws-lambda-how-best-to-manage-shared-code-and-shared-infrastructure/) (covered in [How best to manage shared code and shared infrastructure](https://theburningmonk.com/2018/02/aws-lambda-how-best-to-manage-shared-code-and-shared-infrastructure/)), away from the services that depend on them. This can be done with an infrastructure repo, with its own deployment pipeline and CloudFormation template. To allow other services to reference these shared resources, remember to add outputs (ARNs, SQS queue urls, DynamoDB table names, etc.) to the CloudFormation template. Shared code is published to package managers such as NPM, and consumers of the shared code can manage their own upgrade path.
+
+### [How to share code in a monorepo](https://theburningmonk.com/2019/06/aws-lambda-how-to-share-code-between-functions-in-a-monorepo/)
+
+How can we share business logic between services in a Node.js mono repo?
+
+* Encapsulate the shared business logic into modules, and put them in a separate folder.
+* In the Lambda handler functions, reference the shared modules using relative paths.
+* Use webpack to resolve and bundle them into the deployment package. If you use the Serverless framework, then check out the [serverless-webpack](https://github.com/serverless-heaven/serverless-webpack) plugin. (if webpack is not your thing then also check out the newer [serverless-esbuild](https://www.npmjs.com/package/serverless-esbuild) plugin which can achieve the same thing)
+
+To see how everything fits together, check out [this demo repo](https://github.com/theburningmonk/lambda-monorepo-code-sharing-demo). I
+
+### [When to use Lambda Layers](https://lumigo.io/blog/lambda-layers-when-to-use-it/)
+
+Cons: trouble with devDeps & testing. Trouble with versioning when dealing with changes in the layers (no semantic ver). Limited to 5 layers per lambda.
+
+Pro: may be useful for things that don't change like FFMpeg, and / or not available via npm, and very large. Lambda layers is still a good way to share large, seldom-changed files. For example, lambda runtimes for Lambda custom runtimes, or binary dependencies that aren’t distributed via NPM such as FFMPEG and MaxMind’s GeoIP database. The [Awesome Layers](https://github.com/mthenw/awesome-layers) list has a list of language runtimes and utilities (mostly binaries) that are available as Lambda layers.
+
+`serverless-layers` is a handy npm plugin for optimization. Only uploads dependencies if they have changed. You take your dependencies from `package.json`, put them into a layer, and publish that layer to your account. The benefit is not having to upload the same artifacts over and over.
+
+Although Lambda Layers is a poor substitute for package managers, it really shines as a way to optimize the deployment time of your application. By using something like the [serverless-layers](https://www.npmjs.com/package/serverless-layers) plugin you can bundle all of your dependencies as a Lambda layer and automatically update the Lambda functions to reference this layer. On subsequent deployments, if the dependencies haven’t changed, then there’s no need to upload them again. This produces a smaller deployment package and makes deployments faster. If you want to learn more about this pattern, then please give [this article](https://theburningmonk.com/2021/05/lambda-layer-not-a-package-manager-but-a-deployment-optimization/) a read.
+
+### [Lambda layers: not a package manager, but a deployment optimization](https://theburningmonk.com/2021/05/lambda-layer-not-a-package-manager-but-a-deployment-optimization/)
+
+I’d still use NPM as the package manager for all my shared code. But in every project, I’d use the [serverless-layers](https://www.npmjs.com/package/serverless-layers) plugin to:
+
+1. Package my project’s NPM dependencies and upload them as a single Lambda layer.
+2. Update all the Lambda functions in the project to add a reference to the layer published in step 1.
+3. For every deployment, check if my project dependencies have changed, and only publish a new version of the layer (i.e. step 1) if they have. If my NPM dependencies haven’t changed, the plugin would skip step 1 and reference the last published version of the layer instead.
+
+All I have to do is point the plugin to an S3 bucket to upload the layer’s artefact to. In the `serverless.yml` I will add this to the `custom` section:
+
+```
+serverless-layers:
+  layersDeploymentBucket: ${ssm:/${self:provider.stage}/layers-deployment-bucket-name}
+```
+
+And voila! All the benefits of using Lambda layers and none of the drawbacks.
+
+In case you’re wondering, I would create the following resources in every AWS account:
+
+- An S3 bucket for the Layer artefacts.
+- An SSM parameter that gives me the name of the bucket so I can reference it from the `serverless.yml` for individual projects.
+
+Add it under plugins, create a custom variable `serverless-layers` > `layersDeploymentBucket`. Create a custom bucket and specify it as a `layersDeploymentBucket` which is a property of the plugin.
+
+![s3-parameter](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/05o8vwdw0rwon37mk85h.png)
+
+
+
+### [How to log timed out Lambda invocations](https://theburningmonk.com/2019/05/how-to-log-timed-out-lambda-invocations/)
+
+
+
+### [How to detect and stop accidental infinite recursions](https://theburningmonk.com/2019/06/aws-lambda-how-to-detect-and-stop-accidental-infinite-recursions/)
+
+
+
+### [Canary deployment for AWS Lambda](https://lumigo.io/blog/canary-deployment-for-aws-lambda/)
+
+
+
+### [Canary deployment with LaunchDarkly and AWS Lambda](https://lumigo.io/blog/canary-deployment-with-launchdarkly-and-aws-lambda/)
+
+
+
+### [How to include SNS and Kinesis in your e2e tests](https://theburningmonk.com/2019/09/how-to-include-sns-and-kinesis-in-your-e2e-tests/)
+
+
+
+
+
+
+
 - [Should you pack the AWS SDK in your deployment artefact?](https://theburningmonk.com/2019/09/should-you-pack-the-aws-sdk-in-your-deployment-artefact/)
 - [Are Lambda-to-Lambda calls really that bad?](https://theburningmonk.com/2020/07/are-lambda-to-lambda-calls-really-so-bad/)
 - [SQS and Lambda: the missing guide on failure modes](https://lumigo.io/blog/sqs-and-lambda-the-missing-guide-on-failure-modes/)
