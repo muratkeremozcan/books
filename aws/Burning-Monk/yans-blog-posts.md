@@ -564,17 +564,68 @@ In conclusion, while serverless architecture diagrams may look more complex on p
 
 # EventBridge
 
-- [The biggest problem with EventBridge Scheduler and how to fix it](https://theburningmonk.com/2023/02/the-biggest-problem-with-eventbridge-scheduler-and-how-to-fix-it/)
-- [5 reasons why you should EventBridge instead of SNS](https://lumigo.io/blog/5-reasons-why-you-should-use-eventbridge-instead-of-sns/)
+### [The biggest problem with EventBridge Scheduler and how to fix it](https://theburningmonk.com/2023/02/the-biggest-problem-with-eventbridge-scheduler-and-how-to-fix-it/)
+
+This is a new capability from [Amazon EventBridge](https://aws.amazon.com/eventbridge/) that allows you to create, run, and manage scheduled tasks at scale. With EventBridge Scheduler, you can schedule one-time or recurrently tens of millions of tasks across many AWS services without provisioning or managing underlying infrastructure. In the book “[Serverless Architectures on AWS, 2nd Edition](https://www.manning.com/books/serverless-architectures-on-aws-second-edition?a_aid=aws-lambda-in-motion&a_bid=9318fc6f) a chapter shows five ways to implement a similar service to EventBridge Scheduler and discussed the different considerations for such a service.
+
+- **Precision:** how close to the scheduled time is the task executed?
+- **Scalability (number of open tasks):** can the service support millions of tasks that are scheduled but not yet executed?
+- **Scalability (hotspots):** can the service execute millions of tasks at the same time?
+- **Cost**
+
+The chapter teaches you about architectural design and how to think about (and manipulate) trade-offs by walking you through five different implementations. While the lessons from this chapter are still relevant, the implementation ideas are largely superseded by EventBridge Scheduler. The biggest problem with using EventBridge Scheduler is with executing one-off tasks right now. At the time of writing, one-off schedules are not automatically deleted after they have been executed.
+
+When EventBridge Scheduler invokes the target Lambda function, it does so via an asynchronous invocation. This means we can use Lambda Destinations (which doesn’t support synchronous invocations) to trigger the cleanup step and delete the schedule. You can see an example of this in this [demo repo](https://github.com/theburningmonk/eventbridge-schedule-self-delete-demo).
+
+
+
+### [5 reasons why you should EventBridge instead of SNS](https://lumigo.io/blog/5-reasons-why-you-should-use-eventbridge-instead-of-sns/)
+
+SNS and SQS have been the goto options for AWS developers when it comes to service integration. [EventBridge](https://lumigo.io/blog/amazon-eventbridge-a-new-era-of-saas-integration/) (formerly CloudWatch Events) has become a popular alternative.
+
+1. **More targets**: EventBridge supports 20 target types, such as SNS, SQS, Kinesis, ECS, Lambda, and even another AWS account. This eliminates a lot of unnecessary "glue code" required for intermediary functions. However, it's important to note that EventBridge limits 5 targets per rule while SNS allows up to 12,500,000 subscriptions per topic.
+2. **AWS and third-party events**: Besides custom application events, EventBridge can capture events in your AWS region and from API calls recorded by CloudTrail. It also supports events from third-party partners such as PagerDuty and Datadog, which allows it to react to events in those systems without the need for complex event ingestion. EventBridge's soft limit is 2400 operations per second for PutEvents, but this can be increased depending on your workload.
+3. **Content-based filtering**: Unlike SNS, which only allows filtering by message attributes, EventBridge supports content-based filtering. This means you can pattern-match against the event content and use advanced rules such as numeric comparison, prefix matching, IP address matching, etc. This makes it possible to have a single event bus for all publishers, simplifying management.
+4. **Schema discovery**: EventBridge tackles the issue of identifying and versioning event schemas with its Schema Registry. It can auto-generate schema definitions and generate language bindings for Java, Python, and TypeScript. This feature can be enabled on both the default and custom event buses.
+5. **Input transformation**: EventBridge also has the capacity to transform the event before passing it to the targets, which reduces the need for custom glue code used solely for payload transformation.
 
 # API Gateway
 
-- [Checklist for going live with API Gateway and Lambda](https://theburningmonk.com/2019/11/check-list-for-going-live-with-api-gateway-and-lambda/)
-- [The why, when and how of API Gateway service proxies](https://lumigo.io/blog/the-why-when-and-how-of-api-gateway-service-proxies/)
-- [Using Protocol Buffers with API Gateway and AWS Lambda](https://theburningmonk.com/2017/09/using-protocol-buffers-with-api-gateway-and-aws-lambda/)
-- [How to choose the right API Gateway auth method](https://theburningmonk.com/2020/06/how-to-choose-the-right-api-gateway-auth-method/)
-- [How to auto-create CloudWatch alarms for API Gateway, using Lambda](https://theburningmonk.com/2018/05/auto-create-cloudwatch-alarms-for-apis-with-lambda/)
-- [The API Gateway security flaw you need to pay attention to](https://theburningmonk.com/2019/10/the-api-gateway-security-flaw-you-need-to-pay-attention-to/)
+### [Checklist for going live with API Gateway and Lambda](https://theburningmonk.com/2019/11/check-list-for-going-live-with-api-gateway-and-lambda/)
+
+
+
+### [The why, when and how of API Gateway service proxies](https://lumigo.io/blog/the-why-when-and-how-of-api-gateway-service-proxies/)
+
+One of the very powerful and yet often under-utilized features of [API Gateway](https://lumigo.io/blog/tackling-api-gateway-lambda-performance-issues/) is its ability to integrate directly with other AWS services. For example, you can [connect API Gateway directly to an SNS topic](https://www.alexdebrie.com/posts/aws-api-gateway-service-proxy/) without needing a Lambda function in the middle. Or [to S3](https://docs.aws.amazon.com/apigateway/latest/developerguide/integrating-api-with-aws-services-s3.html), or any number of AWS services. Particularly useful in removing Lambda from the equation, thereby eliminating limitations and overhead that comes with Lambda, such as cold starts, costs, and concurrency limits.
+
+Using API Gateway service proxies is especially beneficial when a Lambda function merely calls another AWS service and returns the response, or when concerns exist about cold start latency overhead or hitting concurrency limits. However, users should keep in mind the additional functions a Lambda function might be fulfilling, such as logging useful contextual information, handling errors, applying fallbacks when an AWS service fails, and injecting failures into requests for chaos engineering purposes.
+
+If users decide to implement API Gateway service proxies, they can use an open-source tool `serverless-apigateway-service-proxy`. This Serverless framework plugin simplifies creating service proxies and currently supports Kinesis Streams, SQS, SNS, and S3, with work in progress to support DynamoDB. The plugin also ensures the correct permissions are in place for the API Gateway, allows CORS and authorization customization, and enables request template customization.
+
+
+
+### [Using Protocol Buffers with API Gateway and AWS Lambda](https://theburningmonk.com/2017/09/using-protocol-buffers-with-api-gateway-and-aws-lambda/)
+
+Protocol Buffers (protobufs) with API Gateway and AWS Lambda to produce smaller and more efficient payloads compared to JSON. 
+
+The steps to implementing Protocol Buffers with API Gateway and Lambda include installing the `serverless-apigw-binary` plugin, adding 'application/x-protobuf' to binary media types, and creating a function that returns Protocol Buffers as a base64 encoded response. To encode & decode Protocol Buffers payload in Nodejs, you can use the [protobufjs](https://www.npmjs.com/package/protobufjs) package from NPM.
+
+However, there are some important things to note when using protobufjs in a Lambda function. It requires that the package be installed on a Linux system due to its dependency on native binaries. This issue can be circumvented by deploying your code inside a Docker container, which would locally install a compatible version of the native binaries for your OS.
+
+Yan suggests using HTTP content negotiation to toggle between JSON and Protocol Buffers as required. While Protocol Buffers should be used by default to minimize bandwidth use, a mechanism should be built in for switching the communication to JSON when necessary, for easier debugging.
+
+
+
+### [How to choose the right API Gateway auth method](https://theburningmonk.com/2020/06/how-to-choose-the-right-api-gateway-auth-method/)
+
+
+
+### [How to auto-create CloudWatch alarms for API Gateway, using Lambda](https://theburningmonk.com/2018/05/auto-create-cloudwatch-alarms-for-apis-with-lambda/)
+
+
+
+### [The API Gateway security flaw you need to pay attention to](https://theburningmonk.com/2019/10/the-api-gateway-security-flaw-you-need-to-pay-attention-to/)
 
 
 
