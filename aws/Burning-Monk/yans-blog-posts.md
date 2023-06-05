@@ -177,7 +177,7 @@ module.exports.handler = async (event, context) => {
 
 
 
-### [Use ](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)`context.getRemainingTimeInMillis()`[ to adjust client-side request timeout based on actual invocation time left](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)
+### [Use ](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)`context.getRemainingTimeInMillis()`[ to adjust client-side request timeout based on actual invocation time left](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/) / [AWS Lambda — use the invocation context to better handle slow HTTP responses](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)
 
 **API Gateway have a 30s max timeout** on all integration points. Serverless framework uses a default of 6s for AWS Lambda functions. This poses a problem hard coded timeout values in functions, when a function calls another function and so on, and the original function is waiting for a response.
 
@@ -187,7 +187,7 @@ With this approach, we get the best of both worlds: allow requests the best chan
 
 Check out [Netflix Hystrix](https://github.com/Netflix/Hystrix/wiki). Most of the patterns that are baked into *Hystrix* can be easily adopted in our serverless applications to help make them more resilient to failures
 
-
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zf86nqrkfpcozwyjhqwm.png)
 
 ### [Should you have few monolithic functions or many single-purposed functions?](https://theburningmonk.com/2018/01/aws-lambda-should-you-have-few-monolithic-functions-or-many-single-purposed-functions/)
 
@@ -677,40 +677,177 @@ Serverless framework plugin called `serverless-api-gateway-throttling` allows fo
 
 ### [Applying the pub-sub and push-pull messaging patterns with AWS Lambda](https://hackernoon.com/applying-the-pub-sub-and-push-pull-messaging-patterns-with-aws-lambda-73d5ee346faa)
 
+#### pub-sub
+
+##### SNS + Lambda
+
+Publish-Subscribe (pub-sub) is a decoupled messaging pattern where messages are transferred between publishers and subscribers through an intermediary broker such as ZeroMQ, RabbitMQ, or AWS SNS.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ea33tajnbxzzkzszusw1.png)
+
+In the context of the AWS ecosystem, SNS (Simple Notification Service) acts as the broker, with Lambda functions acting as the receivers of the messages. Each SNS message triggers a new invocation of the subscribed Lambda function, enabling high levels of parallel processing. For instance, if 100 messages are published to SNS, there can be 100 concurrent executions of the Lambda function, optimizing throughput.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qnffunmxzq1w2dn6isfy.png)
+
+However, challenges may arise due to limitations in the throughput capacities of downstream dependencies such as databases or other services. When a burst in throughput is brief, retries (with exponential back off) can usually handle any unprocessed messages, preventing message loss. However, if a burst is sustained or if a downstream dependency experiences an outage, the maximum number of retries may be exhausted, leading to message failure.
+
+When message processing fails, these messages are sent to a Dead Letter Queue (DLQ) after two unsuccessful retries. Consequently, this situation may necessitate human intervention for message recovery. 
+
+Additionally, the concurrent execution of Lambda functions is subject to an account-wide limit. A high number of concurrent executions could potentially impact other AWS Lambda-dependent systems like APIs, event processing, or cron jobs.
+
+##### Kinesis + Lambda
+
+Kinesis Streams and SNS (Simple Notification Service) are different AWS services that each have unique features and use cases.
+
+Lambda interacts with these two services differently: it polls Kinesis Streams for records up to five times a second, while SNS pushes messages directly to Lambda. With Kinesis, records are received in batches up to a user-specified maximum. In contrast, SNS invokes the Lambda function with one message at a time.
+
+If a Lambda function fails to process a batch of records from Kinesis (either due to an error or a timeout), the same batch of records will be received until they are successfully processed or the data is no longer available in the stream. The parallel processing capability in Kinesis is determined by the number of shards in the stream, as there is one dedicated invocation per shard. Kinesis Streams pricing is based on the number of records pushed to the stream, shard hours, and the optional enabling of extended retention.
+
+Kinesis Streams can handle bursts in traffic and downstream outages more effectively than SNS. The maximum throughput is determined by the number of shards, maximum batch size, and reads per second, offering two levers to adjust the maximum throughput. Records are retried until success; unless the outage lasts longer than the retention policy on the stream (default is 24 hours), you will eventually be able to process the records.
+
+However, there are also operational considerations with Kinesis Streams: it's charged based on shard hours, meaning a dormant stream incurs a baseline cost. Furthermore, it lacks built-in auto-scaling capability, necessitating additional management overhead for scaling based on utilization. It's possible to build auto-scaling capabilities yourself, though.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jrrf4h7wgkivyd3dwffw.png)
+
+##### DDB Streams + Lambda
+
+Lastly, AWS offers another streaming option, DynamoDB Streams, which provides another alternative to SNS and Kinesis Streams.
+
+![img](data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27800%27%20height=%27308.77500000000003%27/%3e)![image](https://hackernoon.imgix.net/hn-images/1*3Wp0NTekhku5B6HdwpN2UQ.png?auto=format&fit=max&w=1920)
+
+DynamoDB Streams can be used as an alternative to Kinesis Streams, offering similar functionality when used with AWS Lambda. There are some operational differences worth noting:
+
+- DynamoDB Streams auto-scales the number of shards, simplifying management and scalability considerations. However, this could also lead to potentially overwhelming downstream systems during load spikes, as there's no control over the maximum number of shards a DynamoDB stream can scale up to.
+- If you're processing DynamoDB Streams with AWS Lambda, the reads from DynamoDB Streams are free, although you still have to pay for the read & write capacity units for the DynamoDB table itself.
+- Unlike Kinesis Streams, DynamoDB Streams does not offer the option to extend data retention to 7 days.
+
+The choice between Kinesis or DynamoDB Streams depends largely on your system's "source of truth". If a row being written in DynamoDB defines the state of your system, then DynamoDB Streams may be a suitable choice. On the other hand, in an event-sourced system, where the state is modelled as a sequence of events, Kinesis streams could serve as the source of truth.
+
+From a cost perspective, Kinesis Streams, despite a baseline cost, grows slower in cost with scale compared to SNS and DynamoDB Streams. However, these cost projections are based on the assumption of consistent throughput and message size, which may not reflect real-world usage.
+
+Another consideration is the aws-lambda-fanout project from awslabs, which allows Lambda functions to propagate events from Kinesis and DynamoDB Streams to other services that cannot directly subscribe to these brokers due to account/region limitations or lack of support. While this approach is beneficial for some specific needs, it also introduces added complexities, such as handling partial failures and dealing with downstream outages or misconfigurations.
+
+#### push-pull, aka fan-out/fan-in
+
+The fan-out/fan-in or push-pull messaging pattern is essentially two separate patterns working in tandem. Fan-out delivers messages to a pool of workers in a round-robin fashion and each message is delivered to only one worker. This allows for parallel processing and increased throughput. In cases where an expensive task is partitioned into many subtasks, fan-in is required to collect results from individual workers and aggregate them.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xnt3hyqp2i2u4f05uiia.png)
+
+##### fan-out with SNS
+
+SNS’s invocation per message policy is an ideal fit for fan-out as it optimizes for throughput and parallelism. For instance, in the case of a social media app, when a user makes a post, the post can be distributed to the followers' timelines as separate subtasks.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/79ad31kesg4iposoda7q.png)
+
+##### fan-out with SQS
+
+SQS was traditionally used for this type of workload before AWS Lambda. Even though SQS is not directly supported as an event source for Lambda, it can still be a good choice for distributing tasks, especially if subtasks take longer than 5 minutes to complete, exceeding the maximum execution time for Lambda.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rxgm5zxerctvtjnw7pm2.png)
+
+##### What about Kinesis or DynamoDB Streams?
+
+Kinesis or DynamoDB Streams are not ideal options for fan-out since the degree of parallelism is constrained by the number of shards, and resharding is costly and lacks flexibility in DynamoDB Streams.
+
+##### fan-in: collecting results from workers & tracking overall progress
+
+Fan-in involves collecting results from workers. This could be done by storing results in DynamoDB or S3, depending on the size of the results. But it's important to note that both methods can lead to hot partitions if not properly mitigated with a GUID for the job ID.
+
+To track the overall progress of tasks, the total number of subtasks should be recorded when the ventilator function partitions the task. Each invocation of the worker function can then atomically decrement the count until it reaches 0, signaling that all the subtasks are complete. The sink function or reducer can then aggregate the individual results. 
+
+The push-pull pattern can be effectively implemented with AWS Lambda and provides a flexible solution for parallel processing of tasks and aggregating results.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/d9wbyy15ccz69hsexz1m.png)
+
 
 
 ### [How to use the Decoupled Invocation pattern with AWS Lambda](https://theburningmonk.medium.com/applying-the-decoupled-invocation-pattern-with-aws-lambda-2f5f7e78d18)
+
+The Decoupled Invocation pattern is a serverless queue methodology that separates a reply from the initial request to prevent timeouts caused by slower downstream systems. This approach is particularly useful when using an API that is more scalable than its downstream systems or needs to perform an expensive, time-consuming process to respond to a request.
+
+In this pattern, upon receiving a request, the API stores a record for the request in a DynamoDB table and queues a task in either SQS, Kinesis Stream or DynamoDB Stream. The API then responds to the client with a 202 ACCEPTED response, indicating the location of the worker task results. The client periodically polls the API for the result while the API continues to return 202 ACCEPTED until the task is processed. 
+
+This allows for processing at a pace that doesn't stress the downstream systems and provides flexibility in retry strategies. Moreover, it enables quick responses to initial requests, allowing for smarter client-side communication.
+
+SQS, as an event source for AWS Lambda, is a good choice for this setup. As throughput increases, AWS automatically increases the number of SQS pollers, hence increasing the function's concurrent executions. However, SNS isn't recommended due to its invocation-per-message policy that doesn't amortize any traffic spikes.
+
+Alternatively, Kinesis or DynamoDB Streams can be used. With DynamoDB Streams, the API only needs to write to the DynamoDB table, relying on the Streams to trigger the background worker. However, it's important to ensure that the client doesn’t poll indefinitely, so a timeout can be set based on the created_at timestamp.
+
+Overall, the Decoupled Invocation pattern is a viable option when performing expensive, time-consuming tasks in response to an HTTP request, or if your API layer is constrained by downstream dependencies.
+
+
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lkvm9tguma1v1ylmd8wz.png)
 
 
 
 ### [Create IP-protected endpoints with API Gateway and Lambda](https://theburningmonk.com/2018/07/how-to-create-ip-protected-endpoints-with-api-gateway-and-lambda/)
 
-
+Describes how to set up IP-protected endpoints with AWS API Gateway and Lambda using resource policies, a feature that enables API Gateway private endpoints to be placed inside a private VPC.
 
 ### [DynamoDB TTL as an ad-hoc scheduling mechanism](https://theburningmonk.com/2019/03/dynamodb-ttl-as-an-ad-hoc-scheduling-mechanism/)
 
-
+(EventBridge scheduler is the meta now)
 
 ### [Using CloudWatch and Lambda to implement ad-hoc scheduling](https://theburningmonk.com/2019/05/using-cloudwatch-and-lambda-to-implement-ad-hoc-scheduling/)
 
+(EventBridge scheduler is the meta now)
+
+### [Scheduling ad-hoc tasks with Step Functions](https://theburningmonk.com/2019/06/step-functions-as-an-ad-hoc-scheduling-mechanism/)
+
+(EventBridge scheduler is the meta now)
+
+###  [A simple event-sourcing example with snapshots using Lambda and DynamoDB](https://theburningmonk.com/2019/08/a-simple-event-sourcing-example-with-snapshots-using-lambda-and-dynamodb/)
+
+Discusses a simple event-sourcing example with snapshots using AWS Lambda and DynamoDB. In this demo, uses a banking application scenario where a user can create an account, check the balance, withdraw money, and credit the account.
+
+The main aspects of the demo are:
+
+1. Events: Each time an account holder interacts with the account (withdraws from or credits), an event is recorded. The current balance of the account is then derived from these events.
+
+2. Snapshots: To avoid reading a large amount of data on every request, snapshots are created periodically. These snapshots capture the current state and allow limiting the number of rows that need to be fetched on every request.
+
+3. Rebuilding the current state: The current state is rebuilt by finding the most recent snapshot and applying the events since the snapshot was taken.
+
+4. Optimistic locking: To safeguard against concurrent updates to the account, the Version attribute is configured as the RANGE key. When an event is added to the DynamoDB table, the system checks that the version doesn't exist already.
+
+5. Optimizations: The author suggests several optimizations, like enabling HTTP keep-alive for the AWS SDK, not referencing the full AWS SDK, and using webpack to bundle the functions.
+
+6. Streaming events to other consumers: The author proposes two ways to stream these events to other systems - letting other services subscribe to the DynamoDB table's stream or creating another Kinesis stream and converting these DynamoDB INSERT events into domain events.
+
+### [What’s the best event source for doing pub-sub with Lambda](https://theburningmonk.com/2018/04/what-is-the-best-event-source-for-doing-pub-sub-with-aws-lambda/)
+
+Same article as [Applying the pub-sub and push-pull messaging patterns with AWS Lambda](https://hackernoon.com/applying-the-pub-sub-and-push-pull-messaging-patterns-with-aws-lambda-73d5ee346faa)
 
 
-
-
-- [Scheduling ad-hoc tasks with Step Functions](https://theburningmonk.com/2019/06/step-functions-as-an-ad-hoc-scheduling-mechanism/)
-- [A simple event-sourcing example with snapshots using Lambda and DynamoDB](https://theburningmonk.com/2019/08/a-simple-event-sourcing-example-with-snapshots-using-lambda-and-dynamodb/)
-- [What’s the best event source for doing pub-sub with Lambda](https://theburningmonk.com/2018/04/what-is-the-best-event-source-for-doing-pub-sub-with-aws-lambda/)
-- [AWS Lambda — use the invocation context to better handle slow HTTP responses](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)
 
 # Serverless framework
 
-- [Top 10 Serverless best practices](https://datree.io/serverless-best-practices/)
-- [Introducing… CloudFormation extrinsic functions](https://theburningmonk.com/2019/04/introducing-cloudformation-extrinsic-functions/)
-- [CloudFormation protip: use !Sub instead of !Join](https://theburningmonk.com/2019/05/cloudformation-protip-use-fnsub-instead-of-fnjoin/)
-- [How to include Serverless Repository apps in serverless.yml](https://theburningmonk.com/2019/05/how-to-include-serverless-repository-apps-in-serverless-yml/)
-- [Making Terraform and the Serverless framework work together](https://theburningmonk.com/2019/03/making-terraform-and-serverless-framework-work-together/)
-- [How to make serverless framework boilerplates customizable](https://theburningmonk.com/2019/08/how-to-make-serverless-framework-boilerplates-customizable/)
-- [Where Serverless plugin stops and platform starts](https://theburningmonk.com/2019/10/where-serverless-plugin-stops-and-platform-starts/)
+### [Top 10 Serverless best practices](https://datree.io/serverless-best-practices/)
+
+
+
+### [Introducing… CloudFormation extrinsic functions](https://theburningmonk.com/2019/04/introducing-cloudformation-extrinsic-functions/)
+
+
+
+### [CloudFormation protip: use !Sub instead of !Join](https://theburningmonk.com/2019/05/cloudformation-protip-use-fnsub-instead-of-fnjoin/)
+
+
+
+### [How to include Serverless Repository apps in serverless.yml](https://theburningmonk.com/2019/05/how-to-include-serverless-repository-apps-in-serverless-yml/)
+
+
+
+### [Making Terraform and the Serverless framework work together](https://theburningmonk.com/2019/03/making-terraform-and-serverless-framework-work-together/)
+
+
+
+### [How to make serverless framework boilerplates customizable](https://theburningmonk.com/2019/08/how-to-make-serverless-framework-boilerplates-customizable/)
+
+
+
+### [Where Serverless plugin stops and platform starts](https://theburningmonk.com/2019/10/where-serverless-plugin-stops-and-platform-starts/)
 
 # Performance & Cold Start
 
@@ -723,7 +860,6 @@ Serverless framework plugin called `serverless-api-gateway-throttling` allows fo
 - [All you need to know about caching for serverless applications](https://theburningmonk.com/2019/10/all-you-need-to-know-about-caching-for-serverless-applications/)
 - [How to: optimize Lambda memory size during CI/CD pipeline](https://theburningmonk.com/2020/03/how-to-optimize-lambda-memory-size-during-ci-cd-pipeline/)
 - [This is all you need to know about Lambda cold starts](https://lumigo.io/blog/this-is-all-you-need-to-know-about-lambda-cold-starts/)
-- [AWS Lambda — use the invocation context to better handle slow HTTP responses](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)
 - [I’m afraid you’re thinking about AWS Lambda cold starts all wrong](https://theburningmonk.com/2018/01/im-afraid-youre-thinking-about-aws-lambda-cold-starts-all-wrong/)
 - [AWS Lambda cold starts are about to get faster](https://lumigo.io/blog/aws-lambda-cold-starts-are-about-to-get-faster/)
 
@@ -847,3 +983,4 @@ Serverless framework plugin called `serverless-api-gateway-throttling` allows fo
 - [Package your Lambda function as a container image](https://lumigo.io/blog/package-your-lambda-function-as-a-container-image/)
 - [How to work around CloudFormation circular dependencies](https://theburningmonk.com/2022/05/how-to-work-around-cloudformation-circular-dependencies/)
 - [How to manage Route53 hosted zones in a multi-account environment](https://theburningmonk.com/2021/05/how-to-manage-route53-hosted-zones-in-a-multi-account-environment/)
+
