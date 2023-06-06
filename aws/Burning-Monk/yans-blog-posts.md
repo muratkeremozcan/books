@@ -825,29 +825,189 @@ Same article as [Applying the pub-sub and push-pull messaging patterns with AWS 
 
 ### [Top 10 Serverless best practices](https://datree.io/serverless-best-practices/)
 
+ 
+
+
+
+1. **No Wildcards in IAM Role Statements**: To ensure your serverless applications are secure, avoid overprovisioning your functions with access. Adhere to the principle of least privilege by granting your functions only the minimal access they require.
+
+   ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/uqakykf9exwuulnq94db.png)
+
+2. **One IAM Role per Function**: Instead of using a shared role for all the functions in the serverless.yml (which violates the principle of least privilege), use the `serverless-iam-roles-per-function` plugin to define IAM roles for each function.
+
+3. **Configure DLQ for Async Functions**: Configure a separate Dead Letter Queue (DLQ) for each function invoked by async event sources  (see [here](https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html)). This way, if a function errors persistently, invocation events won't be lost.
+
+4. **Configure Framework Version Range**: You should specify the frameworkVersion property in your serverless.yml file to ensure you are using a compatible version of the Serverless Framework.
+
+5. **Configure CloudFormation Deploy Role**: Use the Serverless Framework to pass a dedicated deployer role to CloudFormation. This allows you to apply the principle of least privilege to the deployment pipeline and use attribute-based access control. 
+
+6. **Configure Stack Tags**: Tags are useful for tracking resources and monitoring AWS spending. Besides the default STAGE tag, consider adding other custom tags using the stackTags property. Deploy the [propagate-cfn-tags SAR app](https://github.com/lumigo-io/SAR-Propagate-CFN-Tags) to your account.
+
+7. **Use Fn::Sub instead of Fn::Join for Clarity**: To construct ARNs and URLs, Fn::Sub is preferable over Fn::Join because it makes for more readable code. See more examples [here](https://theburningmonk.com/2019/05/cloudformation-protip-use-fnsub-instead-of-fnjoin/).
+
+   ```yml
+   # Example 1: IAM role name
+   RoleName:  # hello-world-dev-{region}-lambdaRole
+     !Join
+       - '-'
+       - - 'hello-world'
+         - 'dev'
+         - !Ref 'AWS::Region'
+         - 'lambdaRole'
+   
+   # with Fn::Sub instead      
+   PolicyName:
+     !Sub 'hello-world-dev-${AWS::Region}-lambdaRole
+     
+   # Example 2: API Gateway integration URI
+   Uri: # arn:{partition}:apigateway:{region}:.../{lambda}/invocations
+     !Join
+       - ''
+       - - 'arn:'
+         - Ref: AWS::Partition
+         - ':apigateway:'
+         - Ref: AWS::Region
+         - ':lambda:path/2015-03-31/functions/'
+         - !GetAtt 'HelloLambdaFunction.Arn'
+         - '/invocations'
+         
+   # with Fn::Sub:
+   Uri:
+     !Sub
+       - 'arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015/03/31/functions/${Function}/invocations'
+       - { Function: !GetAtt 'HelloLambdaFunction.Arn' }
+       
+   # Example 3: Lambda permission for API Gateway
+   
+   SourceArn: # arn:{partition}:execute-api:{region}:.../*/*
+     !Join:
+       - ''
+       - - 'arn:'
+         - Ref: AWS::Partition
+         - ':execute-api:'
+         - Ref: AWS::Region
+         - ':'
+         - Ref: AWS::AccountId
+         - ':'
+         - Ref: ApiGatewayRestApi
+         - '/*/*'
+         
+   # with Fn::Sub
+   SourceArn:
+     !Sub
+       - 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*/*'
+       - { RestApi: Ref: ApiGatewayRestApi }
+   
+   ```
+
+   
+
+8. **For Node.js Functions, Use Webpack to Improve Cold Start and Reduce Package Size** (Yan says he's having 2nd thoughts about this) : Using the serverless-webpack plugin with Node.js functions can significantly reduce initialization time and package size.
+
+9. **Break Large serverless.yml into Multiple Files**: For better manageability, when your serverless.yml file gets too large, break it down into smaller files and reference them in the main serverless.yml file.
+
 
 
 ### [Introducing… CloudFormation extrinsic functions](https://theburningmonk.com/2019/04/introducing-cloudformation-extrinsic-functions/)
 
+`serverless-plugin-extrinsic-functions`  allows the use of custom functions anywhere in your serverless.yml as if they’re CloudFormation’s intrinsic functions. For instance, to implement the startsWith logic, one could simply use the Fn::StartsWith function.
 
-
-### [CloudFormation protip: use !Sub instead of !Join](https://theburningmonk.com/2019/05/cloudformation-protip-use-fnsub-instead-of-fnjoin/)
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/46jg5nmdourj9u6ks35i.png)
 
 
 
 ### [How to include Serverless Repository apps in serverless.yml](https://theburningmonk.com/2019/05/how-to-include-serverless-repository-apps-in-serverless-yml/)
 
+[Serverless Application Repository](https://serverlessrepo.aws.amazon.com/applications) is pretty awesome. Here are some apps from there:
+
+- [**lambda-janitor**](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:374852340823:applications~lambda-janitor): cron job to delete old, unused versions of all Lambda functions in the region to free up storage space.
+- [**auto-subscribe-log-group-to-arn**](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:374852340823:applications~auto-subscribe-log-group-to-arn): subscribes new and existing CloudWatch log groups to a Lambda function, Kinesis stream, or Firehose delivery stream by ARN.
+- [**auto-set-log-group-retention**](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:374852340823:applications~auto-set-log-group-retention): updates the retention policy for new and existing CloudWatch log groups to a specified number of days to reduce CloudWatch Logs cost.
+- [**async-custom-metrics**](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:374852340823:applications~async-custom-metrics): lets you record custom metrics by writing to stdout (which is recorded in CloudWatch Logs) which is then parsed and forwarded to CloudWatch metrics as custom metrics.
+- [**propagate-cfn-tags**](https://github.com/lumigo-io/SAR-Propagate-CFN-Tags): propagates CloudFormation tags to resources that are not automatically tagged, e.g. CloudWatch log groups.
+- [**autodeploy-layer**](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:374852340823:applications~autodeploy-layer): automatically deploys a Lambda layer to all new and existing functions in the region. Supports opt-in and opt-out via function tags.
+
+To add a Serverless Repository app to your `serverless.yml` you will need to:
+
+1. Add `Transform: AWS::Serverless-2016–10–31` to the `resources` section of your `serverless.yml`. This enables a global macro that will run over the whole CloudFormation stack and transform special resources as necessary. In this case, it’ll transform `AWS::Serverless::Application` resources into nested CloudFormation stacks.
+2. Add Serverless Repository apps as additional CloudFormation resources. These should have the resource type `AWS::Serverless::Application`.
+
 
 
 ### [Making Terraform and the Serverless framework work together](https://theburningmonk.com/2019/03/making-terraform-and-serverless-framework-work-together/)
 
+***Update 07/04/2023:** Since I originally wrote this post, my preference has shifted to using **SSM Parameter Store** to share information between Terraform and the Serverless framework. This is preferable because:*
 
+1. *The Serverless Framework has built-in support for reading data from SSM, with the **${ssm:/path/to/param}** syntax.*
+2. *CloudFormation is used to provision resources, using it as a container for outputs is a misuse of CloudFormation.*
+3. *Creating an SSM parameter is easier than a CloudFormation stack.*
+4. *SSM supports SecretString, so you can use it to share sensitive data that should be encrypted at rest, e.g. API keys.*
+
+*But you might ask “What about Secrets Manager instead of SSM?”. That is an option, but personally, I still prefer to use SSM Parameter Store over Secrets Manager in most cases, and [**here’s why**](https://theburningmonk.com/2023/03/the-old-faithful-why-ssm-parameter-store-still-reigns-over-secrets-manager/).*
 
 ### [How to make serverless framework boilerplates customizable](https://theburningmonk.com/2019/08/how-to-make-serverless-framework-boilerplates-customizable/)
 
+**JS Proxy objects**: This approach allows you to create a boilerplate config where you can customize a field, even if it's deeply nested. This is accomplished by returning a Proxy that traps any attempt to access a property on the exported object. The property name is used to construct the actual config object. Additionally, you can return another Proxy from the first one to insert or update a property at an arbitrary location. For complex customization needs, you can create a scheme to support key-value pairs in a comma-separated fashion.
 
+```js
+const _ = require('lodash');
+
+const template = {
+  path: '/',
+  method: 'get'
+};
+
+const handler = {
+  get: function (obj, path) {
+    const x = _.cloneDeep(obj);
+    return () => new Proxy(x, {
+      get: function (obj, value) {
+        _.set(obj, path, value);
+        return obj;
+      }
+    });
+  }
+}
+
+module.exports = new Proxy(template, handler);
+```
+
+```yml
+functions:
+  index:
+    handler: index.handler
+    events:
+      - http: ${file(defaultHttp.js):path./index}
+      - http: ${file(defaultHttp.js):method.post}
+```
+
+Which creates the endpoints as you’d expect:
+
+```
+endpoints:
+  GET - https://xxx.execute-api.us-east-1.amazonaws.com/dev/index
+  POST - https://xxx.execute-api.us-east-1.amazonaws.com/dev/
+```
 
 ### [Where Serverless plugin stops and platform starts](https://theburningmonk.com/2019/10/where-serverless-plugin-stops-and-platform-starts/)
+
+Instead, for decisions that apply to ALL projects, you should build them into your platform. And by “platform”, I mean a collection of **capabilities** that are implemented once per account or region.
+
+![img](https://theburningmonk.com/wp-content/uploads/2019/10/img_5da31d0120496.png)
+
+Capabilities such as:
+
+- logs would be delivered to your chosen logging service, be it Elasticsearch, Logz.io, Loggly, NewRelic or whatever it might be.
+- log retention policies are configured to X days to reduce storage cost.
+- functions can record custom metrics with StatsD format log messages.
+- CloudFormation tags are propagated to all resources to enable better cost tracking.
+
+ Decisions that are specific to one project, or need to be tailored for each project, should be implemented at the project level. Plugins are a good way to implement these decisions.
+
+- If the capability is universal and should apply to all of your serverless projects, then build it into your platform.
+- Otherwise, use a plugin to implement capabilities that are required at a project-by-project basis.
+
+> [AWS Control Tower](https://aws.amazon.com/controltower/) lets you template the baseline configuration for new accounts. You can then use the account factory to quickly provision them. If you’re new to Control Tower, then check out [this session](https://www.youtube.com/watch?v=2t-VkWt0rKk) from re:inforce 2019.
 
 # Performance & Cold Start
 
