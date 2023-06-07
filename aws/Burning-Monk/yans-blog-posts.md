@@ -1011,14 +1011,121 @@ Capabilities such as:
 
 # Performance & Cold Start
 
-- [3 ways to manage concurrency in serverless applications](https://theburningmonk.com/2023/02/3-ways-to-manage-concurrency-in-serverless-applications/)
-- [Just how expensive is the full AWS SDK?](https://theburningmonk.com/2019/03/just-how-expensive-is-the-full-aws-sdk/)
-- [Improve latency by enabling HTTP keep-alive](https://theburningmonk.com/2019/02/lambda-optimization-tip-enable-http-keep-alive/)
-- [How long does AWS Lambda keep your idle functions around before a cold start?](https://read.acloud.guru/how-long-does-aws-lambda-keep-your-idle-functions-around-before-a-cold-start-bf715d3b810)
-- [How does language, memory and package size affect cold starts of AWS Lambda?](https://read.acloud.guru/does-coding-language-memory-or-package-size-affect-cold-starts-of-aws-lambda-a15e26d12c76)
-- [Comparing AWS Lambda performance when using Node.js, Java, C# or Python](https://read.acloud.guru/comparing-aws-lambda-performance-when-using-node-js-java-c-or-python-281bef2c740f)
-- [All you need to know about caching for serverless applications](https://theburningmonk.com/2019/10/all-you-need-to-know-about-caching-for-serverless-applications/)
-- [How to: optimize Lambda memory size during CI/CD pipeline](https://theburningmonk.com/2020/03/how-to-optimize-lambda-memory-size-during-ci-cd-pipeline/)
+### [3 ways to manage concurrency in serverless applications](https://theburningmonk.com/2023/02/3-ways-to-manage-concurrency-in-serverless-applications/)
+
+**Fork-Join Pattern (Push-Pull / Fan-out Fan-in):** 
+
+This is a pattern that was designed to solve problems that can be broken into smaller tasks using a concurrent, recursive, divide-and-conquer approach. 
+
+Here's a brief description of how it works:
+
+- **Fork:** A given task is split into multiple subtasks. This is usually done recursively, meaning each subtask can further split into its subtasks until the problem is small enough to be solved directly.
+- **Join:** The results of the subtasks are then combined into a single result. This is typically done in the opposite order to the forking.
+
+**Thread Pool Pattern:**
+
+The Thread Pool pattern is used to manage a pool of worker threads that are waiting to execute tasks. This pattern is particularly useful when you have a large number of tasks to be executed in parallel, but want to limit the number of threads that are running at the same time.
+
+Here's a brief description of how it works:
+
+- **Initialization:** A number of worker threads are created and added to a pool.
+- **Task Execution:** When a task needs to be executed, one of the worker threads from the pool is selected and the task is assigned to it.
+- **Recycling:** Once a thread has finished executing its task, instead of being destroyed, it returns to the pool and waits for the next task.
+
+Using a thread pool can improve performance by reducing the overhead of thread creation and destruction.
+
+Both of these patterns are useful for handling concurrency in applications, but they're best suited to different types of tasks. The Fork-Join pattern is typically used for tasks that can be split into smaller, independent tasks, while the Thread Pool pattern is more general-purpose and can be used for any type of task.
+
+There are three ways to manage concurrency in serverless applications, especially those using AWS services like Lambda, EventBridge, and Kinesis. All these are akin to the "thread pool" pattern in multithreaded programming
+
+1. **Using Reserved Concurrency:**  In AWS, you can use reserved concurrency on a Lambda function to process events from EventBridge. This method allows you to control the rate at which events are processed, which is beneficial when dealing with less scalable downstream systems. However, it has its limitations. Reserved concurrency might limit available concurrency for other functions in the same region, potentially throttling API functions and affecting the user experience. Also, it doesn't guarantee the order of event processing, and you might occasionally see duplicated invocations due to Lambda's at-least-once invocation semantic. You can mitigate this by tracking processed events using a unique ID in a DynamoDB table.
+
+   ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/y1j9jqehvswulcbcefek.png)
+
+2. **Using EventSourceMapping with Kinesis Data Streams:** This method is suitable when you need to process events in the order they're received. You can control the concurrency of your application using the relevant settings on the EventSourceMapping without needing to use Lambda's reserved concurrency. In Kinesis, ordering is preserved within a partition key. This approach allows you to control the concurrency using a number of settings, including Batch Size, Batch window, and Concurrent batches per shard. 
+
+   ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mtqxo1k867p9lymo8j97.png)
+
+3. **Using EventSourceMapping with SNS FIFO and SQS FIFO:** This method is similar to the second one but involves using SQS FIFO with SNS FIFO for message handling. Like Kinesis, event orders are preserved within a group, identified by the group ID in the messages. AWS has recently introduced a max concurrency setting for SQS event sources, which helps solve the problem of using reserved concurrency for SQS functions. You can use EventSourceMapping for SQS to control the concurrency of your application without having to manage the Lambda concurrency units in the region manually.
+
+   > With SNS FIFO, you can’t fan out messages to Lambda functions directly (see official documentation [here](https://docs.aws.amazon.com/sns/latest/dg/fifo-message-delivery.html)). This is why you always need to have SQS FIFO in the mix as well.
+
+   ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/prnfc0ixxmwi9b7kjq82.png)
+
+The article emphasizes the importance of these methods in managing concurrency in serverless applications, as improper management can lead to issues such as function throttling or improper order of event processing.
+
+**Dynamic concurrency control in serverless applications**
+
+This is an approach that allows an application to dynamically adjust its own concurrency based on external conditions.
+
+Two main strategies are proposed:
+
+1. **Metaprogramming:** Lambda functions can modify their own settings dynamically through API calls to the Lambda service. This allows them to react to external conditions, such as changes in response time and error rates from downstream systems, and adapt their concurrency settings accordingly. To ensure only one invocation can change the relevant settings at once, additional concurrency control measures are necessary.
+2. **Using a Controller Process:** Instead of having each function adjust its own settings, a separate process can be used to manage them. This approach can distinguish between "blocking an ongoing execution from entering a critical section" and "not starting another execution at all". The author notes the trade-offs discussed in the Step Functions semaphore post, notably that locking an execution midway makes choosing sensible timeouts more challenging. However, with Step Functions, callback patterns can be implemented using task tokens, eliminating the need for polling loops in the middle of your state machine.
+
+### [Just how expensive is the full AWS SDK?](https://theburningmonk.com/2019/03/just-how-expensive-is-the-full-aws-sdk/)
+
+When you declare functions and variables in a Lambda function, whether you should declare them inside the handler or outside depends on several factors. 
+
+Declaring functions and variables outside the handler pros:
+
+1. **Usage across multiple invocations:** Global variables and functions (those declared outside of the handler function) can be used across multiple invocations of the Lambda function during the lifetime of the container. AWS Lambda reuses the container for multiple invocations of the function, so any state (like data in global variables) is preserved between invocations. This can be beneficial if you want to store data or state that can be reused across invocations. 
+2. **Initialization cost:** Initializing functions and variables outside the handler means they're initialized only once, during a cold start. If the initializations are computationally expensive or require network calls (like setting up a database connection), doing so globally can save time and resources over doing the same work on every invocation.
+3. **Cleanliness of code:** Separating variable and function declarations (i.e., putting them outside the handler) can make your code cleaner and easier to read, especially if you follow a modular programming approach.
+
+Declaring functions and variables inside the handler pros:
+
+1. **State isolation:** If your functions and variables are stateful and you want the state to be completely isolated between invocations (meaning no state from one invocation is seen by another), then you should declare them inside the handler. For example, if you have a variable that holds user-specific data and you don't want data from one user to accidentally leak to another, you should declare the variable inside the handler.
+
+2. **Testability:** Code that's inside the handler function can be easier to test, since you can invoke the handler function in a controlled environment and mock any dependencies. 
+
+   
+
+When a Node.js Lambda function cold starts, a number of things happen:
+
+- the Lambda service has to find a server with enough capacity to host the new container
+- the new container is initialized
+- the Node.js runtime is initialized
+- your handler module is initialized, which includes initializing any global variables and functions you declare outside the handler function
+
+To reduce cold starts
+
+* Use lean imports; if you need just DDB, don't import the whole AWS SDK
+
+* Prefer not to instrument the code if it can be helped (x-ray sdk)
+
+* Use module bundlers (webpack, esbuild). But note that the impact in the experiments was not significant when the full AWS SDK was used. The greatest improvement was observed when only the DynamoDB client was required.
+
+  > Yan says: I don't do bundling anymore, run into a few problems and it's changed my mind about bundling. Problem is with the source maps, for non-trivial projects, they get really big (affects cold start) and unhandled exceptions add quite a bit of latency (took seconds to get a 502 back in one API)
+
+
+
+### [Improve latency by enabling HTTP keep-alive](https://theburningmonk.com/2019/02/lambda-optimization-tip-enable-http-keep-alive/)
+
+> If you use the AWS SDK v3, you don't need to do this anymore, it's enabled by default now.
+
+In the example this gave 70% boost...
+
+
+
+### [How long does AWS Lambda keep your idle functions around before a cold start?](https://read.acloud.guru/how-long-does-aws-lambda-keep-your-idle-functions-around-before-a-cold-start-bf715d3b810)
+
+
+
+### [How does language, memory and package size affect cold starts of AWS Lambda?](https://read.acloud.guru/does-coding-language-memory-or-package-size-affect-cold-starts-of-aws-lambda-a15e26d12c76)
+
+
+
+### [Comparing AWS Lambda performance when using Node.js, Java, C# or Python](https://read.acloud.guru/comparing-aws-lambda-performance-when-using-node-js-java-c-or-python-281bef2c740f)
+
+
+
+### [All you need to know about caching for serverless applications](https://theburningmonk.com/2019/10/all-you-need-to-know-about-caching-for-serverless-applications/)
+
+
+
+### [How to: optimize Lambda memory size during CI/CD pipeline](https://theburningmonk.com/2020/03/how-to-optimize-lambda-memory-size-during-ci-cd-pipeline/)
+
 - [This is all you need to know about Lambda cold starts](https://lumigo.io/blog/this-is-all-you-need-to-know-about-lambda-cold-starts/)
 - [I’m afraid you’re thinking about AWS Lambda cold starts all wrong](https://theburningmonk.com/2018/01/im-afraid-youre-thinking-about-aws-lambda-cold-starts-all-wrong/)
 - [AWS Lambda cold starts are about to get faster](https://lumigo.io/blog/aws-lambda-cold-starts-are-about-to-get-faster/)
