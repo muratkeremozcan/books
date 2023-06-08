@@ -56,12 +56,12 @@ The other is requiring explicitly.
 
 ```js
 // don't
-const AWS = require('aws-sdk')
-const DynamoDB = new AWS.DynamoDB()
+const AWS = require("aws-sdk");
+const DynamoDB = new AWS.DynamoDB();
 
 // do
-const DynamoDB = require('aws-sdk/clients/dynamodb')
-const dynamoDB = new DynamoDB()
+const DynamoDB = require("aws-sdk/clients/dynamodb");
+const dynamoDB = new DynamoDB();
 ```
 
 Sls-wepback plugin can help with tree shaking and minification. It also helps to not need the layer.
@@ -70,16 +70,16 @@ Sls-wepback plugin can help with tree shaking and minification. It also helps to
 
 ### Provisioned Concurrency KEY
 
-[Provisioned Concurrency - the end of cold starts](https://lumigo.io/blog/provisioned-concurrency-the-end-of-cold-starts/#:~:text=Once%20enabled%2C%20Provisioned%20Concurrency%20will,at%20lunch%20and%20dinner%20time.) : Once enabled, Provisioned Concurrency will keep your desired number of concurrent executions initialized and ready to respond to requests. This means an end to cold starts! 
+[Provisioned Concurrency - the end of cold starts](https://lumigo.io/blog/provisioned-concurrency-the-end-of-cold-starts/#:~:text=Once%20enabled%2C%20Provisioned%20Concurrency%20will,at%20lunch%20and%20dinner%20time.) : Once enabled, Provisioned Concurrency will keep your desired number of concurrent executions initialized and ready to respond to requests. This means an end to cold starts!
 
 Mind that when provisioned concurrency happens, the init duration does not seem to change. It still happens, but happens ahead of time; that's why it feels much faster but still reports a high duration.
 
 **Difference between Provisioned Concurrency and warm starts**: It's about the instances. Warm start is 1 instance of the lambda, and the rest still cold start. P.C. can be set to scale
 
 From Yan:
-*The actual problem with warm starts is that they don't scale beyond keeping a handful of instances of your functions warm because there's no way to direct an invocation to specific instances (ie. worker) of a function. So if you have a handful of functions and you just need to keep 1 instance of each warm for a low throughput API, then warmers are a good, cheap way to do it compared to using Provisioned Concurrency. But if you need an enterprise-scale solution that can keep 50, 100 instances of your functions warm, and auto-scale the no. of warm instances based on traffic patterns or based on a schedule, and you don't mind (potentially) paying extra for these, then use Provisioned Concurrency. I said potentially paying extra, because Provisioned Concurrency can actually work out cheaper than on-demand concurrency if you have good utilization of the Provisioned Concurrency you have (~60% is the break-even point).*
+_The actual problem with warm starts is that they don't scale beyond keeping a handful of instances of your functions warm because there's no way to direct an invocation to specific instances (ie. worker) of a function. So if you have a handful of functions and you just need to keep 1 instance of each warm for a low throughput API, then warmers are a good, cheap way to do it compared to using Provisioned Concurrency. But if you need an enterprise-scale solution that can keep 50, 100 instances of your functions warm, and auto-scale the no. of warm instances based on traffic patterns or based on a schedule, and you don't mind (potentially) paying extra for these, then use Provisioned Concurrency. I said potentially paying extra, because Provisioned Concurrency can actually work out cheaper than on-demand concurrency if you have good utilization of the Provisioned Concurrency you have (~60% is the break-even point)._
 
->  P.C. happens against a version - not sure why they have both alias and version there.
+> P.C. happens against a version - not sure why they have both alias and version there.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q025m29weskbfzithk44.png)
 
@@ -90,7 +90,7 @@ After invoking the function with Test, things can be verified in Cloudwatch metr
 
 ### When to use Provisioned Concurrency
 
-Let's say you optimized your lambdas (requiring less, webpack...), and cannot optimize further. 
+Let's say you optimized your lambdas (requiring less, webpack...), and cannot optimize further.
 
 Maybe you have so many services and cold starts add up.
 
@@ -107,9 +107,9 @@ It consumes regional limit.
 
 #### When to use
 
-* Optimization can't help you reach performance target
-* Cold starts would likely stack
-* Traffic is spiky
+- Optimization can't help you reach performance target
+- Cold starts would likely stack
+- Traffic is spiky
 
 ### Enable HTTP keep-alive (node) - **KEY**
 
@@ -220,12 +220,12 @@ When you are concerned about cold start overhead (and Provisioned concurrency ha
 
 What you lose:
 
-* Retry and exponential backoff 
-* Contextual logging from the function
-* Error handling & Fallbacks
-* Tracing 
-* Chaos tools
-* You might have to use VTL
+- Retry and exponential backoff
+- Contextual logging from the function
+- Error handling & Fallbacks
+- Tracing
+- Chaos tools
+- You might have to use VTL
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8wohhrnr1pvjompcrjuq.png)
 
@@ -255,7 +255,7 @@ Click [here](https://docs.aws.amazon.com/lambda/latest/dg/scaling.html) for the 
 
 ### Principle of least privilege
 
-Avoid *.
+Avoid \*.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n1zci924pyvulh7ouha5.png)
 
@@ -279,7 +279,7 @@ Click [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/parame
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2axsk5ht29nlgharqqet.png)
 
-Instead fetch at cold start, cache & invalidate every x minutes 
+Instead fetch at cold start, cache & invalidate every x minutes
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/j53f24wdl0fnfcgs0fbd.png)
 
@@ -331,11 +331,11 @@ There are 3 ways to deal with it; 3rd one preferred.
 
 Wrap all this inside middleware, share it as a package and share it across the org:
 
-* Log error message
-* Classify the error type, can it be retried, etc.
-* Return error code, request ID, etc.
-* Track error count metric by type
-* Implement fallbacks
+- Log error message
+- Classify the error type, can it be retried, etc.
+- Return error code, request ID, etc.
+- Track error count metric by type
+- Implement fallbacks
 
 ### When to use Lambda Destinations
 
@@ -361,11 +361,11 @@ Use alarms to alert you that something is wrong, not necessarily what is wrong.
 
 **IteratorAge**: for lambda functions that process against Kinesis streams, you need an alarm for IteratorAge. Should be in milliseconds usually, but can fall behind.
 
-**DeadLetterErrors**: for functions that are triggered by an async event source (SNS, EventBridge) you should have dead letter queues setup, and have an alarm against DeadLetterErrors, which indicates that lambda has trouble sending error events to DLQ. 
+**DeadLetterErrors**: for functions that are triggered by an async event source (SNS, EventBridge) you should have dead letter queues setup, and have an alarm against DeadLetterErrors, which indicates that lambda has trouble sending error events to DLQ.
 
 **Throttles**: for business critical functions you need an alarm that will fire as soon as the fn gets throttled. Maybe there's a rouge fn that's consuming the concurrency in the region, and causing business critical fns to get throttled.
 
-**Error count & success rate %**: according to your SLA 
+**Error count & success rate %**: according to your SLA
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i5jbkjmxgvzhb0atmjsp.png)
 
@@ -405,7 +405,7 @@ Check out the [demo usage](https://github.com/theburningmonk/lambda-distributed-
 
 ### Tuning function memory
 
-Lambda cost is per request and duration. 
+Lambda cost is per request and duration.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5ggwikosv8ld41t3jx62.png)
 
@@ -415,35 +415,37 @@ A function that just does IO does not benefit much from memory. These are prime 
 
 A CPU bound function sees significant improvements as memory is added. Use a balanced approach.
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7vd9epu8towei30lt87j.png) 
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7vd9epu8towei30lt87j.png)
 
-If we combine the above 2 functions, and get a function that  both does IO and is CPU intensive, we get interesting results. 
+If we combine the above 2 functions, and get a function that both does IO and is CPU intensive, we get interesting results.
 We can exploit a cheaper and faster combination. Look out for these free upgrades.
 
 ```js
-const https = require('https')
+const https = require("https");
 
 exports.handler = ({ n }, context, callback) => {
-  https.get('https://google.com', (res) => {
-    console.log('statusCode:', res.statusCode);
-    
-    let a = 1, b = 0, temp;
+  https
+    .get("https://google.com", (res) => {
+      console.log("statusCode:", res.statusCode);
 
-    while (n > 0) {
-      temp = a;
-      a = a + b;
-      b = temp;
-      n--;
-    }
+      let a = 1,
+        b = 0,
+        temp;
 
-    callback(null, b);
-  }).on('error', (e) => {
-    console.error(e);
-  });    
+      while (n > 0) {
+        temp = a;
+        a = a + b;
+        b = temp;
+        n--;
+      }
+
+      callback(null, b);
+    })
+    .on("error", (e) => {
+      console.error(e);
+    });
 };
 ```
-
-
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/huo4hkuzeyje2sc60emb.png)
 
@@ -473,13 +475,23 @@ Lumigo can give a complete outlook to cost. Click [here](https://lumigo.io/) to 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/axvcph5r09xo6s0v3exg.png)
 
-
-
 ### Watch out for costs of peripheral services
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/trh0rf18mkpp726egyz9.png)
 
 Lambda cost is small part of the whole. API gateway is expensive. Prefer to do caching at CloudFront. Click [here](https://theburningmonk.com/2019/10/all-you-need-to-know-about-caching-for-serverless-applications/) for all you need to know about caching for serverless applications. Caching at the edge is very cost-efficient as it cuts out most of the calls to API Gateway and Lambda. Skipping these calls also improve the end-to-end latency and ultimately the user experience. Also, by caching at the edge, you don’t need to modify your application code to enable caching.
+
+Caching remains essential in serverless architectures because while Lambda auto-scales by traffic, it has limitations in terms of concurrent executions. Caching not only helps deal with spiky traffic but also improves performance and cost-efficiency by reducing unnecessary roundtrips and the number of pay-per-use services.
+
+Implement caching as close to the end-user as possible for maximal cost-saving benefits. This can be achieved in several places:
+
+1. **Client-side caching**: Useful for data that rarely changes, it can be implemented using techniques like memoization, significantly improving performance.
+2. **Caching at CloudFront**: CloudFront provides built-in caching capabilities which are very cost-efficient and can improve latency and user experience. CloudFront supports caching by query strings, cookies, and request headers, and it doesn't require any changes to application code.
+3. **Caching at API Gateway**: Unlike CloudFront, which only caches responses to GET, HEAD, and OPTIONS requests, API Gateway caching allows for caching responses to any request. It gives greater control over the cache key. One downside is that it switches from pay-per-use pricing to paying for uptime.
+4. **Caching in the Lambda function**: Data declared outside the handler function is reused between invocations. However, cache misses can be high, and there’s no way to share cached data across all concurrent executions of a function. For sharing cached data, Elasticache can be used but this involves added costs and requires the functions to be inside a VPC.
+5. **DAX**: If using DynamoDB, DAX should be used for application-level caching as it allows the benefits of Elasticache without having to manage it.
+
+In conclusion, caching is crucial for serverless applications to improve scalability, performance, and cost-efficiency. Depending on the specific use-case and requirements, caching should be implemented at different layers in the application, preferably starting from the client side to the server side.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gbe3l5jsjli7ose7lstl.png)
 
@@ -508,12 +520,12 @@ As discussed in the Scalability chapter above, you should consider API gateway s
 
 What you lose with service proxies:
 
-* Retry and exponential backoff
-* Contextual logging
-* Error handling
-* fallbacks
-* tracing
-* Chaos tools
+- Retry and exponential backoff
+- Contextual logging
+- Error handling
+- fallbacks
+- tracing
+- Chaos tools
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/44hbndx27w5rc4wsm3st.png)
 
@@ -537,10 +549,10 @@ HTTP API is 70% cheaper and less powerful than REST API.
 
 This is often related to the discussion of SNS, SQS and Kinesis, also it is only relevant at scale.
 
-AWS Kinesis enables users to collect, process, and analyze large amounts of data in real-time, allowing for real-time analytics and decision making. Both Kinesis Data Stream and Kinesis Firehose help by processing messages in large batches. Bigger batches are more efficient but slower. 
+AWS Kinesis enables users to collect, process, and analyze large amounts of data in real-time, allowing for real-time analytics and decision making. Both Kinesis Data Stream and Kinesis Firehose help by processing messages in large batches. Bigger batches are more efficient but slower.
 
 Kinesis Data Stream is better bet if you need close-to-real-time batching.
-If you want to maximize savings and don't need close-to-real-time batching, Kinesis Firehose is a better choice. 
+If you want to maximize savings and don't need close-to-real-time batching, Kinesis Firehose is a better choice.
 
 Firehose is all managed for you, there's no need to manage the number of shards.
 
@@ -561,40 +573,3 @@ Provisioned concurrency has an uptime cost, but the on demand cost is less. 60% 
 When there is sustained high throughput, PC can reduce lambda invocation cost.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k9wxhxwxipxvd9atisdw.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

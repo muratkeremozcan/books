@@ -1110,25 +1110,65 @@ In the example this gave 70% boost...
 
 ### [How long does AWS Lambda keep your idle functions around before a cold start?](https://read.acloud.guru/how-long-does-aws-lambda-keep-your-idle-functions-around-before-a-cold-start-bf715d3b810)
 
+AWS Lambda will generally terminate functions after 45–60 mins of inactivity, although idle functions can sometimes be terminated a lot earlier to free up resources needed by other customers.
+
+Hypothesis:
+
+1. AWS Lambda will eventually reclaim resources from all idle functions, regardless of how long they stay idle.
+2. The idle timeout before a cold start is not a constant and can vary.
+3. Functions with larger memory allocations are likely to be terminated sooner when idle.
+
 
 
 ### [How does language, memory and package size affect cold starts of AWS Lambda?](https://read.acloud.guru/does-coding-language-memory-or-package-size-affect-cold-starts-of-aws-lambda-a15e26d12c76)
 
-
-
-### [Comparing AWS Lambda performance when using Node.js, Java, C# or Python](https://read.acloud.guru/comparing-aws-lambda-performance-when-using-node-js-java-c-or-python-281bef2c740f)
+- Functions are no longer recycled after around 5 minutes of idleness, reducing the frequency of cold starts.
+- Memory size improves cold start time linearly.
+- C# and Java runtimes experience approximately 100 times the cold start time of Python.
+- C#/Java Lambda functions may benefit from higher memory allocation compared to Node.js/Python functions.
+- Larger deployment package sizes do not increase cold start time and could potentially reduce it.
 
 
 
 ### [All you need to know about caching for serverless applications](https://theburningmonk.com/2019/10/all-you-need-to-know-about-caching-for-serverless-applications/)
 
+Caching remains essential in serverless architectures because while Lambda auto-scales by traffic, it has limitations in terms of concurrent executions. Caching not only helps deal with spiky traffic but also improves performance and cost-efficiency by reducing unnecessary roundtrips and the number of pay-per-use services.
+
+Implement caching as close to the end-user as possible for maximal cost-saving benefits. This can be achieved in several places:
+
+1. **Client-side caching**: Useful for data that rarely changes, it can be implemented using techniques like memoization, significantly improving performance.
+2. **Caching at CloudFront**: CloudFront provides built-in caching capabilities which are very cost-efficient and can improve latency and user experience. CloudFront supports caching by query strings, cookies, and request headers, and it doesn't require any changes to application code.
+3. **Caching at API Gateway**: Unlike CloudFront, which only caches responses to GET, HEAD, and OPTIONS requests, API Gateway caching allows for caching responses to any request. It gives greater control over the cache key. One downside is that it switches from pay-per-use pricing to paying for uptime.
+4. **Caching in the Lambda function**: Data declared outside the handler function is reused between invocations. However, cache misses can be high, and there’s no way to share cached data across all concurrent executions of a function. For sharing cached data, Elasticache can be used but this involves added costs and requires the functions to be inside a VPC.
+5. **DAX**: If using DynamoDB, DAX should be used for application-level caching as it allows the benefits of Elasticache without having to manage it.
+
+In conclusion, caching is crucial for serverless applications to improve scalability, performance, and cost-efficiency. Depending on the specific use-case and requirements, caching should be implemented at different layers in the application, preferably starting from the client side to the server side.
+
 
 
 ### [How to: optimize Lambda memory size during CI/CD pipeline](https://theburningmonk.com/2020/03/how-to-optimize-lambda-memory-size-during-ci-cd-pipeline/)
 
-- [This is all you need to know about Lambda cold starts](https://lumigo.io/blog/this-is-all-you-need-to-know-about-lambda-cold-starts/)
-- [I’m afraid you’re thinking about AWS Lambda cold starts all wrong](https://theburningmonk.com/2018/01/im-afraid-youre-thinking-about-aws-lambda-cold-starts-all-wrong/)
-- [AWS Lambda cold starts are about to get faster](https://lumigo.io/blog/aws-lambda-cold-starts-are-about-to-get-faster/)
+https://serverlessrepo.aws.amazon.com/applications/us-east-1/451282441545/aws-lambda-power-tuning
+
+AWS Lambda Power Tuning is a great tool for optimizing the configuration of your Lambda functions. However, it does not automatically apply to all your Lambda functions. It's more like a tool you use to run tests and see what the most efficient settings would be. Here are a few reasons you might not want to use it for every Lambda function:
+
+1. **Performance Impact:** The tuning process involves invoking your function multiple times (as per the "num" parameter) with different configurations to gather performance data. This means your function will be executed repeatedly, which could have impacts on your other systems or exceed your rate limits, especially if the function interacts with databases or other services.
+2. **Cost:** Each invocation during the tuning process is a billable event. If you're running this process across many functions and with a high "num" parameter, costs could add up.
+3. **Time-consuming:** Depending on the complexity of your functions and the range of power values you want to test, the tuning process can be time-consuming.
+4. **Not always necessary:** Some functions might not need tuning. If a function has consistent performance and is not causing a noticeable impact on your costs, there may not be much benefit in spending the time to fine-tune it.
+5. **Security considerations:** As the documentation points out, the tool runs in your AWS account and makes actual HTTP requests, SDK calls, etc. Depending on your security policies, this may or may not be acceptable.
+
+That being said, the tool can be very useful for optimizing high-usage or resource-intensive Lambda functions where a more efficient configuration could lead to significant cost savings or performance improvements. Remember that the "autoOptimize" parameter can be set to true if you want the tool to automatically apply the optimal configuration found. However, be mindful of the potential side effects and costs.
+
+Yan proposes an alternative, and provides a tutorial on how to automate this power tuning process in the CI/CD pipeline using the lumigo-cli, a command-line interface tool. This tool integrates power-tuning capabilities and outputs results in an easily parseable format, making it easier to integrate into CI/CD pipelines. Check out [**this repo**](https://github.com/theburningmonk/powertune-lambda-CICD-demo) for a demo project that automatically tunes its functions as part of its CI/CD pipeline. Let’s walk through it.
+
+The tutorial shows how to set up a demo project, which utilizes the Serverless framework and lumigo-cli for function configuration and deployment. It also explains how to use a build.sh script for encapsulating key CI/CD pipeline steps like running tests and deploying the project.
+
+The writer also demonstrates how to use lumigo-cli to power-tune each function in the project. They emphasize the need to adjust the payload for different functions that process events from sources like SNS, SQS, Kinesis, etc.
+
+The tutorial shows how to set up a CI/CD pipeline using CircleCI to automate the power tuning process after function deployment. The writer mentions some challenges with the proposed approach, such as tuning functions in every environment after every deployment and managing environment-specific payloads.
+
+As potential solutions to these issues, Yan suggests creating a pull request when improvements are identified instead of updating the functions in-place. They also recommend standardizing the deployment and CI tool and automating the process further by parsing serverless.yml to extract function names, auto-generating the payload based on the configured event source, and creating a CLI for bootstrapping new projects.
 
 # Security
 
