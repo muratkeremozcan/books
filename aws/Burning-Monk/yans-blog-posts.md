@@ -1172,11 +1172,46 @@ As potential solutions to these issues, Yan suggests creating a pull request whe
 
 # Security
 
-- [The Old Faithful: Why SSM Parameter Store still reigns over Secrets Manager](https://theburningmonk.com/2023/03/the-old-faithful-why-ssm-parameter-store-still-reigns-over-secrets-manager/)
-- [Passwordless Authentication made easy with Cognito: a step-by-step guide](https://theburningmonk.com/2023/03/passwordless-authentication-made-easy-with-cognito-a-step-by-step-guide/)
-- [Implementing Magic Links with Amazon Cognito: A Step-by-Step Guide](https://theburningmonk.com/2023/03/implementing-magic-links-with-amazon-cognito-a-step-by-step-guide/)
-- [Yes, S3 now encrypts objects by default, but your job is not done yet](https://theburningmonk.com/2023/01/yes-s3-now-encrypts-objects-by-default-but-your-job-is-not-done-yet/)
-- [How to set up geofencing and IP allow-list for Cognito User Pool](https://theburningmonk.com/2022/08/how-to-setup-geofencing-and-ip-allow-list-for-cognito-user-pool/)
+### [The Old Faithful: Why SSM Parameter Store still reigns over Secrets Manager](https://theburningmonk.com/2023/03/the-old-faithful-why-ssm-parameter-store-still-reigns-over-secrets-manager/)
+
+Storing secrets: SSM Parameter Store vs Secrets Manager
+
+1. Cost-effectiveness: While the Secrets Manager charges usage costs and an uptime cost per secret, the SSM Parameter Store offers Standard parameters free of charge. The costs only arise for Higher Throughput mode and are comparable to Secrets Manager. However, it's crucial to manage these costs correctly to avoid unexpected charges.
+2. Simplicity: The Secrets Manager offers built-in secret rotation, but it requires additional work from the developer to manage the process. With the SSM Parameter Store, it's easier to implement a custom rotation Lambda function and manage it with a custom EventBridge schedule.
+3. Flexibility: Not all application configurations are sensitive and need encryption. The SSM Parameter Store can handle both plain text parameters and encrypted strings, making it more versatile.
+
+However, there are specific cases where Secrets Manager is the better choice, such as:
+
+- For multi-region applications that require cross-region replication of secrets.
+- When working with large (> 8kb) secrets due to the SSM Parameter Store's limit of 8kb.
+- In situations where secrets need to be shared cross-account.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fvnwa5fnh8vjrw99tad6.png)
+
+### [Passwordless Authentication made easy with Cognito: a step-by-step guide](https://theburningmonk.com/2023/03/passwordless-authentication-made-easy-with-cognito-a-step-by-step-guide/)
+
+
+
+
+
+### [Implementing Magic Links with Amazon Cognito: A Step-by-Step Guide](https://theburningmonk.com/2023/03/implementing-magic-links-with-amazon-cognito-a-step-by-step-guide/)
+
+
+
+
+
+### [Yes, S3 now encrypts objects by default, but your job is not done yet](https://theburningmonk.com/2023/01/yes-s3-now-encrypts-objects-by-default-but-your-job-is-not-done-yet/)
+
+
+
+
+
+### [How to set up geofencing and IP allow-list for Cognito User Pool](https://theburningmonk.com/2022/08/how-to-setup-geofencing-and-ip-allow-list-for-cognito-user-pool/)
+
+
+
+
+
 - [How to choose the right API Gateway auth method](https://theburningmonk.com/2020/06/how-to-choose-the-right-api-gateway-auth-method/)
 - [Many-faced threats to Serverless security](https://hackernoon.com/many-faced-threats-to-serverless-security-519e94d19dba)
 - [AWS Lambda and Secret management](https://epsagon.com/blog/aws-lambda-and-secret-management/)

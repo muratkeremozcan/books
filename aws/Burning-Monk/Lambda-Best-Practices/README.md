@@ -267,6 +267,16 @@ Click [here](https://www.npmjs.com/package/serverless-iam-roles-per-function) fo
 
 Storing secrets: SSM Parameter Store vs Secrets Manager
 
+1. Cost-effectiveness: While the Secrets Manager charges usage costs and an uptime cost per secret, the SSM Parameter Store offers Standard parameters free of charge. The costs only arise for Higher Throughput mode and are comparable to Secrets Manager. However, it's crucial to manage these costs correctly to avoid unexpected charges.
+2. Simplicity: The Secrets Manager offers built-in secret rotation, but it requires additional work from the developer to manage the process. With the SSM Parameter Store, it's easier to implement a custom rotation Lambda function and manage it with a custom EventBridge schedule.
+3. Flexibility: Not all application configurations are sensitive and need encryption. The SSM Parameter Store can handle both plain text parameters and encrypted strings, making it more versatile.
+
+However, there are specific cases where Secrets Manager is the better choice, such as:
+
+- For multi-region applications that require cross-region replication of secrets.
+- When working with large (> 8kb) secrets due to the SSM Parameter Store's limit of 8kb.
+- In situations where secrets need to be shared cross-account.
+
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fvnwa5fnh8vjrw99tad6.png)
 
 Click [here](https://aws.amazon.com/secrets-manager/pricing) for Secrets Manager pricing. Click [here](https://aws.amazon.com/systems-manager/pricing/#Parameter_Store) for SSM Parameter Store pricing.
