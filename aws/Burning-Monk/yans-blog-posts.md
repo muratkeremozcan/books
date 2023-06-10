@@ -1190,30 +1190,75 @@ However, there are specific cases where Secrets Manager is the better choice, su
 
 ### [Passwordless Authentication made easy with Cognito: a step-by-step guide](https://theburningmonk.com/2023/03/passwordless-authentication-made-easy-with-cognito-a-step-by-step-guide/)
 
+While Cognito does not natively support passwordless authentication, one can implement custom authentication flows using Lambda hooks. The method involves using the DefineAuthChallenge, CreateAuthChallenge, and VerifyAuthChallengeResponse Lambda functions. 
 
+Here's the flow:
+
+1. The user initiates the authentication flow using their email address.
+2. The user pool calls DefineAuthChallenge Lambda function to decide the next step.
+3. To create the custom challenge, the user pool calls CreateAuthChallenge Lambda function. It generates a one-time password and emails it to the user, using Simple Email Service (SES).
+4. The user enters the one-time password on the login screen.
+5. The user pool calls the VerifyAuthChallengeResponse Lambda function to check the user’s answer.
+6. The user pool calls the DefineAuthChallenge function again to decide what happens next. The options include failing the authentication due to too many incorrect attempts, succeeding the authentication flow and issuing the JWT tokens to the user, or giving the user another chance to answer correctly.
+
+There is also a detailed guide to implementing this passwordless authentication in the link, starting with setting up a Cognito User Pool, configuring the User Pool Client for the frontend, defining the PreSignUp hook, setting up frontend for sign-up and sign-in, and creating DefineAuthChallenge, CreateAuthChallenge, and VerifyAuthChallengeResponse functions. The frontend should handle responding to the custom auth challenge, and if the DefineAuthChallenge function tells the user pool to fail authentication, it would throw an NotAuthorizedException exception with the message 'Incorrect username or password'. Try the demo app [here](https://passwordless-cognito.theburningmonk.com/magic-link)
 
 
 
 ### [Implementing Magic Links with Amazon Cognito: A Step-by-Step Guide](https://theburningmonk.com/2023/03/implementing-magic-links-with-amazon-cognito-a-step-by-step-guide/)
 
+The implementation of a passwordless authentication system using Amazon Cognito, Serverless framework, and AWS Lambda functions. The system relies on sending users a magic link that logs them in directly, thus bypassing the need for a password. 
 
+1. **Setup:** It begins with the initial setup, which involves defining the necessary AWS resources such as the AWS Cognito User Pool, a KMS key for encrypting tokens, and AWS Lambda functions for handling different parts of the process.
+
+2. **Lambda Function for User Sign Up:** A custom endpoint is added to register users via a POST /signup request. It interacts with AWS Cognito to create a new user.
+
+3. **Frontend Registration:** The frontend, built with Vue, interacts with the custom registration endpoint to sign up users using their email address.
+
+4. **POST /login Lambda Function:** A logIn function is defined in the Serverless framework to initiate the authentication flow. It generates a time-limited magic link and sends it to the user's email. It also updates a custom attribute in Cognito user's profile with the encrypted token.
+
+5. **Frontend Login Process:** Users initiate the authentication flow by entering their email. An HTTP POST request is made to the /login endpoint, which triggers sending the magic link.
+
+6. **Sign In with Cognito:** When users click the magic link, they are redirected back to the website, which then extracts the email and token values from the link, verifies them, and logs the user in using Amazon Cognito.
+
+7. **DefineAuthChallenge Function:** AWS Cognito custom authentication flow behaves like a state machine and uses this function to decide the next action to be taken during the authentication session.
+
+8. **CreateAuthChallenge Function:** This function only needs to pass the encrypted token to the VerifyAuthChallengeResponse function.
+
+9. **VerifyAuthChallengeResponse Function:** This function performs several tasks including verifying the secret token, decrypting the token to extract email and expiration datetime, checking token expiration, and confirming that the current user's email matches what's in the token.
+
+Overall, this method provides a seamless, passwordless login experience for users, bolstering security by limiting the opportunity for password-related breaches.
 
 
 
 ### [Yes, S3 now encrypts objects by default, but your job is not done yet](https://theburningmonk.com/2023/01/yes-s3-now-encrypts-objects-by-default-but-your-job-is-not-done-yet/)
 
-
+Yan emphasizes that while the recent S3 update is beneficial, it only provides a baseline level of security. It guards against threats to AWS's infrastructure but doesn't shield users from many attack vectors that affect the security of their AWS environment. Thus, the implementation of comprehensive data security measures is still necessary. The use of SSE-KMS with a Customer Managed Key (CMK) is suggested. With this encryption mode, S3 is instructed to encrypt objects with a key controlled by the user, and any access to unencrypted content must have the 'kms:decrypt' permission for the CMK. This protects against unauthorized access even if a bucket is accidentally left public.
 
 
 
 ### [How to set up geofencing and IP allow-list for Cognito User Pool](https://theburningmonk.com/2022/08/how-to-setup-geofencing-and-ip-allow-list-for-cognito-user-pool/)
 
+Explains how to set up geofencing and IP allow-lists for AWS Cognito user pools using AWS Web Application Firewall (WAF) protection. The new AWS feature enables users to apply geofencing and IP allow/deny lists to protect Cognito user pools from bypassing by potential malicious actors.
+
+Geofencing can be used to block users from specific countries from signing up or logging into an application. By adding a custom rule to the WAF web ACL, it identifies users based on their IP address. If the matched action is set to 'Block', the rule prevents these users from interacting with the Cognito user pool's public API.
+
+Similarly, an IP allow/deny list can be implemented to apply the same restriction to individual IP addresses, which can be useful if the system is designed to be used only within a VPN. By creating an IP set in WAF, users can create a rule to block all traffic that does not originate from the list of allowed IP addresses.
+
+The WAF also helps in dealing with VPN proxies which can bypass geofencing systems. By adding the managed rule 'Anonymous IP list' to the web ACL, it can block traffic originating from VPN proxies, Tor nodes, and hosting providers.
 
 
 
+### [Many-faced threats to Serverless security](https://hackernoon.com/many-faced-threats-to-serverless-security-519e94d19dba)
 
-- [How to choose the right API Gateway auth method](https://theburningmonk.com/2020/06/how-to-choose-the-right-api-gateway-auth-method/)
-- [Many-faced threats to Serverless security](https://hackernoon.com/many-faced-threats-to-serverless-security-519e94d19dba)
+Although AWS handles operational responsibilities like maintaining the host OS, it is still essential for developers to patch their application and address vulnerabilities in their code and dependencies.
+
+Components with known vulnerabilities can be a major issue.  Be warned about potential threats posed by NPM publishers who might not be who they claim to be.  Yan further discusses the threat of injection and cross-site scripting attacks, sensitive data exposure, and problems with IAM permissions. Another major point of concern is the risk of Denial of Wallet (DoW) attacks. This is where attackers force an application to scale aggressively, causing significant financial cost.
+
+Developers should secure external data, especially due to the stateless nature of Lambda functions, applying strict measures to protect data both in transit and at rest. It also highlights the need for secure communication with both internal and external services, advocating the use of IAM roles over API keys for fine-grained access control.
+
+
+
 - [AWS Lambda and Secret management](https://epsagon.com/blog/aws-lambda-and-secret-management/)
 - [To VPC or not to VPC? Pros and cons in AWS Lambda](https://lumigo.io/blog/to-vpc-or-not-to-vpc-in-aws-lambda/)
 - [The API Gateway security flaw you need to pay attention to](https://theburningmonk.com/2019/10/the-api-gateway-security-flaw-you-need-to-pay-attention-to/)
