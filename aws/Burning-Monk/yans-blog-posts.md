@@ -1259,11 +1259,93 @@ Developers should secure external data, especially due to the stateless nature o
 
 
 
-- [AWS Lambda and Secret management](https://epsagon.com/blog/aws-lambda-and-secret-management/)
-- [To VPC or not to VPC? Pros and cons in AWS Lambda](https://lumigo.io/blog/to-vpc-or-not-to-vpc-in-aws-lambda/)
-- [The API Gateway security flaw you need to pay attention to](https://theburningmonk.com/2019/10/the-api-gateway-security-flaw-you-need-to-pay-attention-to/)
-- [How building a custom IAM system has made me appreciate AWS IAM even more](https://theburningmonk.com/2021/04/building-a-custom-iam-system-has-made-me-appreciate-aws-iam-even-more/)
-- [The case for and against Amazon Cognito](https://theburningmonk.com/2021/03/the-case-for-and-against-amazon-cognito/)
+### [To VPC or not to VPC? Pros and cons in AWS Lambda](https://lumigo.io/blog/to-vpc-or-not-to-vpc-in-aws-lambda/)
+
+Pros of using VPCs with Lambda:
+
+1. For a Lambda function to access resources inside the designated VPC, it needs an Elastic Network Interface (ENI). ENIs can be shared across containers to optimize costs and performance.
+2. VPCs enable control of egress traffic using security groups and outbound rules, potentially preventing the leak of sensitive data to the internet.
+
+Cons of using VPCs with Lambda:
+
+1. ENI Limits: There's a default limit of 350 ENIs per region. If this limit is reached, invocations of VPC-enabled functions can be throttled.
+2. IP Limits: Each ENI uses a private IP address from the associated subnet. Scaling up Lambda functions quickly can exhaust available IP addresses, hampering the function's ability to scale up the number of concurrent executions.
+3. Loss of Internet Access: VPC-enabled functions lose internet access as their ENI is associated only with a private IP address from the subnet.
+4. Slow Cold Starts: VPC-enabled functions suffer from longer cold starts, as the process of ENIs is time-consuming.
+
+VPCs are considered essential for EC2 instances to shield them from malicious traffic, **Lambda functions don't necessarily require this level of protection.** AWS Identity and Access Management (IAM) service already secures Lambda functions providing both authentication and authorization.
+
+Using VPCs can give a false sense of security because even though they can stop malicious ingress traffic, Lambda functions can still be compromised through other means, such as their dependencies.
+
+In summary, while VPCs can provide certain benefits, they introduce many challenges and limitations to AWS Lambda functions. Hence, Yan agrees with AWS's official recommendation to **avoid using VPCs with Lambda unless it is absolutely necessary**, **like when a function needs to access resources that run in the VPC (like RDS database, Elasticache cluster, internal APIs)**. Tools like FunctionShield can be used to block connectivity to public internet without resorting to VPCs, helping to prevent data theft from compromised functions.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n8l27cd2d9mzih7u6bde.png)
+
+
+
+### [The API Gateway security flaw you need to pay attention to](https://theburningmonk.com/2019/10/the-api-gateway-security-flaw-you-need-to-pay-attention-to/)
+
+In AWS API Gateway by default every method inherits its throttling settings from the stage, sharing a rate limit that can be exhausted by a single method. This makes the system vulnerable to a Denial of Service (DOS) attack on one public endpoint that could bring down all APIs in the region.
+
+Although AWS's Web Application Firewall (WAF) can provide some protection against basic DOS attacks by creating rate-based rules that rate limit at the IP level, it is not a foolproof system. WAF struggles against Distributed Denial of Service (DDOS) attacks from large botnets and slow DOS attacks that generate a steady stream of requests that mimic normal traffic. It can also block legitimate traffic from institutions sharing the same IP address for multiple users.
+
+**To address this risk, developers need to apply individual rate limits for each method.** However, this requires consistent discipline, which is not always feasible. There is currently no built-in support in the Serverless framework for configuring these method settings, although the `serverless-api-stage plugin` is a potential solution. AWS Config can be used to check that each API Gateway method has a rate limit override, and automated remediation can be implemented using Lambda functions.
+
+Another strategy is to reduce the amount of traffic reaching the API Gateway by leveraging CloudFront as a Content Delivery Network (CDN). However, this can incur extra costs during a DDOS attack. AWS Shield Advanced provides payment protection against these extra costs and access to the DDoS Response Team, but it is costly and may not be accessible for startups.
+
+The author concludes by emphasizing the need for improved tooling to help developers apply appropriate rate limits by default and calls for AWS to change the default behavior of applying region-wide limits on every method or provide warnings about potential risks. An update mentions a new Serverless framework plugin called `serverless-api-gateway-throttling` that allows users to configure default throttling settings for the API and override individual endpoint settings.
+
+
+
+### [The case for and against Amazon Cognito](https://theburningmonk.com/2021/03/the-case-for-and-against-amazon-cognito/)
+
+The case for Cognito:
+
+1. Integration with other AWS services: Cognito integrates seamlessly with AWS services like API Gateway, AppSync, and ALB, which reduces the amount of custom code required. 
+
+2. Cost: Cognito is significantly cheaper than competitors such as Auth0 and Okta, making it a more feasible choice for business-to-customer (B2C) businesses. For example, Cognito’s cost per monthly active user (MAU) is $0.0055, compared to Auth0’s cost of ~$0.02 per MAU for the Developer tier. 
+
+The case against Cognito:
+
+1. Poor developer experience:  lack of clear, detailed documentation and the need to understand different aspects of Cognito (User Pool, Identity Pool, Sync).
+
+2. Lack of polished features: Cognito supports many features, but these often feel incomplete or confusing. There is no IdP-initiated workflow, lack of customization for the hosted sign-in page, and issues with linking accounts.
+
+3. Can't export user passwords: Due to security reasons, you can't export users' passwords from Cognito, making it difficult to migrate the user database to another service.
+
+4. Can't change attributes: Once a Cognito User Pool is created, you can't change the list of attributes collected from users during sign-up, which is inconvenient.
+
+5. Single region: Cognito lacks built-in support for cross-region replication, which can make applications vulnerable to single-region outages.
+
+Yan still recommends Cognito as the default choice for new projects, particularly for B2C businesses with high MAU and budget constraints. The issues are deemed manageable or possible to work around with enough effort.
+
+
+
+### [How building a custom IAM system has made me appreciate AWS IAM even more](https://theburningmonk.com/2021/04/building-a-custom-iam-system-has-made-me-appreciate-aws-iam-even-more/)
+
+Use IAM. It's sophisticated for a good reason.
+
+# Step Functions
+
+- [Choreography vs Orchestration in the land of serverless](https://theburningmonk.com/2020/08/choreography-vs-orchestration-in-the-land-of-serverless/)
+- [A practical guide to testing AWS Step Functions](https://theburningmonk.com/2022/12/a-practical-guide-to-testing-aws-step-functions/)
+- [Step Functions: apply try-catch to a block of states](https://theburningmonk.com/2018/08/step-functions-apply-try-catch-to-a-block-of-states/)
+- [Step Functions: how to implement semaphores for state machines](https://theburningmonk.com/2018/07/step-functions-how-to-implement-semaphores-for-state-machines/)
+- [How the Saga pattern manages failures with AWS Lambda and Step Functions](https://theburningmonk.com/2017/07/applying-the-saga-pattern-with-aws-lambda-and-step-functions/)
+- [How to do blue-green deployment for Step Functions](https://theburningmonk.com/2019/08/how-to-do-blue-green-deployment-for-step-functions/)
+
+# Chaos Engineering
+
+- [How can we apply principles of chaos engineering to AWS Lambda?](https://theburningmonk.com/2017/10/how-can-we-apply-the-principles-of-chaos-engineering-to-aws-lambda/)
+- [Applying the principles of chaos engineering to AWS Lambda with latency injection](https://theburningmonk.com/2017/11/applying-principles-of-chaos-engineering-to-aws-lambda-with-latency-injection/)
+
+# Serverless Application Repositories
+
+- [A serverless application to clean up old deployment packages](https://lumigo.io/blog/a-serverless-application-to-clean-up-old-deployment-packages/)
+- [Serverless apps to automate the chores around CloudWatch Logs](https://lumigo.io/blog/serverless-applications-automate-chores-cloudwatch-logs/)
+- [Serverless apps to speed up all your Lambda functions](https://lumigo.io/blog/serverless-app-to-speed-up-all-your-lambda-functions/)
+
+# 
 
 # Serverless Observability
 
@@ -1290,15 +1372,6 @@ Developers should secure external data, especially due to the stateless nature o
 - [Shine some light on your SNS to SQS to Lambda stack](https://lumigo.io/blog/sns-sqs-to-lambda-shine-some-light/)
 - [Lambda Logs API: a new way to process Lambda logs in real-time](https://lumigo.io/blog/lambda-logs-api-a-new-way-to-process-lambda-logs-in-real-time/)
 - [AWS Lambda Telemetry API: a new way to process Lambda telemetry data in real-time](https://lumigo.io/blog/lambda-telemetry-api-a-new-way-to-process-lambda-telemetry-data-in-real-time/)
-
-# Step Functions
-
-- [Choreography vs Orchestration in the land of serverless](https://theburningmonk.com/2020/08/choreography-vs-orchestration-in-the-land-of-serverless/)
-- [A practical guide to testing AWS Step Functions](https://theburningmonk.com/2022/12/a-practical-guide-to-testing-aws-step-functions/)
-- [Step Functions: apply try-catch to a block of states](https://theburningmonk.com/2018/08/step-functions-apply-try-catch-to-a-block-of-states/)
-- [Step Functions: how to implement semaphores for state machines](https://theburningmonk.com/2018/07/step-functions-how-to-implement-semaphores-for-state-machines/)
-- [How the Saga pattern manages failures with AWS Lambda and Step Functions](https://theburningmonk.com/2017/07/applying-the-saga-pattern-with-aws-lambda-and-step-functions/)
-- [How to do blue-green deployment for Step Functions](https://theburningmonk.com/2019/08/how-to-do-blue-green-deployment-for-step-functions/)
 
 # AppSync
 
@@ -1327,17 +1400,6 @@ Developers should secure external data, especially due to the stateless nature o
 - [Lambda and Kinesis — beware of hot streams](https://lumigo.io/blog/lambda-and-kinesis-beware-of-hot-streams/)
 - [How to connect SNS to Kinesis for cross-account delivery via API Gateway](https://theburningmonk.com/2019/07/how-to-connect-sns-to-kinesis-for-cross-account-delivery-via-api-gateway/)
 - [The best reason to use DynamoDB Streams is…](https://lumigo.io/blog/the-best-reason-to-use-dynamodb-streams-is/)
-
-# Chaos Engineering
-
-- [How can we apply principles of chaos engineering to AWS Lambda?](https://theburningmonk.com/2017/10/how-can-we-apply-the-principles-of-chaos-engineering-to-aws-lambda/)
-- [Applying the principles of chaos engineering to AWS Lambda with latency injection](https://theburningmonk.com/2017/11/applying-principles-of-chaos-engineering-to-aws-lambda-with-latency-injection/)
-
-# Serverless Application Repositories
-
-- [A serverless application to clean up old deployment packages](https://lumigo.io/blog/a-serverless-application-to-clean-up-old-deployment-packages/)
-- [Serverless apps to automate the chores around CloudWatch Logs](https://lumigo.io/blog/serverless-applications-automate-chores-cloudwatch-logs/)
-- [Serverless apps to speed up all your Lambda functions](https://lumigo.io/blog/serverless-app-to-speed-up-all-your-lambda-functions/)
 
 # Yubl’s road to Serverless
 
