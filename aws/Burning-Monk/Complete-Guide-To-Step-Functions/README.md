@@ -945,7 +945,7 @@ Consider using an ECS (Elastic Container Service) task instead.
 
 ### sagas
 
-Managing failures in a distributed transaction, where each action is from a different system.
+The Saga pattern is a way to manage failures by employing compensating actions for rollback purposes. 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rr4e0j2vi7q23rcrcg57.png)
 
@@ -961,6 +961,14 @@ We have to roll back the changes in case of a failure.
 ```yml
 # ./Examples/lambda-saga-pattern/package.json
 ```
+
+Each action, along with its compensating action for rollback, is modeled as a Lambda function. A Step Function state machine acts as the coordinator for the saga.
+
+To handle potential failures, the compensating actions need to be idempotent and retryable. Yan demonstrates a naive implementation of backward recovery in case of failure. Each Lambda function receives an input in a specific format and performs a PutItem request against a DynamoDB table. The corresponding compensating function performs a DeleteItem to rollback the previous action.
+
+The state machine coordinates the execution of each action, recording their results at a specific path. In case of failure (specified as "States.ALL"), the compensating actions are triggered in order. Yan state machine example JSON that shows the orchestration of the actions and compensating actions.
+
+In the success case, all actions are performed successfully, and the state machine ends successfully. In failure cases, depending on where the failure occurred, the corresponding compensating actions are executed to rollback the changes made by previous actions. The compensating actions are set to retry indefinitely in this example, but it's recommended to set a reasonable upper limit for retries before requiring human intervention.
 
 ### de-dupe
 
@@ -979,3 +987,18 @@ We can set the lambda concurrency limit, but step function is not aware of that.
 Better way is to introduce 2 new states for acquiring and releasing the semaphore, but this approach also has shortcomings.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0fcjf91nwjzov8nqplq2.png)
+
+Explores two approaches for controlling the number of concurrent executions in AWS Step Functions. There is a need for such control to meet business requirements or address scalability concerns. 
+
+The first approach involves using an SQS queue and a CloudWatch schedule-triggered Lambda function. The function checks the number of concurrent executions and starts new executions based on the available capacity. The use of a FIFO queue ensures that tasks are processed in the order they were added.
+
+![img](https://theburningmonk.com/wp-content/uploads/2018/07/img_5b538493995f6.png)
+
+The second approach utilizes semaphores to block executions from entering a critical path until they can acquire a semaphore. The ListExecutions API is used to determine the number of executions in the RUNNING state, and the eldest execution is allowed to proceed while others are transitioned to a wait state.
+
+![img](https://theburningmonk.com/wp-content/uploads/2018/07/img_5b5384b0e751a.png)
+
+Approach 1 (with SQS) is deemed more scalable, as it avoids backpressure and is less likely to hit API limits. Approach 2 (blocking executions) can experience throttling and timeouts when dealing with a large number of concurrent executions. Approach 1 introduces additional infrastructure components and requires changes to the producers, while Approach 2 adds a new Lambda function as part of the state machine. Approach 1 incurs a minimal baseline cost, while Approach 2 can accumulate costs due to state transitions.
+
+In conclusion, Yan suggests that using SQS (Approach 1) is more scalable and cost-effective for a high number of concurrent executions. However, it is acknowledged that additional infrastructure and upstream system changes may impact project timelines, making Approach 2 a viable option when the number of executions is not expected to be high.
+
