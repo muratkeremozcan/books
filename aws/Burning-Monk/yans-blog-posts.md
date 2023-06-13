@@ -1349,16 +1349,55 @@ Covered in Complete Guide To Step Functions.
 
 # Chaos Engineering
 
-- [How can we apply principles of chaos engineering to AWS Lambda?](https://theburningmonk.com/2017/10/how-can-we-apply-the-principles-of-chaos-engineering-to-aws-lambda/)
-- [Applying the principles of chaos engineering to AWS Lambda with latency injection](https://theburningmonk.com/2017/11/applying-principles-of-chaos-engineering-to-aws-lambda-with-latency-injection/)
+### [How can we apply principles of chaos engineering to AWS Lambda?](https://theburningmonk.com/2017/10/how-can-we-apply-the-principles-of-chaos-engineering-to-aws-lambda/) [Applying the principles of chaos engineering to AWS Lambda with latency injection](https://theburningmonk.com/2017/11/applying-principles-of-chaos-engineering-to-aws-lambda-with-latency-injection/)
+
+Serverless architectures, like those built with Lambda, have different failure modes compared to EC2 instances. AWS Lambda is a higher-level abstraction and handles many failure modes for you, such as "what if we lose these EC2 instances", thus we need to ask different questions to understand the weaknesses within our serverless architectures. [Chaos Monkey](https://github.com/netflix/chaosmonkey), [Chaos Toolkit](https://chaostoolkit.org/), [Gremlin](https://www.gremlin.com/) all focus on infra; ec2 instances or containers. These are not useful for Serverless. There are no servers to kill. AWS already runs chaos experiments on the infra layer. Focus on identifying weaknesses in our code.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ruk1wsygvryta2lsre33.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/klkwygglz8inn34ka1bd.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qjcvsnvhq1weh1c8t7du.png)
+
+Serverless architectures have inherent chaos due to factors like:
+
+- Shift in modularity from "services" to "functions", which are more numerous
+- Increased need to harden around each function as opposed to a service
+- More intermediary services each with their own failure modes
+- More overall configurations, leading to more opportunities for misconfiguration
+- Trading off more control of our infrastructure, introducing more unknown failure modes
+
+The library [failure-lambda](https://github.com/gunnargrosch/failure-lambda) by Gunnar Grosch is the best bet for injecting lambda failures. (You have to make code changes, devex isn't great).
+
+The question is, is it actually worth doing in a serverless environment. The payoff isn't as great as when you have a serverful application.
+
+Often there is little we can do during an outage. So the solution is to invest in multi-region.
+
+### 
 
 # Serverless Application Repositories
 
-- [A serverless application to clean up old deployment packages](https://lumigo.io/blog/a-serverless-application-to-clean-up-old-deployment-packages/)
-- [Serverless apps to automate the chores around CloudWatch Logs](https://lumigo.io/blog/serverless-applications-automate-chores-cloudwatch-logs/)
-- [Serverless apps to speed up all your Lambda functions](https://lumigo.io/blog/serverless-app-to-speed-up-all-your-lambda-functions/)
+### [A serverless application to clean up old deployment packages](https://lumigo.io/blog/a-serverless-application-to-clean-up-old-deployment-packages/)
 
-# 
+Unused dependencies do not add to initialization time, but they can hurt your regional cold storage limit. (Use [lambda-janitor](https://serverlessrepo.aws.amazon.com/applications/us-east-1/374852340823/lambda-janitor) for that to delete the old versions of your lambda.). This application, once deployed to an AWS account, deploys a "Clean" function that runs every hour for up to 15 minutes. The function has IAM permissions to list functions, versions, and aliases, as well as to delete function versions.
+
+### [Serverless apps to automate the chores around CloudWatch Logs](https://lumigo.io/blog/serverless-applications-automate-chores-cloudwatch-logs/)
+
+If you look around the [Serverless Application Repository](https://console.aws.amazon.com/serverlessrepo/home?region=us-east-1#/available-applications) console, you will find a number of applications that can help you ship logs from CloudWatch Logs to external services. One such example is the LogzioCloudWatchShipper application below.
+
+![The Serverless Application Repository contains a number of applications for shipping Cloudwatch logs to external services.](https://lumigo.io/wp-content/uploads/2019/03/1-Logzio-CloudWatchShipper.jpg)
+
+However, after I deploy these serverless applications I still need to go to the CloudWatch Logs console and subscribe my log groups to the relevant Lambda function. Since every function has a matching log group in CloudWatch Logs, you need to do this all the time. This is a chore and one that should be automated away. 
+
+Yan introduces two open-source applications to automate tasks around AWS CloudWatch Logs. Both of these applications are available in Lumigo’s Github repository and the Serverless Application Repository (SAR).
+
+The first application, called `auto-subscribe-log-group-to-arn` is a solution for automating the process of subscribing log groups to relevant Lambda functions. Deploying this application means the user no longer needs to manually subscribe each log group to the Lambda function every time, a task that previously had to be done repetitively. The application takes a Destination ARN, pointing to a Lambda function, Kinesis Data Stream, or a Firehose Delivery Stream, and handles all the complexities related to permissions. Users can customize the configuration of the subscription filter, and specify a Prefix to forward logs for different services to different destination ARNs.Once deployed, the application creates two functions. The first one is triggered when a log group is created, and it subscribes the group to the destination ARN if it matches the configured prefix. The second function runs every hour and checks all the log groups to ensure they are subscribed to the destination ARN. This function helps when users decide to change the destination ARN, as it automatically updates all log groups.
+
+The second application, `auto-set-log-group-retention` helps automate the process of updating the retention policy of logs. This is useful since CloudWatch Logs carry a storage cost, and by default, the retention policy for all log groups is to never expire. This application works similarly to the first one. It requires users to specify how many days they would like to keep the logs in CloudWatch Logs, and it creates two functions that update log groups when they are created and ensure existing log groups have the correct retention policy.
+
+### [Serverless apps to speed up all your Lambda functions](https://lumigo.io/blog/serverless-app-to-speed-up-all-your-lambda-functions/)
+
+If you use the AWS SDK v3, you don't need to do this anymore, it's enabled by default now.               
 
 # Serverless Observability
 

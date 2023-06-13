@@ -494,7 +494,7 @@ Use **controlled** experiments to inject failures into our system. This helps us
 
 The point is build confidence, not to break production. Only inject failures to a small percentage of requests, start in non-production environments, and only move to production when you've paid the dues;
 
-    * Strong confidence that the system will withstand failures,
+* Strong confidence that the system will withstand failures
 
 - Containment to limit the blast radius of surprises.
   - Tell everyone
