@@ -1401,16 +1401,90 @@ If you use the AWS SDK v3, you don't need to do this anymore, it's enabled by de
 
 # Serverless Observability
 
-- [You need to use structured logging with AWS Lambda](https://theburningmonk.com/2018/01/you-need-to-use-structured-logging-with-aws-lambda/)
-- [You should sample debug logs in production](https://theburningmonk.com/2018/04/you-need-to-sample-debug-logs-in-production/)
-- [Centralised logging for AWS Lambda, REVISED (2018)](https://theburningmonk.com/2018/07/centralised-logging-for-aws-lambda-revised-2018/)
-- [Tips and tricks for logging and monitoring AWS Lambda functions](https://theburningmonk.com/2017/09/tips-and-tricks-for-logging-and-monitoring-aws-lambda-functions/)
-- [Capture and forward correlation IDs through different event sources](https://theburningmonk.com/2017/09/capture-and-forward-correlation-ids-through-different-lambda-event-sources/)
-- [You should use the SSM Parameter Store over Lambda env variables](https://theburningmonk.com/2017/09/you-should-use-ssm-parameter-store-over-lambda-env-variables/)
-- [Mind the 75GB limit AWS Lambda deployment packages](https://theburningmonk.com/2016/08/aws-lambda-janitor-lambda-function-to-clean-up-old-deployment-packages/#)
-- [The good and bad of X-Ray and Lambda](https://read.acloud.guru/im-here-to-tell-you-the-truth-the-good-the-bad-and-the-ugly-of-aws-x-ray-and-lambda-f212b5f332e9)
-- [Serverless observability: Lumigo or AWS X-Ray](https://lumigo.io/blog/serverless-observability-lumigo-or-aws-x-ray/)
-- [Serverless observability brings new challenges to current practices](https://theburningmonk.com/2018/02/serverless-observability-brings-new-challenges-to-current-practices/)
+### [You need to use structured logging with AWS Lambda](https://theburningmonk.com/2018/01/you-need-to-use-structured-logging-with-aws-lambda/)
+
+console.log is simple but eventually has limitations. Specifically, the use of console.log makes it hard to add consistent contextual information, filter log messages by specific attributes, and control the logging level based on configuration. 
+
+To overcome these challenges, Yan suggests the use of structured JSON for logging from the outset. This method allows for more context-rich and easily extractable data. It is recommended to use the log client that one has been using previously—like log4j, nlog, loggly, log4net, and others—and configure it to format log messages as JSON while attaching as much contextual information as possible. 
+
+Moreover, it is also beneficial to enable debug logging on the entire call chain for a small percentage of requests in production. This approach can help catch pervasive bugs in the logic, which would otherwise necessitate a complete redeployment of functions to turn on debug logging. 
+
+### [You should sample debug logs in production](https://theburningmonk.com/2018/04/you-need-to-sample-debug-logs-in-production/)
+
+Yan highlights the significance of sampling debug logs in production while working with AWS services like Lambda and CloudWatch. Typically, the log level is set to WARNING for production to manage traffic volume and to consider cost factors, such as the cost of logging, storage, and processing. However, doing so eliminates debug logs in production, which are critical for identifying the root cause of a problem. Without them, deploying a new version of the code to enable debug logging consumes valuable time and increases the mean time to recovery (MTTR) during an incident.
+
+To mitigate this issue, Yan suggests sampling debug logs from a small percentage of invocations, representing a balance between having no debug logs and having all of them. This approach requires a logger that allows dynamic changes to the logging level and a middleware engine like middy.
+
+Yan prefers to use a simple logger module, which offers structured logging with JSON, the ability to log at different levels, and control over the log level via environment variables. By using middy, a middleware can be created to dynamically update the log level to DEBUG for a certain percentage of invocations and then restore the previous log level at the end of the invocation.
+
+In a microservices environment, it is crucial to ensure debug logs cover an entire call chain. To achieve this, the decision to turn on debug logging can be forwarded as a correlation ID, so the next function in the chain respects this decision and passes it on.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mk5jda0jljrzz18jqzpj.png)
+
+### [Centralised logging for AWS Lambda, REVISED (2018)](https://theburningmonk.com/2018/07/centralised-logging-for-aws-lambda-revised-2018/)
+
+Initially, Yan suggested using a Lambda function to ship all Lambda logs from CloudWatch Logs to a log aggregation service such as Logz.io. However, this method can create issues at scale, as it can potentially double the number of concurrently running functions in a region, exceeding the regional limit and causing cascade failures. One solution to this problem is setting the Reserved Concurrency for the log shipping function to limit its max number of concurrent executions. While this could prevent cascade failures, it runs the risk of losing logs when the log shipping function is throttled.
+
+Instead of these measures, Yan proposes a more efficient approach at scale: streaming logs from CloudWatch Logs to a Kinesis stream first, and then processing them with a Lambda function to forward them to a log aggregation service. This method offers better control over the concurrency of the log shipping function, as the number of shards in the Kinesis stream can be increased with the growth of log events, thus also increasing the number of concurrent executions of the log shipping function. [demo repo](https://github.com/theburningmonk/lambda-logging-kinesis-demo) demonstrates how this new approach works, with functions that automatically update retention policies, subscribe new log groups to a Kinesis stream, process log events, and ship them to Logz.io.
+
+In summary; stream the logs from CloudWatch Logs to a Kinesis stream first. From there, a Lambda function can process the logs and forward them on to a log aggregation service.
+
+![img](https://theburningmonk.com/wp-content/uploads/2018/07/img_5b5523f6e52cf.png)
+
+
+
+### [Tips and tricks for logging and monitoring AWS Lambda functions](https://theburningmonk.com/2017/09/tips-and-tricks-for-logging-and-monitoring-aws-lambda-functions/)
+
+Discusses logging and monitoring in the context of serverless architecture using AWS Lambda. Many traditional logging practices are no longer applicable in the serverless world. AWS CloudWatch metrics and logs, commonly used for Lambda, have several shortcomings including adding user-facing latency, being only granular down to a 1-minute interval, and usually lagging in real-time updating.
+
+Alternatives like Datadog and Wavefront, despite offering Lambda support, use the same metrics from CloudWatch and therefore have the same latency issues. IOpipe, another alternative, wraps around your code to inject monitoring code but this increases user-facing latency and can potentially cause function errors.
+
+Yan suggests sending custom metrics asynchronously as a possible solution, as Datadog does by writing custom metrics as specially-formatted log messages. This approach can be used even with other monitoring services. Additionally, tracking the memory usage and billed duration of AWS Lambda functions can be done in CloudWatch through parsing REPORT log messages and publishing them as custom metrics.
+
+Yan also highlights the importance of considering concurrency when using Lambda functions to process CloudWatch logs, to prevent exceeding the account-wide limit on concurrent executions which can lead to cascade failures throughout the application. The author suggests installing bulkheads, using fire-and-forget strategies, or sending the decoded log messages into a Kinesis stream to control parallelism as potential workarounds. H**owever, these solutions are considered temporary, as AWS has yet to provide better control over concurrent executions.**
+
+### [Capture and forward correlation IDs through different event sources](https://theburningmonk.com/2017/09/capture-and-forward-correlation-ids-through-different-lambda-event-sources/)
+
+Serverless architectures are microservices by default, you need correlation IDs to help debug issues that spans across multiple functions, and possibly different event source types – asynchronous, synchronous and streams. Correlation IDso tag every log message with the relevant context to help identify and trace each request that travels through multiple microservices. The objective is to make debugging and tracing easier in distributed systems.
+
+![img](https://cdn-images-1.medium.com/max/1600/1*hlat_2akk4kxA_US-1bPSg.png)
+
+If you want to follow along, then the code is available in this [repo](https://github.com/theburningmonk/lambda-correlation-id-demo), and the architecture of the demo project looks like this:
+
+![img](https://cdn-images-1.medium.com/max/1600/1*DIhWeMy87eOfUdBDNLYM0w.png)
+
+*The demo project consists of an edge API, api-a, which initialises a bunch of correlation IDs as well as the decision on whether or not to turn on debug logging. It’ll pass these along through HTTP requests to api-b, Kinesis events and SNS messages. Each of these downstream function would in turn capture and pass them along to api-c. A blueprint for how to capture and forward correlation IDs through 3 of the most commonly used event sources for Lambda.*
+
+![img](https://cdn-images-1.medium.com/max/1600/1*CPtfxdmQQLUeK-g2l-2WLg.png)
+
+Part 1 covers how to add correlation IDs to log outputs, HTTP requests, and SNS messages, enabling developers to follow the flow of requests across different services. It describes creating an "http" module that adds the correlation IDs to the headers and a "sns" module to add these IDs to message attributes. These modules modify the request headers or message attributes to include the correlation IDs without changing the actual payload, making it easy to follow a request through log files.
+
+Part 2 focuses on Amazon Kinesis Streams and DynamoDB Streams, where it's not possible to tag additional information along with the payload. In these cases, it suggests altering the payload itself by inserting a "__context" field to carry the correlation IDs. For handling multiple Kinesis records, each with its own context, the suggested solution is to process records one at a time, thus managing the request context effectively for each record.
+
+When receiving these events, the "__context" field can be removed, and the request context can be set accordingly. However, this method eliminates the chance to optimize by processing all records in a batch. Therefore, an alternative could be to leave the "__context" field on the Kinesis records and let the handler function manage them.
+
+
+
+### [You should use the SSM Parameter Store over Lambda env variables](https://theburningmonk.com/2017/09/you-should-use-ssm-parameter-store-over-lambda-env-variables/)
+
+
+
+### [Mind the 75GB limit AWS Lambda deployment packages](https://theburningmonk.com/2016/08/aws-lambda-janitor-lambda-function-to-clean-up-old-deployment-packages/#)
+
+
+
+### [The good and bad of X-Ray and Lambda](https://read.acloud.guru/im-here-to-tell-you-the-truth-the-good-the-bad-and-the-ugly-of-aws-x-ray-and-lambda-f212b5f332e9)
+
+
+
+### [Serverless observability: Lumigo or AWS X-Ray](https://lumigo.io/blog/serverless-observability-lumigo-or-aws-x-ray/)
+
+
+
+### [Serverless observability brings new challenges to current practices](https://theburningmonk.com/2018/02/serverless-observability-brings-new-challenges-to-current-practices/)
+
+
+
 - [Serverless observability, what can we use out of the box?](https://theburningmonk.com/2018/04/serverless-observability-what-can-you-use-out-of-the-box/)
 - [How to auto-create CloudWatch alarms for API Gateway, using Lambda](https://theburningmonk.com/2018/05/auto-create-cloudwatch-alarms-for-apis-with-lambda/)
 - [How to monitor Lambda with CloudWatch Metrics](https://lumigo.io/blog/how-to-monitor-lambda-with-cloudwatch-metrics/)
