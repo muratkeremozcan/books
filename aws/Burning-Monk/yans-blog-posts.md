@@ -498,7 +498,7 @@ The notion of serverless vendor lock-in is misunderstood. Rather than being a lo
 
 The perceived risk of being tightly coupled with a cloud provider is offset by the rewards. Using AWS Lambda as an example, the benefits are scalability, resilience, security, quicker time-to-market, and the ability to focus more on creating business value rather than dealing with infrastructural heavy lifting.
 
-Be warned against focusing too much on portability and vendor lock-in arguments, as doing so often comes at the cost of missing out on provider-specific benefits and can reduce time-to-market. The author argues that getting to market earlier and iterating faster is more important than potential difficulties changing providers later.
+Be warned against focusing too much on portability and vendor lock-in arguments, as doing so often comes at the cost of missing out on provider-specific benefits and can reduce time-to-market. Yan argues that getting to market earlier and iterating faster is more important than potential difficulties changing providers later.
 
 The real lock-in risk lies in data, not in business logic, as data accumulates and is economically disincentivized to leave its platform.
 
@@ -811,9 +811,9 @@ The main aspects of the demo are:
 
 4. Optimistic locking: To safeguard against concurrent updates to the account, the Version attribute is configured as the RANGE key. When an event is added to the DynamoDB table, the system checks that the version doesn't exist already.
 
-5. Optimizations: The author suggests several optimizations, like enabling HTTP keep-alive for the AWS SDK, not referencing the full AWS SDK, and using webpack to bundle the functions.
+5. Optimizations: Yan suggests several optimizations, like enabling HTTP keep-alive for the AWS SDK, not referencing the full AWS SDK, and using webpack to bundle the functions.
 
-6. Streaming events to other consumers: The author proposes two ways to stream these events to other systems - letting other services subscribe to the DynamoDB table's stream or creating another Kinesis stream and converting these DynamoDB INSERT events into domain events.
+6. Streaming events to other consumers: Yan proposes two ways to stream these events to other systems - letting other services subscribe to the DynamoDB table's stream or creating another Kinesis stream and converting these DynamoDB INSERT events into domain events.
 
 ### [What’s the best event source for doing pub-sub with Lambda](https://theburningmonk.com/2018/04/what-is-the-best-event-source-for-doing-pub-sub-with-aws-lambda/)
 
@@ -1061,7 +1061,7 @@ This is an approach that allows an application to dynamically adjust its own con
 Two main strategies are proposed:
 
 1. **Metaprogramming:** Lambda functions can modify their own settings dynamically through API calls to the Lambda service. This allows them to react to external conditions, such as changes in response time and error rates from downstream systems, and adapt their concurrency settings accordingly. To ensure only one invocation can change the relevant settings at once, additional concurrency control measures are necessary.
-2. **Using a Controller Process:** Instead of having each function adjust its own settings, a separate process can be used to manage them. This approach can distinguish between "blocking an ongoing execution from entering a critical section" and "not starting another execution at all". The author notes the trade-offs discussed in the Step Functions semaphore post, notably that locking an execution midway makes choosing sensible timeouts more challenging. However, with Step Functions, callback patterns can be implemented using task tokens, eliminating the need for polling loops in the middle of your state machine.
+2. **Using a Controller Process:** Instead of having each function adjust its own settings, a separate process can be used to manage them. This approach can distinguish between "blocking an ongoing execution from entering a critical section" and "not starting another execution at all". Yan notes the trade-offs discussed in the Step Functions semaphore post, notably that locking an execution midway makes choosing sensible timeouts more challenging. However, with Step Functions, callback patterns can be implemented using task tokens, eliminating the need for polling loops in the middle of your state machine.
 
 ### [Just how expensive is the full AWS SDK?](https://theburningmonk.com/2019/03/just-how-expensive-is-the-full-aws-sdk/)
 
@@ -1293,7 +1293,7 @@ Although AWS's Web Application Firewall (WAF) can provide some protection agains
 
 Another strategy is to reduce the amount of traffic reaching the API Gateway by leveraging CloudFront as a Content Delivery Network (CDN). However, this can incur extra costs during a DDOS attack. AWS Shield Advanced provides payment protection against these extra costs and access to the DDoS Response Team, but it is costly and may not be accessible for startups.
 
-The author concludes by emphasizing the need for improved tooling to help developers apply appropriate rate limits by default and calls for AWS to change the default behavior of applying region-wide limits on every method or provide warnings about potential risks. An update mentions a new Serverless framework plugin called `serverless-api-gateway-throttling` that allows users to configure default throttling settings for the API and override individual endpoint settings.
+Yan concludes by emphasizing the need for improved tooling to help developers apply appropriate rate limits by default and calls for AWS to change the default behavior of applying region-wide limits on every method or provide warnings about potential risks. An update mentions a new Serverless framework plugin called `serverless-api-gateway-throttling` that allows users to configure default throttling settings for the API and override individual endpoint settings.
 
 
 
@@ -1441,7 +1441,7 @@ Alternatives like Datadog and Wavefront, despite offering Lambda support, use th
 
 Yan suggests sending custom metrics asynchronously as a possible solution, as Datadog does by writing custom metrics as specially-formatted log messages. This approach can be used even with other monitoring services. Additionally, tracking the memory usage and billed duration of AWS Lambda functions can be done in CloudWatch through parsing REPORT log messages and publishing them as custom metrics.
 
-Yan also highlights the importance of considering concurrency when using Lambda functions to process CloudWatch logs, to prevent exceeding the account-wide limit on concurrent executions which can lead to cascade failures throughout the application. The author suggests installing bulkheads, using fire-and-forget strategies, or sending the decoded log messages into a Kinesis stream to control parallelism as potential workarounds. H**owever, these solutions are considered temporary, as AWS has yet to provide better control over concurrent executions.**
+Yan also highlights the importance of considering concurrency when using Lambda functions to process CloudWatch logs, to prevent exceeding the account-wide limit on concurrent executions which can lead to cascade failures throughout the application. Yan suggests installing bulkheads, using fire-and-forget strategies, or sending the decoded log messages into a Kinesis stream to control parallelism as potential workarounds. H**owever, these solutions are considered temporary, as AWS has yet to provide better control over concurrent executions.**
 
 ### [Capture and forward correlation IDs through different event sources](https://theburningmonk.com/2017/09/capture-and-forward-correlation-ids-through-different-lambda-event-sources/)
 
@@ -1467,34 +1467,179 @@ When receiving these events, the "__context" field can be removed, and the reque
 
 ### [You should use the SSM Parameter Store over Lambda env variables](https://theburningmonk.com/2017/09/you-should-use-ssm-parameter-store-over-lambda-env-variables/)
 
+Yan describes the difficulty of sharing configs across projects and implementing fine-grained access control with Lambda environment variables.
 
+Challenges with environment variables include the inability to share configurations across projects as they are function specific, making updates cumbersome when configurations change. They also don't allow for adequate access control, which is a significant concern when dealing with sensitive data, like credentials, API keys, or DB connection strings. These should be encrypted at rest and in transit, and access should be based on the principle of least privilege.
+
+As a solution, Yan recommends the SSM Parameter Store. The reasons include it being fully managed, allowing for easy configuration sharing, integrating with KMS out-of-the-box, offering fine-grained control via IAM, recording a history of changes, and being accessible through various interfaces, like the console, AWS CLI, and its HTTPS API.
+
+However, there are service limits, including a maximum of 10,000 parameters per account, a maximum length of parameter value of 4096 characters, and a maximum of 100 past values for a parameter.
+
+Serverless framework's added of SSM parameters support. Although this is an improvement, it still has drawbacks, like tying deployment ability to access to sensitive configuration data and lack of easy propagation for config value changes. Therefore, the Yan suggests fetching SSM parameter values at runtime and caching these values, with hot-swapping when source values change.
+
+### [microserver anti-patterns](https://theburningmonk.com/2015/05/craftconf15-takeaways-from-microservice-antipatterns/)
+
+1. **Overzealous Services**: The most common mistake is to dive straight into microservices without starting with the simplest thing possible. This approach adds complexity and slows down development teams. The recommended strategy is to start simple and gradually extract components into microservices as hotspots become apparent.
+
+2. **Schemas Everywhere**: Sharing a database between services can create tight coupling and hinder the independent deployment of microservices. Instead, each service should have its own database. Changes to an API should be versioned semantically and deployed side by side to avoid breaking dependencies.
+
+3. **Spiky Load between Services**: Uneven traffic between services can be a problem, often resolved by using queues to distribute the load evenly.
+
+4. **Hardcoded IPs and Ports**: Hardcoding IPs and ports can cause trouble when configuring multiple environments and deployments. A solution can be the use of a discovery service like consul or etcd or a centralized router.
+
+5. **Dogpiles**: When one service under load is bombarded with retry calls from other services, it can lead to system-wide cascading failures. The solution is to implement exponential backoff and the circuit breaker pattern.
+
+6. **Debugging Hell**: Debugging becomes complicated in microservices architectures due to difficulty in tracing a service call failure to a user request. Using correlation IDs can be a solution to this problem.
+
+7. **Missing Mock Servers**: If a service is depended on by other teams, those teams would need to mock and stub that service for testing. It's suggested that the provider of the service maintain a mock service and client for easier integration.
+
+8. **Flying Blind**: Microservice architecture requires ongoing operational metrics. Without them, one risks running blind. Numerous commercial and open-source tools are available for this, including NewRelic, StackDriver, and Hystrix.
 
 ### [Mind the 75GB limit AWS Lambda deployment packages](https://theburningmonk.com/2016/08/aws-lambda-janitor-lambda-function-to-clean-up-old-deployment-packages/#)
 
-
+Use [**lambda-janitor**](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:374852340823:applications~lambda-janitor).
 
 ### [The good and bad of X-Ray and Lambda](https://read.acloud.guru/im-here-to-tell-you-the-truth-the-good-the-bad-and-the-ugly-of-aws-x-ray-and-lambda-f212b5f332e9)
 
+Good: Yan found most features to be effective once properly configured. AWS X-Ray provided a trace of the service-a function, including the time it took to initialize the function and the various systems it interacted with. It also displayed the trace of service-c function.
 
+Bad: AWS X-Ray inaccurately reported a 200 response code for an API Gateway endpoint invoking service-a function that errors. This is due to Lambda service returning a 200 response with payload indicating an error, causing confusion. Yan reported that traces don't span over API Gateway endpoints, meaning when the service-a function makes an outgoing HTTP request to an API Gateway endpoint, the trace stops and doesn't extend to the Lambda functions triggered by API Gateway.
+
+Ugly: Yan encountered problems with the sampling mechanism, noting that every request was sampled instead of the documented 1 request per minute. Also, the addition of annotation and metadata to the root segment didn't work as expected. It was found that AWSXray.getSegment() was returning the root segment from the previous invocation, identified as a bug in the X-Ray SDK for Nodejs.
+
+Despite some impressive features, Yan was disappointed by AWS X-Ray's inability to span traces over API Gateway endpoints and its lack of support for correlating IDs in log messages. Furthermore, issues with request sampling and incorrect annotation and metadata operation might add unnecessary costs and complications. 
 
 ### [Serverless observability: Lumigo or AWS X-Ray](https://lumigo.io/blog/serverless-observability-lumigo-or-aws-x-ray/)
 
+Observability is a measure of how well the internal state of an application can be inferred from its external outputs. It plays a critical role in troubleshooting problems in production, especially as different tools use varying methodologies for collecting data and provide different levels of insights.
 
+AWS X-Ray is a native tool that provides basic distributed tracing, which involves collecting traces from applications and revealing insights such as transaction durations and performance bottlenecks. It requires manual instrumenting of code and integrates with many AWS services. However, its scope is limited and doesn't offer a complete observability package. Among its drawbacks are the need for extensive manual instrumentation, limited support for event-driven applications, and restrictions on tracing time and search syntax. Despite these limitations, it is a cost-effective solution that meets the basic needs of distributed tracing.
+
+On the other hand, Lumigo is an observability tool that automatically instruments your code, aggregates errors, and provides built-in alerting and notification. Unlike X-Ray, it doesn't require manual instrumentation, offers high-level performance summaries, and supports event-driven applications across multiple regions and AWS accounts. It captures more data, offers free-text search on collected data, and can search up to 30 days' worth of data. However, Lumigo's tracer can add latency to every Lambda invocation, and it can't trace direct integrations between AppSync/Step Functions and other AWS services.
+
+Despite X-Ray's cost-effectiveness, it falls short in its utility, especially outside the context of AppSync and Step Functions. Conversely, Lumigo provides clear value, offering a comprehensive observability solution, making it the best observability tool for serverless applications in his opinion. Lumigo improves the developer experience, reduces the need for debugging logs, and captures more state information about the application, making troubleshooting more effective.
 
 ### [Serverless observability brings new challenges to current practices](https://theburningmonk.com/2018/02/serverless-observability-brings-new-challenges-to-current-practices/)
 
+Due to serverless technologies like AWS Lambda, many traditional methods of gaining observability for services running in virtual machines or containers have become redundant. With Lambda, access to underlying infrastructure is lost, making it impossible to install agents & daemons that collect, batch, and publish data to our observability systems.
+
+Another challenge is the drastic change in how system concurrency is managed. With serverless technologies, concurrency is managed by the platform, which while beneficial, also results in higher traffic to the observability system, which could lead to performance and cost implications at scale.
+
+The lifecycle of an AWS Lambda function presents another challenge. Lambda services tend to clear containers that haven't received a request for a while, and if there's any observability data that hasn't been published yet, it will be lost. Continuously receiving requests won't prevent this, as the Lambda service will still clear the container after a few active hours, resulting in potential loss of unpublished data.
+
+Sending observability data as part of function invocation may impact user-facing latency. With the trend towards building event-driven architectures, function invocations often become chained through asynchronous event sources, making tracing such invocations a complex task.
+
+Finally, Yan acknowledges the work done by companies like IOpipe, Dashbird, and Thundra in this challenging space, and advises the reader to consider these factors when choosing an observability tool. For example, when building user-facing APIs where latency is important, it is better to use an observability tool that can send data asynchronously, or use a stringent sample rate. The cost and execution priority may also influence the choice of observability method.
+
+### [Serverless observability, what can we use out of the box?](https://theburningmonk.com/2018/04/serverless-observability-what-can-you-use-out-of-the-box/)
+
+AWS provides several tools by default:
+
+- CloudWatch for monitoring, alerting, and visualization
+- CloudWatch Logs for logs
+- X-Ray for distributed tracing
+- Amazon ElasticSearch for log aggregation
+
+With CloudWatch Logs, all outputs written to stdout are captured by the Lambda services and sent to CloudWatch Logs. This is a form of background processing provided by the platform. All log messages for a specific function will appear in CloudWatch Logs under a single Log Group. However, it's not easy to search for log messages in CloudWatch Logs, and there's no way to search logs for multiple functions at once. Although AWS has improved this service, it is still inferior to other alternatives in the market.
+
+CloudWatch Metrics provides some basic metrics such as invocation count, error count, invocation duration, etc. But it misses some valuable data points, such as estimated costs, concurrent executions, cold starts, billed duration, and memory usage. You can set up Alarms in CloudWatch against any of these metrics, and you can set up basic dashboards in CloudWatch at a small cost.
+
+X-Ray provides distributed tracing, but it focuses narrowly on one function, the distributed aspect is severely undercooked. It doesn't trace over API Gateway, or asynchronous invocations such as SNS or Kinesis. For a holistic view of your system, you would need to move away from what happens inside one function and be able to look at the entire call chain. Our tracing tools need to help us visualize the connections between our functions and follow data as it enters our system through both synchronous and asynchronous events.
+
+Finally, our system should be thought of like a brain, with neurons (functions), synapses (connections between functions), and electrical signals (data). But when we look at our dashboards and X-Ray traces, we don't see this. Instead, we see a static list that doesn't reflect the movement of data and activity areas.
+
+In conclusion, AWS provides some decent tools out of the box. While they have their shortcomings, they're good enough to start with. However, as our serverless applications become more complex, these tools need to either evolve with us or they will need to be replaced in our stack.
 
 
-- [Serverless observability, what can we use out of the box?](https://theburningmonk.com/2018/04/serverless-observability-what-can-you-use-out-of-the-box/)
-- [How to auto-create CloudWatch alarms for API Gateway, using Lambda](https://theburningmonk.com/2018/05/auto-create-cloudwatch-alarms-for-apis-with-lambda/)
-- [How to monitor Lambda with CloudWatch Metrics](https://lumigo.io/blog/how-to-monitor-lambda-with-cloudwatch-metrics/)
-- [Getting the most out of CloudWatch Logs](https://lumigo.io/blog/getting-the-most-out-of-cloudwatch-logs/)
-- [Introducing an easier way to record custom metrics from Lambda](https://theburningmonk.com/2019/07/introducing-a-better-way-to-record-custom-metrics/)
-- [How to debug Lambda performance issues](https://medium.com/lumigo/how-to-debug-aws-lambda-performance-issues-57053db1caf9)
-- [Debugging AWS Lambda timeouts](https://lumigo.io/blog/debugging-aws-lambda-timeouts/)
-- [What alerts should you have for Serverless applications?](https://lumigo.io/blog/what-alerts-should-you-have-for-serverless-applications/)
-- [How to debug slow Lambda response time](https://lumigo.io/blog/debugging-slow-lambda-response-times)
-- [Serverless Observability: it’s easier than you think](https://lumigo.io/blog/serverless-observability-its-easier-than-you-think/)
+
+### [How to auto-create CloudWatch alarms for API Gateway, using Lambda](https://theburningmonk.com/2018/05/auto-create-cloudwatch-alarms-for-apis-with-lambda/)
+
+Discusses automating the creation of CloudWatch Alarms for APIs with Lambda in Amazon Web Services (AWS). Yan emphasizes the importance of certain manual steps that often get missed due to their tedious nature. These steps include enabling detailed metrics for the deployment stage, setting up a dashboard in CloudWatch to display various metrics, and setting up CloudWatch Alarms for certain latencies and error counts.
+
+He proposes a solution to automate these steps using CloudTrail, CloudWatch Events, and Lambda. This process involves three simple steps:
+
+1. CloudTrail captures the CreateDeployment request to API Gateway.
+2. CloudWatch Events create a pattern against this captured request.
+3. A Lambda function enables detailed metrics and creates alarms for each endpoint.
+
+Inside the handler function, which you can find [here](https://github.com/theburningmonk/manning-aws-lambda-in-motion/blob/master/functions/create-alarms.js), we perform a few steps
+
+1. enable detailed metrics with an `updateStage` call to API Gateway
+2. get the list of REST endpoints with a `getResources` call to API Gateway
+3. get the REST API name with a `getRestApi` call to API Gateway
+4. for each of the REST endpoints, create a p99 latency alarm in the `AWS/ApiGateway` namespace
+
+A few key takeaways from the code are:
+
+- The function requires certain permissions (apigateway:PATCH, apigateway:GET, and cloudwatch:PutMetricAlarm) to enable detailed metrics, get API name and REST endpoints, and create the alarms.
+- Environment variables specify SNS topics for the CloudWatch Alarms.
+
+Once this automation is set up, every time a new API is created, CloudWatch Alarms will automatically be set up to alert when the 99th percentile latency for an endpoint exceeds 1 second for 5 consecutive minutes.
+
+Yan concludes by mentioning that one could take this automation a step further to create CloudWatch Alarms for 5xx errors for each endpoint and to create a CloudWatch Dashboard for the API. Yan prefers this automation approach because it scales better with team size and doesn't rely on developers remembering to perform these steps manually.
+
+### [How to monitor Lambda with CloudWatch Metrics](https://lumigo.io/blog/how-to-monitor-lambda-with-cloudwatch-metrics/)
+
+A detailed guide on how to utilize AWS CloudWatch Metrics for monitoring Lambda functions. It addresses several important Lambda metrics, their significance, and how to monitor them using CloudWatch, along with their potential limitations.
+
+The key metrics include:
+
+1. Lambda Errors: CloudWatch counts two types of errors - uncaught exceptions thrown by your code and runtime errors.
+2. Dead-Letter Errors: These are critical issues that may lead to data loss, caused by problems like incorrect permissions, incorrect resource configurations, or size limits.
+3. Function Duration: This refers to the time taken by each Lambda function to run, impacting application performance and costs.
+4. Function Timeout: If a function exceeds the preset time, it stops running and CloudWatch doesn't log its duration.
+5. Function Invocations: Successful function calls are recorded and used for billing purposes. Any changes in the number of invocations significantly influence costs.
+6. Iterator Age: For streaming data, this metric is used to track the time it takes for the latest record in a stream to reach Lambda and be processed.
+
+However, the article points out several limitations of CloudWatch Metrics, such as missing valuable metrics like Concurrent Executions for all functions, Cold Start Count, Memory Usage, Billed Duration, Timeout Count, and Estimated Cost.
+
+Additionally, Yan discusses how to design service dashboards and how to set alerts for monitoring. For instance, alerts should be set up for error rates, timeouts, Iterator Age, SQS message age, DLQ errors, throttling, and API latency. The article also mentions CloudWatch Events, which can trigger Lambda functions to solve issues in other AWS services.
+
+Lastly, Yan provides tips on how to automate the process of creating alerts using CloudFormation macros and discusses the potential of dashboards in CloudWatch. 
+
+### [Getting the most out of CloudWatch Logs](https://lumigo.io/blog/getting-the-most-out-of-cloudwatch-logs/)
+
+This article delves into using AWS CloudWatch for monitoring AWS Lambda functions.
+
+1. CloudWatch Logs for AWS Lambda: The messages written by Lambda functions to stdout or stderr are collected asynchronously and shipped to AWS CloudWatch Logs, arranged into log groups. Each function has a matching log group with the same name. Inside each log group, there are log streams each mapping to a concurrent execution of the function. The system is cost-effective, scalable, resilient and can store data for a long period.
+2. CloudWatch Subscription Filters: These let you stream log events to a destination within AWS, like Kinesis stream, Kinesis Firehose delivery stream, or a Lambda function. At larger scales, sending logs to Kinesis or Kinesis Firehose is more practical to prevent over-consumption of concurrency by the log-shipping function.
+3. CloudWatch Metric Filters: These allow conversion of logs into metrics and alerts. Metrics can be created by selecting the log group and setting a filter pattern for the relevant log messages. Metrics are created based on the number of matched log messages or custom latency metrics.
+4. CloudWatch Logs Insights: This feature offers query capability for log messages, allowing SQL-esque queries, sorting, stats generation, and visualization of search results. It also lets you query multiple log groups at once.
+
+The limitations include inability to query logs across multiple log groups (although Logs Insights allows querying multiple log groups simultaneously), a cap of 100 metric filters per log group, and the inability to operate Logs Insights across account boundaries.
+
+In conclusion, AWS CloudWatch Logs provide a powerful tool for monitoring and analyzing AWS Lambda functions, despite some limitations. Users are also encouraged to adopt good logging practices and consider tools like the open-source [dazn-lambda-powertools](https://github.com/getndazn/dazn-lambda-powertools) to enhance their logging experience.
+
+### [Introducing an easier way to record custom metrics from Lambda](https://theburningmonk.com/2019/07/introducing-a-better-way-to-record-custom-metrics/)
+
+This article presents a new approach to recording custom metrics from AWS Lambda through asynchronous recording, aiming to overcome problems like added latency to invocations associated with synchronous methods. Traditional synchronous publishing of metrics can cause delays and fragility at integration points, particularly if CloudWatch experiences an outage or increased response time. 
+
+Although asynchronous recording also has drawbacks, like additional delay in seeing recent metric data, increased costs, and added complexity, Yan suggests using a Lambda function to process logs and turn them into metrics, which is more scalable for complex systems with numerous functions and custom metrics.
+
+To facilitate easy recording of custom metrics asynchronously, Yan has published a new application to the Serverless Application Repository [`async-custom-metrics`](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:374852340823:applications~async-custom-metrics). The application, which can be deployed via the AWS console or as part of a CloudFormation stack with AWS SAM, allows users to record custom metrics by writing to stdout in a specific format. Once deployed, custom metrics can be recorded without adding latency to invocations, with values published as custom metrics in CloudWatch.
+
+### [How to debug Lambda performance issues](https://medium.com/lumigo/how-to-debug-aws-lambda-performance-issues-57053db1caf9)
+
+
+
+### [Debugging AWS Lambda timeouts](https://lumigo.io/blog/debugging-aws-lambda-timeouts/)
+
+
+
+### [What alerts should you have for Serverless applications?](https://lumigo.io/blog/what-alerts-should-you-have-for-serverless-applications/)
+
+
+
+### [How to debug slow Lambda response time](https://lumigo.io/blog/debugging-slow-lambda-response-times)
+
+
+
+### [Serverless Observability: it’s easier than you think](https://lumigo.io/blog/serverless-observability-its-easier-than-you-think/)
+
+
+
+
+
 - [Shine some light on your SNS to SQS to Lambda stack](https://lumigo.io/blog/sns-sqs-to-lambda-shine-some-light/)
 - [Lambda Logs API: a new way to process Lambda logs in real-time](https://lumigo.io/blog/lambda-logs-api-a-new-way-to-process-lambda-logs-in-real-time/)
 - [AWS Lambda Telemetry API: a new way to process Lambda telemetry data in real-time](https://lumigo.io/blog/lambda-telemetry-api-a-new-way-to-process-lambda-telemetry-data-in-real-time/)
