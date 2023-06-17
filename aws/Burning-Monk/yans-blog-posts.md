@@ -1620,29 +1620,97 @@ To facilitate easy recording of custom metrics asynchronously, Yan has published
 
 ### [How to debug Lambda performance issues](https://medium.com/lumigo/how-to-debug-aws-lambda-performance-issues-57053db1caf9)
 
-
+Services like Lumigo enhance the observability of serverless architectures, collecting ample information to understand the internal state of applications. While AWS X-Ray provides valuable services, Lumigo enhances these capabilities with more detailed recording and visualization features, helping to identify and resolve performance issues more effectively.
 
 ### [Debugging AWS Lambda timeouts](https://lumigo.io/blog/debugging-aws-lambda-timeouts/)
 
+This article is about debugging Lambda timeouts in serverless applications and the various methods to detect and mitigate them. Lambda timeouts can be challenging to identify and debug because Lambda does not report a separate error metric for timeouts, and there's usually multiple IO operations happening during an invocation.
 
+Detecting timeouts can be done by looking at a function's Max Duration metric or by creating a custom metric with the pattern "Task timed out after". A more advanced method would be to use 3rd-party tools such as Lumigo which can detect Lambda timeouts in real-time.
+
+![AWS Lambda Max Duration](https://lumigo.io/wp-content/uploads/2020/08/1_KIJdL0P3zyWiFNRX4R6SMw.png)
+
+To find the root cause of the timeout, one way is to log a pair of START and END messages around every IO operation, though this might be challenging to scale for larger applications. A better method could be to use Amazon X-Ray to trace every operation performed, or using 3rd-party tools such as Lumigo that provide similar timeline views and more functionalities.
+
+To mitigate Lambda timeouts, developers can timebox IO operations based on the remaining invocation time using `context.getRemainingTimeInMillis()`. For read operations, fallbacks to return previously cached responses can be used, while for write operations, retries can be queued up where applicable. These approaches allow developers to build more resilient serverless applications. See [Use ](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)`context.getRemainingTimeInMillis()`[ to adjust client-side request timeout based on actual invocation time left](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/) / [AWS Lambda — use the invocation context to better handle slow HTTP responses](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/).
+
+![set timeout based on remaining invocation time](https://lumigo.io/wp-content/uploads/2020/08/set-timeout-based-on-remaining-invocation-time.png)
 
 ### [What alerts should you have for Serverless applications?](https://lumigo.io/blog/what-alerts-should-you-have-for-serverless-applications/)
 
+Use alarms to alert you that something is wrong, not necessarily what is wrong.
 
+**ConcurrentExecutions**: set to 80% of the regional limit.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bpz9fowelkbfzev7aq3g.png)
+
+**IteratorAge**: for lambda functions that process against Kinesis streams, you need an alarm for IteratorAge. Should be in milliseconds usually, but can fall behind.
+
+**DeadLetterErrors**: for functions that are triggered by an async event source (SNS, EventBridge) you should have dead letter queues setup, and have an alarm against DeadLetterErrors, which indicates that lambda has trouble sending error events to DLQ.
+
+**Throttles**: for business critical functions you need an alarm that will fire as soon as the fn gets throttled. Maybe there's a rouge fn that's consuming the concurrency in the region, and causing business critical fns to get throttled.
+
+**Error count & success rate %**: according to your SLA
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i5jbkjmxgvzhb0atmjsp.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0vkj8by1thojr440r27t.png)
 
 ### [How to debug slow Lambda response time](https://lumigo.io/blog/debugging-slow-lambda-response-times)
 
+Yan discusses how to debug Lambda response time issues effectively by maximizing telemetry data and using tools such as X-Ray or Lumigo. It first highlights how AWS Lambda provides scalability and redundancy by default, automatically scaling the number of workers running your code based on traffic.
 
+Yan explains the key components that can contribute to the end-to-end request latency of an API built on AWS. These components include API Gateway, which typically has low latency overhead, Lambda functions, and DynamoDB. The author points out the importance of tracking the latency of external services that Lambda functions integrate with and suggests looking at the API Gateway’s IntegrationLatency as a proxy for the total response time from Lambda.
+
+![serverless latency onion layers dynamodb lambda api gateway](https://lumigo.io/wp-content/uploads/2020/09/serverless-latency-onion-layers-dynamodb-lambda-api-gateway.png)
+
+Take the following latency spike as an example, everything moved apart from DynamoDB’s `SuccessfulRequestLatency`. What could possibly cause the caller-side DynamoDB latency to spike without affecting the underlying `SuccessfulRequestLatency`? We don’t know for sure, but a pretty good bet would be caller-side retries and exponential delays.
+
+![lambda dynamodb api gateway latency spike](https://lumigo.io/wp-content/uploads/2020/09/lambda-dynamodb-api-gateway-latency-spike.png)
+
+For monitoring and debugging, Yan recommends AWS X-Ray, but it also points out X-Ray's limitations, such as the lack of support for many async event sources and any TCP-based transactions. To address these issues, the author suggests using third-party observability tools like Lumigo, which provides more sophisticated tools for complex serverless applications. Lumigo supports SNS, S3, Kinesis, and DynamoDB Streams, traces TCP-based transactions, and offers a transaction timeline. Moreover, Lumigo allows for viewing the transaction and Lambda logs side-by-side, offering a complete picture of what happens during a transaction. This can be useful for identifying poor-performing dependencies and debugging issues more quickly. 
 
 ### [Serverless Observability: it’s easier than you think](https://lumigo.io/blog/serverless-observability-its-easier-than-you-think/)
 
+AWS provides services like CloudWatch, CloudWatch Logs, and X-Ray that help build observability into serverless applications, but these fall short of the enhanced developer experience offered by vendors like Lumigo. However, AWS services can still provide good observability if their limitations are worked around, such as using reusable libraries for X-Ray, logging invocation events, capturing additional request/response data, and forwarding correlation IDs and logs. While these strategies require significant engineering time and coordination, they are feasible.
+
+Yan suggests that if the decision is based on capabilities and developer productivity, a third-party service like Lumigo that fulfills most needs, supplemented with AWS services, might be the best approach. Using Lumigo has allowed the author to focus more on solving business challenges and delivering projects on time and on budget.
+
+Yan concludes that while building custom solutions for serverless observability can be an interesting challenge, third-party platforms like Lumigo make the process easier and allow businesses to focus on their unique value propositions. 
 
 
 
+### [Shine some light on your SNS to SQS to Lambda stack](https://lumigo.io/blog/sns-sqs-to-lambda-shine-some-light/)
 
-- [Shine some light on your SNS to SQS to Lambda stack](https://lumigo.io/blog/sns-sqs-to-lambda-shine-some-light/)
-- [Lambda Logs API: a new way to process Lambda logs in real-time](https://lumigo.io/blog/lambda-logs-api-a-new-way-to-process-lambda-logs-in-real-time/)
-- [AWS Lambda Telemetry API: a new way to process Lambda telemetry data in real-time](https://lumigo.io/blog/lambda-telemetry-api-a-new-way-to-process-lambda-telemetry-data-in-real-time/)
+The combination of SNS to SQS to Lambda is a common sight in serverless applications on AWS. Perhaps triggered by messages from an API function.
+
+[![img](https://lumigo.io/wp-content/uploads/2022/08/sns-sqs-trace-01-1024x160.png)](https://lumigo.io/wp-content/uploads/2022/08/sns-sqs-trace-01.png)
+
+This architecture is great for improving UX by offloading slow, asynchronous tasks so the API can stay responsive.
+
+It presents an interesting challenge for observability, however. Because observability tools are **not able** to trace invocations through this combination end-to-end. In X-Ray, for example, the trace would stop at SNS. resulting in incomplete or fragmented visibility into application behavior.
+
+TL, DR; use observability tools like Lumigo.
+
+[![img](https://lumigo.io/wp-content/uploads/2022/08/sns-sqs-trace-02-1024x172.png)](https://lumigo.io/wp-content/uploads/2022/08/sns-sqs-trace-02.png)
+
+
+
+### [Lambda Logs API: a new way to process Lambda logs in real-time](https://lumigo.io/blog/lambda-logs-api-a-new-way-to-process-lambda-logs-in-real-time/)
+
+Lambda logs are outdated, Telemetry API supersedes it.
+
+### [AWS Lambda Telemetry API: a new way to process Lambda telemetry data in real-time](https://lumigo.io/blog/lambda-telemetry-api-a-new-way-to-process-lambda-telemetry-data-in-real-time/)
+
+This API, which replaces and improves upon the previously released Logs API, allows Lambda extensions to subscribe and receive telemetry data such as function logs, extension logs, events, metrics, and traces. The Telemetry API gives vendors more access to the Lambda execution environment, aiding them in building better tools.
+
+One of the key features of the Telemetry API is its ability to run extensions after the function code finishes, without negatively impacting the user experience due to the "early return" feature introduced by AWS in 2021. This allows for background processing time that is billable, but not user-facing.
+
+[![img](https://lumigo.io/wp-content/uploads/2022/10/telemetry-api-01-1024x475.png)](https://lumigo.io/wp-content/uploads/2022/10/telemetry-api-01.png)
+
+The Telemetry API enables users to collect platform traces and performance metrics directly from Lambda, in addition to the logs collected by the Logs API. This feature allows, for example, metrics and traces to be converted to Open Telemetry format and sent to a vendor directly.
+
+Lumigo, as an AWS launch partner, has updated its lambda-telemetry-shipper extension to utilize the Telemetry API. This update allows for easier detection of Lambda timeouts, and emits a custom CloudWatch Metric when a function times out. The extension is available in all AWS regions and can be installed via Lambda layer.
 
 # AppSync
 
@@ -1672,14 +1740,6 @@ To facilitate easy recording of custom metrics asynchronously, Yan has published
 - [How to connect SNS to Kinesis for cross-account delivery via API Gateway](https://theburningmonk.com/2019/07/how-to-connect-sns-to-kinesis-for-cross-account-delivery-via-api-gateway/)
 - [The best reason to use DynamoDB Streams is…](https://lumigo.io/blog/the-best-reason-to-use-dynamodb-streams-is/)
 
-# Yubl’s road to Serverless
-
-- [part 1 : overview](https://theburningmonk.com/2016/12/yubls-road-to-serverless-architecture-part-1/)
-- [part 2 : testing & continuous delivery strategies](https://theburningmonk.com/2017/02/yubls-road-to-serverless-architecture-part-2/)
-- [part 3 : ops](https://theburningmonk.com/2017/03/yubls-road-to-serverless-architecture-part-3/)
-- [part 4 : building a scalable push notification system](https://theburningmonk.com/2017/05/yubls-road-to-serverless-architecture-part-4-building-a-scalable-push-notification-system/)
-- [part 5 : building a better recommendation system](https://theburningmonk.com/2017/07/yubls-road-to-serverless-part-5/)
-
 # Misc
 
 - [What is AWS Lambda’s new Streaming Response](https://lumigo.io/blog/return-large-objects-with-aws-lambdas-new-streaming-response/)
@@ -1704,3 +1764,10 @@ To facilitate easy recording of custom metrics asynchronously, Yan has published
 - [How to work around CloudFormation circular dependencies](https://theburningmonk.com/2022/05/how-to-work-around-cloudformation-circular-dependencies/)
 - [How to manage Route53 hosted zones in a multi-account environment](https://theburningmonk.com/2021/05/how-to-manage-route53-hosted-zones-in-a-multi-account-environment/)
 
+# Yubl’s road to Serverless
+
+- [part 1 : overview](https://theburningmonk.com/2016/12/yubls-road-to-serverless-architecture-part-1/)
+- [part 2 : testing & continuous delivery strategies](https://theburningmonk.com/2017/02/yubls-road-to-serverless-architecture-part-2/)
+- [part 3 : ops](https://theburningmonk.com/2017/03/yubls-road-to-serverless-architecture-part-3/)
+- [part 4 : building a scalable push notification system](https://theburningmonk.com/2017/05/yubls-road-to-serverless-architecture-part-4-building-a-scalable-push-notification-system/)
+- [part 5 : building a better recommendation system](https://theburningmonk.com/2017/07/yubls-road-to-serverless-part-5/)
