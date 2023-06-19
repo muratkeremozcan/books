@@ -1052,7 +1052,7 @@ There are three ways to manage concurrency in serverless applications, especiall
 
    ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/prnfc0ixxmwi9b7kjq82.png)
 
-The article emphasizes the importance of these methods in managing concurrency in serverless applications, as improper management can lead to issues such as function throttling or improper order of event processing.
+Yan emphasizes the importance of these methods in managing concurrency in serverless applications, as improper management can lead to issues such as function throttling or improper order of event processing.
 
 **Dynamic concurrency control in serverless applications**
 
@@ -1591,9 +1591,9 @@ The key metrics include:
 5. Function Invocations: Successful function calls are recorded and used for billing purposes. Any changes in the number of invocations significantly influence costs.
 6. Iterator Age: For streaming data, this metric is used to track the time it takes for the latest record in a stream to reach Lambda and be processed.
 
-However, the article points out several limitations of CloudWatch Metrics, such as missing valuable metrics like Concurrent Executions for all functions, Cold Start Count, Memory Usage, Billed Duration, Timeout Count, and Estimated Cost.
+However, Yan points out several limitations of CloudWatch Metrics, such as missing valuable metrics like Concurrent Executions for all functions, Cold Start Count, Memory Usage, Billed Duration, Timeout Count, and Estimated Cost.
 
-Additionally, Yan discusses how to design service dashboards and how to set alerts for monitoring. For instance, alerts should be set up for error rates, timeouts, Iterator Age, SQS message age, DLQ errors, throttling, and API latency. The article also mentions CloudWatch Events, which can trigger Lambda functions to solve issues in other AWS services.
+Additionally, Yan discusses how to design service dashboards and how to set alerts for monitoring. For instance, alerts should be set up for error rates, timeouts, Iterator Age, SQS message age, DLQ errors, throttling, and API latency. Yan also mentions CloudWatch Events, which can trigger Lambda functions to solve issues in other AWS services.
 
 Lastly, Yan provides tips on how to automate the process of creating alerts using CloudFormation macros and discusses the potential of dashboards in CloudWatch. 
 
@@ -1660,7 +1660,7 @@ Use alarms to alert you that something is wrong, not necessarily what is wrong.
 
 Yan discusses how to debug Lambda response time issues effectively by maximizing telemetry data and using tools such as X-Ray or Lumigo. It first highlights how AWS Lambda provides scalability and redundancy by default, automatically scaling the number of workers running your code based on traffic.
 
-Yan explains the key components that can contribute to the end-to-end request latency of an API built on AWS. These components include API Gateway, which typically has low latency overhead, Lambda functions, and DynamoDB. The author points out the importance of tracking the latency of external services that Lambda functions integrate with and suggests looking at the API Gateway’s IntegrationLatency as a proxy for the total response time from Lambda.
+Yan explains the key components that can contribute to the end-to-end request latency of an API built on AWS. These components include API Gateway, which typically has low latency overhead, Lambda functions, and DynamoDB. Yan points out the importance of tracking the latency of external services that Lambda functions integrate with and suggests looking at the API Gateway’s IntegrationLatency as a proxy for the total response time from Lambda.
 
 ![serverless latency onion layers dynamodb lambda api gateway](https://lumigo.io/wp-content/uploads/2020/09/serverless-latency-onion-layers-dynamodb-lambda-api-gateway.png)
 
@@ -1668,13 +1668,13 @@ Take the following latency spike as an example, everything moved apart from Dyna
 
 ![lambda dynamodb api gateway latency spike](https://lumigo.io/wp-content/uploads/2020/09/lambda-dynamodb-api-gateway-latency-spike.png)
 
-For monitoring and debugging, Yan recommends AWS X-Ray, but it also points out X-Ray's limitations, such as the lack of support for many async event sources and any TCP-based transactions. To address these issues, the author suggests using third-party observability tools like Lumigo, which provides more sophisticated tools for complex serverless applications. Lumigo supports SNS, S3, Kinesis, and DynamoDB Streams, traces TCP-based transactions, and offers a transaction timeline. Moreover, Lumigo allows for viewing the transaction and Lambda logs side-by-side, offering a complete picture of what happens during a transaction. This can be useful for identifying poor-performing dependencies and debugging issues more quickly. 
+For monitoring and debugging, Yan recommends AWS X-Ray, but it also points out X-Ray's limitations, such as the lack of support for many async event sources and any TCP-based transactions. To address these issues, Yan suggests using third-party observability tools like Lumigo, which provides more sophisticated tools for complex serverless applications. Lumigo supports SNS, S3, Kinesis, and DynamoDB Streams, traces TCP-based transactions, and offers a transaction timeline. Moreover, Lumigo allows for viewing the transaction and Lambda logs side-by-side, offering a complete picture of what happens during a transaction. This can be useful for identifying poor-performing dependencies and debugging issues more quickly. 
 
 ### [Serverless Observability: it’s easier than you think](https://lumigo.io/blog/serverless-observability-its-easier-than-you-think/)
 
 AWS provides services like CloudWatch, CloudWatch Logs, and X-Ray that help build observability into serverless applications, but these fall short of the enhanced developer experience offered by vendors like Lumigo. However, AWS services can still provide good observability if their limitations are worked around, such as using reusable libraries for X-Ray, logging invocation events, capturing additional request/response data, and forwarding correlation IDs and logs. While these strategies require significant engineering time and coordination, they are feasible.
 
-Yan suggests that if the decision is based on capabilities and developer productivity, a third-party service like Lumigo that fulfills most needs, supplemented with AWS services, might be the best approach. Using Lumigo has allowed the author to focus more on solving business challenges and delivering projects on time and on budget.
+Yan suggests that if the decision is based on capabilities and developer productivity, a third-party service like Lumigo that fulfills most needs, supplemented with AWS services, might be the best approach. Using Lumigo has allowed Yan to focus more on solving business challenges and delivering projects on time and on budget.
 
 Yan concludes that while building custom solutions for serverless observability can be an interesting challenge, third-party platforms like Lumigo make the process easier and allow businesses to focus on their unique value propositions. 
 
@@ -1714,14 +1714,61 @@ Lumigo, as an AWS launch partner, has updated its lambda-telemetry-shipper exten
 
 # AppSync
 
-- [How to model one-to-many relationships with AppSync and DynamoDB](https://theburningmonk.com/2021/03/how-to-model-one-to-many-relationships-with-appsync-and-dynamodb/)
-- [How I built a social network in 4 weeks with GraphQL and serverless](https://theburningmonk.com/2020/11/how-i-built-a-social-network-in-4-weeks-with-graphql-and-serverless/)
-- [Five reasons you should consider AppSync over API Gateway](https://lumigo.io/aws-serverless-ecosystem/aws-appsync-five-reasons-you-should-consider-it-over-api-gateway/)
-- [AppSync: skipping nullable nested resolvers by returning early](https://theburningmonk.com/2020/04/appsync-skipping-nullable-nested-resolvers/)
-- [AppSync: how to error on DynamoDB conditional check failures](https://theburningmonk.com/2020/04/appsync-how-to-error-on-dynamodb-conditional-check-failures/)
-- [AppSync: how to compare strings lexicographically in VTL](https://theburningmonk.com/2020/05/appsync-how-to-compare-strings-lexicographically-in-vtl/)
-- [AppSync: how to inject table names into DynamoDB batch & transact operations](https://theburningmonk.com/2020/07/appsync-how-to-inject-table-names-into-dynamodb-batch-transact-operations/)
-- [How I scaled an AppSync project to 200+ resolvers](https://theburningmonk.com/2020/07/how-i-scaled-an-appsync-project-to-200-resolvers/)
+### [How to model one-to-many relationships with AppSync and DynamoDB](https://theburningmonk.com/2021/03/how-to-model-one-to-many-relationships-with-appsync-and-dynamodb/)
+
+Yan provides insight on how to model a one-to-many relationship with AppSync and DynamoDB, focusing on a relationship from "Profile" to a property called "Tag" (from Appsync masterclass). The post also addresses how a "Tweet" can reference one or more of the user's own "Tags".
+
+Yan emphasizes two important aspects to consider:
+
+1. Representing the one-to-many relationship in the GraphQL model: For bounded arrays, Yan suggests modifying the "tags" array to prevent null return in the array. For unbounded arrays like "tweets", the advice is to return a TweetsPage type, which attaches the first page of a user's tweets and provides a method for fetching more.
+2. Modeling the one-to-many relationship in DynamoDB: Yan advises to nest the array in the "Profile" object for a bounded array. However, for unbounded arrays, nesting wouldn't work due to DynamoDB's object size limits. Yan suggests two methods to tackle this issue: using a single-table design or putting them in a separate table, with a preference for the latter.
+
+Using a separate table is seen as simpler due to fewer custom VTL code requirements, ease in understanding data in a table, ability to monitor costs for different tables, easier implementation of DynamoDB streams for data changes, and ease in restricting access to data in DynamoDB. Yan also mentions that GraphQL and AppSync are adept at stitching the data together.
+
+
+
+### [How I built a social network in 4 weeks with GraphQL and serverless](https://theburningmonk.com/2020/11/how-i-built-a-social-network-in-4-weeks-with-graphql-and-serverless/)
+
+GG.
+
+### [Five reasons you should consider AppSync over API Gateway](https://lumigo.io/aws-serverless-ecosystem/aws-appsync-five-reasons-you-should-consider-it-over-api-gateway/)
+
+1. **Cognito group-based authorization**: While API Gateway supports this feature, its implementation is complicated. On the other hand, AppSync makes it easy to implement group-based authorization.
+
+2. **Request and Response validation**: API Gateway only provides request validation, and no support for response validation. In contrast, AppSync handles both request and response validation, and this validation is inherent in the GraphQL type definitions.
+
+3. **Scalable WebSockets**: While API Gateway's WebSockets work fine for simple use cases, AppSync's subscriptions are easier to work with and can support millions of connected clients without requiring the developer to manage any connections themselves.
+
+4. **Automated API documentation**: API Gateway's process for exporting API documentation is not as straightforward as desired. However, in GraphQL (and thus AppSync), the .graphql spec resulting from defining types, queries, and mutations is self-documenting.
+
+5. **Integration with DynamoDB/ElasticSearch/RDS**: AppSync provides a more straightforward and less complicated process of integrating with other services such as DynamoDB, ElasticSearch, and RDS compared to API Gateway.
+
+While API Gateway can achieve the same features, Yan argues that in every case, it requires significantly more effort than with AppSync. They share an example of a project where after struggling with API Gateway for a week, they were able to implement everything they needed and more with AppSync within a few hours. The conclusion is that AppSync, particularly for GraphQL-based APIs, can be more efficient and manageable than API Gateway.
+
+
+
+### [AppSync: skipping nullable nested resolvers by returning early](https://theburningmonk.com/2020/04/appsync-skipping-nullable-nested-resolvers/)
+
+
+
+### [AppSync: how to error on DynamoDB conditional check failures](https://theburningmonk.com/2020/04/appsync-how-to-error-on-dynamodb-conditional-check-failures/)
+
+
+
+### [AppSync: how to compare strings lexicographically in VTL](https://theburningmonk.com/2020/05/appsync-how-to-compare-strings-lexicographically-in-vtl/)
+
+
+
+### [AppSync: how to inject table names into DynamoDB batch & transact operations](https://theburningmonk.com/2020/07/appsync-how-to-inject-table-names-into-dynamodb-batch-transact-operations/)
+
+
+
+### [How I scaled an AppSync project to 200+ resolvers](https://theburningmonk.com/2020/07/how-i-scaled-an-appsync-project-to-200-resolvers/)
+
+
+
+
+
 - [How to secure multi-tenant applications with AppSync and Cognito](https://theburningmonk.com/2021/03/how-to-secure-multi-tenant-applications-with-appsync-and-cognito/)
 - [How to model hierarchical access with AppSync](https://theburningmonk.com/2020/08/how-to-model-hierarchical-access-with-appsync/)
 - [How to set up custom domain names for AppSync](https://theburningmonk.com/2020/09/how-to-set-up-custom-domain-names-for-appsync/)
