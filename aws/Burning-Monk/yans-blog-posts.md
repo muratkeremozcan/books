@@ -1749,33 +1749,159 @@ While API Gateway can achieve the same features, Yan argues that in every case, 
 
 ### [AppSync: skipping nullable nested resolvers by returning early](https://theburningmonk.com/2020/04/appsync-skipping-nullable-nested-resolvers/)
 
+The issue is related to handling nullable nested fields within the VTL (Velocity Template Language) template used by AppSync, specifically when needing to skip null values. [This helpful post](https://adrianhall.github.io/cloud/2019/01/03/early-return-from-graphql-resolvers/) which mentions `#return` keyword that lets you short-circuit a resolver execution and return early.
 
+![img](https://theburningmonk.com/wp-content/uploads/2020/04/img_5e87d6afae4ee.png)
+
+With this, I was able to work around the problem by adding just 3 lines of code to my request template.
+
+```
+#if ($util.isNullOrEmpty($context.source.coach))
+  #return
+#end
+
+{
+  "version" : "2017-02-28",
+  "operation" : "GetItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($context.source.coach)
+  }
+}
+```
 
 ### [AppSync: how to error on DynamoDB conditional check failures](https://theburningmonk.com/2020/04/appsync-how-to-error-on-dynamodb-conditional-check-failures/)
+
+# AppSync: how to error on DynamoDB conditional check failures
+
+To make an AppSync DynamoDB resolver throw exceptions on conditional check errors, we need to check `$context.error` in the response mapping template ourselves. Like this:
+
+```
+#if ( $ctx.error )
+  #if ( $ctx.error.type.equals("DynamoDB:ConditionalCheckFailedException") )
+    $util.error("your error message")
+  #else
+    $util.error($ctx.error.message, $ctx.error.type)
+  #end
+#end
+$utils.toJson($context.result)
+```
 
 
 
 ### [AppSync: how to compare strings lexicographically in VTL](https://theburningmonk.com/2020/05/appsync-how-to-compare-strings-lexicographically-in-vtl/)
 
+https://stackoverflow.com/questions/49244281/lexicographic-compare-of-two-strings-in-velocity
+
 
 
 ### [AppSync: how to inject table names into DynamoDB batch & transact operations](https://theburningmonk.com/2020/07/appsync-how-to-inject-table-names-into-dynamodb-batch-transact-operations/)
+
+When working with CloudFormation, AWS recommends not to give explicit names to resources and let CloudFormation name them for you. This has several advantages:
+
+- It’s harder for attackers to guess resource names such as S3 buckets or DynamoDB tables.
+- You can deploy the same stack multiple times to the same account. This is useful [when you use temporary stacks](https://theburningmonk.com/2019/09/why-you-should-use-temporary-stacks-when-you-do-serverless/) for developing feature branches or for running end-to-end tests in your CI pipeline.
+
+However, this makes it harder for you to use AppSync’s batch or transact DynamoDB operations.
+
+ *[serverless-appsync-plugin](https://github.com/sid88in/serverless-appsync-plugin) has a built-in `substitutions` features which injects table names into DynamoDB batch & transact operations.
+
+you need to define a `substitutions` attribute under `custom.appsync`like this:
+
+```
+substitutions:
+  userTableName: !Ref UserTable
+```
+
+You will be able to reference this as `${userTableName}` in your VTL templates.
 
 
 
 ### [How I scaled an AppSync project to 200+ resolvers](https://theburningmonk.com/2020/07/how-i-scaled-an-appsync-project-to-200-resolvers/)
 
+GG.
+
+### [How to secure multi-tenant applications with AppSync and Cognito](https://theburningmonk.com/2021/03/how-to-secure-multi-tenant-applications-with-appsync-and-cognito/)
+
+ A common requirement in multi-tenant applications is to support different roles within each tenant and also restrict access to certain operations by role. 
+
+My preferred way of accomplishing all this is to:
+
+1. Model roles as Cognito groups: AppSync can specify which users can perform which GraphQL operations, so you can use Cognito groups to represent roles within the application.
+2. Model tenants as Cognito attributes: You can capture the tenant ID as a Cognito custom attribute. This way, the tenant ID would be available in the $context.identity.claims object for both VTL templates and Lambda resolvers. You need to set `AllowAdminCreateUserOnly` to true to ensure a new tenant is created by an admin user.
+3. Never accept tenantId as an argument in the GraphQL schema: Tenant ID should not be taken as a request argument, it should always come from Cognito to ensure data access operations are secure.
+
+![img](https://theburningmonk.com/wp-content/uploads/2021/03/img_605e03089d580.png)
+
+### [Group-based auth with AppSync custom authoriser](https://theburningmonk.com/2021/09/group-based-auth-with-appsync-lambda-authoriser/)
+
+While AppSync supports group-based authorization with Cognito out-of-the-box, this support does not extend to third-party identity services like Auth0 or Okta if they're connected via AppSync's OpenID Connect authorization mode.
+
+Yan suggests using AppSync's Lambda authorizer for group-based authorization, which works differently from API Gateway's Lambda authorizer. The AppSync Lambda authorizer returns a payload to AppSync that contains custom attributes, such as tenant ID. This flag indicates whether the user is authorized to access the AppSync API, and can also specify which operations the user cannot access.
+
+Yan explains how to implement group-based authorization using the Lambda authorizer, which involves maintaining a list of the GraphQL operations that each user group can access. This can then be used to build up the 'deniedFields' array.
+
+Yan also discusses the decision between using Cognito or another identity provider. While Cognito's pricing model is favorable for businesses with many non-paying, transient users, it lacks many features offered by other identity providers, such as MFA, CAPTCHA, passwordless login flow, etc. However, the new AppSync Lambda authorizers have made implementing group-based authorization with third-party identity providers simpler.
 
 
 
+### [How to model hierarchical access with AppSync](https://theburningmonk.com/2020/08/how-to-model-hierarchical-access-with-appsync/)
 
-- [How to secure multi-tenant applications with AppSync and Cognito](https://theburningmonk.com/2021/03/how-to-secure-multi-tenant-applications-with-appsync-and-cognito/)
-- [How to model hierarchical access with AppSync](https://theburningmonk.com/2020/08/how-to-model-hierarchical-access-with-appsync/)
-- [How to set up custom domain names for AppSync](https://theburningmonk.com/2020/09/how-to-set-up-custom-domain-names-for-appsync/)
-- [How to sample AppSync resolver logs](https://theburningmonk.com/2020/09/how-to-sample-appsync-resolver-logs/)
-- [How to monitor and debug AppSync APIs](https://lumigo.io/blog/how-to-monitor-and-debug-appsync-apis/)
-- [How to handle client errors gracefully with AppSync and Lambda](https://theburningmonk.com/2021/06/how-to-handle-client-errors-gracefully-with-appsync-and-lambda/)
-- [Group-based auth with AppSync custom authoriser](https://theburningmonk.com/2021/09/group-based-auth-with-appsync-lambda-authoriser/)
+The challenge was modeling overlapping actions in the GraphQL schema, as actions differed depending on user roles. 
+
+1. Encapsulating each group into its own Query and Mutation types, which makes it easier to scale the complexity of the project. Each user group gets its own Query and Mutation types and access is controlled in one place. This solution also avoids the need to rely on naming conventions for overlapping actions.
+
+Using separate Query and Mutation types for each user group can simplify the maintenance of the GraphQL schema as the project grows, without compromising the security model.
+
+
+
+### [How to set up custom domain names for AppSync](https://theburningmonk.com/2020/09/how-to-set-up-custom-domain-names-for-appsync/)
+
+Yan discusses two methods of setting up custom domain names for AWS AppSync: using CloudFront and using API Gateway.
+
+1. **CloudFront**: Yan's preferred method, it's simple to set up and cost-effective. You create a CloudFormation resource to route traffic to your AppSync API. The configuration includes defining origins, enabling HTTP2, setting cache behaviors, and viewer certificates, among other properties. If you're using the Serverless framework, you can use the serverless-appsync-cloudfront plugin for easy configuration.
+2. **API Gateway**: This method involves setting up an HTTP proxy that routes traffic to the AppSync API, and configuring a custom domain name in API Gateway. While it incurs higher cost and latency compared to CloudFront, it's another viable method. You can use the Serverless Application Model (SAM)'s macro AWS::Serverless-2016–10–31 to configure API Gateway in your serverless.yml.
+
+For both methods, the final step involves configuring a Route53 record in your hosted zone. The custom domain (like dev.example.com) for your AppSync API will be accessible to users, making it more user-friendly and memorable.
+
+
+
+### [How to sample AppSync resolver logs](https://theburningmonk.com/2020/09/how-to-sample-appsync-resolver-logs/)
+
+This article provides a solution for managing and sampling AppSync resolver logs effectively without incurring excessive costs. AWS AppSync offers in-built logging integration with CloudWatch Logs. The Field resolver log level can be set to NONE, ERROR, or ALL, with the ALL setting providing the most detailed information about requests, responses, and latency. However, setting log level to ALL sends a large volume of data to CloudWatch Logs, leading to significant costs.
+
+One strategy to manage these costs is using Lambda functions to toggle the Field resolver log level between ALL and ERROR via a pair of cron jobs. This way, a balance between costs and visibility into the application's operations is achieved. The Lambda functions can be set to turn on resolver logging at the 8th minute of each hour, and turn it off at the 10th minute of each hour, capturing logs for roughly 3% of Query/Mutation operations.
+
+If you wish to keep all logs in a development environment and only enable sampling in production, you can conditionally exclude the cron job functions for the development stage using the serverless-ifelse plugin.
+
+Another recommendation is to set the log retention policy to avoid indefinite storage of logs, which also adds to costs. You can use a SAR (Serverless Application Repository) application to manage log retention for all your log groups.
+
+An alternative strategy is to run a cron job every few minutes and have the Lambda function toggle the resolver log level, busy wait for around 10 seconds, and then switch it back. This method gives you logs for Query/Mutation requests for 10 seconds every few minutes instead of 2 minutes every hour.
+
+
+
+### [How to monitor and debug AppSync APIs](https://lumigo.io/blog/how-to-monitor-and-debug-appsync-apis/)
+
+AppSync offers a range of metrics, including the number of 4xx and 5xx errors, request latency, and API request numbers. However, these metrics, being aggregated at the API level, do not offer insights into the performance of individual resolvers.
+
+To gain detailed visibility into resolvers, AppSync's logging feature can be activated. The "Field resolver log level" can be set to "All" to receive extensive log messages about each resolver's performance and tracing information. While these logs are valuable for debugging, they generate a large volume of data and can thus significantly add to costs when using CloudWatch Logs.
+
+AppSync also integrates with AWS X-Ray, providing trace segments to help identify performance bottlenecks. However, X-Ray does not offer granular debugging information comparable to AppSync's detailed logs, and its traces are not organized for easy access to specific resolver data.
+
+ Lumigo aids in managing the data from AppSync's logs and X-Ray integration. Lumigo provides an interface to search through ingested AppSync data, making it simpler to locate information about specific resolvers or requests.
+
+
+
+### [How to handle client errors gracefully with AppSync and Lambda](https://theburningmonk.com/2021/06/how-to-handle-client-errors-gracefully-with-appsync-and-lambda/)
+
+In API Gateway and Lambda, client errors can be dealt with by returning a 4xx response. However, with AppSync and Lambda, the function has to either return a valid response or throw an error. Too many error alerts cause [alert fatigue](https://www.atlassian.com/incident-management/on-call/alert-fatigue).
+
+Yan outlines a workaround that involves having the Lambda function return a specific response such as {error: {message: "blah blah", type: "SomeErrorType"}} and using a custom response VTL template to transform this into a GraphQL error. This ensures that the Lambda invocation is deemed successful and doesn’t trigger any alerts on Lambda errors.
+
+Yan also addresses a control-flow challenge: always having to return something to the top-level function handler instead of throwing an error. A possible solution would be to explicitly capture the error state and always return something.
+
+For greater convenience with Node.js functions, Yan recommends using a middy middleware to intercept specific errors and handle them. For instance, the middleware can handle a specific error in the onError handler. This approach means that a ValidationError can be thrown from anywhere in the code and it will not fail the Lambda invocation. Instead, it will be turned into a successful response. The response VTL template can then transform it into a GraphQL error.
+
+
 
 # Kinesis
 
