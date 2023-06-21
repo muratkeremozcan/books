@@ -403,7 +403,7 @@ Pro: may be useful for things that don't change like FFMpeg, and / or not availa
 
 `serverless-layers` is a handy npm plugin for optimization. Only uploads dependencies if they have changed. You take your dependencies from `package.json`, put them into a layer, and publish that layer to your account. The benefit is not having to upload the same artifacts over and over.
 
-Although Lambda Layers is a poor substitute for package managers, it really shines as a way to optimize the deployment time of your application. By using something like the [serverless-layers](https://www.npmjs.com/package/serverless-layers) plugin you can bundle all of your dependencies as a Lambda layer and automatically update the Lambda functions to reference this layer. On subsequent deployments, if the dependencies haven’t changed, then there’s no need to upload them again. This produces a smaller deployment package and makes deployments faster. If you want to learn more about this pattern, then please give [this article](https://theburningmonk.com/2021/05/lambda-layer-not-a-package-manager-but-a-deployment-optimization/) a read.
+Although Lambda Layers is a poor substitute for package managers, it really shines as a way to optimize the deployment time of your application. By using something like the [serverless-layers](https://www.npmjs.com/package/serverless-layers) plugin you can bundle all of your dependencies as a Lambda layer and automatically update the Lambda functions to reference this layer. On subsequent deployments, if the dependencies haven’t changed, then there’s no need to upload them again. This produces a smaller deployment package and makes deployments faster. If you want to learn more about this pattern, then please give [Yan](https://theburningmonk.com/2021/05/lambda-layer-not-a-package-manager-but-a-deployment-optimization/) a read.
 
 ### [Lambda layers: not a package manager, but a deployment optimization](https://theburningmonk.com/2021/05/lambda-layer-not-a-package-manager-but-a-deployment-optimization/)
 
@@ -1599,7 +1599,7 @@ Lastly, Yan provides tips on how to automate the process of creating alerts usin
 
 ### [Getting the most out of CloudWatch Logs](https://lumigo.io/blog/getting-the-most-out-of-cloudwatch-logs/)
 
-This article delves into using AWS CloudWatch for monitoring AWS Lambda functions.
+Yan delves into using AWS CloudWatch for monitoring AWS Lambda functions.
 
 1. CloudWatch Logs for AWS Lambda: The messages written by Lambda functions to stdout or stderr are collected asynchronously and shipped to AWS CloudWatch Logs, arranged into log groups. Each function has a matching log group with the same name. Inside each log group, there are log streams each mapping to a concurrent execution of the function. The system is cost-effective, scalable, resilient and can store data for a long period.
 2. CloudWatch Subscription Filters: These let you stream log events to a destination within AWS, like Kinesis stream, Kinesis Firehose delivery stream, or a Lambda function. At larger scales, sending logs to Kinesis or Kinesis Firehose is more practical to prevent over-consumption of concurrency by the log-shipping function.
@@ -1612,7 +1612,7 @@ In conclusion, AWS CloudWatch Logs provide a powerful tool for monitoring and an
 
 ### [Introducing an easier way to record custom metrics from Lambda](https://theburningmonk.com/2019/07/introducing-a-better-way-to-record-custom-metrics/)
 
-This article presents a new approach to recording custom metrics from AWS Lambda through asynchronous recording, aiming to overcome problems like added latency to invocations associated with synchronous methods. Traditional synchronous publishing of metrics can cause delays and fragility at integration points, particularly if CloudWatch experiences an outage or increased response time. 
+Yan presents a new approach to recording custom metrics from AWS Lambda through asynchronous recording, aiming to overcome problems like added latency to invocations associated with synchronous methods. Traditional synchronous publishing of metrics can cause delays and fragility at integration points, particularly if CloudWatch experiences an outage or increased response time. 
 
 Although asynchronous recording also has drawbacks, like additional delay in seeing recent metric data, increased costs, and added complexity, Yan suggests using a Lambda function to process logs and turn them into metrics, which is more scalable for complex systems with numerous functions and custom metrics.
 
@@ -1624,7 +1624,7 @@ Services like Lumigo enhance the observability of serverless architectures, coll
 
 ### [Debugging AWS Lambda timeouts](https://lumigo.io/blog/debugging-aws-lambda-timeouts/)
 
-This article is about debugging Lambda timeouts in serverless applications and the various methods to detect and mitigate them. Lambda timeouts can be challenging to identify and debug because Lambda does not report a separate error metric for timeouts, and there's usually multiple IO operations happening during an invocation.
+Yan is about debugging Lambda timeouts in serverless applications and the various methods to detect and mitigate them. Lambda timeouts can be challenging to identify and debug because Lambda does not report a separate error metric for timeouts, and there's usually multiple IO operations happening during an invocation.
 
 Detecting timeouts can be done by looking at a function's Max Duration metric or by creating a custom metric with the pattern "Task timed out after". A more advanced method would be to use 3rd-party tools such as Lumigo which can detect Lambda timeouts in real-time.
 
@@ -1867,7 +1867,7 @@ For both methods, the final step involves configuring a Route53 record in your h
 
 ### [How to sample AppSync resolver logs](https://theburningmonk.com/2020/09/how-to-sample-appsync-resolver-logs/)
 
-This article provides a solution for managing and sampling AppSync resolver logs effectively without incurring excessive costs. AWS AppSync offers in-built logging integration with CloudWatch Logs. The Field resolver log level can be set to NONE, ERROR, or ALL, with the ALL setting providing the most detailed information about requests, responses, and latency. However, setting log level to ALL sends a large volume of data to CloudWatch Logs, leading to significant costs.
+Yan provides a solution for managing and sampling AppSync resolver logs effectively without incurring excessive costs. AWS AppSync offers in-built logging integration with CloudWatch Logs. The Field resolver log level can be set to NONE, ERROR, or ALL, with the ALL setting providing the most detailed information about requests, responses, and latency. However, setting log level to ALL sends a large volume of data to CloudWatch Logs, leading to significant costs.
 
 One strategy to manage these costs is using Lambda functions to toggle the Field resolver log level between ALL and ERROR via a pair of cron jobs. This way, a balance between costs and visibility into the application's operations is achieved. The Lambda functions can be set to turn on resolver logging at the 8th minute of each hour, and turn it off at the 10th minute of each hour, capturing logs for roughly 3% of Query/Mutation operations.
 
@@ -1905,21 +1905,129 @@ For greater convenience with Node.js functions, Yan recommends using a middy mid
 
 # Kinesis
 
-- [A self-healing Kinesis function that adapts its throughput based on performance](https://theburningmonk.com/2019/05/a-self-healing-kinesis-function-that-adapts-its-throughput-based-on-performance/)
-- [3 Pro Tips for Developers using AWS Lambda with Kinesis Streams](https://read.acloud.guru/aws-lambda-3-pro-tips-for-working-with-kinesis-streams-8f6182a03113)
-- [Auto-scaling Kinesis streams with AWS Lambda](https://read.acloud.guru/auto-scaling-kinesis-streams-with-aws-lambda-299f9a0512da)
-- [AWS Lambda — how to use SNS to retry failed Kinesis events](https://medium.com/@theburningmonk/use-sns-to-retry-failed-kinesis-events-36e978782f05)
-- [Lambda and Kinesis — beware of hot streams](https://lumigo.io/blog/lambda-and-kinesis-beware-of-hot-streams/)
-- [How to connect SNS to Kinesis for cross-account delivery via API Gateway](https://theburningmonk.com/2019/07/how-to-connect-sns-to-kinesis-for-cross-account-delivery-via-api-gateway/)
-- [The best reason to use DynamoDB Streams is…](https://lumigo.io/blog/the-best-reason-to-use-dynamodb-streams-is/)
+### [A self-healing Kinesis function that adapts its throughput based on performance](https://theburningmonk.com/2019/05/a-self-healing-kinesis-function-that-adapts-its-throughput-based-on-performance/)
+
+Yan presents a solution to a common problem of managing concurrent requests to multiple third-party APIs that have variable performance and restrictions such as rate limits. In the context of the financial services sector where data from numerous service providers is fetched daily, Yan proposes a self-adjusting, self-healing system based on AWS Lambda and Kinesis.
+
+The proposed system uses a "ventilator" Lambda function to manage the flow of requests, fetches data slowly and steadily, adjusts the rate of requests based on the provider's API performance, and prevents fetching the same data more than once per day. To achieve these goals, each provider has its own Kinesis stream into which the records to fetch are enqueued. The ventilator function receives records in batches, fans them out to worker functions specific to each provider, and tracks processed records in a DynamoDB table. 
+
+![img](https://theburningmonk.com/wp-content/uploads/2019/05/img_5ce206cb74866.png)
+
+The ventilator function's batch size can be adjusted dynamically based on the API response time. When response time rises, the batch size is reduced, and when the response time returns to normal, the batch size is gradually increased. In extreme cases, if the provider's API is still struggling with a batch size of 1, the Kinesis event source mapping can be temporarily disabled. The ventilator function is then periodically triggered by a CloudWatch schedule to check if the API response time has improved and if so, it re-enables the Kinesis stream.
+
+![img](https://theburningmonk.com/wp-content/uploads/2019/05/img_5ce206ef92ae4.png)
+
+This design makes use of the circuit breaker pattern applied to stream processing. This design approach ensures that the number of concurrent requests to third-party APIs is effectively managed to stay within their operational limits while maintaining system reliability. Yan includes a demonstration app, you can find the source code [here](https://github.com/theburningmonk/self-adjusting-kinesis-function-demo).
+
+[Circuit breaker pattern](https://martinfowler.com/bliki/CircuitBreaker.html): the Circuit Breaker pattern is employed to wrap a function call that could fail due to the volatile nature of network calls, monitoring it for any failures.
+
+When these failures reach a certain threshold, the circuit breaker "trips," and subsequent calls to the function return an error, without invoking the original function at all. The state of the circuit breaker, whether open (tripped and blocking function calls) or closed (allowing function calls), is determined by comparing the failure count to a set threshold. If the circuit is open, the protected call isn't made at all, avoiding further strain on resources.
+
+An advanced version of this pattern, the self-resetting circuit breaker, is discussed. This variant attempts the protected call again after a certain interval and resets the circuit if successful. It introduces a third state, "half-open", where the circuit breaker is prepared to make a trial call to see if the original issue has been resolved.
+
+### [3 Pro Tips for Developers using AWS Lambda with Kinesis Streams](https://read.acloud.guru/aws-lambda-3-pro-tips-for-working-with-kinesis-streams-8f6182a03113)
+
+1. **Consider Partial Failures**: AWS Lambda and Kinesis will try to reprocess failing records until they expire. If some records fail persistently, it can halt the overall system. The developers should make an informed decision about how partial failures are handled to maintain real-time system flow. For instance, Yubl chose to prioritize system flow over processing every event, accepting that some events may fail and get discarded.
+2. **Use Dead Letter Queues (DLQ)**: While AWS Lambda DLQ support does not extend to poll-based invocations like Kinesis, the concept can still be applied. Yan recommends a series of steps, including retries for failed events and sending these to a DLQ after exhausting retries. AWS Simple Notification Service (SNS) can be used to simplify this process, with Lambda processing events further before sending them to the DLQ.
+3. **Avoid “Hot” Streams**: Yubl noticed that a Kinesis stream with 5 or more Lambda subscribers started showing throughput exceeded errors. Lambda sometimes lags behind, leading to unpredictable performance spikes. Increasing shards worsened the issue. Their solution was to apply the 'fan out' pattern, adding another layer of Lambda functions that distribute Kinesis events, even though it complicates partial failure handling and slows down event processing.
+
+In conclusion, AWS Lambda and Kinesis require careful management to ensure system flow and performance. While powerful tools, developers need to account for potential partial failures, utilize Dead Letter Queues, and mitigate 'hot' streams.
+
+### [Lambda and Kinesis — beware of hot streams](https://lumigo.io/blog/lambda-and-kinesis-beware-of-hot-streams/)
+
+Yan examines the issues encountered when multiple Lambda functions are subscribed to a single Kinesis stream, particularly in the context of 'hot streams'. It starts by explaining that subscribing five or more functions to a Kinesis stream can lead to frequent ReadProvisionedThroughputExceeded errors. Although these errors do not need to be manually addressed as they are handled and retried by Lambda’s internal polling layer for Kinesis, they can cause occasional delays.
+
+Yan then discusses the introduction of enhanced fan-out for Kinesis streams by AWS, which allows each function to perform five reads per second per shard, up to 2MB per second. To test if this improvement has mitigated the issue of hot streams, an experiment was conducted with up to 30 functions subscribed to a Kinesis stream. Results showed that ReadProvisionedThroughputExceeded errors increased linearly with the number of subscribers, however, the IteratorAge, which signifies when functions are lagging due to contention, was unaffected.
+
+The experiment also found a new issue: after the first 15 functions were subscribed to the stream, it became increasingly difficult to deploy any subsequent functions due to ProvisionThroughputExceededException errors. This could prove to be a significant problem in a production environment, especially for companies relying on an automated CI/CD pipeline.
+
+To address these challenges, Yan suggests considering design decisions such as:
+
+1. Multiple Write Streams: Instead of subscribing multiple functions to one stream, events could be written to multiple streams. However, this could still lead to too many subscribers for one stream, loss of event order, and implicit coupling between event producers and consumers.
+
+   ![A diagram comparing the one-stream approach to many streams](https://lumigo.io/wp-content/uploads/2019/05/Image-5.jpg)
+
+2. Fan-Out to Multiple Reader Streams: A centralized stream could be used to [fan out events to multiple streams](https://www.linkedin.com/pulse/how-fan-out-amazon-kinesis-streams-alex-casalboni/). to multiple reader streams, allowing more flexibility and supporting the combination of different types of events in the same stream. 
+
+![A better approach is to push all events to a centralized stream and then use this technique to fan-out to multiple reader streams](https://lumigo.io/wp-content/uploads/2019/05/Image-7.jpg)
+
+Despite the additional cost, Yan suggests focusing on the Total Cost of Ownership (TCO), as productivity and focus can often outweigh the cost savings on an AWS bill.
+
+### [Auto-scaling Kinesis streams with AWS Lambda](https://read.acloud.guru/auto-scaling-kinesis-streams-with-aws-lambda-299f9a0512da)
+
+Yan discusses a cost-effective approach to auto-scaling AWS Kinesis streams using AWS Lambda. The goal is to quickly scale up Kinesis streams in response to increased load and scale down under-utilized streams to save cost.
+
+Rather than using polling CloudWatch metrics, which is often delayed and can have a cost impact, Yan suggests using a push-based approach with CloudWatch Alarms and SNS as a proxy to trigger a Lambda function. This can scale up the stream that has tripped the alarm faster.
+
+Different metrics can be used to trigger auto-scaling, including WriteProvisionedThroughputExceeded, IncomingBytes, and IncomingRecords at both stream and shard levels. Each of these metrics has different benefits and complexities, and after each scaling activity, it's crucial to adjust the alarm thresholds.
+
+Scaling up a Kinesis stream involves increasing the number of active shards. Two options are presented: using UpdateShardCount or SplitShard. While the first option is simpler, it has more limitations. The second option uses shard level metrics to split only the shards that have triggered the alarms.
+
+To scale down a Kinesis stream, two adjacent shards are merged. However, since scaling down can potentially increase costs if done too often, Yan suggests using a cron job to scale down infrequently, like once every 36 hours.
+
+A Lambda function is used to determine which Kinesis stream to scale down by analyzing throughput and metrics over the past 24 hours. If all data points are below 50% of the provisioned throughput, the stream is scaled down.
+
+Finally, to set up the initial CloudWatch Alarms for a stream, Yan uses a repository hosting the configurations for all Kinesis streams. It contains a script for creating missing streams and associated CloudWatch Alarms using CloudFormation templates.
+
+### 
+
+### [How to connect SNS to Kinesis for cross-account delivery via API Gateway](https://theburningmonk.com/2019/07/how-to-connect-sns-to-kinesis-for-cross-account-delivery-via-api-gateway/)
+
+Yan presents a problem faced by DAZN, where microservices in their AWS account contend for the same regional limits such as the number of concurrent Lambda executions. The major issue was the high traffic and spiky pattern from sporting events which led to Lambda throttling events in the region.
+
+Several solutions were proposed the chosen one being **Go direct from SNS to Kinesis (via API Gateway):** Instead of going through SQS and Lambda, an HTTPS endpoint could be subscribed to the third-party SNS topic. This eliminates Lambda from the process, but API Gateway has its own throttling and contention issues. You can find the source code for the demo project on GitHub [here](https://github.com/theburningmonk/sns-to-api-gateway-demo).
+
+![img](https://theburningmonk.com/wp-content/uploads/2019/07/img_5d34e38c7ab32.png)
+
+![img](https://theburningmonk.com/wp-content/uploads/2019/07/img_5d34e3b8838d6.png)
+
+
+
+### [The best reason to use DynamoDB Streams is…](https://lumigo.io/blog/the-best-reason-to-use-dynamodb-streams-is/)
+
+Yan discusses the key differences between AWS Kinesis Streams and AWS DynamoDB Streams. 
+
+Kinesis Streams is the de facto AWS solution for streaming and processing real-time events. It offers considerable flexibility for data processing, allowing Lambda functions to process events in real-time, shipping data to Amazon ElasticSearch or S3 via a Firehose Delivery Stream, running complex queries using Athena, and more. It scales using the number of shards with no upper limit, making it highly scalable. However, Kinesis Streams lacks an in-built auto-scaling mechanism, requiring custom solutions, and retains data for a default 24 hours, extendable up to 7 days for an additional fee.
+
+On the other hand, DynamoDB Streams is typically used with Lambda, with no direct integration with Kinesis Firehose or Kinesis Analytics. It auto-scales the number of shards based on traffic and retains data for only 24 hours, with no option for extension. Unlike Kinesis, DynamoDB auto-scales the number of partitions for on-demand tables or provisioned capacity tables with auto-scaling enabled. However, DynamoDB Streams loses precise control of the concurrency of its subscriber Lambda functions. The pricing model is also different, charging only for the number of read requests. Notably, a DynamoDB Stream only contains events related to the entities in its table, modeled as domain events for DynamoDB.
+
+![A table showing the key differences between Kinesis Streams and DynamoDB Streams.](https://lumigo.io/wp-content/uploads/2019/09/image.png)
+
+In terms of choosing between the two, Yan suggests using DynamoDB Streams can help eliminate many distributed transactions from your system. This can simplify operations by reducing the complexities of managing distributed transactions. Despite Kinesis Streams being generally better for streaming real-time events, DynamoDB Streams can be more beneficial for certain applications.
+
+
+![img](https://lumigo.io/wp-content/uploads/2019/09/Screenshot-2020-04-06-at-11.58.12.png)
+
+We can remove the distributed transaction by using DynamoDB Streams instead of publishing to another Kinesis stream from the *add_user* function.
+
+![img](https://lumigo.io/wp-content/uploads/2019/09/Screenshot-2020-04-06-at-11.58.26.png)
+
+
 
 # Misc
 
-- [What is AWS Lambda’s new Streaming Response](https://lumigo.io/blog/return-large-objects-with-aws-lambdas-new-streaming-response/)
-- [Lessons learnt from running serverless in production for 5 years](https://lumigo.io/blog/lessons-learned-running-serverless-in-production/)
-- [How to load test a real-time multiplayer mobile game with AWS Lambda and Akka](https://tech.spaceapegames.com/2017/09/26/how-to-load-test-a-realtime-multiplayer-mobile-game-with-aws-lambda-and-akka/)
-- [AWS Lambda — build yourself a URL shortener in 2 hours](https://theburningmonk.com/2017/04/aws-lambda-build-yourself-a-url-shortener-in-2-hours/)
-- [Comparing Nuclio and AWS Lambda](https://theburningmonk.com/2019/04/comparing-nuclio-and-aws-lambda/)
+### [What is AWS Lambda’s new Streaming Response](https://lumigo.io/blog/return-large-objects-with-aws-lambdas-new-streaming-response/)
+
+
+
+### [Lessons learned from running serverless in production for 5 years](https://lumigo.io/blog/lessons-learned-running-serverless-in-production/)
+
+
+
+### [How to load test a real-time multiplayer mobile game with AWS Lambda and Akka](https://tech.spaceapegames.com/2017/09/26/how-to-load-test-a-realtime-multiplayer-mobile-game-with-aws-lambda-and-akka/)
+
+
+
+### [AWS Lambda — build yourself a URL shortener in 2 hours](https://theburningmonk.com/2017/04/aws-lambda-build-yourself-a-url-shortener-in-2-hours/)
+
+
+
+### [Comparing Nuclio and AWS Lambda](https://theburningmonk.com/2019/04/comparing-nuclio-and-aws-lambda/)
+
+
+
+
+
 - [AWS SAM + Cloudformation macros, a patch made in heaven](https://theburningmonk.com/2019/05/aws-sam-cloudformation-macros-a-patch-made-in-heaven/)
 - [Using the power of CloudFormation custom resources for great good](https://theburningmonk.com/2019/09/how-to-use-the-power-of-cloudformation-custom-resources-for-great-good/)
 - [Provisioned Concurrency — the end of cold starts](https://lumigo.io/blog/provisioned-concurrency-the-end-of-cold-starts/)
