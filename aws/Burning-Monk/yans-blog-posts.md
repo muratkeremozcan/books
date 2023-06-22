@@ -1,4 +1,4 @@
-# Testing
+#  Testing
 
 ### [My testing strategy for serverless applications](https://theburningmonk.com/2022/05/my-testing-strategy-for-serverless-applications/)
 
@@ -66,7 +66,7 @@ I’m very much in the monolith stack camp. I prefer to keep stateful (databases
 
 
 
-### [Hit the 6MB Lambda payload limit? Here’s what you can do.](https://theburningmonk.com/2020/04/hit-the-6mb-lambda-payload-limit-heres-what-you-can-do/)
+### [Hit the 6MB Lambda payload limit? Here’s what you can do.](https://theburningmonk.com/2020/04/hit-the-6mb-lambda-payload-limit-heres-what-you-can-do/) 
 
 > ```
 > Execution failed: 6294149 byte payload is too large for the RequestResponse invocation type (limit 6291456 bytes)
@@ -80,7 +80,42 @@ Option2: use pre-signed S3 URL instead. Since the client will upload the files t
 
 Option 3: Lambda@Edge to forward to S3
 
+The downside of these workarounds is that it complicates the client application and hurts the user experience. Putting the object on S3 adds user-facing latency. The client application also needs to download the object from S3 and incur even further latency overhead.
+
+[![img](https://lumigo.io/wp-content/uploads/2022/11/streaming-response-01-1024x299.png)](https://lumigo.io/wp-content/uploads/2022/11/streaming-response-01.png)
+
 Option 4: use pre-signed POST instead
+
+Option 5 (new): use Lambda's new Streaming Response
+
+### [What is AWS Lambda’s new Streaming Response](https://lumigo.io/blog/return-large-objects-with-aws-lambdas-new-streaming-response/)
+
+The article discusses the newly launched Response Streaming feature in Lambda. This feature allows payloads larger than 6MB to be returned, thereby bypassing the previous need for S3 when returning large objects from a Lambda-backed API. This feature simplifies the client application and improves user experience.
+
+ Users need to wrap their function code with the new streamifyResponse decorator to make it work. The feature also changes the function signature to async (requestStream, responseStream, context) from async (event, context).
+
+```js
+const { Readable } = require('stream')
+
+module.exports.handler = awslambda.streamifyResponse(
+  // notice that the fn signature is different than the usual
+  // async (event, context) => 
+  async (requestStream, responseStream, context) => {
+    const file = await downloadLargeFileFromS3()
+    const fileStream = Readable.from(file)
+    fileStream.pipe(responseStream)
+    await responseStream.finished()
+  }
+)
+```
+
+The `requestStream` contains the stringified version of the invocation event. And the `responseStream` is a writable Stream object. Any bytes you write to the `responseStream` object would be streamed to the client. The `context` object is the same as before.
+
+The most obvious use case for this new feature is to bypass the need for S3 when you to return large objects from a Lambda-backed API. This helps improve the user experience and helps simplify the client application. The Response Streaming feature can be used to improve time-to-first-byte (TTFB) when returning video or audio content. Also, it can be used to stream incremental updates for long-running tasks.
+
+However, there are limitations. The default limit is 20MB, which is a soft limit and can be raised through the Service Quota console or by raising a support ticket. Also, the feature is not supported by API Gateway’s LAMBDA_PROXY integration or ALB’s Lambda integration. 
+
+
 
 
 
@@ -2006,33 +2041,48 @@ We can remove the distributed transaction by using DynamoDB Streams instead of p
 
 # Misc
 
-### [What is AWS Lambda’s new Streaming Response](https://lumigo.io/blog/return-large-objects-with-aws-lambdas-new-streaming-response/)
-
-
-
 ### [Lessons learned from running serverless in production for 5 years](https://lumigo.io/blog/lessons-learned-running-serverless-in-production/)
 
+(This post seemed to have become the course Lambda best practices)
 
+- Think about observability from the start.
+- Use multiple AWS accounts.
+- Don’t put secrets in plain text in environment variables.
+- Follow the principle of least privilege. 
+- Monitor and optimize Lambda cold start performance.
 
 ### [How to load test a real-time multiplayer mobile game with AWS Lambda and Akka](https://tech.spaceapegames.com/2017/09/26/how-to-load-test-a-realtime-multiplayer-mobile-game-with-aws-lambda-and-akka/)
 
-
+(meh)
 
 ### [AWS Lambda — build yourself a URL shortener in 2 hours](https://theburningmonk.com/2017/04/aws-lambda-build-yourself-a-url-shortener-in-2-hours/)
 
-
+(meh)
 
 ### [Comparing Nuclio and AWS Lambda](https://theburningmonk.com/2019/04/comparing-nuclio-and-aws-lambda/)
 
+(meh)
 
 
 
+### [AWS SAM + Cloudformation macros, a patch made in heaven](https://theburningmonk.com/2019/05/aws-sam-cloudformation-macros-a-patch-made-in-heaven/)
 
-- [AWS SAM + Cloudformation macros, a patch made in heaven](https://theburningmonk.com/2019/05/aws-sam-cloudformation-macros-a-patch-made-in-heaven/)
-- [Using the power of CloudFormation custom resources for great good](https://theburningmonk.com/2019/09/how-to-use-the-power-of-cloudformation-custom-resources-for-great-good/)
-- [Provisioned Concurrency — the end of cold starts](https://lumigo.io/blog/provisioned-concurrency-the-end-of-cold-starts/)
-- [24 open source tools for the serverless developer: part 1](https://aws.amazon.com/blogs/opensource/24-open-source-tools-for-the-serverless-developer-part-1/)
-- [24 open source tools for the serverless developer: part 2](https://aws.amazon.com/blogs/opensource/24-open-source-tools-for-the-serverless-developer-part-2/)
+
+
+### [Using the power of CloudFormation custom resources for great good](https://theburningmonk.com/2019/09/how-to-use-the-power-of-cloudformation-custom-resources-for-great-good/)
+
+
+
+### [Provisioned Concurrency — the end of cold starts](https://lumigo.io/blog/provisioned-concurrency-the-end-of-cold-starts/)
+
+
+
+### [24 open source tools for the serverless developer: part 1](https://aws.amazon.com/blogs/opensource/24-open-source-tools-for-the-serverless-developer-part-1/)
+
+
+
+### [24 open source tools for the serverless developer: part 2](https://aws.amazon.com/blogs/opensource/24-open-source-tools-for-the-serverless-developer-part-2/)
+
 - [HTTP API goes GA!](https://lumigo.io/blog/http-api-goes-ga-today/)
 - [Unlocking new Serverless use cases with EFS and Lambda](https://lumigo.io/blog/unlocking-more-serverless-use-cases-with-efs-and-lambda/)
 - [Lambda extensions: what they are and why they matter](https://lumigo.io/blog/aws-lambda-extensions-what-are-they-and-why-do-they-matter/)
