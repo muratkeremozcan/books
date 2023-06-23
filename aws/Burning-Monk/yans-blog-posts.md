@@ -282,6 +282,19 @@ Use [aws-lambda-power-tuning](https://github.com/alexcasalboni/aws-lambda-power-
 
 
 
+### [Provisioned Concurrency — the end of cold starts](https://lumigo.io/blog/provisioned-concurrency-the-end-of-cold-starts/)
+
+Once enabled, Provisioned Concurrency will keep your desired number of concurrent executions initialized and ready to respond to requests. This means an end to cold starts!
+
+Mind that when provisioned concurrency happens, the init duration does not seem to change. It still happens, but happens ahead of time; that's why it feels much faster but still reports a high duration.
+
+**Difference between Provisioned Concurrency and warm starts**: It's about the instances. Warm start is 1 instance of the lambda, and the rest still cold start. P.C. can be set to scale
+
+From Yan:
+_The actual problem with warm starts is that they don't scale beyond keeping a handful of instances of your functions warm because there's no way to direct an invocation to specific instances (ie. worker) of a function. So if you have a handful of functions and you just need to keep 1 instance of each warm for a low throughput API, then warmers are a good, cheap way to do it compared to using Provisioned Concurrency. But if you need an enterprise-scale solution that can keep 50, 100 instances of your functions warm, and auto-scale the no. of warm instances based on traffic patterns or based on a schedule, and you don't mind (potentially) paying extra for these, then use Provisioned Concurrency. I said potentially paying extra, because Provisioned Concurrency can actually work out cheaper than on-demand concurrency if you have good utilization of the Provisioned Concurrency you have (~60% is the break-even point)._
+
+
+
 ### [Common Node8 mistakes in Lambda](https://serverless.com/blog/common-node8-mistakes-in-lambda)
 
 The main idea is separating out the `await` to make use of concurrency, instead of premature awaiting and running things sequentially.
@@ -2037,8 +2050,6 @@ We can remove the distributed transaction by using DynamoDB Streams instead of p
 
 ![img](https://lumigo.io/wp-content/uploads/2019/09/Screenshot-2020-04-06-at-11.58.26.png)
 
-
-
 # Misc
 
 ### [Lessons learned from running serverless in production for 5 years](https://lumigo.io/blog/lessons-learned-running-serverless-in-production/)
@@ -2063,32 +2074,115 @@ We can remove the distributed transaction by using DynamoDB Streams instead of p
 
 (meh)
 
-
-
 ### [AWS SAM + Cloudformation macros, a patch made in heaven](https://theburningmonk.com/2019/05/aws-sam-cloudformation-macros-a-patch-made-in-heaven/)
 
-
+While AWS SAM has been efficient in building applications, it lacks the customization flexibility of the Serverless framework due to the absence of a plugin system.
 
 ### [Using the power of CloudFormation custom resources for great good](https://theburningmonk.com/2019/09/how-to-use-the-power-of-cloudformation-custom-resources-for-great-good/)
 
-
-
-### [Provisioned Concurrency — the end of cold starts](https://lumigo.io/blog/provisioned-concurrency-the-end-of-cold-starts/)
-
-
+Yan discusses the benefits and potential uses of CloudFormation custom resources in AWS. They can be used to enable functionalities not natively supported by CloudFormation, such as provisioning DataDog dashboards, running load tests with every CloudFormation stack deployment, or working with AWS resources like EventBridge.
 
 ### [24 open source tools for the serverless developer: part 1](https://aws.amazon.com/blogs/opensource/24-open-source-tools-for-the-serverless-developer-part-1/)
 
+### Deployment frameworks
 
+- [Serverless Framework](https://serverless.com/cli/)
+
+- [AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+
+- [AWS CDK](https://aws.amazon.com/cdk/)
+
+- [Terraform](https://www.terraform.io/)
+
+- [Claudia.js](https://claudiajs.com/)
+
+- [Zappa](https://github.com/Miserlou/Zappa)
+
+- [Architect](https://arc.codes/)
+
+  ![overview of frameworks from opinionated to customizable](https://d2908q01vomqb2.cloudfront.net/ca3512f4dfa95a03169c5a670a4c91a19b3077b4/2020/02/28/cui_f1_750.png)
+
+### Serverless Framework plugins
+
+- [serverless-iam-roles-per-function](https://github.com/functionalone/serverless-iam-roles-per-function)
+- [serverless-webpack](https://github.com/serverless-heaven/serverless-webpack)  [serverless-esbuild](https://www.npmjs.com/package/serverless-esbuild) reduce deployment artifact size, reduce cold start
+- [serverless-offline](https://github.com/dherault/serverless-offline)  runs API Gateway locally `sls offline` , and similar to built-in `sls invoke local`
+- [serverless-domain-manager](https://github.com/amplify-education/serverless-domain-manager) custom domain names for your APIs and Route53 record set
+- [serverless-step-functions](https://github.com/serverless-operations/serverless-step-functions)
+- [serverless-finch](https://github.com/fernando-mc/serverless-finch) `sls client deploy`, deploys a static website to an s3 bucket
+
+### CLIs
+
+- [org-formation](https://github.com/OlafConijn/AwsOrganizationFormation)  manage your entire [AWS organization](https://aws.amazon.com/organizations/) using Infrastructure-as-Code (IAC
+- [lumigo-cli](https://github.com/lumigo-io/lumigo-cli) `lumigo-cli list-lambda`, `analyze-lambda-cold-starts`, `powertune-lambda`
 
 ### [24 open source tools for the serverless developer: part 2](https://aws.amazon.com/blogs/opensource/24-open-source-tools-for-the-serverless-developer-part-2/)
 
-- [HTTP API goes GA!](https://lumigo.io/blog/http-api-goes-ga-today/)
-- [Unlocking new Serverless use cases with EFS and Lambda](https://lumigo.io/blog/unlocking-more-serverless-use-cases-with-efs-and-lambda/)
-- [Lambda extensions: what they are and why they matter](https://lumigo.io/blog/aws-lambda-extensions-what-are-they-and-why-do-they-matter/)
-- [Lambda extensions just got even better](https://lumigo.io/blog/lambda-extensions-just-got-even-better/)
-- [AWS Lambda: Function URL is live!](https://lumigo.io/blog/aws-lambda-function-url-is-live/)
-- [7 tools to help you become a better serverless developer](https://lumigo.io/blog/seven-tools-help-become-better-serverless-developer/)
+### Libraries
+
+- [docker-lambda](https://github.com/lambci/docker-lambda) a docker image that replicates the live AWS Lambda environment, used in `sls invoke local`
+
+- [middy](https://github.com/middyjs/middy)
+
+  [Middy](https://github.com/middyjs/middy) is a middleware engine for Node.js Lambda functions, and makes it easy for users to handle cross-cutting concerns and encapsulate them into middleware. More than 15 built-in middleware address common concerns, such as setting CORS headers in [Amazon API Gateway](https://aws.amazon.com/api-gateway/) responses.
+
+  My favorites are the ssm and secretsManager middleware, which implement best practices for loading secrets into Lambda functions. My rule of thumb is never to store secrets in unencrypted form in environment variables, which is the first place an attacker would look if they manage to compromise my application, perhaps through a compromised or malicious dependency. Rather, my suggestion is to:
+
+  1. Load the secrets from SSM or Secrets Manager during cold start.
+  2. Cache the secret so you don’t have to read from source on every invocation.
+  3. Set the secret to the `context` object, not the environment variables.
+  4. Access secrets through the `context` object inside the handler code.
+
+  ![Output showing: Access secrets through the context object inside the handler code.](https://d2908q01vomqb2.cloudfront.net/ca3512f4dfa95a03169c5a670a4c91a19b3077b4/2020/03/02/cui_f6_750.png)
+
+- [dazn-lambda-powertools](https://github.com/getndazn/dazn-lambda-powertools) Among other things, it allows you to automatically capture and forward correlation IDs with many AWS services. Using these tools, your functions would automatically include correlation IDs in their logs.
+
+### AWS Serverless Application Repository applications
+
+- [lambda-janitor](https://go.aws/2t3rQ7a)  clean up old, unused versions of your functions in the whole region. This
+
+- [aws-lambda-power-tuning](https://go.aws/2NZ8dUW) eploys a Step Functions state machine that you can run to help you find the optimal memory setting for your functions. This is what powers the lumigo-cli’s `powertune-lambda` command. I recommend using the lumigo-cli as it takes care of deploying and upgrading this AWS Serverless Application Repository app to make sure you always run on the latest version of the app.
+
+- [auto-subscribe-log-group-to-arn](https://go.aws/2tyBjDH) 
+
+- n; it automatically subscribes [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) log groups to the ARN you configure, which can be Lambda, [Amazon Kinesis](https://aws.amazon.com/kinesis/), [Amazon Kinesis Data Firehose](https://aws.amazon.com/kinesis/data-firehose/), or [Amazon Elasticsearch Service (Amazon ES)](https://aws.amazon.com/elasticsearch-service/).
+
+  Once deployed, it’ll subscribe all the existing CloudWatch log groups in the region to the configured destination right away. When you create a new log group either yourself or when you create a new Lambda function, the new log group would be subscribed to the destination automatically, too. 
+
+- [auto-set-log-group-retention](https://go.aws/2TAQhno) 
+
+- s closely related to auto-subscribe-log-group-to-arn, except it automatically updates the retention policy of log groups instead.
+
+  By default, CloudWatch log groups are set to **Never Expire**. This has a cost implication as CloudWatch charges $0.03 per GB per month. It’s rarely useful to keep logs in CloudWatch Logs forever, especially if you are shipping logs somewhere else already.
+
+- [sfn-callback-urls](https://go.aws/38KynD1) Step Functions lets you [implement callback patterns using task tokens](https://docs.aws.amazon.com/step-functions/latest/dg/callback-task-sample-sqs.html). But it’s tricky to use in some situations, such as sending an email with a callback link, which often necessitates adding an API Gateway and Lambda to handle the callback URL. The [sfn-callback-urls](https://go.aws/38KynD1) app makes it easy to do exactly that.
+
+### [7 tools to help you become a better serverless developer](https://lumigo.io/blog/seven-tools-help-become-better-serverless-developer/)
+
+
+
+### [HTTP API goes GA!](https://lumigo.io/blog/http-api-goes-ga-today/)
+
+
+
+### [Unlocking new Serverless use cases with EFS and Lambda](https://lumigo.io/blog/unlocking-more-serverless-use-cases-with-efs-and-lambda/)
+
+
+
+### [Lambda extensions: what they are and why they matter](https://lumigo.io/blog/aws-lambda-extensions-what-are-they-and-why-do-they-matter/)
+
+
+
+### [Lambda extensions just got even better](https://lumigo.io/blog/lambda-extensions-just-got-even-better/)
+
+
+
+### [AWS Lambda: Function URL is live!](https://lumigo.io/blog/aws-lambda-function-url-is-live/)
+
+
+
+
+
 - [Welcome to 10GB of tmp storage with Lambda](https://lumigo.io/blog/welcome-to-10gb-of-tmp-storage-with-lambda/)
 - [Graviton-based Lambda functions, what it means for you](https://lumigo.io/blog/graviton-based-lambda-functions-what-it-means-for-you/)
 - [Package your Lambda function as a container image](https://lumigo.io/blog/package-your-lambda-function-as-a-container-image/)
