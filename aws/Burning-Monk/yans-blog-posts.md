@@ -2157,37 +2157,113 @@ Yan discusses the benefits and potential uses of CloudFormation custom resources
 
 - [sfn-callback-urls](https://go.aws/38KynD1) Step Functions lets you [implement callback patterns using task tokens](https://docs.aws.amazon.com/step-functions/latest/dg/callback-task-sample-sqs.html). But it’s tricky to use in some situations, such as sending an email with a callback link, which often necessitates adding an API Gateway and Lambda to handle the callback URL. The [sfn-callback-urls](https://go.aws/38KynD1) app makes it easy to do exactly that.
 
-### [7 tools to help you become a better serverless developer](https://lumigo.io/blog/seven-tools-help-become-better-serverless-developer/)
+### [Tools to help you become a better serverless developer](https://lumigo.io/blog/seven-tools-help-become-better-serverless-developer/)
 
+* [Dynobase](https://dynobase.dev/) is a professional GUI client for DynamoDB and is leaps and bounds better than the AWS console for managing DynamoDb tables and working with your data.
 
+* [evb-cli](https://github.com/mhlabs/evb-cli). It’s a common-line tool for working with EventBridge and packs some very useful commands.
 
-### [HTTP API goes GA!](https://lumigo.io/blog/http-api-goes-ga-today/)
+* If you use API Gateway or AppSync you likely have to deal with VTL templates. It’s not everyone’s cup of tea and most people struggle to write even basic business logic in VTL. But to get the best performance, scalability and cost efficiency out of API Gateway and AppSync you should be using their built-in integration with other AWS services (the so-called “functionless” approach). Unfortunately, that means writing VTL mapping templates.
 
+  This is where the [Mapping Tool](https://mappingtool.dev/) by [Zac Charles](https://twitter.com/zaccharles) comes in. I
 
+### [Creating and attaching an EFS file system](https://lumigo.io/blog/unlocking-more-serverless-use-cases-with-efs-and-lambda/)
 
-### [Unlocking new Serverless use cases with EFS and Lambda](https://lumigo.io/blog/unlocking-more-serverless-use-cases-with-efs-and-lambda/)
+Lambda platform has added a new arrow to its quiver – [the ability to integrate with Amazon Elastic File System](https://aws.amazon.com/blogs/aws/new-a-shared-file-system-for-your-lambda-functions/) (EFS) natively.
 
-
+Until 2020, a Lambda function was limited to 512MB of /tmp directory storage. While this is sufficient for most use cases, it’s often prohibitive for use cases such as Machine Learning, as Tensorflow models are often GBs in size and cannot fit into the limited /tmp storage. Or maybe you’re processing large amounts (say, GBs) of data and need to store them in the /tmp directory for easier access. It unlocks many use cases for Lambda, which is hamstrung by various storage-related limitations today, such as the 250MB deployment package size limit or the 512MB /tmp storage limit. While these limits are generous for most use cases, they are often showstoppers for folks who are trying to run machine learning workloads on Lambda.
 
 ### [Lambda extensions: what they are and why they matter](https://lumigo.io/blog/aws-lambda-extensions-what-are-they-and-why-do-they-matter/)
 
+This article, written by Yan Cui on October 8, 2020, announces the release of AWS Lambda Extensions by Amazon. AWS Lambda Extensions are designed to improve the observability of AWS customers' serverless applications, specifically by collecting telemetry data about AWS Lambda functions in a performant and cost-effective way.
 
+Existing Application Performance Management (APM) solutions require the deployment of an agent or daemon to collect and send telemetry data. Prior to AWS Lambda Extensions, it was difficult to install these agents/daemons on Lambda due to constraints, leading to challenges for third-party vendors who had to choose between sending telemetry data at the end of each invocation or writing telemetry data to CloudWatch Logs, both of which have their disadvantages.
 
-### [Lambda extensions just got even better](https://lumigo.io/blog/lambda-extensions-just-got-even-better/)
-
-
+Lambda Extensions, however, are scripts that run alongside code, receiving updates about functions via a poll-based API. These can be internal (modifying the Lambda runtime environment and running in-process with code) or external (running in a separate process to code). They can impact the performance of functions, given they share the same resources - CPU, memory, storage, and network bandwidth. Lambda Extensions thus change the lifecycle of a Lambda Execution Environment with additional steps during initialization, invocation, and shut down. Lambda Extensions allow vendors to offer more comprehensive observability, security, and governance. 
 
 ### [AWS Lambda: Function URL is live!](https://lumigo.io/blog/aws-lambda-function-url-is-live/)
 
+In 2022 AWS has launched the Lambda Function URLs feature, which allows users to build REST APIs backed by Lambda functions without the need for API Gateway. This can significantly reduce costs for users who do not require the advanced features provided by API Gateway. 
+
+To create a function URL, users should enable the function URL box under Advanced settings when creating a new function. Function URLs have the structure https://{url-id}.lambda-url.{region}.on.aws, where the url-id is a randomly assigned ID. 
+
+The new feature uses the same schema format as API Gateway payload format 2.0, which means code does not need to be altered when switching from API Gateway to function URL. Function URLs can handle different HTTP verbs and URL paths.
+
+Other features include basic request throttling, achievable via Lambda reserve concurrency, and custom domains through creating a CloudFront distribution and pointing it at the function URL. 
+
+However, for APIs that require advanced features like user authentication with Cognito User Pool, usage plans, or WebSockets API, users should still consider API Gateway. But for simpler APIs, the Lambda Function URLs feature can be a cost-saving option.
+
+### [Welcome to 10GB of tmp storage with Lambda](https://lumigo.io/blog/welcome-to-10gb-of-tmp-storage-with-lambda/)
+
+Since March 2022, AWS Lambda functions  offer the ability to expand the size of their ephemeral storage from the standard 512MB to up to 10GB. The /tmp directory, which serves as the ephemeral storage, can be used for fast I/O operations and as a cache for data between invocations on the same Lambda worker instance. Prior to this, its use was limited due to a fixed size of 512MB. 
+
+The updated storage can be configured through multiple platforms such as CloudFormation, AWS CLI, AWS SDK, or the AWS console. Users will have to pay for the extra storage space, although the pricing details were not available at the time of the announcement. 
+
+The increase in storage does not have a significant impact on the performance of Lambda functions nor does it change the limit on the deployment package size (still 250MB). For larger files, users can package their function as a container image or download the large files during initialization and save them into the /tmp directory.
+
+Using the ephemeral storage (i.e. the `/tmp` directory) differs from EFS in two major ways.
+
+- Performance: EFS is a network file system and its read and write latency is therefore much higher (~5-10x) than the ephemeral storage.
+- Data sharing: each Lambda function worker has its own instance of `/tmp` directory and they don’t share any data. Whereas with EFS, data is shared between all the components (Lambda functions, EC2 instances or containers) that are connected to the same EFS file system.
+
+Lambda offers a number of storage options:
+
+- Lambda Layers
+- Ephemeral storage (`/tmp` directory)
+- EFS
+- Container images
+
+They cater for different use cases and have different characteristics and limitations. James Beswick has an excellent article on how to choose between these options [here](https://aws.amazon.com/blogs/compute/choosing-between-aws-lambda-data-storage-options-in-web-apps/).
+
+1. **Lambda Layers:** These allow for bundling of additional libraries as part of the Lambda function deployment package. A function can have up to five layers and this can be an effective way to bundle large dependencies. However, layers are static once deployed, and the contents can only be changed by deploying a new version.
+
+2. **Temporary Storage with /tmp:** The Lambda execution environment offers a /tmp file system with a fixed size of 512 MB. This area acts as a transient cache for data between invocations and is cleared each time a new execution environment is created. It is intended for ephemeral storage and should be used for data required for a single invocation.
+
+3. **Amazon EFS:** This is a fully managed, elastic, shared file system that integrates with other AWS services, and can be mounted in Lambda functions. It allows for sharing of data across invocations, supports standard file operations and is ideal for deploying code libraries or working with packages that exceed the limit of layers.
+
+4. **Amazon S3:** This object storage service scales elastically, offering high availability and durability. Ideal for storing unstructured data such as images, media, log files and sensor data, it features event integrations with Lambda and allows for automated workflows.
+
+   
+
+### [Graviton-based Lambda functions, what it means for you](https://lumigo.io/blog/graviton-based-lambda-functions-what-it-means-for-you/)
+
+Amazon Web Services (AWS) has introduced support for AWS Lambda functions powered by Graviton2 processors, a custom-built, 64-bit Arm-based processor with an improved price to performance ratio. When creating a new Lambda function, users can now choose to run their code on either x86_64 or arm64 architectures. 
+
+Graviton2-based Lambda functions are 20% cheaper and perform better than x86-based ones, according to AWS. They offer a price-performance improvement of up to 34%. However, it's essential to benchmark your workload as performance results may vary based on the workload you test.
+
+Graviton2 is suitable for a wide range of workloads and allows users to make cost-effective decisions. For instance, Lambda functions that handle API requests and call DynamoDB or other AWS services can utilize Graviton2 for a better price without compromising user experience. Additionally, a Lambda function that trains Machine Learning models can run with thousands of concurrent executions to improve throughput. 
+
+Contrarily, for CPU intensive and time-sensitive workloads, like encoding customer-uploaded videos, it might be better to opt for x86 architecture for optimal performance, even if it is less cost-effective.
 
 
 
+### [Package your Lambda function as a container image](https://lumigo.io/blog/package-your-lambda-function-as-a-container-image/)
 
-- [Welcome to 10GB of tmp storage with Lambda](https://lumigo.io/blog/welcome-to-10gb-of-tmp-storage-with-lambda/)
-- [Graviton-based Lambda functions, what it means for you](https://lumigo.io/blog/graviton-based-lambda-functions-what-it-means-for-you/)
-- [Package your Lambda function as a container image](https://lumigo.io/blog/package-your-lambda-function-as-a-container-image/)
-- [How to work around CloudFormation circular dependencies](https://theburningmonk.com/2022/05/how-to-work-around-cloudformation-circular-dependencies/)
-- [How to manage Route53 hosted zones in a multi-account environment](https://theburningmonk.com/2021/05/how-to-manage-route53-hosted-zones-in-a-multi-account-environment/)
+AWS has added a new feature to its Lambda platform: the ability to package code and dependencies as container images. This allows for a more consistent toolset for tasks such as security scanning and code signing, and it also increases the maximum code package size to 10GB. The feature does not replace ECS or Fargate; Lambda's invocation model, with a maximum duration of 15 minutes, still applies.
+
+Packaging the contents of a Lambda function as a container image rather than a zip file allows for the use of preferred Linux base images like Alpine or Debian. Container images can be up to 10GB, substantially larger than the 250MB limit on deployment packages. However, the 512MB storage limit on the /tmp directory still applies.
+
+After a function has been deployed as a container image, it undergoes an optimization process before it can be invoked. If a function hasn't been invoked in over 14 days, it may be marked as INACTIVE and need to undergo the optimization process again upon the next invocation.
+
+A few caveats to be aware of: Lambda features such as layers, code signing, and automatic patching with runtime updates aren't supported for functions packed as container images. And, idle functions may become temporarily inoperational as they need to be reoptimized.
+
+**Container image support is designed to solve specific problems and might not be necessary for all users. However, for those who have large dependencies or who work in highly regulated environments that require consistent security standards, this could make Lambda a more attractive platform.**
+
+**This update does not make EFS redundant. Although container images and EFS can both be used to navigate around limits on the deployment package size and /tmp directory space, there are important differences to note. EFS, for example, can provide virtually unlimited storage space but has much higher read and write latency compared to a local filesystem.**
+
+### [How to work around CloudFormation circular dependencies](https://theburningmonk.com/2022/05/how-to-work-around-cloudformation-circular-dependencies/)
+
+- replace one of the CloudFormation pseudo-functions in the circular dependency with a handcrafted string;
+- rearchitect your solution and introduce a layer of indirection, such as an EventBridge bus or a DynamoDB Stream;
+- capture the desired value as an SSM parameter and load it at runtime instead.
+
+### [How to manage Route53 hosted zones in a multi-account environment](https://theburningmonk.com/2021/05/how-to-manage-route53-hosted-zones-in-a-multi-account-environment/)
+
+Managing Route53 DNS records in a multi-account environment can pose challenges, especially when using infrastructure-as-code (IaC) tools such as CloudFormation, CDK, and Terraform, which do not span across multiple accounts. To overcome this issue, the suggested solution is to arrange domain names so that each account owns its own subdomain and can verify any Amazon Certificate Manager (ACM) requests it creates.
+
+The process involves hosting the root domain in the master account, and then hosting a subdomain in each environment-specific account for dev, test, staging, prod, etc. The next steps involve noting the NS record that Route53 has created automatically for each subdomain, and creating a new NS record for each subdomain in the master account using the NS record values from the previous step. This effectively delegates the ownership of the subdomains to the corresponding AWS account's Route53 hosted zone.
+
+To set up the hosted zones, manual setup may suffice for a small number of environments, but for scalability or more complex needs, using a tool like org-formation is recommended. This open-source tool enables you to manage your entire AWS Organization with a CloudFormation-like syntax. It also allows for cross-account references, simplifying the setup of the subdomains and the reference of their NS values in the master account. An example template is available for use.
 
 # Yubl’s road to Serverless
 
