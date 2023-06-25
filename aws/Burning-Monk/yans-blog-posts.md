@@ -90,7 +90,7 @@ Option 5 (new): use Lambda's new Streaming Response
 
 ### [What is AWS Lambda’s new Streaming Response](https://lumigo.io/blog/return-large-objects-with-aws-lambdas-new-streaming-response/)
 
-The article discusses the newly launched Response Streaming feature in Lambda. This feature allows payloads larger than 6MB to be returned, thereby bypassing the previous need for S3 when returning large objects from a Lambda-backed API. This feature simplifies the client application and improves user experience.
+Yan discusses the newly launched Response Streaming feature in Lambda. This feature allows payloads larger than 6MB to be returned, thereby bypassing the previous need for S3 when returning large objects from a Lambda-backed API. This feature simplifies the client application and improves user experience.
 
  Users need to wrap their function code with the new streamifyResponse decorator to make it work. The feature also changes the function signature to async (requestStream, responseStream, context) from async (event, context).
 
@@ -2267,8 +2267,67 @@ To set up the hosted zones, manual setup may suffice for a small number of envir
 
 # Yubl’s road to Serverless
 
-- [part 1 : overview](https://theburningmonk.com/2016/12/yubls-road-to-serverless-architecture-part-1/)
-- [part 2 : testing & continuous delivery strategies](https://theburningmonk.com/2017/02/yubls-road-to-serverless-architecture-part-2/)
-- [part 3 : ops](https://theburningmonk.com/2017/03/yubls-road-to-serverless-architecture-part-3/)
-- [part 4 : building a scalable push notification system](https://theburningmonk.com/2017/05/yubls-road-to-serverless-architecture-part-4-building-a-scalable-push-notification-system/)
-- [part 5 : building a better recommendation system](https://theburningmonk.com/2017/07/yubls-road-to-serverless-part-5/)
+
+
+### [part 2 : testing & continuous delivery strategies](https://theburningmonk.com/2017/02/yubls-road-to-serverless-architecture-part-2/)
+
+In [Growing Object-Oriented Software, Guided by Tests](http://amzn.to/2jrKLxx), *Nat Pryce* and *Steve Freeman* talked about the 3 levels of testing
+
+1. **Acceptance** – does the whole system work?
+2. **Integration** – does our code work against code we can’t change?
+3. **Unit** – do our objects do the right thing, are they easy to work with?
+
+In the FAAS paradigm the **value of integration and acceptance tests are also higher than ever**.
+
+In [Growing Object-Oriented Software, Guided by Tests](http://amzn.to/2jrKLxx), *Nat Pryce* and *Steve Freeman* also talked about why you shouldn’t mock types that you can’t change  because…
+
+> *…We find that tests that mock external libraries often need to be **complex** to get the code into the right state for the functionality we need to exercise.*
+>
+> *The mess in such tests is telling us that the design isn’t right but, instead of fixing the problem by improving the code, we have to carry the **extra complexity** in both code and test…*
+>
+> *…The second risk is that we have to be sure that the behaviour we stub or mock matches what the external library will actually do…*
+>
+> *Even if we get it right once, we have to make sure that the tests **remain valid** when we upgrade the libraries…*
+
+I believe the same principles apply here, and that you **shouldn’t mock services that you can’t change**.
+
+Since the purpose is to test the integration points, so it’s important to configure the function to use the same downstream systems as the real, deployed code. If your function needs to read from/write to a *DynamoDB* table then your integration test should be using the real table as opposed to something like [dynamodb-local](https://www.npmjs.com/package/dynamodb-local).
+
+It does mean that your tests can leave artefacts in your integration environment and can cause problems when running multiple tests in parallel (eg. the artefacts from one test affect results of other tests). Which is why, as a rule-of-thumb, I advocate:
+
+- avoid hard-coded IDs, they often cause unintentional coupling between tests
+- always clean up artefacts at the end of each test
+
+The same applies to acceptance tests.
+
+*…Wherever possible, an **acceptance** **test** should exercise the system **end-to-end** without directly calling its internal code.*
+
+*An end-to-end test interacts with the system **only from the outside**: through its interface…*
+
+*…We prefer to have the end-to-end tests exercise both the system and the **process by which it’s built and deployed**…*
+
+Whilst we had around 170 *Lambda* functions running production, many of them work together to provide different features to the app. Our approach was to group these functions such that:
+
+- functions that form the endpoints of an API are grouped in a project
+- background processing functions for a feature are grouped in a project
+- each project has its own repo
+- functions in a project are tested and deployed together
+
+### [part 3 : ops](https://theburningmonk.com/2017/03/yubls-road-to-serverless-architecture-part-3/)
+
+1. **NoOps != No Ops:** Yan points out that "NoOps", a term often associated with serverless technologies, doesn't mean you can entirely ignore Ops. Operations still exist, regardless of whether your software is running on VMs in the cloud, on-premise hardware, or as Lambda functions. The term "NoOps" to Yan implies no specialized ops team in the organization.
+
+2. **Logging and Centralised Logging:** Logging is achieved using AWS CloudWatch Logs. When Lambda functions are created, their logs are sent to their respective Log Groups in CloudWatch. The ELK stack is used for centralizing logs from different Log Groups. To automate the process, a rule in CloudWatch Events can be set up to invoke a subscribe-log-group Lambda function for new Log Groups.
+
+3. **Distributed Tracing:** For correlating logs from different services to understand all events that occurred during a single user request, correlation IDs are used. The handling of the initial user request flows through API calls, Kinesis events, and SNS messages, capturing and forwarding these correlation IDs.
+
+4. **Monitoring:** Basic metrics can be obtained from CloudWatch. However, custom metrics can also be published to CloudWatch using the AWS SDK. To maintain less API latency overhead, metrics can be published as special log messages. Dashboards and alerts are set up in CloudWatch and Graphite, with opsgenie alerting the on-call person.
+
+5. **Limitations of CloudWatch:** Yan suggests considering alternatives to CloudWatch due to its limited UI, customization, lack of advanced features, and metrics granularity.
+
+6. **Config Management:** The initial approach was to add environment variables to Lambda functions, but as the number of functions increased, a centralised config service was adopted, using API Gateway, Lambda, and DynamoDB. Sensitive data are encrypted using KMS and stored in encrypted form.
+
+7. **Conclusion:** The emergence of serverless technologies like AWS Lambda has simplified the skills and tools required for ops responsibilities. However, it also introduced new limitations and challenges that require new practices and tools to handle.
+
+*NoOps to me, means **no ops specialization** in my organization – ie. no dedicated ops team – because the **skills and efforts required to fulfill the ops responsibilities do not justify the need for such specialization**. As an organization it’s in your best interest to delay such specialization for as long as you can both from a financial point of view and also, perhaps more importantly, because **[\*Conway’s law\*](http://www.melconway.com/Home/Conways_Law.html)** tells us that having an ops team is the surefire way to end up with a set of operational procedures/processes, tools and infrastructure whose complexity will in turn justify the existence of said ops team.*
+
