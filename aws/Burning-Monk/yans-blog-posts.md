@@ -1,4 +1,4 @@
-#  Testing
+# Testing
 
 ### [My testing strategy for serverless applications](https://theburningmonk.com/2022/05/my-testing-strategy-for-serverless-applications/)
 
@@ -13,8 +13,6 @@ Must have temporary branches / ephemeral instances for integration and e2e testi
 **CI/CD pipeline**: create a temporary environment and run the integration and end-to-end tests against it. Then I would delete the environment after the tests. No need to clean up the data for these, but you would clean up on dev, stage etc.
 
 **Testing in prod**: Spot e2e tests. Feature flags. Observability.
-
-
 
 ### [A practical guide to testing AWS Step Functions](https://theburningmonk.com/2022/12/a-practical-guide-to-testing-aws-step-functions/)
 
@@ -32,13 +30,11 @@ For some of these scenarios, we can use mock APIs and return dummy results for o
 
 `serverless invoke local --function functionName`
 
-[invoke local](https://serverless.com/framework/docs/providers/aws/cli-reference/invoke-local/)  runs your code locally by emulating the AWS Lambda environment. (Check out [internal link](https://github.com/muratkeremozcan/books/tree/master/aws/Burning-Monk/Serverless-architectures-aws-2#serverless-framework))
-
-
+[invoke local](https://serverless.com/framework/docs/providers/aws/cli-reference/invoke-local/) runs your code locally by emulating the AWS Lambda environment. (Check out [internal link](https://github.com/muratkeremozcan/books/tree/master/aws/Burning-Monk/Serverless-architectures-aws-2#serverless-framework))
 
 ### [Why you should use temporary CloudFormatoin stacks when you do serverless](https://theburningmonk.com/2019/09/why-you-should-use-temporary-stacks-when-you-do-serverless/)
 
-Personally, I have never felt the need to have one account per developer. After all, there is some overhead for having an AWS account. Instead, I usually settle for one AWS account per team per environment. 
+Personally, I have never felt the need to have one account per developer. After all, there is some overhead for having an AWS account. Instead, I usually settle for one AWS account per team per environment.
 
 But what do you do when you need to deploy and test some unfinished changes? I can deploy the feature branch to a dedicated environment, e.g. `dev-my-feature`. Using the [Serverless framework](https://serverless.com/framework/), that is as easy as running the command `sls deploy -s dev-my-feature`. This would deploy all the Lambda functions, API Gateway and any other related resources (DynamoDB, etc.) in its own CloudFormation stack. I would be able to test my work-in-progress feature in a live AWS environment. When the developer is done with the feature, the temporary stack can be easily removed by running `sls remove -s dev-my-feature`.
 
@@ -50,13 +46,9 @@ The main downsides are: you need an internet connection, deploying to AWS is slo
 
 Another common use of temporary CloudFormation stacks is for running end-to-end tests. One of the common problems with these tests is that you need to insert test data into a live, shared AWS environment. As a rule of thumb; insert the data a test case needs before the test, delete the data after the test finishes. Sometimes data may get left behind by incomplete tests. As a countermeasure teams use cron jobs to clean up data. An emerging best practice removing the temporary environment at the end of the tests, this way there is no need to clean test data, except on dev & stage deployments.
 
-
-
 ### [How to handle serverful resources when using ephemeral environments](https://theburningmonk.com/2023/02/how-to-handle-serverful-resources-when-using-ephemeral-environments/)
 
 When your serverless architecture relies on **serverful** resources such as RDS or OpenSearch, it can be a challenge to use ephemeral environments. You wouldn’t want to have lots of RDS instances sitting around and paying for uptime for all of them. As such, I don’t include these serverful resources as part of the ephemeral environments and would share them instead. For example, I would have one RDS cluster in the dev account. All ephemeral environments in the dev account would use the same cluster but have their own tables/databases. This lets me keep the ephemeral environments self-contained without multiplying my RDS cost.
-
-
 
 ### [This is why you should keep stateful and stateless resources together](https://theburningmonk.com/2023/01/this-is-why-you-should-keep-stateful-and-stateless-resources-together/)
 
@@ -64,9 +56,7 @@ Loose coupling and high cohesion are two of the most essential software engineer
 
 I’m very much in the monolith stack camp. I prefer to keep stateful (databases, queues, etc.) and stateless (Lambda functions, API Gateway, etc.) resources together. Assuming the CloudFormation stack encapsulates an entire service, which includes both stateful and stateless resources, then it makes sense to define all the resources in a single CloudFormation stack. This makes managing and deploying the service easier; resource reference is easier, can update both stateless and stateful components in a single deployment, CI/CD is simpler, ephemeral environments are easier.
 
-
-
-### [Hit the 6MB Lambda payload limit? Here’s what you can do.](https://theburningmonk.com/2020/04/hit-the-6mb-lambda-payload-limit-heres-what-you-can-do/) 
+### [Hit the 6MB Lambda payload limit? Here’s what you can do.](https://theburningmonk.com/2020/04/hit-the-6mb-lambda-payload-limit-heres-what-you-can-do/)
 
 > ```
 > Execution failed: 6294149 byte payload is too large for the RequestResponse invocation type (limit 6291456 bytes)
@@ -92,32 +82,28 @@ Option 5 (new): use Lambda's new Streaming Response
 
 Yan discusses the newly launched Response Streaming feature in Lambda. This feature allows payloads larger than 6MB to be returned, thereby bypassing the previous need for S3 when returning large objects from a Lambda-backed API. This feature simplifies the client application and improves user experience.
 
- Users need to wrap their function code with the new streamifyResponse decorator to make it work. The feature also changes the function signature to async (requestStream, responseStream, context) from async (event, context).
+Users need to wrap their function code with the new streamifyResponse decorator to make it work. The feature also changes the function signature to async (requestStream, responseStream, context) from async (event, context).
 
 ```js
-const { Readable } = require('stream')
+const { Readable } = require("stream");
 
 module.exports.handler = awslambda.streamifyResponse(
   // notice that the fn signature is different than the usual
-  // async (event, context) => 
+  // async (event, context) =>
   async (requestStream, responseStream, context) => {
-    const file = await downloadLargeFileFromS3()
-    const fileStream = Readable.from(file)
-    fileStream.pipe(responseStream)
-    await responseStream.finished()
+    const file = await downloadLargeFileFromS3();
+    const fileStream = Readable.from(file);
+    fileStream.pipe(responseStream);
+    await responseStream.finished();
   }
-)
+);
 ```
 
 The `requestStream` contains the stringified version of the invocation event. And the `responseStream` is a writable Stream object. Any bytes you write to the `responseStream` object would be streamed to the client. The `context` object is the same as before.
 
 The most obvious use case for this new feature is to bypass the need for S3 when you to return large objects from a Lambda-backed API. This helps improve the user experience and helps simplify the client application. The Response Streaming feature can be used to improve time-to-first-byte (TTFB) when returning video or audio content. Also, it can be used to stream incremental updates for long-running tasks.
 
-However, there are limitations. The default limit is 20MB, which is a soft limit and can be raised through the Service Quota console or by raising a support ticket. Also, the feature is not supported by API Gateway’s LAMBDA_PROXY integration or ALB’s Lambda integration. 
-
-
-
-
+However, there are limitations. The default limit is 20MB, which is a soft limit and can be raised through the Service Quota console or by raising a support ticket. Also, the feature is not supported by API Gateway’s LAMBDA_PROXY integration or ALB’s Lambda integration.
 
 ### [Write recursive AWS Lambda functions the right way](https://theburningmonk.com/2017/08/write-recursive-aws-lambda-functions-the-right-way/)
 
@@ -126,33 +112,33 @@ AWS Lambda [limits](http://docs.aws.amazon.com/lambda/latest/dg/limits.html) the
 Have a look at this [example](https://github.com/theburningmonk/lambda-recursive-s3-demo/blob/master/batch-processor.js) Lambda function that recursively processes a S3 file, using the approach outlined in this post.
 
 ```js
-const _       = require('lodash');
-const AWS     = require('aws-sdk');
-const Promise = require('bluebird');
-const lambda  = new AWS.Lambda();
-const s3      = new AWS.S3();
+const _ = require("lodash");
+const AWS = require("aws-sdk");
+const Promise = require("bluebird");
+const lambda = new AWS.Lambda();
+const s3 = new AWS.S3();
 
 // Data loaded from S3 and chached in case of recursion.
 let cached;
 
 let loadData = async (bucket, key) => {
   try {
-    console.log('Loading data from S3', { bucket, key });
+    console.log("Loading data from S3", { bucket, key });
 
-    let req = { 
-      Bucket: bucket, 
-      Key: key, 
-      IfNoneMatch: _.get(cached, 'etag') 
+    let req = {
+      Bucket: bucket,
+      Key: key,
+      IfNoneMatch: _.get(cached, "etag"),
     };
     let resp = await s3.getObject(req).promise();
 
-    console.log('Caching data', { bucket, key, etag: resp.ETag });
+    console.log("Caching data", { bucket, key, etag: resp.ETag });
     let data = JSON.parse(resp.Body);
     cached = { bucket, key, data, etag: resp.ETag };
     return data;
   } catch (err) {
     if (err.code === "NotModified") {
-      console.log('Loading cached data', { bucket, key, etag: cached.etag });
+      console.log("Loading cached data", { bucket, key, etag: cached.etag });
       return cached.data;
     } else {
       throw err;
@@ -163,13 +149,13 @@ let loadData = async (bucket, key) => {
 let recurse = async (payload) => {
   let req = {
     FunctionName: process.env.AWS_LAMBDA_FUNCTION_NAME,
-    InvocationType: 'Event',
-    Payload: JSON.stringify(payload)
+    InvocationType: "Event",
+    Payload: JSON.stringify(payload),
   };
 
-  console.log('Recursing...', req);
+  console.log("Recursing...", req);
   let resp = await lambda.invoke(req).promise();
-  console.log('Invocation complete', resp);
+  console.log("Invocation complete", resp);
 
   return resp;
 };
@@ -177,25 +163,27 @@ let recurse = async (payload) => {
 module.exports.handler = async (event, context) => {
   console.log(JSON.stringify(event));
 
-  let bucket   = _.get(event, 'Records[0].s3.bucket.name');
-  let key      = _.get(event, 'Records[0].s3.object.key');
+  let bucket = _.get(event, "Records[0].s3.bucket.name");
+  let key = _.get(event, "Records[0].s3.object.key");
   let position = event.position || 0;
-  let data     = await loadData(bucket, key);
+  let data = await loadData(bucket, key);
 
   let totalTaskCount = data.tasks.length;
-  let batchSize      = process.env.BATCH_SIZE || 5;
+  let batchSize = process.env.BATCH_SIZE || 5;
 
   try {
     do {
-      console.log('Processing next batch...');
+      console.log("Processing next batch...");
       let batch = data.tasks.slice(position, position + batchSize);
       position = position + batch.length;
-      
+
       for (let task of batch) {
         await Promise.delay(1000); // each task takes a second to process
       }
-    } while (position < totalTaskCount && 
-            context.getRemainingTimeInMillis() > 10000);
+    } while (
+      position < totalTaskCount &&
+      context.getRemainingTimeInMillis() > 10000
+    );
 
     if (position < totalTaskCount) {
       let newEvent = Object.assign(event, { position });
@@ -210,8 +198,6 @@ module.exports.handler = async (event, context) => {
 };
 ```
 
-
-
 ### [Use ](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)`context.getRemainingTimeInMillis()`[ to adjust client-side request timeout based on actual invocation time left](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/) / [AWS Lambda — use the invocation context to better handle slow HTTP responses](https://theburningmonk.com/2018/01/aws-lambda-use-the-invocation-context-to-better-handle-slow-http-responses/)
 
 **API Gateway have a 30s max timeout** on all integration points. Serverless framework uses a default of 6s for AWS Lambda functions. This poses a problem hard coded timeout values in functions, when a function calls another function and so on, and the original function is waiting for a response.
@@ -220,7 +206,7 @@ Instead, we should **set the request timeout based on the amount of invocation t
 
 With this approach, we get the best of both worlds: allow requests the best chance to succeed based on the actual amount of invocation time we have left; and prevent slow responses from timing out the function, which allows us a window of opportunity to perform recovery actions.
 
-Check out [Netflix Hystrix](https://github.com/Netflix/Hystrix/wiki). Most of the patterns that are baked into *Hystrix* can be easily adopted in our serverless applications to help make them more resilient to failures
+Check out [Netflix Hystrix](https://github.com/Netflix/Hystrix/wiki). Most of the patterns that are baked into _Hystrix_ can be easily adopted in our serverless applications to help make them more resilient to failures
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zf86nqrkfpcozwyjhqwm.png)
 
@@ -252,11 +238,7 @@ Evaluation:
 
 - **scaling the team**: how do I minimize friction and allow me to grow the engineering team?
 
-  
-
 Utilize a naming convention and tagging on functions. The other 2 are no brainer.
-
-
 
 ### [How best to manage shared code and shared infrastructure](https://theburningmonk.com/2018/02/aws-lambda-how-best-to-manage-shared-code-and-shared-infrastructure/)
 
@@ -265,35 +247,6 @@ When you have a group of functions that are highly cohesive and are organised in
 Visibility is better with library vs service. Backward compatibility is also better. Failures are easier to deal with. Latency is better.
 
 Deployment is easier with service. Versioning is easier with service (feature flags).
-
-
-
-### [The best ways to save money on Lambda](https://theburningmonk.com/2022/07/the-best-ways-to-save-money-on-lambda/)
-
-Cost = resources x duration x invocations
-
-Do not allocate more memory (resources) than necessary. 
-
-**You should always optimize the memory setting for functions that use provisioned concurrency**, because provisioned concurrency has an uptime cost per month per unit of concurrency.
-
-Optimize the frequently invoked functions that have a long execution time (the 3%).
-
-Use [aws-lambda-power-tuning](https://github.com/alexcasalboni/aws-lambda-power-tuning). Install it [**here**](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:451282441545:applications~aws-lambda-power-tuning). If you use Lumigo, you can sort your functions by cost.
-
-
-
-### [Provisioned Concurrency — the end of cold starts](https://lumigo.io/blog/provisioned-concurrency-the-end-of-cold-starts/)
-
-Once enabled, Provisioned Concurrency will keep your desired number of concurrent executions initialized and ready to respond to requests. This means an end to cold starts!
-
-Mind that when provisioned concurrency happens, the init duration does not seem to change. It still happens, but happens ahead of time; that's why it feels much faster but still reports a high duration.
-
-**Difference between Provisioned Concurrency and warm starts**: It's about the instances. Warm start is 1 instance of the lambda, and the rest still cold start. P.C. can be set to scale
-
-From Yan:
-_The actual problem with warm starts is that they don't scale beyond keeping a handful of instances of your functions warm because there's no way to direct an invocation to specific instances (ie. worker) of a function. So if you have a handful of functions and you just need to keep 1 instance of each warm for a low throughput API, then warmers are a good, cheap way to do it compared to using Provisioned Concurrency. But if you need an enterprise-scale solution that can keep 50, 100 instances of your functions warm, and auto-scale the no. of warm instances based on traffic patterns or based on a schedule, and you don't mind (potentially) paying extra for these, then use Provisioned Concurrency. I said potentially paying extra, because Provisioned Concurrency can actually work out cheaper than on-demand concurrency if you have good utilization of the Provisioned Concurrency you have (~60% is the break-even point)._
-
-
 
 ### [Common Node8 mistakes in Lambda](https://serverless.com/blog/common-node8-mistakes-in-lambda)
 
@@ -305,12 +258,12 @@ Example 1:
 
 ```js
 async function getFixturesAndTeam(teamId) {
-  const fixtures = await fixtureModel.fetchAll()
-  const team = await teamModel.fetch(teamId)
+  const fixtures = await fixtureModel.fetchAll();
+  const team = await teamModel.fetch(teamId);
   return {
     team,
-    fixtures: fixtures.filter(x => x.teamId === teamId)
-  }
+    fixtures: fixtures.filter((x) => x.teamId === teamId),
+  };
 }
 ```
 
@@ -318,16 +271,16 @@ Here is how you can improve it. In this version, both `fixtureModel.fetchAll` an
 
 ```js
 async function getFixturesAndTeam(teamId) {
-  const fixturesPromise = fixtureModel.fetchAll()
-  const teamPromise = teamModel.fetch(teamId)
- 
-  const fixtures = await fixturesPromise
-  const team = await teamPromise
- 
+  const fixturesPromise = fixtureModel.fetchAll();
+  const teamPromise = teamModel.fetch(teamId);
+
+  const fixtures = await fixturesPromise;
+  const team = await teamPromise;
+
   return {
     team,
-    fixtures: fixtures.filter(x => x.teamId === teamId)
-  }
+    fixtures: fixtures.filter((x) => x.teamId === teamId),
+  };
 }
 ```
 
@@ -346,9 +299,9 @@ Instead, you should write it as the following:
 
 ```js
 async function getTeams(teamIds) {
-  const promises = _.map(teamIds, id => teamModel.fetch(id))
-  const teams = await Promise.all(promises)
-  return teams
+  const promises = _.map(teamIds, (id) => teamModel.fetch(id));
+  const teams = await Promise.all(promises);
+  return teams;
 }
 ```
 
@@ -356,48 +309,46 @@ Example 3:
 Async await inside forEach doesn't behave the way you'd expect it to:
 
 ```js
-[ 1, 2, 3 ].forEach(async (x) => {
-  await sleep(x)
-  console.log(x)
-})
+[1, 2, 3].forEach(async (x) => {
+  await sleep(x);
+  console.log(x);
+});
 
-console.log('all done.')
+console.log("all done.");
 
-// you only get 
+// you only get
 // all done.
 ```
 
 The problem here is that `Array.prototype.forEach` does not wait for async functions to complete before moving on to the next iteration. If you want to execute an async function for each item in an array in a sequential manner (i.e., waiting for the previous async operation to complete before starting the next), you should use a `for...of` loop instead.
 
 ```js
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms * 1000)); 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms * 1000));
 
 async function processArray(array) {
   for (const item of array) {
     await sleep(item);
     console.log(item);
   }
-  console.log('all done.');
+  console.log("all done.");
 }
 
 processArray([1, 2, 3]);
-
 ```
 
 Example 4:
 Use AWS SDK’s .promise(). AWS SDK clients support both callbacks and promises. To use `async/await` with the AWS SDK, add `.promise()` to client methods like this:
 
 ```js
-	
-const AWS = require('aws-sdk')
-const Lambda = new AWS.Lambda()
- 
+const AWS = require("aws-sdk");
+const Lambda = new AWS.Lambda();
+
 async function invokeLambda(functionName) {
   const req = {
     FunctionName: functionName,
-    Payload: JSON.stringify({ message: 'hello world' })
-  }
-  await Lambda.invoke(req).promise()
+    Payload: JSON.stringify({ message: "hello world" }),
+  };
+  await Lambda.invoke(req).promise();
 }
 ```
 
@@ -405,12 +356,10 @@ Example 5:
 Use node's promisify. Before Node8, [bluebird](http://bluebirdjs.com/docs/getting-started.html) filled a massive gap. It provided the utility to convert callback-based functions to promise-based. But Node8's built-in `util` module has filled that gap with the `promisify` function. For example, we can now transform the `readFile` function from the `fs` module like this:
 
 ```js
-const fs = require('fs')
-const { promisify } = require('util')
-const readFile = promisify(fs.readFile)
+const fs = require("fs");
+const { promisify } = require("util");
+const readFile = promisify(fs.readFile);
 ```
-
-
 
 ### [Monorepo vs one repo per service](https://lumigo.io/blog/mono-repo-vs-one-per-service/)
 
@@ -422,9 +371,9 @@ Monorepo approach is very productive when you are a small team. It removes a lot
 - It’s easy to create leaky abstractions and therefore accidental coupling between services. Because it’s easy to share code inside the same repo, which has less friction than to share code through shared libraries.
 - When sharing code between services this way, it makes tracking changes more difficult. As changes in shared code can mean a change in a service’s behaviour, but it’s hard to correlate these changes outside the service’s folder.
 
- As these companies (Google, Twitter, etc.) all went through a period of rapid growth, it was simply unfeasible to split the monorepo at that point. What does Google do now?
+As these companies (Google, Twitter, etc.) all went through a period of rapid growth, it was simply unfeasible to split the monorepo at that point. What does Google do now?
 
-- You need to invest heavily in automation. Without the internal tools these companies have developed, the monorepo approach would never have worked at their scale. 
+- You need to invest heavily in automation. Without the internal tools these companies have developed, the monorepo approach would never have worked at their scale.
 - You need engineers who are brave enough to change shared code and create pull requests to hundreds, even thousands of services.
 
 #### One repo per service
@@ -437,9 +386,9 @@ A frequently asked question is “how do I share resources between services, and
 
 How can we share business logic between services in a Node.js mono repo?
 
-* Encapsulate the shared business logic into modules, and put them in a separate folder.
-* In the Lambda handler functions, reference the shared modules using relative paths.
-* Use webpack to resolve and bundle them into the deployment package. If you use the Serverless framework, then check out the [serverless-webpack](https://github.com/serverless-heaven/serverless-webpack) plugin. (if webpack is not your thing then also check out the newer [serverless-esbuild](https://www.npmjs.com/package/serverless-esbuild) plugin which can achieve the same thing)
+- Encapsulate the shared business logic into modules, and put them in a separate folder.
+- In the Lambda handler functions, reference the shared modules using relative paths.
+- Use webpack to resolve and bundle them into the deployment package. If you use the Serverless framework, then check out the [serverless-webpack](https://github.com/serverless-heaven/serverless-webpack) plugin. (if webpack is not your thing then also check out the newer [serverless-esbuild](https://www.npmjs.com/package/serverless-esbuild) plugin which can achieve the same thing)
 
 To see how everything fits together, check out [this demo repo](https://github.com/theburningmonk/lambda-monorepo-code-sharing-demo). I
 
@@ -479,15 +428,13 @@ Add it under plugins, create a custom variable `serverless-layers` > `layersDepl
 
 ![s3-parameter](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/05o8vwdw0rwon37mk85h.png)
 
-
-
 ### [How to log timed out Lambda invocations](https://theburningmonk.com/2019/05/how-to-log-timed-out-lambda-invocations/)
 
-The `context` object for a Node.js function has a very useful method called `getRemainingTimeInMillis`. It returns the number of milliseconds left in the current invocation. So, we can schedule a callback to be actioned JUST before the function times out and preemptively logs the timeout event.  
+The `context` object for a Node.js function has a very useful method called `getRemainingTimeInMillis`. It returns the number of milliseconds left in the current invocation. So, we can schedule a callback to be actioned JUST before the function times out and preemptively logs the timeout event.
 
 ### [How to detect and stop accidental infinite recursions](https://theburningmonk.com/2019/06/aws-lambda-how-to-detect-and-stop-accidental-infinite-recursions/)
 
-Use [**Lambda powertools project**](https://github.com/getndazn/dazn-lambda-powertools) to track the length of a call chain, they [**added a middleware**](https://github.com/getndazn/dazn-lambda-powertools/tree/master/packages/lambda-powertools-middleware-stop-infinite-loop) to stop invocations when the call chain length reaches a `threshold`. Limitation: the middleware does not work for SQS and Kinesis functions. 
+Use [**Lambda powertools project**](https://github.com/getndazn/dazn-lambda-powertools) to track the length of a call chain, they [**added a middleware**](https://github.com/getndazn/dazn-lambda-powertools/tree/master/packages/lambda-powertools-middleware-stop-infinite-loop) to stop invocations when the call chain length reaches a `threshold`. Limitation: the middleware does not work for SQS and Kinesis functions.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bqdofk58yvebmksqgqyg.png)
 
@@ -508,13 +455,9 @@ We can also ensure the changes are per user (ex: paid vs free), demographics, % 
 
 The LaunchDarkly SDK relies on a persistent connection to their streaming API to receive server-sent events (SSE) whenever feature flags change. But the [Node.js SDK](https://docs.launchdarkly.com/docs/node-sdk-reference) gives us the option to use polling mode instead. The use of persistent connections immediately signals trouble as they don’t work well with Lambda. They are often the source of problems for Lambda functions that have to use RDS. Indeed, a [set of practices](https://www.jeremydaly.com/manage-rds-connections-aws-lambda/) were necessary to make them bearable in the context of RDS, which is not applicable here.
 
-
-
 ### [How to include SNS and Kinesis in your e2e tests](https://theburningmonk.com/2019/09/how-to-include-sns-and-kinesis-in-your-e2e-tests/)
 
 This is covered in Testing Event Driven Architectures Ch05 of Testing Serverless apps. (I prefer to not try hard this way and use a testing tool that works really well with event driven systems, and keep the e2e tests black box).
-
-
 
 ### Should you pack the AWS SDK in your deployment artefact?](https://theburningmonk.com/2019/09/should-you-pack-the-aws-sdk-in-your-deployment-artefact/)
 
@@ -525,18 +468,6 @@ Yes.
 In most cases, a Lambda function is an implementation detail and shouldn’t be exposed as the system’s API. Instead, they should be fronted with something, such as API Gateway for HTTP APIs or an SNS topic for event processing systems. This allows you to make implementation changes later without impacting the external-facing contract of your system. But what if the caller and callee functions are both inside the same service? In which case, the whole “breaking the abstraction layer” thing is not an issue. Then it depends.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0wqm7dfwe38dlqg3n2pl.png)
-
-### [SQS and Lambda: the missing guide on failure modes](https://lumigo.io/blog/sqs-and-lambda-the-missing-guide-on-failure-modes/)
-
-Amazon SQS is a message queueing service. You can use SQS to decouple and scale microservices, [serverless](https://lumigo.io/debugging-aws-lambda-serverless-applications/) applications, and distributed systems. SQS makes it easy to store, receive, and send messages between software components. You can configure SQS queues as event sources for Lambda. Once you set this up, Lambda functions are automatically triggered when messages arrive to an SQS queue. Lambda can then automatically scale up and down according to the number of inflight messages in a queue. This means Lambda takes charge and automates tasks like polling, reading and removing messages from a queue.
-
-1. No Dead Letter Queues (DLQs): Not configuring a DLQ when using SQS and Lambda is a common mistake. It can result in the 'poison message' problem where an invalid message is continuously retrieved, causing the SQS function to error. Always configure a DLQ for every SQS queue.
-
-2. SQS Lambda Visibility Timeout Misalignment: It's important to align the SQS visibility timeout with the Lambda function's timeout, ideally setting the SQS visibility timeout greater than the Lambda function's timeout. Otherwise, if the SQS function has a higher timeout value, in-flight messages may be processed more than once.
-
-3. Partial Failures: Partial failures are tricky to handle as messages are deleted only after the SQS function completes successfully. Solutions to handle this include using a batchSize of 1 or ensuring idempotency. However, both approaches have their own limitations such as lower throughput or increased system complexity.
-
-4. SQS Over-scaling: Lambda auto-scales the number of pollers based on traffic, which can result in the SQS function using up too many available concurrent executions in the region, possibly leading to throttling of Lambda invocations. Mitigation strategies include increasing the concurrency limit, setting reserved concurrency on the SQS function, or implementing backpressure control in front of the SQS queue.
 
 # Big picture questions
 
@@ -552,8 +483,6 @@ The real lock-in risk lies in data, not in business logic, as data accumulates a
 
 Skepticism about some of the voices warning about vendor lock-in, as companies with vested interests in traditional infrastructure might have reasons to slow serverless adoption. They conclude that while coupling with a specific provider can be a risk, the benefits of serverless technologies like scalability, resilience, and speed outweigh the potential future costs of migration.
 
-
-
 ### [You are thinking about serverless costs all wrong](https://theburningmonk.com/2019/01/you-are-thinking-about-serverless-costs-all-wrong/)
 
 When evaluating the cost of serverless architectures like AWS Lambda, it's essential to think beyond the direct service costs. The focus should be on the Total Cost of Ownership (TCO), which includes indirect costs such as engineer salaries, which can significantly outpace service costs.
@@ -564,11 +493,9 @@ Moreover, the importance of considering personnel costs is significant. For inst
 
 In conclusion, while serverless architectures like AWS Lambda have their costs and limitations, when considering the TCO, they can often be a more cost-effective and efficient solution.
 
-
-
 ### [Serverless vs Containers](https://logz.io/blog/serverless-vs-containers/)
 
-Both serverless and container technologies offer productive, machine-agnostic abstractions for engineers. However, there seems to be a divide between the two. 
+Both serverless and container technologies offer productive, machine-agnostic abstractions for engineers. However, there seems to be a divide between the two.
 
 In terms of the state of containers, Docker and Kubernetes have come a long way, with the latter dominating the container orchestration space. AWS, Google Cloud, and Azure all offer managed Kubernetes as a service, and AWS also has its own managed container service, ECS. AWS Fargate, which runs containers without managing servers, blurs the line between containers and serverless.
 
@@ -578,13 +505,11 @@ In terms of adoption, both serverless and containers are experiencing rapid grow
 
 The debate between serverless and containers often comes down to control vs responsibility. While the ability to control your own infrastructure comes with a lot of responsibilities, serverless offers ease of use at the expense of control.
 
-In terms of tooling support, serverless offers basic observability tools out of the box, while containers have a more mature and diverse ecosystem of tools. 
+In terms of tooling support, serverless offers basic observability tools out of the box, while containers have a more mature and diverse ecosystem of tools.
 
 Regarding vendor lock-in, it as a risk but that risk has rarely materialized into significant problems. Instead, companies often find that serverless teams get more done with fewer resources, making the productivity returns worth the potential risk.
 
 In the future, serverless and containers should be used side by side, with a hybrid approach often being the most effective. Container technologies will eventually become serverless, and serverless platforms will allow users to bring their own containers, thus bridging the gap between the two technologies.
-
-
 
 ### [Why your business needs Serverless](https://www.jeffersonfrank.com/aws-blog/what-are-the-benefits-aws-serverless/)
 
@@ -594,11 +519,9 @@ For developers, serverless architectures, specifically AWS Lambda, eliminate man
 
 Managers should care about serverless as it improves team wellbeing and productivity. With AWS Lambda's inherent scalability and resilience, teams deliver faster and experience less stress. By reducing dependency on specialized DevOps or infrastructure teams, it allows the team to have more ownership of the system, thus boosting autonomy.
 
-For business stakeholders, serverless architectures shorten time-to-market and maximize return on investment (ROI). This is achieved by improving developer productivity and reducing the operational costs associated with maintaining server infrastructure. Serverless technology also allows more accurate prediction of transaction costs, facilitating informed decision-making for business optimization. 
+For business stakeholders, serverless architectures shorten time-to-market and maximize return on investment (ROI). This is achieved by improving developer productivity and reducing the operational costs associated with maintaining server infrastructure. Serverless technology also allows more accurate prediction of transaction costs, facilitating informed decision-making for business optimization.
 
 Overall, serverless computing can benefit all involved in the development process by increasing productivity, reducing costs, and streamlining operations.
-
-
 
 ### [“Even simple serverless applications have complex architecture diagrams”, so what?](https://theburningmonk.com/2020/11/even-simple-serverless-applications-have-complex-architecture-diagrams-so-what/)
 
@@ -625,8 +548,6 @@ The chapter teaches you about architectural design and how to think about (and m
 
 When EventBridge Scheduler invokes the target Lambda function, it does so via an asynchronous invocation. This means we can use Lambda Destinations (which doesn’t support synchronous invocations) to trigger the cleanup step and delete the schedule. You can see an example of this in this [demo repo](https://github.com/theburningmonk/eventbridge-schedule-self-delete-demo).
 
-
-
 ### [5 reasons why you should EventBridge instead of SNS](https://lumigo.io/blog/5-reasons-why-you-should-use-eventbridge-instead-of-sns/)
 
 SNS and SQS have been the goto options for AWS developers when it comes to service integration. [EventBridge](https://lumigo.io/blog/amazon-eventbridge-a-new-era-of-saas-integration/) (formerly CloudWatch Events) has become a popular alternative.
@@ -641,21 +562,9 @@ SNS and SQS have been the goto options for AWS developers when it comes to servi
 
 ### [Checklist for going live with API Gateway and Lambda](https://theburningmonk.com/2019/11/check-list-for-going-live-with-api-gateway-and-lambda/)
 
-
-
-### [The why, when and how of API Gateway service proxies](https://lumigo.io/blog/the-why-when-and-how-of-api-gateway-service-proxies/)
-
-One of the very powerful and yet often under-utilized features of [API Gateway](https://lumigo.io/blog/tackling-api-gateway-lambda-performance-issues/) is its ability to integrate directly with other AWS services. For example, you can [connect API Gateway directly to an SNS topic](https://www.alexdebrie.com/posts/aws-api-gateway-service-proxy/) without needing a Lambda function in the middle. Or [to S3](https://docs.aws.amazon.com/apigateway/latest/developerguide/integrating-api-with-aws-services-s3.html), or any number of AWS services. Particularly useful in removing Lambda from the equation, thereby eliminating limitations and overhead that comes with Lambda, such as cold starts, costs, and concurrency limits.
-
-Using API Gateway service proxies is especially beneficial when a Lambda function merely calls another AWS service and returns the response, or when concerns exist about cold start latency overhead or hitting concurrency limits. However, users should keep in mind the additional functions a Lambda function might be fulfilling, such as logging useful contextual information, handling errors, applying fallbacks when an AWS service fails, and injecting failures into requests for chaos engineering purposes.
-
-If users decide to implement API Gateway service proxies, they can use an open-source tool `serverless-apigateway-service-proxy`. This Serverless framework plugin simplifies creating service proxies and currently supports Kinesis Streams, SQS, SNS, and S3, with work in progress to support DynamoDB. The plugin also ensures the correct permissions are in place for the API Gateway, allows CORS and authorization customization, and enables request template customization.
-
-
-
 ### [Using Protocol Buffers with API Gateway and AWS Lambda](https://theburningmonk.com/2017/09/using-protocol-buffers-with-api-gateway-and-aws-lambda/)
 
-Protocol Buffers (protobufs) with API Gateway and AWS Lambda to produce smaller and more efficient payloads compared to JSON. 
+Protocol Buffers (protobufs) with API Gateway and AWS Lambda to produce smaller and more efficient payloads compared to JSON.
 
 The steps to implementing Protocol Buffers with API Gateway and Lambda include installing the `serverless-apigw-binary` plugin, adding 'application/x-protobuf' to binary media types, and creating a function that returns Protocol Buffers as a base64 encoded response. To encode & decode Protocol Buffers payload in Nodejs, you can use the [protobufjs](https://www.npmjs.com/package/protobufjs) package from NPM.
 
@@ -663,15 +572,13 @@ However, there are some important things to note when using protobufjs in a Lamb
 
 Yan suggests using HTTP content negotiation to toggle between JSON and Protocol Buffers as required. While Protocol Buffers should be used by default to minimize bandwidth use, a mechanism should be built in for switching the communication to JSON when necessary, for easier debugging.
 
-
-
 ### [How to choose the right API Gateway auth method](https://theburningmonk.com/2020/06/how-to-choose-the-right-api-gateway-auth-method/)
 
-Be warned against handling authentication and authorization within the Lambda function due to the associated costs and potential vulnerability to denial-of-service attacks. 
+Be warned against handling authentication and authorization within the Lambda function due to the associated costs and potential vulnerability to denial-of-service attacks.
 
 Cognito Identity Pools can exchange federated identities from external identity providers for temporary IAM credentials, useful for client apps accessing AWS services directly. For API Gateway, it necessitates using AWS_IAM authentication and IAM policies.
 
-API Gateway resource policies provide an additional control layer. These policies can whitelist or blacklist IPs or AWS accounts, and limit access to the API to Virtual Private Clouds (VPCs). IP Whitelisting is useful for internal tools accessible via company VPN, while IP Blacklisting helps exclude suspicious IPs. 
+API Gateway resource policies provide an additional control layer. These policies can whitelist or blacklist IPs or AWS accounts, and limit access to the API to Virtual Private Clouds (VPCs). IP Whitelisting is useful for internal tools accessible via company VPN, while IP Blacklisting helps exclude suspicious IPs.
 
 Yan suggests using a Web ACL in AWS WAF instead of maintaining blacklists manually. Private APIs can be set up using resource policies. Even with VPC-level restrictions, API level auth methods should be in place for security.
 
@@ -687,39 +594,19 @@ With third-party systems such as Auth0 or Okta, we can [integrate them with Cogn
 
 Similar to the above, we can also [integrate Facebook, Google, Amazon or Apple with Cognito User Pools as social identity providers](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-social-idp.html).
 
-
-
 ### [How to auto-create CloudWatch alarms for API Gateway, using Lambda](https://theburningmonk.com/2018/05/auto-create-cloudwatch-alarms-for-apis-with-lambda/)
 
-We need a solution to automating manual operational tasks associated with API Gateway and Lambda in AWS. These tasks, such as enabling Detailed Metrics for the deployment stage, setting up a dashboard in CloudWatch, and setting up CloudWatch Alarms for p99 latencies and error counts, are often forgotten because they are not part of an automated workflow. 
+We need a solution to automating manual operational tasks associated with API Gateway and Lambda in AWS. These tasks, such as enabling Detailed Metrics for the deployment stage, setting up a dashboard in CloudWatch, and setting up CloudWatch Alarms for p99 latencies and error counts, are often forgotten because they are not part of an automated workflow.
 
 Yan introduces a method to automate these tasks using CloudTrail, CloudWatch Events, and Lambda:
 
-1. *CloudTrail* captures the **CreateDeployment** request to *API Gateway*.
-2. *CloudWatch Events* pattern against this captured request.
-3. *Lambda* function to *a)* enable detailed metrics, and *b)* create alarms for each endpoint
+1. _CloudTrail_ captures the **CreateDeployment** request to _API Gateway_.
+2. _CloudWatch Events_ pattern against this captured request.
+3. _Lambda_ function to _a)_ enable detailed metrics, and _b)_ create alarms for each endpoint
 
 The Serverless framework can create a function that automatically sets these alarms when a new API deployment is created. This function requires certain permissions and environment variables specifying SNS topics for the CloudWatch Alarms.
 
-Yan also proposes extending the automation to include creating CloudWatch Alarms for 5xx errors for each endpoint and creating a CloudWatch Dashboard for the API. 
-
-
-
-### [The API Gateway security flaw you need to pay attention to](https://theburningmonk.com/2019/10/the-api-gateway-security-flaw-you-need-to-pay-attention-to/)
-
-The default method limits – 10k req/s with a burst of 5000 concurrent requests – matches your account level limits. As a result, **ALL your APIs in the entire region share a rate limit that can be exhausted by a single method**. It also means that, as an attacker, I only need to DOS attack one public endpoint. I can bring down not just the API in question, but all your APIs in the entire region. Effectively rendering your entire system unavailable.
-
-While AWS's Web Application Firewall (WAF) can create rate-based rules that limit at the IP level, it has limitations. WAF can't fully protect against distributed DOS attacks from a botnet comprising thousands of hosts, or cope with 'low and slow' DOS attacks and can unintentionally block traffic from large institutions that share a single IP address. 
-
-Yan suggests that individual rate limits should be applied for each method, but acknowledges that this requires consistent discipline from developers, something which is often lacking. Furthermore, there is currently no built-in support in the Serverless framework to configure these method settings. 
-
-A solution might be to use a serverless-api-stage plugin or a custom rule in AWS Config to enforce rate limit overrides. Automated remediation like triggering a Lambda function after every API Gateway deployment could also be used. Using CloudFront as a CDN can also help reduce the traffic that reaches the API Gateway, but it comes with its own set of limitations and costs.
-
-A premium service, AWS Shield Advanced, offers payment protection against extra costs incurred during an attack and provides access to the DDoS Response Team, but this may be too expensive for many startups. 
-
-We need better tooling and support from Serverless framework and AWS to easily configure these rate limits. AWS should change the default behavior of applying region-wide limits or at least provide warnings to users about the risks involved.
-
-Serverless framework plugin called `serverless-api-gateway-throttling` allows for easier configuration of default throttling settings and provides overrides for individual endpoints.
+Yan also proposes extending the automation to include creating CloudWatch Alarms for 5xx errors for each endpoint and creating a CloudWatch Dashboard for the API.
 
 # Patterns
 
@@ -739,7 +626,7 @@ In the context of the AWS ecosystem, SNS (Simple Notification Service) acts as t
 
 However, challenges may arise due to limitations in the throughput capacities of downstream dependencies such as databases or other services. When a burst in throughput is brief, retries (with exponential back off) can usually handle any unprocessed messages, preventing message loss. However, if a burst is sustained or if a downstream dependency experiences an outage, the maximum number of retries may be exhausted, leading to message failure.
 
-When message processing fails, these messages are sent to a Dead Letter Queue (DLQ) after two unsuccessful retries. Consequently, this situation may necessitate human intervention for message recovery. 
+When message processing fails, these messages are sent to a Dead Letter Queue (DLQ) after two unsuccessful retries. Consequently, this situation may necessitate human intervention for message recovery.
 
 Additionally, the concurrent execution of Lambda functions is subject to an account-wide limit. A high number of concurrent executions could potentially impact other AWS Lambda-dependent systems like APIs, event processing, or cron jobs.
 
@@ -801,19 +688,17 @@ Kinesis or DynamoDB Streams are not ideal options for fan-out since the degree o
 
 Fan-in involves collecting results from workers. This could be done by storing results in DynamoDB or S3, depending on the size of the results. But it's important to note that both methods can lead to hot partitions if not properly mitigated with a GUID for the job ID.
 
-To track the overall progress of tasks, the total number of subtasks should be recorded when the ventilator function partitions the task. Each invocation of the worker function can then atomically decrement the count until it reaches 0, signaling that all the subtasks are complete. The sink function or reducer can then aggregate the individual results. 
+To track the overall progress of tasks, the total number of subtasks should be recorded when the ventilator function partitions the task. Each invocation of the worker function can then atomically decrement the count until it reaches 0, signaling that all the subtasks are complete. The sink function or reducer can then aggregate the individual results.
 
 The push-pull pattern can be effectively implemented with AWS Lambda and provides a flexible solution for parallel processing of tasks and aggregating results.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/d9wbyy15ccz69hsexz1m.png)
 
-
-
 ### [How to use the Decoupled Invocation pattern with AWS Lambda](https://theburningmonk.medium.com/applying-the-decoupled-invocation-pattern-with-aws-lambda-2f5f7e78d18)
 
 The Decoupled Invocation pattern is a serverless queue methodology that separates a reply from the initial request to prevent timeouts caused by slower downstream systems. This approach is particularly useful when using an API that is more scalable than its downstream systems or needs to perform an expensive, time-consuming process to respond to a request.
 
-In this pattern, upon receiving a request, the API stores a record for the request in a DynamoDB table and queues a task in either SQS, Kinesis Stream or DynamoDB Stream. The API then responds to the client with a 202 ACCEPTED response, indicating the location of the worker task results. The client periodically polls the API for the result while the API continues to return 202 ACCEPTED until the task is processed. 
+In this pattern, upon receiving a request, the API stores a record for the request in a DynamoDB table and queues a task in either SQS, Kinesis Stream or DynamoDB Stream. The API then responds to the client with a 202 ACCEPTED response, indicating the location of the worker task results. The client periodically polls the API for the result while the API continues to return 202 ACCEPTED until the task is processed.
 
 This allows for processing at a pace that doesn't stress the downstream systems and provides flexibility in retry strategies. Moreover, it enables quick responses to initial requests, allowing for smarter client-side communication.
 
@@ -823,11 +708,7 @@ Alternatively, Kinesis or DynamoDB Streams can be used. With DynamoDB Streams, t
 
 Overall, the Decoupled Invocation pattern is a viable option when performing expensive, time-consuming tasks in response to an HTTP request, or if your API layer is constrained by downstream dependencies.
 
-
-
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lkvm9tguma1v1ylmd8wz.png)
-
-
 
 ### [Create IP-protected endpoints with API Gateway and Lambda](https://theburningmonk.com/2018/07/how-to-create-ip-protected-endpoints-with-api-gateway-and-lambda/)
 
@@ -845,7 +726,7 @@ Describes how to set up IP-protected endpoints with AWS API Gateway and Lambda u
 
 (EventBridge scheduler is the meta now)
 
-###  [A simple event-sourcing example with snapshots using Lambda and DynamoDB](https://theburningmonk.com/2019/08/a-simple-event-sourcing-example-with-snapshots-using-lambda-and-dynamodb/)
+### [A simple event-sourcing example with snapshots using Lambda and DynamoDB](https://theburningmonk.com/2019/08/a-simple-event-sourcing-example-with-snapshots-using-lambda-and-dynamodb/)
 
 Discusses a simple event-sourcing example with snapshots using AWS Lambda and DynamoDB. In this demo, uses a banking application scenario where a user can create an account, check the balance, withdraw money, and credit the account.
 
@@ -867,27 +748,21 @@ The main aspects of the demo are:
 
 Same article as [Applying the pub-sub and push-pull messaging patterns with AWS Lambda](https://hackernoon.com/applying-the-pub-sub-and-push-pull-messaging-patterns-with-aws-lambda-73d5ee346faa)
 
-
-
 # Serverless framework
 
 ### [Top 10 Serverless best practices](https://datree.io/serverless-best-practices/)
 
- 
+**No Wildcards in IAM Role Statements**: To ensure your serverless applications are secure, avoid overprovisioning your functions with access. Adhere to the principle of least privilege by granting your functions only the minimal access they require.
 
-
-
-1. **No Wildcards in IAM Role Statements**: To ensure your serverless applications are secure, avoid overprovisioning your functions with access. Adhere to the principle of least privilege by granting your functions only the minimal access they require.
-
-   ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/uqakykf9exwuulnq94db.png)
+1. ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/uqakykf9exwuulnq94db.png)
 
 2. **One IAM Role per Function**: Instead of using a shared role for all the functions in the serverless.yml (which violates the principle of least privilege), use the `serverless-iam-roles-per-function` plugin to define IAM roles for each function.
 
-3. **Configure DLQ for Async Functions**: Configure a separate Dead Letter Queue (DLQ) for each function invoked by async event sources  (see [here](https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html)). This way, if a function errors persistently, invocation events won't be lost.
+3. **Configure DLQ for Async Functions**: Configure a separate Dead Letter Queue (DLQ) for each function invoked by async event sources (see [here](https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html)). This way, if a function errors persistently, invocation events won't be lost.
 
 4. **Configure Framework Version Range**: You should specify the frameworkVersion property in your serverless.yml file to ensure you are using a compatible version of the Serverless Framework.
 
-5. **Configure CloudFormation Deploy Role**: Use the Serverless Framework to pass a dedicated deployer role to CloudFormation. This allows you to apply the principle of least privilege to the deployment pipeline and use attribute-based access control. 
+5. **Configure CloudFormation Deploy Role**: Use the Serverless Framework to pass a dedicated deployer role to CloudFormation. This allows you to apply the principle of least privilege to the deployment pipeline and use attribute-based access control.
 
 6. **Configure Stack Tags**: Tags are useful for tracking resources and monitoring AWS spending. Besides the default STAGE tag, consider adding other custom tags using the stackTags property. Deploy the [propagate-cfn-tags SAR app](https://github.com/lumigo-io/SAR-Propagate-CFN-Tags) to your account.
 
@@ -902,11 +777,11 @@ Same article as [Applying the pub-sub and push-pull messaging patterns with AWS 
          - 'dev'
          - !Ref 'AWS::Region'
          - 'lambdaRole'
-   
-   # with Fn::Sub instead      
+
+   # with Fn::Sub instead
    PolicyName:
      !Sub 'hello-world-dev-${AWS::Region}-lambdaRole
-     
+
    # Example 2: API Gateway integration URI
    Uri: # arn:{partition}:apigateway:{region}:.../{lambda}/invocations
      !Join
@@ -918,15 +793,15 @@ Same article as [Applying the pub-sub and push-pull messaging patterns with AWS 
          - ':lambda:path/2015-03-31/functions/'
          - !GetAtt 'HelloLambdaFunction.Arn'
          - '/invocations'
-         
+
    # with Fn::Sub:
    Uri:
      !Sub
        - 'arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015/03/31/functions/${Function}/invocations'
        - { Function: !GetAtt 'HelloLambdaFunction.Arn' }
-       
+
    # Example 3: Lambda permission for API Gateway
-   
+
    SourceArn: # arn:{partition}:execute-api:{region}:.../*/*
      !Join:
        - ''
@@ -939,30 +814,24 @@ Same article as [Applying the pub-sub and push-pull messaging patterns with AWS 
          - ':'
          - Ref: ApiGatewayRestApi
          - '/*/*'
-         
+
    # with Fn::Sub
    SourceArn:
      !Sub
        - 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*/*'
        - { RestApi: Ref: ApiGatewayRestApi }
-   
-   ```
 
-   
+   ```
 
 8. **For Node.js Functions, Use Webpack to Improve Cold Start and Reduce Package Size** (Yan says he's having 2nd thoughts about this) : Using the serverless-webpack plugin with Node.js functions can significantly reduce initialization time and package size.
 
 9. **Break Large serverless.yml into Multiple Files**: For better manageability, when your serverless.yml file gets too large, break it down into smaller files and reference them in the main serverless.yml file.
 
-
-
 ### [Introducing… CloudFormation extrinsic functions](https://theburningmonk.com/2019/04/introducing-cloudformation-extrinsic-functions/)
 
-`serverless-plugin-extrinsic-functions`  allows the use of custom functions anywhere in your serverless.yml as if they’re CloudFormation’s intrinsic functions. For instance, to implement the startsWith logic, one could simply use the Fn::StartsWith function.
+`serverless-plugin-extrinsic-functions` allows the use of custom functions anywhere in your serverless.yml as if they’re CloudFormation’s intrinsic functions. For instance, to implement the startsWith logic, one could simply use the Fn::StartsWith function.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/46jg5nmdourj9u6ks35i.png)
-
-
 
 ### [How to include Serverless Repository apps in serverless.yml](https://theburningmonk.com/2019/05/how-to-include-serverless-repository-apps-in-serverless-yml/)
 
@@ -980,42 +849,41 @@ To add a Serverless Repository app to your `serverless.yml` you will need to:
 1. Add `Transform: AWS::Serverless-2016–10–31` to the `resources` section of your `serverless.yml`. This enables a global macro that will run over the whole CloudFormation stack and transform special resources as necessary. In this case, it’ll transform `AWS::Serverless::Application` resources into nested CloudFormation stacks.
 2. Add Serverless Repository apps as additional CloudFormation resources. These should have the resource type `AWS::Serverless::Application`.
 
-
-
 ### [Making Terraform and the Serverless framework work together](https://theburningmonk.com/2019/03/making-terraform-and-serverless-framework-work-together/)
 
-***Update 07/04/2023:** Since I originally wrote this post, my preference has shifted to using **SSM Parameter Store** to share information between Terraform and the Serverless framework. This is preferable because:*
+**\*Update 07/04/2023:** Since I originally wrote this post, my preference has shifted to using **SSM Parameter Store** to share information between Terraform and the Serverless framework. This is preferable because:\*
 
-1. *The Serverless Framework has built-in support for reading data from SSM, with the **${ssm:/path/to/param}** syntax.*
-2. *CloudFormation is used to provision resources, using it as a container for outputs is a misuse of CloudFormation.*
-3. *Creating an SSM parameter is easier than a CloudFormation stack.*
-4. *SSM supports SecretString, so you can use it to share sensitive data that should be encrypted at rest, e.g. API keys.*
+1. _The Serverless Framework has built-in support for reading data from SSM, with the **${ssm:/path/to/param}** syntax._
+2. _CloudFormation is used to provision resources, using it as a container for outputs is a misuse of CloudFormation._
+3. _Creating an SSM parameter is easier than a CloudFormation stack._
+4. _SSM supports SecretString, so you can use it to share sensitive data that should be encrypted at rest, e.g. API keys._
 
-*But you might ask “What about Secrets Manager instead of SSM?”. That is an option, but personally, I still prefer to use SSM Parameter Store over Secrets Manager in most cases, and [**here’s why**](https://theburningmonk.com/2023/03/the-old-faithful-why-ssm-parameter-store-still-reigns-over-secrets-manager/).*
+_But you might ask “What about Secrets Manager instead of SSM?”. That is an option, but personally, I still prefer to use SSM Parameter Store over Secrets Manager in most cases, and [**here’s why**](https://theburningmonk.com/2023/03/the-old-faithful-why-ssm-parameter-store-still-reigns-over-secrets-manager/)._
 
 ### [How to make serverless framework boilerplates customizable](https://theburningmonk.com/2019/08/how-to-make-serverless-framework-boilerplates-customizable/)
 
 **JS Proxy objects**: This approach allows you to create a boilerplate config where you can customize a field, even if it's deeply nested. This is accomplished by returning a Proxy that traps any attempt to access a property on the exported object. The property name is used to construct the actual config object. Additionally, you can return another Proxy from the first one to insert or update a property at an arbitrary location. For complex customization needs, you can create a scheme to support key-value pairs in a comma-separated fashion.
 
 ```js
-const _ = require('lodash');
+const _ = require("lodash");
 
 const template = {
-  path: '/',
-  method: 'get'
+  path: "/",
+  method: "get",
 };
 
 const handler = {
   get: function (obj, path) {
     const x = _.cloneDeep(obj);
-    return () => new Proxy(x, {
-      get: function (obj, value) {
-        _.set(obj, path, value);
-        return obj;
-      }
-    });
-  }
-}
+    return () =>
+      new Proxy(x, {
+        get: function (obj, value) {
+          _.set(obj, path, value);
+          return obj;
+        },
+      });
+  },
+};
 
 module.exports = new Proxy(template, handler);
 ```
@@ -1050,7 +918,7 @@ Capabilities such as:
 - functions can record custom metrics with StatsD format log messages.
 - CloudFormation tags are propagated to all resources to enable better cost tracking.
 
- Decisions that are specific to one project, or need to be tailored for each project, should be implemented at the project level. Plugins are a good way to implement these decisions.
+Decisions that are specific to one project, or need to be tailored for each project, should be implemented at the project level. Plugins are a good way to implement these decisions.
 
 - If the capability is universal and should apply to all of your serverless projects, then build it into your platform.
 - Otherwise, use a plugin to implement capabilities that are required at a project-by-project basis.
@@ -1061,9 +929,9 @@ Capabilities such as:
 
 ### [3 ways to manage concurrency in serverless applications](https://theburningmonk.com/2023/02/3-ways-to-manage-concurrency-in-serverless-applications/)
 
-**Fork-Join Pattern (Push-Pull / Fan-out Fan-in):** 
+**Fork-Join Pattern (Push-Pull / Fan-out Fan-in):**
 
-This is a pattern that was designed to solve problems that can be broken into smaller tasks using a concurrent, recursive, divide-and-conquer approach. 
+This is a pattern that was designed to solve problems that can be broken into smaller tasks using a concurrent, recursive, divide-and-conquer approach.
 
 Here's a brief description of how it works:
 
@@ -1086,11 +954,11 @@ Both of these patterns are useful for handling concurrency in applications, but 
 
 There are three ways to manage concurrency in serverless applications, especially those using AWS services like Lambda, EventBridge, and Kinesis. All these are akin to the "thread pool" pattern in multithreaded programming
 
-1. **Using Reserved Concurrency:**  In AWS, you can use reserved concurrency on a Lambda function to process events from EventBridge. This method allows you to control the rate at which events are processed, which is beneficial when dealing with less scalable downstream systems. However, it has its limitations. Reserved concurrency might limit available concurrency for other functions in the same region, potentially throttling API functions and affecting the user experience. Also, it doesn't guarantee the order of event processing, and you might occasionally see duplicated invocations due to Lambda's at-least-once invocation semantic. You can mitigate this by tracking processed events using a unique ID in a DynamoDB table.
+1. **Using Reserved Concurrency:** In AWS, you can use reserved concurrency on a Lambda function to process events from EventBridge. This method allows you to control the rate at which events are processed, which is beneficial when dealing with less scalable downstream systems. However, it has its limitations. Reserved concurrency might limit available concurrency for other functions in the same region, potentially throttling API functions and affecting the user experience. Also, it doesn't guarantee the order of event processing, and you might occasionally see duplicated invocations due to Lambda's at-least-once invocation semantic. You can mitigate this by tracking processed events using a unique ID in a DynamoDB table.
 
    ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/y1j9jqehvswulcbcefek.png)
 
-2. **Using EventSourceMapping with Kinesis Data Streams:** This method is suitable when you need to process events in the order they're received. You can control the concurrency of your application using the relevant settings on the EventSourceMapping without needing to use Lambda's reserved concurrency. In Kinesis, ordering is preserved within a partition key. This approach allows you to control the concurrency using a number of settings, including Batch Size, Batch window, and Concurrent batches per shard. 
+2. **Using EventSourceMapping with Kinesis Data Streams:** This method is suitable when you need to process events in the order they're received. You can control the concurrency of your application using the relevant settings on the EventSourceMapping without needing to use Lambda's reserved concurrency. In Kinesis, ordering is preserved within a partition key. This approach allows you to control the concurrency using a number of settings, including Batch Size, Batch window, and Concurrent batches per shard.
 
    ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mtqxo1k867p9lymo8j97.png)
 
@@ -1113,11 +981,11 @@ Two main strategies are proposed:
 
 ### [Just how expensive is the full AWS SDK?](https://theburningmonk.com/2019/03/just-how-expensive-is-the-full-aws-sdk/)
 
-When you declare functions and variables in a Lambda function, whether you should declare them inside the handler or outside depends on several factors. 
+When you declare functions and variables in a Lambda function, whether you should declare them inside the handler or outside depends on several factors.
 
 Declaring functions and variables outside the handler pros:
 
-1. **Usage across multiple invocations:** Global variables and functions (those declared outside of the handler function) can be used across multiple invocations of the Lambda function during the lifetime of the container. AWS Lambda reuses the container for multiple invocations of the function, so any state (like data in global variables) is preserved between invocations. This can be beneficial if you want to store data or state that can be reused across invocations. 
+1. **Usage across multiple invocations:** Global variables and functions (those declared outside of the handler function) can be used across multiple invocations of the Lambda function during the lifetime of the container. AWS Lambda reuses the container for multiple invocations of the function, so any state (like data in global variables) is preserved between invocations. This can be beneficial if you want to store data or state that can be reused across invocations.
 2. **Initialization cost:** Initializing functions and variables outside the handler means they're initialized only once, during a cold start. If the initializations are computationally expensive or require network calls (like setting up a database connection), doing so globally can save time and resources over doing the same work on every invocation.
 3. **Cleanliness of code:** Separating variable and function declarations (i.e., putting them outside the handler) can make your code cleaner and easier to read, especially if you follow a modular programming approach.
 
@@ -1125,9 +993,7 @@ Declaring functions and variables inside the handler pros:
 
 1. **State isolation:** If your functions and variables are stateful and you want the state to be completely isolated between invocations (meaning no state from one invocation is seen by another), then you should declare them inside the handler. For example, if you have a variable that holds user-specific data and you don't want data from one user to accidentally leak to another, you should declare the variable inside the handler.
 
-2. **Testability:** Code that's inside the handler function can be easier to test, since you can invoke the handler function in a controlled environment and mock any dependencies. 
-
-   
+2. **Testability:** Code that's inside the handler function can be easier to test, since you can invoke the handler function in a controlled environment and mock any dependencies.
 
 When a Node.js Lambda function cold starts, a number of things happen:
 
@@ -1138,23 +1004,13 @@ When a Node.js Lambda function cold starts, a number of things happen:
 
 To reduce cold starts
 
-* Use lean imports; if you need just DDB, don't import the whole AWS SDK
+- Use lean imports; if you need just DDB, don't import the whole AWS SDK
 
-* Prefer not to instrument the code if it can be helped (x-ray sdk)
+- Prefer not to instrument the code if it can be helped (x-ray sdk)
 
-* Use module bundlers (webpack, esbuild). But note that the impact in the experiments was not significant when the full AWS SDK was used. The greatest improvement was observed when only the DynamoDB client was required.
+- Use module bundlers (webpack, esbuild). But note that the impact in the experiments was not significant when the full AWS SDK was used. The greatest improvement was observed when only the DynamoDB client was required.
 
   > Yan says: I don't do bundling anymore, run into a few problems and it's changed my mind about bundling. Problem is with the source maps, for non-trivial projects, they get really big (affects cold start) and unhandled exceptions add quite a bit of latency (took seconds to get a 502 back in one API)
-
-
-
-### [Improve latency by enabling HTTP keep-alive](https://theburningmonk.com/2019/02/lambda-optimization-tip-enable-http-keep-alive/)
-
-> If you use the AWS SDK v3, you don't need to do this anymore, it's enabled by default now.
-
-In the example this gave 70% boost...
-
-
 
 ### [How long does AWS Lambda keep your idle functions around before a cold start?](https://read.acloud.guru/how-long-does-aws-lambda-keep-your-idle-functions-around-before-a-cold-start-bf715d3b810)
 
@@ -1166,8 +1022,6 @@ Hypothesis:
 2. The idle timeout before a cold start is not a constant and can vary.
 3. Functions with larger memory allocations are likely to be terminated sooner when idle.
 
-
-
 ### [How does language, memory and package size affect cold starts of AWS Lambda?](https://read.acloud.guru/does-coding-language-memory-or-package-size-affect-cold-starts-of-aws-lambda-a15e26d12c76)
 
 - Functions are no longer recycled after around 5 minutes of idleness, reducing the frequency of cold starts.
@@ -1175,24 +1029,6 @@ Hypothesis:
 - C# and Java runtimes experience approximately 100 times the cold start time of Python.
 - C#/Java Lambda functions may benefit from higher memory allocation compared to Node.js/Python functions.
 - Larger deployment package sizes do not increase cold start time and could potentially reduce it.
-
-
-
-### [All you need to know about caching for serverless applications](https://theburningmonk.com/2019/10/all-you-need-to-know-about-caching-for-serverless-applications/)
-
-Caching remains essential in serverless architectures because while Lambda auto-scales by traffic, it has limitations in terms of concurrent executions. Caching not only helps deal with spiky traffic but also improves performance and cost-efficiency by reducing unnecessary roundtrips and the number of pay-per-use services.
-
-Implement caching as close to the end-user as possible for maximal cost-saving benefits. This can be achieved in several places:
-
-1. **Client-side caching**: Useful for data that rarely changes, it can be implemented using techniques like memoization, significantly improving performance.
-2. **Caching at CloudFront**: CloudFront provides built-in caching capabilities which are very cost-efficient and can improve latency and user experience. CloudFront supports caching by query strings, cookies, and request headers, and it doesn't require any changes to application code.
-3. **Caching at API Gateway**: Unlike CloudFront, which only caches responses to GET, HEAD, and OPTIONS requests, API Gateway caching allows for caching responses to any request. It gives greater control over the cache key. One downside is that it switches from pay-per-use pricing to paying for uptime.
-4. **Caching in the Lambda function**: Data declared outside the handler function is reused between invocations. However, cache misses can be high, and there’s no way to share cached data across all concurrent executions of a function. For sharing cached data, Elasticache can be used but this involves added costs and requires the functions to be inside a VPC.
-5. **DAX**: If using DynamoDB, DAX should be used for application-level caching as it allows the benefits of Elasticache without having to manage it.
-
-In conclusion, caching is crucial for serverless applications to improve scalability, performance, and cost-efficiency. Depending on the specific use-case and requirements, caching should be implemented at different layers in the application, preferably starting from the client side to the server side.
-
-
 
 ### [How to: optimize Lambda memory size during CI/CD pipeline](https://theburningmonk.com/2020/03/how-to-optimize-lambda-memory-size-during-ci-cd-pipeline/)
 
@@ -1220,25 +1056,9 @@ As potential solutions to these issues, Yan suggests creating a pull request whe
 
 # Security
 
-### [The Old Faithful: Why SSM Parameter Store still reigns over Secrets Manager](https://theburningmonk.com/2023/03/the-old-faithful-why-ssm-parameter-store-still-reigns-over-secrets-manager/)
-
-Storing secrets: SSM Parameter Store vs Secrets Manager
-
-1. Cost-effectiveness: While the Secrets Manager charges usage costs and an uptime cost per secret, the SSM Parameter Store offers Standard parameters free of charge. The costs only arise for Higher Throughput mode and are comparable to Secrets Manager. However, it's crucial to manage these costs correctly to avoid unexpected charges.
-2. Simplicity: The Secrets Manager offers built-in secret rotation, but it requires additional work from the developer to manage the process. With the SSM Parameter Store, it's easier to implement a custom rotation Lambda function and manage it with a custom EventBridge schedule.
-3. Flexibility: Not all application configurations are sensitive and need encryption. The SSM Parameter Store can handle both plain text parameters and encrypted strings, making it more versatile.
-
-However, there are specific cases where Secrets Manager is the better choice, such as:
-
-- For multi-region applications that require cross-region replication of secrets.
-- When working with large (> 8kb) secrets due to the SSM Parameter Store's limit of 8kb.
-- In situations where secrets need to be shared cross-account.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fvnwa5fnh8vjrw99tad6.png)
-
 ### [Passwordless Authentication made easy with Cognito: a step-by-step guide](https://theburningmonk.com/2023/03/passwordless-authentication-made-easy-with-cognito-a-step-by-step-guide/)
 
-While Cognito does not natively support passwordless authentication, one can implement custom authentication flows using Lambda hooks. The method involves using the DefineAuthChallenge, CreateAuthChallenge, and VerifyAuthChallengeResponse Lambda functions. 
+While Cognito does not natively support passwordless authentication, one can implement custom authentication flows using Lambda hooks. The method involves using the DefineAuthChallenge, CreateAuthChallenge, and VerifyAuthChallengeResponse Lambda functions.
 
 Here's the flow:
 
@@ -1251,11 +1071,9 @@ Here's the flow:
 
 There is also a detailed guide to implementing this passwordless authentication in the link, starting with setting up a Cognito User Pool, configuring the User Pool Client for the frontend, defining the PreSignUp hook, setting up frontend for sign-up and sign-in, and creating DefineAuthChallenge, CreateAuthChallenge, and VerifyAuthChallengeResponse functions. The frontend should handle responding to the custom auth challenge, and if the DefineAuthChallenge function tells the user pool to fail authentication, it would throw an NotAuthorizedException exception with the message 'Incorrect username or password'. Try the demo app [here](https://passwordless-cognito.theburningmonk.com/magic-link)
 
-
-
 ### [Implementing Magic Links with Amazon Cognito: A Step-by-Step Guide](https://theburningmonk.com/2023/03/implementing-magic-links-with-amazon-cognito-a-step-by-step-guide/)
 
-The implementation of a passwordless authentication system using Amazon Cognito, Serverless framework, and AWS Lambda functions. The system relies on sending users a magic link that logs them in directly, thus bypassing the need for a password. 
+The implementation of a passwordless authentication system using Amazon Cognito, Serverless framework, and AWS Lambda functions. The system relies on sending users a magic link that logs them in directly, thus bypassing the need for a password.
 
 1. **Setup:** It begins with the initial setup, which involves defining the necessary AWS resources such as the AWS Cognito User Pool, a KMS key for encrypting tokens, and AWS Lambda functions for handling different parts of the process.
 
@@ -1277,13 +1095,9 @@ The implementation of a passwordless authentication system using Amazon Cognito,
 
 Overall, this method provides a seamless, passwordless login experience for users, bolstering security by limiting the opportunity for password-related breaches.
 
-
-
 ### [Yes, S3 now encrypts objects by default, but your job is not done yet](https://theburningmonk.com/2023/01/yes-s3-now-encrypts-objects-by-default-but-your-job-is-not-done-yet/)
 
 Yan emphasizes that while the recent S3 update is beneficial, it only provides a baseline level of security. It guards against threats to AWS's infrastructure but doesn't shield users from many attack vectors that affect the security of their AWS environment. Thus, the implementation of comprehensive data security measures is still necessary. The use of SSE-KMS with a Customer Managed Key (CMK) is suggested. With this encryption mode, S3 is instructed to encrypt objects with a key controlled by the user, and any access to unencrypted content must have the 'kms:decrypt' permission for the CMK. This protects against unauthorized access even if a bucket is accidentally left public.
-
-
 
 ### [How to set up geofencing and IP allow-list for Cognito User Pool](https://theburningmonk.com/2022/08/how-to-setup-geofencing-and-ip-allow-list-for-cognito-user-pool/)
 
@@ -1295,17 +1109,13 @@ Similarly, an IP allow/deny list can be implemented to apply the same restrictio
 
 The WAF also helps in dealing with VPN proxies which can bypass geofencing systems. By adding the managed rule 'Anonymous IP list' to the web ACL, it can block traffic originating from VPN proxies, Tor nodes, and hosting providers.
 
-
-
 ### [Many-faced threats to Serverless security](https://hackernoon.com/many-faced-threats-to-serverless-security-519e94d19dba)
 
 Although AWS handles operational responsibilities like maintaining the host OS, it is still essential for developers to patch their application and address vulnerabilities in their code and dependencies.
 
-Components with known vulnerabilities can be a major issue.  Be warned about potential threats posed by NPM publishers who might not be who they claim to be.  Yan further discusses the threat of injection and cross-site scripting attacks, sensitive data exposure, and problems with IAM permissions. Another major point of concern is the risk of Denial of Wallet (DoW) attacks. This is where attackers force an application to scale aggressively, causing significant financial cost.
+Components with known vulnerabilities can be a major issue. Be warned about potential threats posed by NPM publishers who might not be who they claim to be. Yan further discusses the threat of injection and cross-site scripting attacks, sensitive data exposure, and problems with IAM permissions. Another major point of concern is the risk of Denial of Wallet (DoW) attacks. This is where attackers force an application to scale aggressively, causing significant financial cost.
 
 Developers should secure external data, especially due to the stateless nature of Lambda functions, applying strict measures to protect data both in transit and at rest. It also highlights the need for secure communication with both internal and external services, advocating the use of IAM roles over API keys for fine-grained access control.
-
-
 
 ### [To VPC or not to VPC? Pros and cons in AWS Lambda](https://lumigo.io/blog/to-vpc-or-not-to-vpc-in-aws-lambda/)
 
@@ -1329,8 +1139,6 @@ In summary, while VPCs can provide certain benefits, they introduce many challen
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n8l27cd2d9mzih7u6bde.png)
 
-
-
 ### [The API Gateway security flaw you need to pay attention to](https://theburningmonk.com/2019/10/the-api-gateway-security-flaw-you-need-to-pay-attention-to/)
 
 In AWS API Gateway by default every method inherits its throttling settings from the stage, sharing a rate limit that can be exhausted by a single method. This makes the system vulnerable to a Denial of Service (DOS) attack on one public endpoint that could bring down all APIs in the region.
@@ -1343,19 +1151,17 @@ Another strategy is to reduce the amount of traffic reaching the API Gateway by 
 
 Yan concludes by emphasizing the need for improved tooling to help developers apply appropriate rate limits by default and calls for AWS to change the default behavior of applying region-wide limits on every method or provide warnings about potential risks. An update mentions a new Serverless framework plugin called `serverless-api-gateway-throttling` that allows users to configure default throttling settings for the API and override individual endpoint settings.
 
-
-
 ### [The case for and against Amazon Cognito](https://theburningmonk.com/2021/03/the-case-for-and-against-amazon-cognito/)
 
 The case for Cognito:
 
-1. Integration with other AWS services: Cognito integrates seamlessly with AWS services like API Gateway, AppSync, and ALB, which reduces the amount of custom code required. 
+1. Integration with other AWS services: Cognito integrates seamlessly with AWS services like API Gateway, AppSync, and ALB, which reduces the amount of custom code required.
 
-2. Cost: Cognito is significantly cheaper than competitors such as Auth0 and Okta, making it a more feasible choice for business-to-customer (B2C) businesses. For example, Cognito’s cost per monthly active user (MAU) is $0.0055, compared to Auth0’s cost of ~$0.02 per MAU for the Developer tier. 
+2. Cost: Cognito is significantly cheaper than competitors such as Auth0 and Okta, making it a more feasible choice for business-to-customer (B2C) businesses. For example, Cognito’s cost per monthly active user (MAU) is $0.0055, compared to Auth0’s cost of ~$0.02 per MAU for the Developer tier.
 
 The case against Cognito:
 
-1. Poor developer experience:  lack of clear, detailed documentation and the need to understand different aspects of Cognito (User Pool, Identity Pool, Sync).
+1. Poor developer experience: lack of clear, detailed documentation and the need to understand different aspects of Cognito (User Pool, Identity Pool, Sync).
 
 2. Lack of polished features: Cognito supports many features, but these often feel incomplete or confusing. There is no IdP-initiated workflow, lack of customization for the hosted sign-in page, and issues with linking accounts.
 
@@ -1366,8 +1172,6 @@ The case against Cognito:
 5. Single region: Cognito lacks built-in support for cross-region replication, which can make applications vulnerable to single-region outages.
 
 Yan still recommends Cognito as the default choice for new projects, particularly for B2C businesses with high MAU and budget constraints. The issues are deemed manageable or possible to work around with enough effort.
-
-
 
 ### [How building a custom IAM system has made me appreciate AWS IAM even more](https://theburningmonk.com/2021/04/building-a-custom-iam-system-has-made-me-appreciate-aws-iam-even-more/)
 
@@ -1421,8 +1225,6 @@ The question is, is it actually worth doing in a serverless environment. The pay
 
 Often there is little we can do during an outage. So the solution is to invest in multi-region.
 
-### 
-
 # Serverless Application Repositories
 
 ### [A serverless application to clean up old deployment packages](https://lumigo.io/blog/a-serverless-application-to-clean-up-old-deployment-packages/)
@@ -1435,7 +1237,7 @@ If you look around the [Serverless Application Repository](https://console.aws.a
 
 ![The Serverless Application Repository contains a number of applications for shipping Cloudwatch logs to external services.](https://lumigo.io/wp-content/uploads/2019/03/1-Logzio-CloudWatchShipper.jpg)
 
-However, after I deploy these serverless applications I still need to go to the CloudWatch Logs console and subscribe my log groups to the relevant Lambda function. Since every function has a matching log group in CloudWatch Logs, you need to do this all the time. This is a chore and one that should be automated away. 
+However, after I deploy these serverless applications I still need to go to the CloudWatch Logs console and subscribe my log groups to the relevant Lambda function. Since every function has a matching log group in CloudWatch Logs, you need to do this all the time. This is a chore and one that should be automated away.
 
 Yan introduces two open-source applications to automate tasks around AWS CloudWatch Logs. Both of these applications are available in Lumigo’s Github repository and the Serverless Application Repository (SAR).
 
@@ -1445,29 +1247,19 @@ The second application, `auto-set-log-group-retention` helps automate the proces
 
 ### [Serverless apps to speed up all your Lambda functions](https://lumigo.io/blog/serverless-app-to-speed-up-all-your-lambda-functions/)
 
-If you use the AWS SDK v3, you don't need to do this anymore, it's enabled by default now.               
+If you use the AWS SDK v3, you don't need to do this anymore, it's enabled by default now.
 
 # Serverless Observability
 
 ### [You need to use structured logging with AWS Lambda](https://theburningmonk.com/2018/01/you-need-to-use-structured-logging-with-aws-lambda/)
 
-console.log is simple but eventually has limitations. Specifically, the use of console.log makes it hard to add consistent contextual information, filter log messages by specific attributes, and control the logging level based on configuration. 
+console.log is simple but eventually has limitations. Specifically, the use of console.log makes it hard to add consistent contextual information, filter log messages by specific attributes, and control the logging level based on configuration.
 
-To overcome these challenges, Yan suggests the use of structured JSON for logging from the outset. This method allows for more context-rich and easily extractable data. It is recommended to use the log client that one has been using previously—like log4j, nlog, loggly, log4net, and others—and configure it to format log messages as JSON while attaching as much contextual information as possible. 
+To overcome these challenges, Yan suggests the use of structured JSON for logging from the outset. This method allows for more context-rich and easily extractable data. It is recommended to use the log client that one has been using previously—like log4j, nlog, loggly, log4net, and others—and configure it to format log messages as JSON while attaching as much contextual information as possible.
 
-Moreover, it is also beneficial to enable debug logging on the entire call chain for a small percentage of requests in production. This approach can help catch pervasive bugs in the logic, which would otherwise necessitate a complete redeployment of functions to turn on debug logging. 
+Moreover, it is also beneficial to enable debug logging on the entire call chain for a small percentage of requests in production. This approach can help catch pervasive bugs in the logic, which would otherwise necessitate a complete redeployment of functions to turn on debug logging.
 
-### [You should sample debug logs in production](https://theburningmonk.com/2018/04/you-need-to-sample-debug-logs-in-production/)
 
-Yan highlights the significance of sampling debug logs in production while working with AWS services like Lambda and CloudWatch. Typically, the log level is set to WARNING for production to manage traffic volume and to consider cost factors, such as the cost of logging, storage, and processing. However, doing so eliminates debug logs in production, which are critical for identifying the root cause of a problem. Without them, deploying a new version of the code to enable debug logging consumes valuable time and increases the mean time to recovery (MTTR) during an incident.
-
-To mitigate this issue, Yan suggests sampling debug logs from a small percentage of invocations, representing a balance between having no debug logs and having all of them. This approach requires a logger that allows dynamic changes to the logging level and a middleware engine like middy.
-
-Yan prefers to use a simple logger module, which offers structured logging with JSON, the ability to log at different levels, and control over the log level via environment variables. By using middy, a middleware can be created to dynamically update the log level to DEBUG for a certain percentage of invocations and then restore the previous log level at the end of the invocation.
-
-In a microservices environment, it is crucial to ensure debug logs cover an entire call chain. To achieve this, the decision to turn on debug logging can be forwarded as a correlation ID, so the next function in the chain respects this decision and passes it on.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mk5jda0jljrzz18jqzpj.png)
 
 ### [Centralised logging for AWS Lambda, REVISED (2018)](https://theburningmonk.com/2018/07/centralised-logging-for-aws-lambda-revised-2018/)
 
@@ -1478,8 +1270,6 @@ Instead of these measures, Yan proposes a more efficient approach at scale: stre
 In summary; stream the logs from CloudWatch Logs to a Kinesis stream first. From there, a Lambda function can process the logs and forward them on to a log aggregation service.
 
 ![img](https://theburningmonk.com/wp-content/uploads/2018/07/img_5b5523f6e52cf.png)
-
-
 
 ### [Tips and tricks for logging and monitoring AWS Lambda functions](https://theburningmonk.com/2017/09/tips-and-tricks-for-logging-and-monitoring-aws-lambda-functions/)
 
@@ -1501,17 +1291,15 @@ If you want to follow along, then the code is available in this [repo](https://g
 
 ![img](https://cdn-images-1.medium.com/max/1600/1*DIhWeMy87eOfUdBDNLYM0w.png)
 
-*The demo project consists of an edge API, api-a, which initialises a bunch of correlation IDs as well as the decision on whether or not to turn on debug logging. It’ll pass these along through HTTP requests to api-b, Kinesis events and SNS messages. Each of these downstream function would in turn capture and pass them along to api-c. A blueprint for how to capture and forward correlation IDs through 3 of the most commonly used event sources for Lambda.*
+_The demo project consists of an edge API, api-a, which initialises a bunch of correlation IDs as well as the decision on whether or not to turn on debug logging. It’ll pass these along through HTTP requests to api-b, Kinesis events and SNS messages. Each of these downstream function would in turn capture and pass them along to api-c. A blueprint for how to capture and forward correlation IDs through 3 of the most commonly used event sources for Lambda._
 
 ![img](https://cdn-images-1.medium.com/max/1600/1*CPtfxdmQQLUeK-g2l-2WLg.png)
 
 Part 1 covers how to add correlation IDs to log outputs, HTTP requests, and SNS messages, enabling developers to follow the flow of requests across different services. It describes creating an "http" module that adds the correlation IDs to the headers and a "sns" module to add these IDs to message attributes. These modules modify the request headers or message attributes to include the correlation IDs without changing the actual payload, making it easy to follow a request through log files.
 
-Part 2 focuses on Amazon Kinesis Streams and DynamoDB Streams, where it's not possible to tag additional information along with the payload. In these cases, it suggests altering the payload itself by inserting a "__context" field to carry the correlation IDs. For handling multiple Kinesis records, each with its own context, the suggested solution is to process records one at a time, thus managing the request context effectively for each record.
+Part 2 focuses on Amazon Kinesis Streams and DynamoDB Streams, where it's not possible to tag additional information along with the payload. In these cases, it suggests altering the payload itself by inserting a "\_\_context" field to carry the correlation IDs. For handling multiple Kinesis records, each with its own context, the suggested solution is to process records one at a time, thus managing the request context effectively for each record.
 
-When receiving these events, the "__context" field can be removed, and the request context can be set accordingly. However, this method eliminates the chance to optimize by processing all records in a batch. Therefore, an alternative could be to leave the "__context" field on the Kinesis records and let the handler function manage them.
-
-
+When receiving these events, the "**context" field can be removed, and the request context can be set accordingly. However, this method eliminates the chance to optimize by processing all records in a batch. Therefore, an alternative could be to leave the "**context" field on the Kinesis records and let the handler function manage them.
 
 ### [You should use the SSM Parameter Store over Lambda env variables](https://theburningmonk.com/2017/09/you-should-use-ssm-parameter-store-over-lambda-env-variables/)
 
@@ -1555,7 +1343,7 @@ Bad: AWS X-Ray inaccurately reported a 200 response code for an API Gateway endp
 
 Ugly: Yan encountered problems with the sampling mechanism, noting that every request was sampled instead of the documented 1 request per minute. Also, the addition of annotation and metadata to the root segment didn't work as expected. It was found that AWSXray.getSegment() was returning the root segment from the previous invocation, identified as a bug in the X-Ray SDK for Nodejs.
 
-Despite some impressive features, Yan was disappointed by AWS X-Ray's inability to span traces over API Gateway endpoints and its lack of support for correlating IDs in log messages. Furthermore, issues with request sampling and incorrect annotation and metadata operation might add unnecessary costs and complications. 
+Despite some impressive features, Yan was disappointed by AWS X-Ray's inability to span traces over API Gateway endpoints and its lack of support for correlating IDs in log messages. Furthermore, issues with request sampling and incorrect annotation and metadata operation might add unnecessary costs and complications.
 
 ### [Serverless observability: Lumigo or AWS X-Ray](https://lumigo.io/blog/serverless-observability-lumigo-or-aws-x-ray/)
 
@@ -1597,8 +1385,6 @@ X-Ray provides distributed tracing, but it focuses narrowly on one function, the
 Finally, our system should be thought of like a brain, with neurons (functions), synapses (connections between functions), and electrical signals (data). But when we look at our dashboards and X-Ray traces, we don't see this. Instead, we see a static list that doesn't reflect the movement of data and activity areas.
 
 In conclusion, AWS provides some decent tools out of the box. While they have their shortcomings, they're good enough to start with. However, as our serverless applications become more complex, these tools need to either evolve with us or they will need to be replaced in our stack.
-
-
 
 ### [How to auto-create CloudWatch alarms for API Gateway, using Lambda](https://theburningmonk.com/2018/05/auto-create-cloudwatch-alarms-for-apis-with-lambda/)
 
@@ -1643,7 +1429,7 @@ However, Yan points out several limitations of CloudWatch Metrics, such as missi
 
 Additionally, Yan discusses how to design service dashboards and how to set alerts for monitoring. For instance, alerts should be set up for error rates, timeouts, Iterator Age, SQS message age, DLQ errors, throttling, and API latency. Yan also mentions CloudWatch Events, which can trigger Lambda functions to solve issues in other AWS services.
 
-Lastly, Yan provides tips on how to automate the process of creating alerts using CloudFormation macros and discusses the potential of dashboards in CloudWatch. 
+Lastly, Yan provides tips on how to automate the process of creating alerts using CloudFormation macros and discusses the potential of dashboards in CloudWatch.
 
 ### [Getting the most out of CloudWatch Logs](https://lumigo.io/blog/getting-the-most-out-of-cloudwatch-logs/)
 
@@ -1660,7 +1446,7 @@ In conclusion, AWS CloudWatch Logs provide a powerful tool for monitoring and an
 
 ### [Introducing an easier way to record custom metrics from Lambda](https://theburningmonk.com/2019/07/introducing-a-better-way-to-record-custom-metrics/)
 
-Yan presents a new approach to recording custom metrics from AWS Lambda through asynchronous recording, aiming to overcome problems like added latency to invocations associated with synchronous methods. Traditional synchronous publishing of metrics can cause delays and fragility at integration points, particularly if CloudWatch experiences an outage or increased response time. 
+Yan presents a new approach to recording custom metrics from AWS Lambda through asynchronous recording, aiming to overcome problems like added latency to invocations associated with synchronous methods. Traditional synchronous publishing of metrics can cause delays and fragility at integration points, particularly if CloudWatch experiences an outage or increased response time.
 
 Although asynchronous recording also has drawbacks, like additional delay in seeing recent metric data, increased costs, and added complexity, Yan suggests using a Lambda function to process logs and turn them into metrics, which is more scalable for complex systems with numerous functions and custom metrics.
 
@@ -1684,26 +1470,6 @@ To mitigate Lambda timeouts, developers can timebox IO operations based on the r
 
 ![set timeout based on remaining invocation time](https://lumigo.io/wp-content/uploads/2020/08/set-timeout-based-on-remaining-invocation-time.png)
 
-### [What alerts should you have for Serverless applications?](https://lumigo.io/blog/what-alerts-should-you-have-for-serverless-applications/)
-
-Use alarms to alert you that something is wrong, not necessarily what is wrong.
-
-**ConcurrentExecutions**: set to 80% of the regional limit.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bpz9fowelkbfzev7aq3g.png)
-
-**IteratorAge**: for lambda functions that process against Kinesis streams, you need an alarm for IteratorAge. Should be in milliseconds usually, but can fall behind.
-
-**DeadLetterErrors**: for functions that are triggered by an async event source (SNS, EventBridge) you should have dead letter queues setup, and have an alarm against DeadLetterErrors, which indicates that lambda has trouble sending error events to DLQ.
-
-**Throttles**: for business critical functions you need an alarm that will fire as soon as the fn gets throttled. Maybe there's a rouge fn that's consuming the concurrency in the region, and causing business critical fns to get throttled.
-
-**Error count & success rate %**: according to your SLA
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i5jbkjmxgvzhb0atmjsp.png)
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0vkj8by1thojr440r27t.png)
-
 ### [How to debug slow Lambda response time](https://lumigo.io/blog/debugging-slow-lambda-response-times)
 
 Yan discusses how to debug Lambda response time issues effectively by maximizing telemetry data and using tools such as X-Ray or Lumigo. It first highlights how AWS Lambda provides scalability and redundancy by default, automatically scaling the number of workers running your code based on traffic.
@@ -1716,7 +1482,7 @@ Take the following latency spike as an example, everything moved apart from Dyna
 
 ![lambda dynamodb api gateway latency spike](https://lumigo.io/wp-content/uploads/2020/09/lambda-dynamodb-api-gateway-latency-spike.png)
 
-For monitoring and debugging, Yan recommends AWS X-Ray, but it also points out X-Ray's limitations, such as the lack of support for many async event sources and any TCP-based transactions. To address these issues, Yan suggests using third-party observability tools like Lumigo, which provides more sophisticated tools for complex serverless applications. Lumigo supports SNS, S3, Kinesis, and DynamoDB Streams, traces TCP-based transactions, and offers a transaction timeline. Moreover, Lumigo allows for viewing the transaction and Lambda logs side-by-side, offering a complete picture of what happens during a transaction. This can be useful for identifying poor-performing dependencies and debugging issues more quickly. 
+For monitoring and debugging, Yan recommends AWS X-Ray, but it also points out X-Ray's limitations, such as the lack of support for many async event sources and any TCP-based transactions. To address these issues, Yan suggests using third-party observability tools like Lumigo, which provides more sophisticated tools for complex serverless applications. Lumigo supports SNS, S3, Kinesis, and DynamoDB Streams, traces TCP-based transactions, and offers a transaction timeline. Moreover, Lumigo allows for viewing the transaction and Lambda logs side-by-side, offering a complete picture of what happens during a transaction. This can be useful for identifying poor-performing dependencies and debugging issues more quickly.
 
 ### [Serverless Observability: it’s easier than you think](https://lumigo.io/blog/serverless-observability-its-easier-than-you-think/)
 
@@ -1724,9 +1490,7 @@ AWS provides services like CloudWatch, CloudWatch Logs, and X-Ray that help buil
 
 Yan suggests that if the decision is based on capabilities and developer productivity, a third-party service like Lumigo that fulfills most needs, supplemented with AWS services, might be the best approach. Using Lumigo has allowed Yan to focus more on solving business challenges and delivering projects on time and on budget.
 
-Yan concludes that while building custom solutions for serverless observability can be an interesting challenge, third-party platforms like Lumigo make the process easier and allow businesses to focus on their unique value propositions. 
-
-
+Yan concludes that while building custom solutions for serverless observability can be an interesting challenge, third-party platforms like Lumigo make the process easier and allow businesses to focus on their unique value propositions.
 
 ### [Shine some light on your SNS to SQS to Lambda stack](https://lumigo.io/blog/sns-sqs-to-lambda-shine-some-light/)
 
@@ -1741,8 +1505,6 @@ It presents an interesting challenge for observability, however. Because observa
 TL, DR; use observability tools like Lumigo.
 
 [![img](https://lumigo.io/wp-content/uploads/2022/08/sns-sqs-trace-02-1024x172.png)](https://lumigo.io/wp-content/uploads/2022/08/sns-sqs-trace-02.png)
-
-
 
 ### [Lambda Logs API: a new way to process Lambda logs in real-time](https://lumigo.io/blog/lambda-logs-api-a-new-way-to-process-lambda-logs-in-real-time/)
 
@@ -1773,8 +1535,6 @@ Yan emphasizes two important aspects to consider:
 
 Using a separate table is seen as simpler due to fewer custom VTL code requirements, ease in understanding data in a table, ability to monitor costs for different tables, easier implementation of DynamoDB streams for data changes, and ease in restricting access to data in DynamoDB. Yan also mentions that GraphQL and AppSync are adept at stitching the data together.
 
-
-
 ### [How I built a social network in 4 weeks with GraphQL and serverless](https://theburningmonk.com/2020/11/how-i-built-a-social-network-in-4-weeks-with-graphql-and-serverless/)
 
 GG.
@@ -1792,8 +1552,6 @@ GG.
 5. **Integration with DynamoDB/ElasticSearch/RDS**: AppSync provides a more straightforward and less complicated process of integrating with other services such as DynamoDB, ElasticSearch, and RDS compared to API Gateway.
 
 While API Gateway can achieve the same features, Yan argues that in every case, it requires significantly more effort than with AppSync. They share an example of a project where after struggling with API Gateway for a week, they were able to implement everything they needed and more with AppSync within a few hours. The conclusion is that AppSync, particularly for GraphQL-based APIs, can be more efficient and manageable than API Gateway.
-
-
 
 ### [AppSync: skipping nullable nested resolvers by returning early](https://theburningmonk.com/2020/04/appsync-skipping-nullable-nested-resolvers/)
 
@@ -1834,13 +1592,9 @@ To make an AppSync DynamoDB resolver throw exceptions on conditional check error
 $utils.toJson($context.result)
 ```
 
-
-
 ### [AppSync: how to compare strings lexicographically in VTL](https://theburningmonk.com/2020/05/appsync-how-to-compare-strings-lexicographically-in-vtl/)
 
 https://stackoverflow.com/questions/49244281/lexicographic-compare-of-two-strings-in-velocity
-
-
 
 ### [AppSync: how to inject table names into DynamoDB batch & transact operations](https://theburningmonk.com/2020/07/appsync-how-to-inject-table-names-into-dynamodb-batch-transact-operations/)
 
@@ -1851,7 +1605,7 @@ When working with CloudFormation, AWS recommends not to give explicit names to r
 
 However, this makes it harder for you to use AppSync’s batch or transact DynamoDB operations.
 
- *[serverless-appsync-plugin](https://github.com/sid88in/serverless-appsync-plugin) has a built-in `substitutions` features which injects table names into DynamoDB batch & transact operations.
+\*[serverless-appsync-plugin](https://github.com/sid88in/serverless-appsync-plugin) has a built-in `substitutions` features which injects table names into DynamoDB batch & transact operations.
 
 you need to define a `substitutions` attribute under `custom.appsync`like this:
 
@@ -1862,15 +1616,13 @@ substitutions:
 
 You will be able to reference this as `${userTableName}` in your VTL templates.
 
-
-
 ### [How I scaled an AppSync project to 200+ resolvers](https://theburningmonk.com/2020/07/how-i-scaled-an-appsync-project-to-200-resolvers/)
 
 GG.
 
 ### [How to secure multi-tenant applications with AppSync and Cognito](https://theburningmonk.com/2021/03/how-to-secure-multi-tenant-applications-with-appsync-and-cognito/)
 
- A common requirement in multi-tenant applications is to support different roles within each tenant and also restrict access to certain operations by role. 
+A common requirement in multi-tenant applications is to support different roles within each tenant and also restrict access to certain operations by role.
 
 My preferred way of accomplishing all this is to:
 
@@ -1890,17 +1642,13 @@ Yan explains how to implement group-based authorization using the Lambda authori
 
 Yan also discusses the decision between using Cognito or another identity provider. While Cognito's pricing model is favorable for businesses with many non-paying, transient users, it lacks many features offered by other identity providers, such as MFA, CAPTCHA, passwordless login flow, etc. However, the new AppSync Lambda authorizers have made implementing group-based authorization with third-party identity providers simpler.
 
-
-
 ### [How to model hierarchical access with AppSync](https://theburningmonk.com/2020/08/how-to-model-hierarchical-access-with-appsync/)
 
-The challenge was modeling overlapping actions in the GraphQL schema, as actions differed depending on user roles. 
+The challenge was modeling overlapping actions in the GraphQL schema, as actions differed depending on user roles.
 
 1. Encapsulating each group into its own Query and Mutation types, which makes it easier to scale the complexity of the project. Each user group gets its own Query and Mutation types and access is controlled in one place. This solution also avoids the need to rely on naming conventions for overlapping actions.
 
 Using separate Query and Mutation types for each user group can simplify the maintenance of the GraphQL schema as the project grows, without compromising the security model.
-
-
 
 ### [How to set up custom domain names for AppSync](https://theburningmonk.com/2020/09/how-to-set-up-custom-domain-names-for-appsync/)
 
@@ -1910,8 +1658,6 @@ Yan discusses two methods of setting up custom domain names for AWS AppSync: usi
 2. **API Gateway**: This method involves setting up an HTTP proxy that routes traffic to the AppSync API, and configuring a custom domain name in API Gateway. While it incurs higher cost and latency compared to CloudFront, it's another viable method. You can use the Serverless Application Model (SAM)'s macro AWS::Serverless-2016–10–31 to configure API Gateway in your serverless.yml.
 
 For both methods, the final step involves configuring a Route53 record in your hosted zone. The custom domain (like dev.example.com) for your AppSync API will be accessible to users, making it more user-friendly and memorable.
-
-
 
 ### [How to sample AppSync resolver logs](https://theburningmonk.com/2020/09/how-to-sample-appsync-resolver-logs/)
 
@@ -1925,8 +1671,6 @@ Another recommendation is to set the log retention policy to avoid indefinite st
 
 An alternative strategy is to run a cron job every few minutes and have the Lambda function toggle the resolver log level, busy wait for around 10 seconds, and then switch it back. This method gives you logs for Query/Mutation requests for 10 seconds every few minutes instead of 2 minutes every hour.
 
-
-
 ### [How to monitor and debug AppSync APIs](https://lumigo.io/blog/how-to-monitor-and-debug-appsync-apis/)
 
 AppSync offers a range of metrics, including the number of 4xx and 5xx errors, request latency, and API request numbers. However, these metrics, being aggregated at the API level, do not offer insights into the performance of individual resolvers.
@@ -1935,9 +1679,7 @@ To gain detailed visibility into resolvers, AppSync's logging feature can be act
 
 AppSync also integrates with AWS X-Ray, providing trace segments to help identify performance bottlenecks. However, X-Ray does not offer granular debugging information comparable to AppSync's detailed logs, and its traces are not organized for easy access to specific resolver data.
 
- Lumigo aids in managing the data from AppSync's logs and X-Ray integration. Lumigo provides an interface to search through ingested AppSync data, making it simpler to locate information about specific resolvers or requests.
-
-
+Lumigo aids in managing the data from AppSync's logs and X-Ray integration. Lumigo provides an interface to search through ingested AppSync data, making it simpler to locate information about specific resolvers or requests.
 
 ### [How to handle client errors gracefully with AppSync and Lambda](https://theburningmonk.com/2021/06/how-to-handle-client-errors-gracefully-with-appsync-and-lambda/)
 
@@ -1949,15 +1691,13 @@ Yan also addresses a control-flow challenge: always having to return something t
 
 For greater convenience with Node.js functions, Yan recommends using a middy middleware to intercept specific errors and handle them. For instance, the middleware can handle a specific error in the onError handler. This approach means that a ValidationError can be thrown from anywhere in the code and it will not fail the Lambda invocation. Instead, it will be turned into a successful response. The response VTL template can then transform it into a GraphQL error.
 
-
-
 # Kinesis
 
-### [A self-healing Kinesis function that adapts its throughput based on performance](https://theburningmonk.com/2019/05/a-self-healing-kinesis-function-that-adapts-its-throughput-based-on-performance/)
+### [A self-healing Lambda function that adapts its throughput based on performance](https://theburningmonk.com/2019/05/a-self-healing-kinesis-function-that-adapts-its-throughput-based-on-performance/)
 
 Yan presents a solution to a common problem of managing concurrent requests to multiple third-party APIs that have variable performance and restrictions such as rate limits. In the context of the financial services sector where data from numerous service providers is fetched daily, Yan proposes a self-adjusting, self-healing system based on AWS Lambda and Kinesis.
 
-The proposed system uses a "ventilator" Lambda function to manage the flow of requests, fetches data slowly and steadily, adjusts the rate of requests based on the provider's API performance, and prevents fetching the same data more than once per day. To achieve these goals, each provider has its own Kinesis stream into which the records to fetch are enqueued. The ventilator function receives records in batches, fans them out to worker functions specific to each provider, and tracks processed records in a DynamoDB table. 
+The proposed system uses a "ventilator" Lambda function to manage the flow of requests, fetches data slowly and steadily, adjusts the rate of requests based on the provider's API performance, and prevents fetching the same data more than once per day. To achieve these goals, each provider has its own Kinesis stream into which the records to fetch are enqueued. The ventilator function receives records in batches, fans them out to worker functions specific to each provider, and tracks processed records in a DynamoDB table.
 
 ![img](https://theburningmonk.com/wp-content/uploads/2019/05/img_5ce206cb74866.png)
 
@@ -1995,7 +1735,7 @@ To address these challenges, Yan suggests considering design decisions such as:
 
    ![A diagram comparing the one-stream approach to many streams](https://lumigo.io/wp-content/uploads/2019/05/Image-5.jpg)
 
-2. Fan-Out to Multiple Reader Streams: A centralized stream could be used to [fan out events to multiple streams](https://www.linkedin.com/pulse/how-fan-out-amazon-kinesis-streams-alex-casalboni/). to multiple reader streams, allowing more flexibility and supporting the combination of different types of events in the same stream. 
+2. Fan-Out to Multiple Reader Streams: A centralized stream could be used to [fan out events to multiple streams](https://www.linkedin.com/pulse/how-fan-out-amazon-kinesis-streams-alex-casalboni/). to multiple reader streams, allowing more flexibility and supporting the combination of different types of events in the same stream.
 
 ![A better approach is to push all events to a centralized stream and then use this technique to fan-out to multiple reader streams](https://lumigo.io/wp-content/uploads/2019/05/Image-7.jpg)
 
@@ -2017,7 +1757,7 @@ A Lambda function is used to determine which Kinesis stream to scale down by ana
 
 Finally, to set up the initial CloudWatch Alarms for a stream, Yan uses a repository hosting the configurations for all Kinesis streams. It contains a script for creating missing streams and associated CloudWatch Alarms using CloudFormation templates.
 
-### 
+###
 
 ### [How to connect SNS to Kinesis for cross-account delivery via API Gateway](https://theburningmonk.com/2019/07/how-to-connect-sns-to-kinesis-for-cross-account-delivery-via-api-gateway/)
 
@@ -2029,11 +1769,9 @@ Several solutions were proposed the chosen one being **Go direct from SNS to Kin
 
 ![img](https://theburningmonk.com/wp-content/uploads/2019/07/img_5d34e3b8838d6.png)
 
-
-
 ### [The best reason to use DynamoDB Streams is…](https://lumigo.io/blog/the-best-reason-to-use-dynamodb-streams-is/)
 
-Yan discusses the key differences between AWS Kinesis Streams and AWS DynamoDB Streams. 
+Yan discusses the key differences between AWS Kinesis Streams and AWS DynamoDB Streams.
 
 Kinesis Streams is the de facto AWS solution for streaming and processing real-time events. It offers considerable flexibility for data processing, allowing Lambda functions to process events in real-time, shipping data to Amazon ElasticSearch or S3 via a Firehose Delivery Stream, running complex queries using Athena, and more. It scales using the number of shards with no upper limit, making it highly scalable. However, Kinesis Streams lacks an in-built auto-scaling mechanism, requiring custom solutions, and retains data for a default 24 hours, extendable up to 7 days for an additional fee.
 
@@ -2043,10 +1781,9 @@ On the other hand, DynamoDB Streams is typically used with Lambda, with no direc
 
 In terms of choosing between the two, Yan suggests using DynamoDB Streams can help eliminate many distributed transactions from your system. This can simplify operations by reducing the complexities of managing distributed transactions. Despite Kinesis Streams being generally better for streaming real-time events, DynamoDB Streams can be more beneficial for certain applications.
 
-
 ![img](https://lumigo.io/wp-content/uploads/2019/09/Screenshot-2020-04-06-at-11.58.12.png)
 
-We can remove the distributed transaction by using DynamoDB Streams instead of publishing to another Kinesis stream from the *add_user* function.
+We can remove the distributed transaction by using DynamoDB Streams instead of publishing to another Kinesis stream from the _add_user_ function.
 
 ![img](https://lumigo.io/wp-content/uploads/2019/09/Screenshot-2020-04-06-at-11.58.26.png)
 
@@ -2059,7 +1796,7 @@ We can remove the distributed transaction by using DynamoDB Streams instead of p
 - Think about observability from the start.
 - Use multiple AWS accounts.
 - Don’t put secrets in plain text in environment variables.
-- Follow the principle of least privilege. 
+- Follow the principle of least privilege.
 - Monitor and optimize Lambda cold start performance.
 
 ### [How to load test a real-time multiplayer mobile game with AWS Lambda and Akka](https://tech.spaceapegames.com/2017/09/26/how-to-load-test-a-realtime-multiplayer-mobile-game-with-aws-lambda-and-akka/)
@@ -2105,15 +1842,15 @@ Yan discusses the benefits and potential uses of CloudFormation custom resources
 ### Serverless Framework plugins
 
 - [serverless-iam-roles-per-function](https://github.com/functionalone/serverless-iam-roles-per-function)
-- [serverless-webpack](https://github.com/serverless-heaven/serverless-webpack)  [serverless-esbuild](https://www.npmjs.com/package/serverless-esbuild) reduce deployment artifact size, reduce cold start
-- [serverless-offline](https://github.com/dherault/serverless-offline)  runs API Gateway locally `sls offline` , and similar to built-in `sls invoke local`
+- [serverless-webpack](https://github.com/serverless-heaven/serverless-webpack) [serverless-esbuild](https://www.npmjs.com/package/serverless-esbuild) reduce deployment artifact size, reduce cold start
+- [serverless-offline](https://github.com/dherault/serverless-offline) runs API Gateway locally `sls offline` , and similar to built-in `sls invoke local`
 - [serverless-domain-manager](https://github.com/amplify-education/serverless-domain-manager) custom domain names for your APIs and Route53 record set
 - [serverless-step-functions](https://github.com/serverless-operations/serverless-step-functions)
 - [serverless-finch](https://github.com/fernando-mc/serverless-finch) `sls client deploy`, deploys a static website to an s3 bucket
 
 ### CLIs
 
-- [org-formation](https://github.com/OlafConijn/AwsOrganizationFormation)  manage your entire [AWS organization](https://aws.amazon.com/organizations/) using Infrastructure-as-Code (IAC
+- [org-formation](https://github.com/OlafConijn/AwsOrganizationFormation) manage your entire [AWS organization](https://aws.amazon.com/organizations/) using Infrastructure-as-Code (IAC
 - [lumigo-cli](https://github.com/lumigo-io/lumigo-cli) `lumigo-cli list-lambda`, `analyze-lambda-cold-starts`, `powertune-lambda`
 
 ### [24 open source tools for the serverless developer: part 2](https://aws.amazon.com/blogs/opensource/24-open-source-tools-for-the-serverless-developer-part-2/)
@@ -2139,17 +1876,17 @@ Yan discusses the benefits and potential uses of CloudFormation custom resources
 
 ### AWS Serverless Application Repository applications
 
-- [lambda-janitor](https://go.aws/2t3rQ7a)  clean up old, unused versions of your functions in the whole region. This
+- [lambda-janitor](https://go.aws/2t3rQ7a) clean up old, unused versions of your functions in the whole region. This
 
 - [aws-lambda-power-tuning](https://go.aws/2NZ8dUW) eploys a Step Functions state machine that you can run to help you find the optimal memory setting for your functions. This is what powers the lumigo-cli’s `powertune-lambda` command. I recommend using the lumigo-cli as it takes care of deploying and upgrading this AWS Serverless Application Repository app to make sure you always run on the latest version of the app.
 
-- [auto-subscribe-log-group-to-arn](https://go.aws/2tyBjDH) 
+- [auto-subscribe-log-group-to-arn](https://go.aws/2tyBjDH)
 
 - n; it automatically subscribes [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/) log groups to the ARN you configure, which can be Lambda, [Amazon Kinesis](https://aws.amazon.com/kinesis/), [Amazon Kinesis Data Firehose](https://aws.amazon.com/kinesis/data-firehose/), or [Amazon Elasticsearch Service (Amazon ES)](https://aws.amazon.com/elasticsearch-service/).
 
-  Once deployed, it’ll subscribe all the existing CloudWatch log groups in the region to the configured destination right away. When you create a new log group either yourself or when you create a new Lambda function, the new log group would be subscribed to the destination automatically, too. 
+  Once deployed, it’ll subscribe all the existing CloudWatch log groups in the region to the configured destination right away. When you create a new log group either yourself or when you create a new Lambda function, the new log group would be subscribed to the destination automatically, too.
 
-- [auto-set-log-group-retention](https://go.aws/2TAQhno) 
+- [auto-set-log-group-retention](https://go.aws/2TAQhno)
 
 - s closely related to auto-subscribe-log-group-to-arn, except it automatically updates the retention policy of log groups instead.
 
@@ -2159,11 +1896,11 @@ Yan discusses the benefits and potential uses of CloudFormation custom resources
 
 ### [Tools to help you become a better serverless developer](https://lumigo.io/blog/seven-tools-help-become-better-serverless-developer/)
 
-* [Dynobase](https://dynobase.dev/) is a professional GUI client for DynamoDB and is leaps and bounds better than the AWS console for managing DynamoDb tables and working with your data.
+- [Dynobase](https://dynobase.dev/) is a professional GUI client for DynamoDB and is leaps and bounds better than the AWS console for managing DynamoDb tables and working with your data.
 
-* [evb-cli](https://github.com/mhlabs/evb-cli). It’s a common-line tool for working with EventBridge and packs some very useful commands.
+- [evb-cli](https://github.com/mhlabs/evb-cli). It’s a common-line tool for working with EventBridge and packs some very useful commands.
 
-* If you use API Gateway or AppSync you likely have to deal with VTL templates. It’s not everyone’s cup of tea and most people struggle to write even basic business logic in VTL. But to get the best performance, scalability and cost efficiency out of API Gateway and AppSync you should be using their built-in integration with other AWS services (the so-called “functionless” approach). Unfortunately, that means writing VTL mapping templates.
+- If you use API Gateway or AppSync you likely have to deal with VTL templates. It’s not everyone’s cup of tea and most people struggle to write even basic business logic in VTL. But to get the best performance, scalability and cost efficiency out of API Gateway and AppSync you should be using their built-in integration with other AWS services (the so-called “functionless” approach). Unfortunately, that means writing VTL mapping templates.
 
   This is where the [Mapping Tool](https://mappingtool.dev/) by [Zac Charles](https://twitter.com/zaccharles) comes in. I
 
@@ -2179,25 +1916,25 @@ This article, written by Yan Cui on October 8, 2020, announces the release of AW
 
 Existing Application Performance Management (APM) solutions require the deployment of an agent or daemon to collect and send telemetry data. Prior to AWS Lambda Extensions, it was difficult to install these agents/daemons on Lambda due to constraints, leading to challenges for third-party vendors who had to choose between sending telemetry data at the end of each invocation or writing telemetry data to CloudWatch Logs, both of which have their disadvantages.
 
-Lambda Extensions, however, are scripts that run alongside code, receiving updates about functions via a poll-based API. These can be internal (modifying the Lambda runtime environment and running in-process with code) or external (running in a separate process to code). They can impact the performance of functions, given they share the same resources - CPU, memory, storage, and network bandwidth. Lambda Extensions thus change the lifecycle of a Lambda Execution Environment with additional steps during initialization, invocation, and shut down. Lambda Extensions allow vendors to offer more comprehensive observability, security, and governance. 
+Lambda Extensions, however, are scripts that run alongside code, receiving updates about functions via a poll-based API. These can be internal (modifying the Lambda runtime environment and running in-process with code) or external (running in a separate process to code). They can impact the performance of functions, given they share the same resources - CPU, memory, storage, and network bandwidth. Lambda Extensions thus change the lifecycle of a Lambda Execution Environment with additional steps during initialization, invocation, and shut down. Lambda Extensions allow vendors to offer more comprehensive observability, security, and governance.
 
 ### [AWS Lambda: Function URL is live!](https://lumigo.io/blog/aws-lambda-function-url-is-live/)
 
-In 2022 AWS has launched the Lambda Function URLs feature, which allows users to build REST APIs backed by Lambda functions without the need for API Gateway. This can significantly reduce costs for users who do not require the advanced features provided by API Gateway. 
+In 2022 AWS has launched the Lambda Function URLs feature, which allows users to build REST APIs backed by Lambda functions without the need for API Gateway. This can significantly reduce costs for users who do not require the advanced features provided by API Gateway.
 
-To create a function URL, users should enable the function URL box under Advanced settings when creating a new function. Function URLs have the structure https://{url-id}.lambda-url.{region}.on.aws, where the url-id is a randomly assigned ID. 
+To create a function URL, users should enable the function URL box under Advanced settings when creating a new function. Function URLs have the structure https://{url-id}.lambda-url.{region}.on.aws, where the url-id is a randomly assigned ID.
 
 The new feature uses the same schema format as API Gateway payload format 2.0, which means code does not need to be altered when switching from API Gateway to function URL. Function URLs can handle different HTTP verbs and URL paths.
 
-Other features include basic request throttling, achievable via Lambda reserve concurrency, and custom domains through creating a CloudFront distribution and pointing it at the function URL. 
+Other features include basic request throttling, achievable via Lambda reserve concurrency, and custom domains through creating a CloudFront distribution and pointing it at the function URL.
 
 However, for APIs that require advanced features like user authentication with Cognito User Pool, usage plans, or WebSockets API, users should still consider API Gateway. But for simpler APIs, the Lambda Function URLs feature can be a cost-saving option.
 
 ### [Welcome to 10GB of tmp storage with Lambda](https://lumigo.io/blog/welcome-to-10gb-of-tmp-storage-with-lambda/)
 
-Since March 2022, AWS Lambda functions  offer the ability to expand the size of their ephemeral storage from the standard 512MB to up to 10GB. The /tmp directory, which serves as the ephemeral storage, can be used for fast I/O operations and as a cache for data between invocations on the same Lambda worker instance. Prior to this, its use was limited due to a fixed size of 512MB. 
+Since March 2022, AWS Lambda functions offer the ability to expand the size of their ephemeral storage from the standard 512MB to up to 10GB. The /tmp directory, which serves as the ephemeral storage, can be used for fast I/O operations and as a cache for data between invocations on the same Lambda worker instance. Prior to this, its use was limited due to a fixed size of 512MB.
 
-The updated storage can be configured through multiple platforms such as CloudFormation, AWS CLI, AWS SDK, or the AWS console. Users will have to pay for the extra storage space, although the pricing details were not available at the time of the announcement. 
+The updated storage can be configured through multiple platforms such as CloudFormation, AWS CLI, AWS SDK, or the AWS console. Users will have to pay for the extra storage space, although the pricing details were not available at the time of the announcement.
 
 The increase in storage does not have a significant impact on the performance of Lambda functions nor does it change the limit on the deployment package size (still 250MB). For larger files, users can package their function as a container image or download the large files during initialization and save them into the /tmp directory.
 
@@ -2223,19 +1960,15 @@ They cater for different use cases and have different characteristics and limita
 
 4. **Amazon S3:** This object storage service scales elastically, offering high availability and durability. Ideal for storing unstructured data such as images, media, log files and sensor data, it features event integrations with Lambda and allows for automated workflows.
 
-   
-
 ### [Graviton-based Lambda functions, what it means for you](https://lumigo.io/blog/graviton-based-lambda-functions-what-it-means-for-you/)
 
-Amazon Web Services (AWS) has introduced support for AWS Lambda functions powered by Graviton2 processors, a custom-built, 64-bit Arm-based processor with an improved price to performance ratio. When creating a new Lambda function, users can now choose to run their code on either x86_64 or arm64 architectures. 
+Amazon Web Services (AWS) has introduced support for AWS Lambda functions powered by Graviton2 processors, a custom-built, 64-bit Arm-based processor with an improved price to performance ratio. When creating a new Lambda function, users can now choose to run their code on either x86_64 or arm64 architectures.
 
 Graviton2-based Lambda functions are 20% cheaper and perform better than x86-based ones, according to AWS. They offer a price-performance improvement of up to 34%. However, it's essential to benchmark your workload as performance results may vary based on the workload you test.
 
-Graviton2 is suitable for a wide range of workloads and allows users to make cost-effective decisions. For instance, Lambda functions that handle API requests and call DynamoDB or other AWS services can utilize Graviton2 for a better price without compromising user experience. Additionally, a Lambda function that trains Machine Learning models can run with thousands of concurrent executions to improve throughput. 
+Graviton2 is suitable for a wide range of workloads and allows users to make cost-effective decisions. For instance, Lambda functions that handle API requests and call DynamoDB or other AWS services can utilize Graviton2 for a better price without compromising user experience. Additionally, a Lambda function that trains Machine Learning models can run with thousands of concurrent executions to improve throughput.
 
 Contrarily, for CPU intensive and time-sensitive workloads, like encoding customer-uploaded videos, it might be better to opt for x86 architecture for optimal performance, even if it is less cost-effective.
-
-
 
 ### [Package your Lambda function as a container image](https://lumigo.io/blog/package-your-lambda-function-as-a-container-image/)
 
@@ -2267,11 +2000,9 @@ To set up the hosted zones, manual setup may suffice for a small number of envir
 
 # Yubl’s road to Serverless
 
-
-
 ### [part 2 : testing & continuous delivery strategies](https://theburningmonk.com/2017/02/yubls-road-to-serverless-architecture-part-2/)
 
-In [Growing Object-Oriented Software, Guided by Tests](http://amzn.to/2jrKLxx), *Nat Pryce* and *Steve Freeman* talked about the 3 levels of testing
+In [Growing Object-Oriented Software, Guided by Tests](http://amzn.to/2jrKLxx), _Nat Pryce_ and _Steve Freeman_ talked about the 3 levels of testing
 
 1. **Acceptance** – does the whole system work?
 2. **Integration** – does our code work against code we can’t change?
@@ -2279,19 +2010,19 @@ In [Growing Object-Oriented Software, Guided by Tests](http://amzn.to/2jrKLxx), 
 
 In the FAAS paradigm the **value of integration and acceptance tests are also higher than ever**.
 
-In [Growing Object-Oriented Software, Guided by Tests](http://amzn.to/2jrKLxx), *Nat Pryce* and *Steve Freeman* also talked about why you shouldn’t mock types that you can’t change  because…
+In [Growing Object-Oriented Software, Guided by Tests](http://amzn.to/2jrKLxx), _Nat Pryce_ and _Steve Freeman_ also talked about why you shouldn’t mock types that you can’t change because…
 
-> *…We find that tests that mock external libraries often need to be **complex** to get the code into the right state for the functionality we need to exercise.*
+> _…We find that tests that mock external libraries often need to be **complex** to get the code into the right state for the functionality we need to exercise._
 >
-> *The mess in such tests is telling us that the design isn’t right but, instead of fixing the problem by improving the code, we have to carry the **extra complexity** in both code and test…*
+> _The mess in such tests is telling us that the design isn’t right but, instead of fixing the problem by improving the code, we have to carry the **extra complexity** in both code and test…_
 >
-> *…The second risk is that we have to be sure that the behaviour we stub or mock matches what the external library will actually do…*
+> _…The second risk is that we have to be sure that the behaviour we stub or mock matches what the external library will actually do…_
 >
-> *Even if we get it right once, we have to make sure that the tests **remain valid** when we upgrade the libraries…*
+> _Even if we get it right once, we have to make sure that the tests **remain valid** when we upgrade the libraries…_
 
 I believe the same principles apply here, and that you **shouldn’t mock services that you can’t change**.
 
-Since the purpose is to test the integration points, so it’s important to configure the function to use the same downstream systems as the real, deployed code. If your function needs to read from/write to a *DynamoDB* table then your integration test should be using the real table as opposed to something like [dynamodb-local](https://www.npmjs.com/package/dynamodb-local).
+Since the purpose is to test the integration points, so it’s important to configure the function to use the same downstream systems as the real, deployed code. If your function needs to read from/write to a _DynamoDB_ table then your integration test should be using the real table as opposed to something like [dynamodb-local](https://www.npmjs.com/package/dynamodb-local).
 
 It does mean that your tests can leave artefacts in your integration environment and can cause problems when running multiple tests in parallel (eg. the artefacts from one test affect results of other tests). Which is why, as a rule-of-thumb, I advocate:
 
@@ -2300,13 +2031,13 @@ It does mean that your tests can leave artefacts in your integration environment
 
 The same applies to acceptance tests.
 
-*…Wherever possible, an **acceptance** **test** should exercise the system **end-to-end** without directly calling its internal code.*
+_…Wherever possible, an **acceptance** **test** should exercise the system **end-to-end** without directly calling its internal code._
 
-*An end-to-end test interacts with the system **only from the outside**: through its interface…*
+_An end-to-end test interacts with the system **only from the outside**: through its interface…_
 
-*…We prefer to have the end-to-end tests exercise both the system and the **process by which it’s built and deployed**…*
+_…We prefer to have the end-to-end tests exercise both the system and the **process by which it’s built and deployed**…_
 
-Whilst we had around 170 *Lambda* functions running production, many of them work together to provide different features to the app. Our approach was to group these functions such that:
+Whilst we had around 170 _Lambda_ functions running production, many of them work together to provide different features to the app. Our approach was to group these functions such that:
 
 - functions that form the endpoints of an API are grouped in a project
 - background processing functions for a feature are grouped in a project
@@ -2329,5 +2060,4 @@ Whilst we had around 170 *Lambda* functions running production, many of them wor
 
 7. **Conclusion:** The emergence of serverless technologies like AWS Lambda has simplified the skills and tools required for ops responsibilities. However, it also introduced new limitations and challenges that require new practices and tools to handle.
 
-*NoOps to me, means **no ops specialization** in my organization – ie. no dedicated ops team – because the **skills and efforts required to fulfill the ops responsibilities do not justify the need for such specialization**. As an organization it’s in your best interest to delay such specialization for as long as you can both from a financial point of view and also, perhaps more importantly, because **[\*Conway’s law\*](http://www.melconway.com/Home/Conways_Law.html)** tells us that having an ops team is the surefire way to end up with a set of operational procedures/processes, tools and infrastructure whose complexity will in turn justify the existence of said ops team.*
-
+_NoOps to me, means **no ops specialization** in my organization – ie. no dedicated ops team – because the **skills and efforts required to fulfill the ops responsibilities do not justify the need for such specialization**. As an organization it’s in your best interest to delay such specialization for as long as you can both from a financial point of view and also, perhaps more importantly, because **[\*Conway’s law\*](http://www.melconway.com/Home/Conways_Law.html)** tells us that having an ops team is the surefire way to end up with a set of operational procedures/processes, tools and infrastructure whose complexity will in turn justify the existence of said ops team._

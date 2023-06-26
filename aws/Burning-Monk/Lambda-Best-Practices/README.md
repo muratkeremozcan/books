@@ -22,6 +22,20 @@ We do not want to do manual tuning, but take advantage of the below utilities. I
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/eqaoiwmmlyl4ts84153b.png)
 
+#### [The best ways to save money on Lambda](https://theburningmonk.com/2022/07/the-best-ways-to-save-money-on-lambda/) (blog)
+
+Cost = resources x duration x invocations
+
+Do not allocate more memory (resources) than necessary.
+
+**You should always optimize the memory setting for functions that use provisioned concurrency**, because provisioned concurrency has an uptime cost per month per unit of concurrency.
+
+Optimize the frequently invoked functions that have a long execution time (the 3%).
+
+Use [aws-lambda-power-tuning](https://github.com/alexcasalboni/aws-lambda-power-tuning). Install it [**here**](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:451282441545:applications~aws-lambda-power-tuning). If you use Lumigo, you can sort your functions by cost.
+
+Also check out Yan's blog post [How to: optimize Lambda memory size during CI/CD pipeline](https://theburningmonk.com/2020/03/how-to-optimize-lambda-memory-size-during-ci-cd-pipeline/)
+
 ### What's in a cold start?
 
 Click [here](https://levelup.gitconnected.com/aws-lambda-cold-start-language-comparisons-2019-edition-️-1946d32a0244) for the post on Lambda cost start comparison.
@@ -67,6 +81,39 @@ const dynamoDB = new DynamoDB();
 Sls-wepback plugin can help with tree shaking and minification. It also helps to not need the layer.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/llbph089ki0v8jwlhnaq.png)
+
+#### [Just how expensive is the full AWS SDK?](https://theburningmonk.com/2019/03/just-how-expensive-is-the-full-aws-sdk/) (blog)
+
+When you declare functions and variables in a Lambda function, whether you should declare them inside the handler or outside depends on several factors.
+
+Declaring functions and variables outside the handler pros:
+
+1. **Usage across multiple invocations:** Global variables and functions (those declared outside of the handler function) can be used across multiple invocations of the Lambda function during the lifetime of the container. AWS Lambda reuses the container for multiple invocations of the function, so any state (like data in global variables) is preserved between invocations. This can be beneficial if you want to store data or state that can be reused across invocations.
+2. **Initialization cost:** Initializing functions and variables outside the handler means they're initialized only once, during a cold start. If the initializations are computationally expensive or require network calls (like setting up a database connection), doing so globally can save time and resources over doing the same work on every invocation.
+3. **Cleanliness of code:** Separating variable and function declarations (i.e., putting them outside the handler) can make your code cleaner and easier to read, especially if you follow a modular programming approach.
+
+Declaring functions and variables inside the handler pros:
+
+1. **State isolation:** If your functions and variables are stateful and you want the state to be completely isolated between invocations (meaning no state from one invocation is seen by another), then you should declare them inside the handler. For example, if you have a variable that holds user-specific data and you don't want data from one user to accidentally leak to another, you should declare the variable inside the handler.
+
+2. **Testability:** Code that's inside the handler function can be easier to test, since you can invoke the handler function in a controlled environment and mock any dependencies.
+
+When a Node.js Lambda function cold starts, a number of things happen:
+
+- the Lambda service has to find a server with enough capacity to host the new container
+- the new container is initialized
+- the Node.js runtime is initialized
+- your handler module is initialized, which includes initializing any global variables and functions you declare outside the handler function
+
+To reduce cold starts
+
+- Use lean imports; if you need just DDB, don't import the whole AWS SDK
+
+- Prefer not to instrument the code if it can be helped (x-ray sdk)
+
+- Use module bundlers (webpack, esbuild). But note that the impact in the experiments was not significant when the full AWS SDK was used. The greatest improvement was observed when only the DynamoDB client was required.
+
+  > Yan says: I don't do bundling anymore, run into a few problems and it's changed my mind about bundling. Problem is with the source maps, for non-trivial projects, they get really big (affects cold start) and unhandled exceptions add quite a bit of latency (took seconds to get a 502 back in one API). For reference [serverless-webpack](https://github.com/serverless-heaven/serverless-webpack) [serverless-esbuild](https://www.npmjs.com/package/serverless-esbuild).
 
 ### Provisioned Concurrency KEY
 
@@ -115,7 +162,7 @@ It consumes regional limit.
 
 > If you use the AWS SDK v3, you don't need to do this anymore, it's enabled by default now.
 
-[Blog post](https://theburningmonk.com/2019/02/lambda-optimization-tip-enable-http-keep-alive/).
+[Blog post - Improve latency by enabling HTTP keep-alive](https://theburningmonk.com/2019/02/lambda-optimization-tip-enable-http-keep-alive/).
 In the example this gave 70% boost...
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1v6ymm4yc2bmpofatbaa.png)
@@ -204,7 +251,7 @@ With Kinesis the workers pick up where they left off once the outage is over.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/s86jk2vg8x7bmp52wm9q.png)
 
-Click [here](https://theburningmonk.com/2019/05/a-self-healing-kinesis-function-that-adapts-its-throughput-based-on-performance/) to see my article on self-healing Kinesis function.
+Click [here](https://theburningmonk.com/2019/05/a-self-healing-kinesis-function-that-adapts-its-throughput-based-on-performance/) to see my article on self-healing Kinesis function. [A self-healing Lambda function that adapts its throughput based on performance](https://theburningmonk.com/2019/05/a-self-healing-kinesis-function-that-adapts-its-throughput-based-on-performance/)
 
 Click [here](https://lumigo.io/blog/amazon-builders-library-in-focus-4-avoiding-insurmountable-queue-backlogs/) to see summary of "Avoiding insurmountable queue backlogs".
 
@@ -229,41 +276,59 @@ What you lose:
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8wohhrnr1pvjompcrjuq.png)
 
-Click [here](https://lumigo.io/blog/the-why-when-and-how-of-api-gateway-service-proxies/) for my blog post on the why, when and how of API Gateway service proxies.
+#### [The why, when and how of API Gateway service proxies](https://lumigo.io/blog/the-why-when-and-how-of-api-gateway-service-proxies/)
 
-Click [here](https://github.com/horike37/serverless-apigateway-service-proxy) for the serverless-apigateway-service-proxy plugin for the Serverless framework.
+One of the very powerful and yet often under-utilized features of [API Gateway](https://lumigo.io/blog/tackling-api-gateway-lambda-performance-issues/) is its ability to integrate directly with other AWS services. For example, you can [connect API Gateway directly to an SNS topic](https://www.alexdebrie.com/posts/aws-api-gateway-service-proxy/) without needing a Lambda function in the middle. Or [to S3](https://docs.aws.amazon.com/apigateway/latest/developerguide/integrating-api-with-aws-services-s3.html), or any number of AWS services. Particularly useful in removing Lambda from the equation, thereby eliminating limitations and overhead that comes with Lambda, such as cold starts, costs, and concurrency limits.
+
+Using API Gateway service proxies is especially beneficial when a Lambda function merely calls another AWS service and returns the response, or when concerns exist about cold start latency overhead or hitting concurrency limits. However, users should keep in mind the additional functions a Lambda function might be fulfilling, such as logging useful contextual information, handling errors, applying fallbacks when an AWS service fails, and injecting failures into requests for chaos engineering purposes.
+
+If users decide to implement API Gateway service proxies, they can use an open-source tool [`serverless-apigateway-service-proxy`](https://github.com/horike37/serverless-apigateway-service-proxy). This Serverless framework plugin simplifies creating service proxies and currently supports Kinesis Streams, SQS, SNS, and S3, with work in progress to support DynamoDB. The plugin also ensures the correct permissions are in place for the API Gateway, allows CORS and authorization customization, and enables request template customization.
 
 Click [here](https://github.com/ToQoz/api-gateway-mapping-template) for the api-gateway-mapping-template project.
 
 ### Load testing
 
-Commonly perceived performance standard for web apps:
+#### (from Testing Serverless Architectures)
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dusvoujiec2gowwb13aq.png)
+Performance test that simulate heavy workload to measure a system's performance and identify bottlenecks or other issues.
+
+Load pattern should be realistic. (Ex: no need to hammer the login endpoint if users login once every few weeks...)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f6la7rk1tc93sjjk1efd.png)
+
+Serverless gives you a lot of scalability out of the box. But it's not free, and it's not infinitely scalable. You still have to worry about service limits (regional limit on API Gateway # of requests/sec, regional limit on lambda concurrency).
+
+Architect with service limits in mind. Load test to make sure.
 
 When load testing, ensure to have a gradual increase because we may run into lambda throttling. Instead of unrealistic sharp spikes, simulate a gradual increase.
 
 Test realistic user journeys, not individual functions. Otherwise all you are testing is AWS. Don't forget to load test the asynchronous parts of the system.
 
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tellu3asexos2q1hztct.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9qdl4w7loazdkv485mgq.png)
+
 Click [here](https://docs.aws.amazon.com/lambda/latest/dg/scaling.html) for the official AWS documentation on Lambda's scaling behavior.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ypjneayqnjcq7q23g8zz.png)
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9qdl4w7loazdkv485mgq.png)
+Commonly perceived performance standard for web apps:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dusvoujiec2gowwb13aq.png)
 
 ## Security
 
-### Principle of least privilege
+### Principle of least privilege (from [Top 10 Serverless best practices](https://datree.io/serverless-best-practices/))
 
-Avoid \*.
+**No Wildcards in IAM Role Statements**: To ensure your serverless applications are secure, avoid overprovisioning your functions with access. Adhere to the principle of least privilege by granting your functions only the minimal access they require.
+
+**One IAM Role per Function**: Instead of using a shared role for all the functions in the serverless.yml (which violates the principle of least privilege), use the [`serverless-iam-roles-per-function`](https://www.npmjs.com/package/serverless-iam-roles-per-function) plugin to define IAM roles for each function.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n1zci924pyvulh7ouha5.png)
 
 Click [here](https://iam.cloudonaut.io/) for the Complete AWS IAM Reference.
 
-Click [here](https://www.npmjs.com/package/serverless-iam-roles-per-function) for the serverless-iam-roles-per-function plugin on NPM.
-
-### Secret management
+### Secret management (blog [The Old Faithful: Why SSM Parameter Store still reigns over Secrets Manager](https://theburningmonk.com/2023/03/the-old-faithful-why-ssm-parameter-store-still-reigns-over-secrets-manager/))
 
 Storing secrets: SSM Parameter Store vs Secrets Manager
 
@@ -307,6 +372,22 @@ Click [here](https://github.com/DianaIonita/serverless-api-gateway-throttling) f
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i1guf7cwoaoxwxreicgs.png)
 
+### [The API Gateway security flaw you need to pay attention to](https://theburningmonk.com/2019/10/the-api-gateway-security-flaw-you-need-to-pay-attention-to/) (blog)
+
+The default method limits – 10k req/s with a burst of 5000 concurrent requests – matches your account level limits. As a result, **ALL your APIs in the entire region share a rate limit that can be exhausted by a single method**. It also means that, as an attacker, I only need to DOS attack one public endpoint. I can bring down not just the API in question, but all your APIs in the entire region. Effectively rendering your entire system unavailable.
+
+While AWS's Web Application Firewall (WAF) can create rate-based rules that limit at the IP level, it has limitations. WAF can't fully protect against distributed DOS attacks from a botnet comprising thousands of hosts, or cope with 'low and slow' DOS attacks and can unintentionally block traffic from large institutions that share a single IP address.
+
+Yan suggests that individual rate limits should be applied for each method, but acknowledges that this requires consistent discipline from developers, something which is often lacking. Furthermore, there is currently no built-in support in the Serverless framework to configure these method settings.
+
+A solution might be to use a serverless-api-stage plugin or a custom rule in AWS Config to enforce rate limit overrides. Automated remediation like triggering a Lambda function after every API Gateway deployment could also be used. Using CloudFront as a CDN can also help reduce the traffic that reaches the API Gateway, but it comes with its own set of limitations and costs.
+
+A premium service, AWS Shield Advanced, offers payment protection against extra costs incurred during an attack and provides access to the DDoS Response Team, but this may be too expensive for many startups.
+
+We need better tooling and support from Serverless framework and AWS to easily configure these rate limits. AWS should change the default behavior of applying region-wide limits or at least provide warnings to users about the risks involved.
+
+Serverless framework plugin called `serverless-api-gateway-throttling` allows for easier configuration of default throttling settings and provides overrides for individual endpoints.
+
 ## Resilience
 
 ### Multi-region, active-active
@@ -329,7 +410,17 @@ Click [here](https://lumigo.io/blog/amazon-builders-library-in-focus-4-avoiding-
 
 With SQS -> Lambda, the problem comes up when the lambda errors and some of the messages are not deleted successfully.
 
-Click [here](https://lumigo.io/blog/sqs-and-lambda-the-missing-guide-on-failure-modes) for my post on the failure modes of SQS and Lambda.
+#### [SQS and Lambda: the missing guide on failure modes](https://lumigo.io/blog/sqs-and-lambda-the-missing-guide-on-failure-modes/) (blog)
+
+Amazon SQS is a message queueing service. You can use SQS to decouple and scale microservices, [serverless](https://lumigo.io/debugging-aws-lambda-serverless-applications/) applications, and distributed systems. SQS makes it easy to store, receive, and send messages between software components. You can configure SQS queues as event sources for Lambda. Once you set this up, Lambda functions are automatically triggered when messages arrive to an SQS queue. Lambda can then automatically scale up and down according to the number of inflight messages in a queue. This means Lambda takes charge and automates tasks like polling, reading and removing messages from a queue.
+
+1. No Dead Letter Queues (DLQs): Not configuring a DLQ when using SQS and Lambda is a common mistake. It can result in the 'poison message' problem where an invalid message is continuously retrieved, causing the SQS function to error. Always configure a DLQ for every SQS queue.
+
+2. SQS Lambda Visibility Timeout Misalignment: It's important to align the SQS visibility timeout with the Lambda function's timeout, ideally setting the SQS visibility timeout greater than the Lambda function's timeout. Otherwise, if the SQS function has a higher timeout value, in-flight messages may be processed more than once.
+
+3. Partial Failures: Partial failures are tricky to handle as messages are deleted only after the SQS function completes successfully. Solutions to handle this include using a batchSize of 1 or ensuring idempotency. However, both approaches have their own limitations such as lower throughput or increased system complexity.
+
+4. SQS Over-scaling: Lambda auto-scales the number of pollers based on traffic, which can result in the SQS function using up too many available concurrent executions in the region, possibly leading to throttling of Lambda invocations. Mitigation strategies include increasing the concurrency limit, setting reserved concurrency on the SQS function, or implementing backpressure control in front of the SQS queue.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8iy7px1bhkqrgvuu4189.png)
 
@@ -353,15 +444,23 @@ Lambda Destinations allows to configure a destination / target, so that when an 
 
 Click [here](https://www.trek10.com/blog/lambda-destinations-what-we-learned-the-hard-way) for the Trek10 blog post on Lambda Destinations and some of its caveats.
 
+Destinations feature provides a simple, powerful mechanism to handle the asynchronous invocations of your AWS Lambda functions.
+
+In asynchronous invocation, when a function is invoked, AWS Lambda sends the event to a queue. A separate process reads events from the queue and runs your function. When all retries fail, or if the function returns an error, Lambda can direct the failed event record to a dead-letter queue (DLQ), an SNS topic, or a Lambda function (configured via the function's on-failure destination), which developers can then handle in their own way.
+
+The Lambda Destinations feature takes this further by providing routing options for both successful and failed function invocations. This means you can specify different destinations for success (on-success destination) and failure scenarios (on-failure destination), thus making the error handling and event management more streamlined and effective.
+
+Destinations could be another Lambda function, an Amazon SNS topic, an Amazon SQS queue, or an Amazon EventBridge event bus.
+
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3hutz57bkuqbl7i33u7e.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1k0zoojnodk1txhwiy6m.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b72oycbjajofswaa5v1p.png)
 
-## Observability
+## Observability - also check out [Observability from blog posts](../yans-blog-posts.md#serverless-observability)
 
-### Alerts you can't do without
+### Alerts you can't do without (blog [What alerts should you have for Serverless applications?](https://lumigo.io/blog/what-alerts-should-you-have-for-serverless-applications/))
 
 Use alarms to alert you that something is wrong, not necessarily what is wrong.
 
@@ -410,6 +509,29 @@ Click [here](https://github.com/theburningmonk/lambda-distributed-tracing-demo) 
 ### [Lambda powertools](https://github.com/getndazn/dazn-lambda-powertools)
 
 Check out the [demo usage](https://github.com/theburningmonk/lambda-distributed-tracing-demo/tree/master/lambda-powertools/functions).
+
+#### Overview of available tools
+
+- [logger](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-logger): structured logging with JSON, configurable log levels, and integrates with other tools to support correlation IDs and sampling (only enable debug logs on 1% of invocations)
+- [correlation IDs](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-correlation-ids): create and store correlation IDs that follow the DAZN naming convention
+- [correlation IDs middleware](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-middleware-correlation-ids): automatically extract correlation IDs from the invocation event
+- [sample logging middleware](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-middleware-sample-logging): enable debug logging for 1% of invocations, or when upstream caller has made the decision to enable debug logging
+- [obfuscater middleware](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-middleware-obfuscater): allows you to obfuscate the invocation event so that sensitive data (e.g. PII) is not logged accidentally
+- [log timeout middleware](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-middleware-log-timeout): logs an error message when a function invocation times out
+- [stop infinite loop middleware](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-middleware-stop-infinite-loop): stops infinite loops
+
+#### Client libraries
+
+- [http client](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-http-client): HTTP client that automatically forwards any correlation IDs you have captured or created, and records both latency as well as response count metrics
+- [CloudWatchEvents client](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-cloudwatchevents-client): CloudWatchEvents client that automatically forwards any correlation IDs you have captured or created when you put events to an event bus
+- [EventBridge client](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-eventbridge-client): EventBridge client that automatically forwards any correlation IDs you have captured or created when you put events to an event bus
+- [SNS client](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-sns-client): SNS client that automatically forwards any correlation IDs you have captured or created when you publish a message to SNS
+- [SQS client](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-sqs-client): SQS client that automatically forwards any correlation IDs you have captured or created when you publish a message to SQS
+- [Kinesis client](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-kinesis-client): Kinesis client that automatically forwards any correlation IDs you have captured or created when you publish record(s) to a Kinesis stream
+- [Firehose client](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-firehose-client): Firehose client that automatically forwards any correlation IDs you have captured or created when you publish record(s) to a Firehose delivery stream
+- [Step Functions client](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-step-functions-client): Step Functions client that automatically forwards any correlation IDs you have captured or created when you start an execution
+- [Lambda client](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-lambda-client): Lambda client that automatically forwards any correlation IDs you have captured or created when you invokes a Lambda function directly
+- [DynamoDB client](https://github.com/getndazn/dazn-lambda-powertools/blob/master/packages/lambda-powertools-dynamodb-client): DynamoDB client that automatically forwards any correlation IDs you have captured or created when you perform put or update operations against DynamoDB. These correlation IDs are then available to functions processing these events from the table's 
 
 ## Cost
 
@@ -489,7 +611,9 @@ Lumigo can give a complete outlook to cost. Click [here](https://lumigo.io/) to 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/trh0rf18mkpp726egyz9.png)
 
-Lambda cost is small part of the whole. API gateway is expensive. Prefer to do caching at CloudFront. Click [here](https://theburningmonk.com/2019/10/all-you-need-to-know-about-caching-for-serverless-applications/) for all you need to know about caching for serverless applications. Caching at the edge is very cost-efficient as it cuts out most of the calls to API Gateway and Lambda. Skipping these calls also improve the end-to-end latency and ultimately the user experience. Also, by caching at the edge, you don’t need to modify your application code to enable caching.
+Lambda cost is small part of the whole. API gateway is expensive. Prefer to do caching at CloudFront. Caching at the edge is very cost-efficient as it cuts out most of the calls to API Gateway and Lambda. Skipping these calls also improve the end-to-end latency and ultimately the user experience. Also, by caching at the edge, you don’t need to modify your application code to enable caching.
+
+#### [All you need to know about caching for serverless applications](https://theburningmonk.com/2019/10/all-you-need-to-know-about-caching-for-serverless-applications/)
 
 Caching remains essential in serverless architectures because while Lambda auto-scales by traffic, it has limitations in terms of concurrent executions. Caching not only helps deal with spiky traffic but also improves performance and cost-efficiency by reducing unnecessary roundtrips and the number of pay-per-use services.
 
@@ -515,7 +639,19 @@ Click [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-a
 
 Don't log debug in production. Sample debug logs instead. Sample rate should give you coverage of every scenario, tweak it based on your traffic. (DAZN Lambda Powertools has these settings out of the box. Click [here](https://github.com/getndazn/dazn-lambda-powertools))
 
-By default, CloudWatch logs does not expire your logs, ever. Keeping them forever is costly. To help manage the log retention policy in one central place, deploy this app [here](https://go.aws/2TAQhno); the auto-set-log-group-retention SAR app.
+By default, CloudWatch logs does not expire your logs, ever. Keeping them forever is costly. To help manage the log retention policy in one central place, deploy [**auto-set-log-group-retention**](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:374852340823:applications~auto-set-log-group-retention): updates the retention policy for new and existing CloudWatch log groups to a specified number of days to reduce CloudWatch Logs cost.
+
+#### [You should sample debug logs in production](https://theburningmonk.com/2018/04/you-need-to-sample-debug-logs-in-production/) (blog)
+
+Yan highlights the significance of sampling debug logs in production while working with AWS services like Lambda and CloudWatch. Typically, the log level is set to WARNING for production to manage traffic volume and to consider cost factors, such as the cost of logging, storage, and processing. However, doing so eliminates debug logs in production, which are critical for identifying the root cause of a problem. Without them, deploying a new version of the code to enable debug logging consumes valuable time and increases the mean time to recovery (MTTR) during an incident.
+
+To mitigate this issue, Yan suggests sampling debug logs from a small percentage of invocations, representing a balance between having no debug logs and having all of them. This approach requires a logger that allows dynamic changes to the logging level and a middleware engine like middy.
+
+Yan prefers to use a simple logger module, which offers structured logging with JSON, the ability to log at different levels, and control over the log level via environment variables. By using middy, a middleware can be created to dynamically update the log level to DEBUG for a certain percentage of invocations and then restore the previous log level at the end of the invocation.
+
+In a microservices environment, it is crucial to ensure debug logs cover an entire call chain. To achieve this, the decision to turn on debug logging can be forwarded as a correlation ID, so the next function in the chain respects this decision and passes it on.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mk5jda0jljrzz18jqzpj.png)
 
 ### SNS vs SQS vs EventBridge vs Kinesis
 
@@ -541,7 +677,7 @@ What you lose with service proxies:
 
 Click [here](https://lumigo.io/blog/the-why-when-and-how-of-api-gateway-service-proxies/) for my blog post on the why, when and how of API Gateway service proxies.
 
-Click [here](https://github.com/horike37/serverless-apigateway-service-proxy) for the serverless-apigateway-service-proxy plugin for Serverless framework.
+Click [here](https://github.com/horike37/serverless-apigateway-service-proxy) for the `serverless-apigateway-service-proxy` plugin for Serverless framework.
 
 Click [here](https://aws.amazon.com/elasticloadbalancing/pricing) for ALB pricing. Click [here](https://aws.amazon.com/api-gateway/pricing) for API Gateway pricing.
 

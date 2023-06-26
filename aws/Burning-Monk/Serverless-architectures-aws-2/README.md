@@ -65,7 +65,7 @@ npm run deploy
   to ensure that successfully processed items in a failed batch are not
   processed again when the batch is retried.
 
-## Patterns
+## Patterns (todo: cross link to Yan's blog posts)
 
 - service-oriented architecture (SOA) is a well-known buzzword. SOA encourages
   an architectural approach in which developers create autonomous services that
