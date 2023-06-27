@@ -2,19 +2,48 @@
 
 ### Unit vs Integration vs E2e
 
-Unit: test your code at the object/module level
+Unit: test your code at the object/module level, I generally think unit tests don’t have a great return on investment and I only write these if I have genuinely complex business logic.
 
-Integration: test your code against things you don't control (ex: external services)
+Integration: test your code against things you don't control (ex: external services), run tests locally against deployed AWS resources. Do not bother with simulating AWS locally, it takes too much effort to set up and I find the result is too brittle (breaks easily) and hard to maintain.
 
-E2e: test your whole system
+E2e: test your whole system and the process by which it’s built and deployed
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/g767gk1dgmn9jjpwttev.png)
 
+Unit test covers the business logic. They do not give enough confidence for the cost. Same cost & little value vs integration tests.![unit-test](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ckgcm75wpg1ezpk5cqpr.png)
+
+Integration is the same cost, and more value than unit. Covers the business logic + DynamoDB interaction. Feed an event into the handler, validate the consequences.![integration-described](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/irn19obybd4dfs9bni74.png)
+
+There are things integration tests cannot cover, such as IAM Permissions, our IaC/configuration, how the service is built and deployed.![integration](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gtkxvl1yh7fqwahptxfa.png)
+
+E2e can cover everything, highest confidence but also costly. We need some. Instead of events being fed to handlers, we use API calls.![e2e-described](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1vtufpqa62fdgprlqt6c.png)
+
+![e2e](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qjra5fzp7yr31r06dfzd.png)
+
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ymclm13w0eqylzurfrfc.png)
 
-E2e still works for function-less approach.
+E2e still works for function-less approach.![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tl0ocelqynxfhwx6lsx9.png)
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tl0ocelqynxfhwx6lsx9.png)
+#### [My testing strategy for serverless applications](https://theburningmonk.com/2022/05/my-testing-strategy-for-serverless-applications/) (blog)
+
+**Testing in prod**: Spot e2e tests. Feature flags. Observability.
+
+#### From Appsync masterclass
+
+Prefer integration tests over unit tests, and some e2e. All because many things can go
+wrong, none of which are related to our lambda code.
+
+- Avoid local simulation (e.g. LocalStack), they’re more work than is worth it,
+  and hides common failure modes such as **misconfigured permissions and
+  resource policies**.
+- In integration tests, only use mocks for AWS services to simulate
+  hard-to-reproduce **failure cases**. If it's happy path, do not mock AWS. You
+  can mock your internal services/APIs.
+- Use temporary stacks for feature branches to avoid destabilizing shared
+  environments, and during CI/CD pipeline to run end-to-end tests to remove the
+  overhead of cleaning up test data. `npm run sls -- deploy -s temp-stack` ,
+  `npm run sls -- remove -s tmp`
+  https://theburningmonk.com/2019/09/why-you-should-use-temporary-stacks-when-you-do-serverless/
 
 ### Hexagonal architecture
 
@@ -142,7 +171,7 @@ Observability: a measure of how well the internal state of an application can be
 
 - Write structured (ie. JSON) logs
 
-- Set up alerts for your applications.(Check out [Lambda Best Practices > Alerts](https://github.com/muratkeremozcan/books/blob/master/aws/Lambda-best-practices/Lambda%20best%20practices.md#observability))
+- Set up alerts for your applications.Check out [Lambda Best Practices > Alerts](../Lambda-Best-Practices/README.md/#alerts-you-cant-do-without-blog-what-alerts-should-you-have-for-serverless-applications)
 
 ### Temporary environments
 
@@ -172,13 +201,15 @@ For load testing, Serverless gives you a lot of scalability out of the box. But 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gapeuzdmebgj7r461i33.png)
 
+
+
 #### Lambda
 
 **Domain logic**: encapsulate and unit test (optional for simple functions)
 
 **Integrations**: integration test locally against real AWS services (fast feedback from local testing, better confidence from testing in the cloud)
 
-**IAM permissions**: e2e tests 
+**IAM permissions**: e2e tests
 
 #### Auth
 
@@ -191,6 +222,10 @@ Lambda authorizer: some e2e, but the feedback loop is slow. Unit (where appropri
 E2e.
 
 For Request & Response transform, also consider [Optic](https://www.useoptic.com/docs).
+
+> Question to Yan: In the API gateway test strategy diagram, could we do some of the request validation, request transform and response transform with schema testing (for example with [https://useoptic.com/docs](https://t.co/dCOdJZY6DH))  and/or  consumer driven contract testing (pact) ? We are looking for ways to have less e2e, while not losing too much confidence
+>
+> Yan: You can, but you won't get the same level of confidence since Optic would be written against your service's schema / Pact tests would be written against the contract, **but you're not validating weather your configuration of API Gateway matches the schema / contract** without exercising the API endpoints in some sort of e2e tests
 
 #### Other API Gateway capabilities
 
@@ -494,9 +529,9 @@ Use **controlled** experiments to inject failures into our system. This helps us
 
 The point is build confidence, not to break production. Only inject failures to a small percentage of requests, start in non-production environments, and only move to production when you've paid the dues;
 
-* Strong confidence that the system will withstand failures
+- Strong confidence that the system will withstand failures
 
-- Containment to limit the blast radius of surprises.
+* Containment to limit the blast radius of surprises.
   - Tell everyone
   - Do it during work hours
   - Avoid important dates
