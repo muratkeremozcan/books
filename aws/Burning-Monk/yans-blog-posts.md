@@ -455,6 +455,24 @@ In most cases, a Lambda function is an implementation detail and shouldn’t be 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0wqm7dfwe38dlqg3n2pl.png)
 
+But what if the caller and callee functions are both inside the same service? In which case, the whole “breaking the abstraction layer” thing is not an issue. Are Lambda-to-Lambda calls OK then?
+
+If you’re invoking another Lambda function synchronously (i.e. when `InvocationType` is `RequestResponse` ) then you’re paying for extra invocation time and cost. While the extra cost might be negligible in most cases, the extra latency is usually undesirable, especially for user-facing APIs.
+
+![img](https://theburningmonk.com/wp-content/uploads/2020/07/img_5f0aff37759e8.png)
+
+If you care about either, then you should combine the two functions into one. You can still achieve separation of concerns and modularity at the code level. You don’t have to split them into multiple Lambda functions.
+
+![img](https://theburningmonk.com/wp-content/uploads/2020/07/img_5f0aff4be86b8.png)
+
+I had an interesting conversation about my recommendations around lambda-to-lambda calls, specifically, about the case when an API function offloads secondary tasks to another function so it can return quicker.
+
+It's a common pushback, that instead of a function calling another, we should put a SQS queue in between.
+
+As the image illustrates, this lambda-to-lambda call should be asynchronous (ie. when InvocationType is "Event", I might have been wrong to assume everyone understood what it meant). With async Lambda invocations, you get built-in retries and DLQ support already. So you don't need to put an SQS queue in there unless you have a good reason to do it - e.g. to regulate concurrency or to optimize for efficiency.
+
+![img](https://theburningmonk.com/wp-content/uploads/2020/07/img_5f0aff5fbab80.png)
+
 # Big picture questions
 
 ### [You are wrong about serverless and vendor lock-in](https://lumigo.io/blog/you-are-wrong-about-serverless-vendor-lock-in/)
@@ -596,89 +614,7 @@ Yan also proposes extending the automation to include creating CloudWatch Alarms
 
 # Patterns
 
-### [Applying the pub-sub and push-pull messaging patterns with AWS Lambda](https://hackernoon.com/applying-the-pub-sub-and-push-pull-messaging-patterns-with-aws-lambda-73d5ee346faa)
 
-#### pub-sub
-
-##### SNS + Lambda
-
-Publish-Subscribe (pub-sub) is a decoupled messaging pattern where messages are transferred between publishers and subscribers through an intermediary broker such as ZeroMQ, RabbitMQ, or AWS SNS.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ea33tajnbxzzkzszusw1.png)
-
-In the context of the AWS ecosystem, SNS (Simple Notification Service) acts as the broker, with Lambda functions acting as the receivers of the messages. Each SNS message triggers a new invocation of the subscribed Lambda function, enabling high levels of parallel processing. For instance, if 100 messages are published to SNS, there can be 100 concurrent executions of the Lambda function, optimizing throughput.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qnffunmxzq1w2dn6isfy.png)
-
-However, challenges may arise due to limitations in the throughput capacities of downstream dependencies such as databases or other services. When a burst in throughput is brief, retries (with exponential back off) can usually handle any unprocessed messages, preventing message loss. However, if a burst is sustained or if a downstream dependency experiences an outage, the maximum number of retries may be exhausted, leading to message failure.
-
-When message processing fails, these messages are sent to a Dead Letter Queue (DLQ) after two unsuccessful retries. Consequently, this situation may necessitate human intervention for message recovery.
-
-Additionally, the concurrent execution of Lambda functions is subject to an account-wide limit. A high number of concurrent executions could potentially impact other AWS Lambda-dependent systems like APIs, event processing, or cron jobs.
-
-##### Kinesis + Lambda
-
-Kinesis Streams and SNS (Simple Notification Service) are different AWS services that each have unique features and use cases.
-
-Lambda interacts with these two services differently: it polls Kinesis Streams for records up to five times a second, while SNS pushes messages directly to Lambda. With Kinesis, records are received in batches up to a user-specified maximum. In contrast, SNS invokes the Lambda function with one message at a time.
-
-If a Lambda function fails to process a batch of records from Kinesis (either due to an error or a timeout), the same batch of records will be received until they are successfully processed or the data is no longer available in the stream. The parallel processing capability in Kinesis is determined by the number of shards in the stream, as there is one dedicated invocation per shard. Kinesis Streams pricing is based on the number of records pushed to the stream, shard hours, and the optional enabling of extended retention.
-
-Kinesis Streams can handle bursts in traffic and downstream outages more effectively than SNS. The maximum throughput is determined by the number of shards, maximum batch size, and reads per second, offering two levers to adjust the maximum throughput. Records are retried until success; unless the outage lasts longer than the retention policy on the stream (default is 24 hours), you will eventually be able to process the records.
-
-However, there are also operational considerations with Kinesis Streams: it's charged based on shard hours, meaning a dormant stream incurs a baseline cost. Furthermore, it lacks built-in auto-scaling capability, necessitating additional management overhead for scaling based on utilization. It's possible to build auto-scaling capabilities yourself, though.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jrrf4h7wgkivyd3dwffw.png)
-
-##### DDB Streams + Lambda
-
-Lastly, AWS offers another streaming option, DynamoDB Streams, which provides another alternative to SNS and Kinesis Streams.
-
-![img](data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27800%27%20height=%27308.77500000000003%27/%3e)![image](https://hackernoon.imgix.net/hn-images/1*3Wp0NTekhku5B6HdwpN2UQ.png?auto=format&fit=max&w=1920)
-
-DynamoDB Streams can be used as an alternative to Kinesis Streams, offering similar functionality when used with AWS Lambda. There are some operational differences worth noting:
-
-- DynamoDB Streams auto-scales the number of shards, simplifying management and scalability considerations. However, this could also lead to potentially overwhelming downstream systems during load spikes, as there's no control over the maximum number of shards a DynamoDB stream can scale up to.
-- If you're processing DynamoDB Streams with AWS Lambda, the reads from DynamoDB Streams are free, although you still have to pay for the read & write capacity units for the DynamoDB table itself.
-- Unlike Kinesis Streams, DynamoDB Streams does not offer the option to extend data retention to 7 days.
-
-The choice between Kinesis or DynamoDB Streams depends largely on your system's "source of truth". If a row being written in DynamoDB defines the state of your system, then DynamoDB Streams may be a suitable choice. On the other hand, in an event-sourced system, where the state is modelled as a sequence of events, Kinesis streams could serve as the source of truth.
-
-From a cost perspective, Kinesis Streams, despite a baseline cost, grows slower in cost with scale compared to SNS and DynamoDB Streams. However, these cost projections are based on the assumption of consistent throughput and message size, which may not reflect real-world usage.
-
-Another consideration is the aws-lambda-fanout project from awslabs, which allows Lambda functions to propagate events from Kinesis and DynamoDB Streams to other services that cannot directly subscribe to these brokers due to account/region limitations or lack of support. While this approach is beneficial for some specific needs, it also introduces added complexities, such as handling partial failures and dealing with downstream outages or misconfigurations.
-
-#### push-pull, aka fan-out/fan-in
-
-The fan-out/fan-in or push-pull messaging pattern is essentially two separate patterns working in tandem. Fan-out delivers messages to a pool of workers in a round-robin fashion and each message is delivered to only one worker. This allows for parallel processing and increased throughput. In cases where an expensive task is partitioned into many subtasks, fan-in is required to collect results from individual workers and aggregate them.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xnt3hyqp2i2u4f05uiia.png)
-
-##### fan-out with SNS
-
-SNS’s invocation per message policy is an ideal fit for fan-out as it optimizes for throughput and parallelism. For instance, in the case of a social media app, when a user makes a post, the post can be distributed to the followers' timelines as separate subtasks.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/79ad31kesg4iposoda7q.png)
-
-##### fan-out with SQS
-
-SQS was traditionally used for this type of workload before AWS Lambda. Even though SQS is not directly supported as an event source for Lambda, it can still be a good choice for distributing tasks, especially if subtasks take longer than 5 minutes to complete, exceeding the maximum execution time for Lambda.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rxgm5zxerctvtjnw7pm2.png)
-
-##### What about Kinesis or DynamoDB Streams?
-
-Kinesis or DynamoDB Streams are not ideal options for fan-out since the degree of parallelism is constrained by the number of shards, and resharding is costly and lacks flexibility in DynamoDB Streams.
-
-##### fan-in: collecting results from workers & tracking overall progress
-
-Fan-in involves collecting results from workers. This could be done by storing results in DynamoDB or S3, depending on the size of the results. But it's important to note that both methods can lead to hot partitions if not properly mitigated with a GUID for the job ID.
-
-To track the overall progress of tasks, the total number of subtasks should be recorded when the ventilator function partitions the task. Each invocation of the worker function can then atomically decrement the count until it reaches 0, signaling that all the subtasks are complete. The sink function or reducer can then aggregate the individual results.
-
-The push-pull pattern can be effectively implemented with AWS Lambda and provides a flexible solution for parallel processing of tasks and aggregating results.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/d9wbyy15ccz69hsexz1m.png)
 
 ### [How to use the Decoupled Invocation pattern with AWS Lambda](https://theburningmonk.medium.com/applying-the-decoupled-invocation-pattern-with-aws-lambda-2f5f7e78d18)
 

@@ -65,65 +65,159 @@ npm run deploy
   to ensure that successfully processed items in a failed batch are not
   processed again when the batch is retried.
 
-## Patterns (todo: cross link to Yan's blog posts)
+## Patterns 
 
-- service-oriented architecture (SOA) is a well-known buzzword. SOA encourages
-  an architectural approach in which developers create autonomous services that
-  communicate via message passing and often have a schema or a contract that
-  defines how messages are created or exchanged. The modern incarnation of the
-  service-oriented approach is often referred to as microservices architecture.
+service-oriented architecture (SOA) is a well-known buzzword. SOA encourages
+ran architectural approach in which developers create **autonomous services that**
+**communicate via message passing and often have a schema or a contract that**
+**defines how messages are created or exchanged**. The modern incarnation of the
+service-oriented approach is often referred to as microservices architecture.
 
-- Certain patterns and approaches like GraphQL are well suited to serverless
-  architectures because AWS services such as AppSync are on hand and can
-  integrate nicely with the rest of your architecture. GraphQL is a type of
-  composite pattern that lets you aggregate data from multiple places. Reading
-  and hydrating data from multiple data sources is common in web applications
-  and especially so in those that adopt the microservices approach. There are
-  other benefits too, including smaller payloads, avoiding the need to rebuild
-  the data model, and no more versioned APIs (as compared to REST).
+### **GraphQL**
 
-  ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pc091gmbi8wtfhm7l5tc.png)
+Patterns and approaches like GraphQL are well suited to serverless
+architectures because AWS services such as AppSync are on hand and can
+integrate nicely with the rest of your architecture. GraphQL is a type of
+composite pattern that lets you aggregate data from multiple places. Reading
+and hydrating data from multiple data sources is common in web applications
+and especially so in those that adopt the microservices approach. There are
+other benefits too, including smaller payloads, avoiding the need to rebuild
+the data model, and no more versioned APIs (as compared to REST).
 
-- Classic software engineering patterns like messaging patterns work
-  exceptionally well with serverless architectures and AWS products such as SQS.
-  Messaging patterns (figure 3.6) are popular in distributed systems because
-  they allow developers to build scalable and robust systems by decoupling
-  functions and services from direct dependence on one another and allowing
-  storage of events/records/ requests in a queue. The reliability comes from the
-  fact that if the consuming service goes offline, the queue retains messages
-  (for some period), which can still be processed at a later time. This pattern
-  features a message queue with a sender that can post to the queue and a
-  receiver that can retrieve messages from the queue. In terms of implementation
-  in AWS, you can build this pattern on top of the SQS. The messaging pattern
-  handles workloads and data processing. The queue serves as a buffer, so if the
-  consuming service crashes, data isn’t lost. It remains in the queue until the
-  service can restart and begin processing it again.
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pc091gmbi8wtfhm7l5tc.png)
 
-  ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bn4o0isobwo8en7kat8r.png)
+### **Messaging** 
 
-- The fan-out pattern is one of the more common patterns. Knowing how to set it
-  up using Amazon SNS is important to be effective with AWS. Generally, the
-  fan-out pattern pushes a message to all listening/subscribed clients of a
-  particular queue or a message pipeline. In AWS, this pattern is usually
-  implemented using SNS topics that allow multiple subscribers to be invoked
-  when a new message is added to a topic. The fan-out pattern is useful because
-  many AWS services (such as S3) can’t invoke more than one Lambda function at a
-  time when an event takes place. SNS topics are communications or messaging
-  channels that can have multiple publishers and subscribers (including Lambda
-  functions). When a new message is added to a topic, it forces invocation of
-  all the subscribers in parallel, thus causing the event to fan out. This
-  pattern is useful if you need to invoke multiple Lambda functions at the same
-  time. An SNS topic will retry, invoking your Lambda functions, if it fails to
-  deliver the message or if the function fails to execute (see
-  https://go.aws/3DTdCEK). Furthermore, the fan-out pattern can be used for more
-  than just invocation of multiple Lambda functions.
+software engineering patterns like messaging patterns work
+exceptionally well with serverless architectures and AWS products such as SQS.
+**Messaging patterns (figure 3.6) are popular in distributed systems because**
+**they allow developers to build scalable and robust systems by decoupling**
+**functions and services from direct dependence on one another and allowing**
+**storage of events/records/ requests in a queue**. The reliability comes from the
+fact that if the consuming service goes offline, the queue retains messages
+(for some period), which can still be processed at a later time. This pattern
+features a message queue with a sender that can post to the queue and a
+receiver that can retrieve messages from the queue. In terms of implementation
+in AWS, you can build this pattern on top of the SQS. The messaging pattern
+handles workloads and data processing. The queue serves as a buffer, so if the
+consuming service crashes, data isn’t lost. It remains in the queue until the
+service can restart and begin processing it again.
 
-  ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pxsw0otnu731r63ruwgr.png)
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bn4o0isobwo8en7kat8r.png)
 
-SNS topics support other subscribers such as email and SQS queues. Adding a new
-message to a topic can invoke Lambda functions, send an email, or push a message
-on to an SQS queue, all at the same time. Using a combination of SNS and SQS is
-popular for building event buses. An SNS topic that is piped into separate SQS
+### Fan-out
+
+The fan-out pattern is one of the more common patterns. Knowing how to set it
+up using Amazon SNS is important to be effective with AWS. Generally, **the**
+**fan-out pattern pushes a message to all listening/subscribed clients of a**
+**particular queue or a message pipeline.** In AWS, this pattern is usually
+implemented using SNS topics that allow multiple subscribers to be invoked
+when a new message is added to a topic. The fan-out pattern is useful because
+many AWS services (such as S3) can’t invoke more than one Lambda function at a
+time when an event takes place. SNS topics are communications or messaging
+channels that can have multiple publishers and subscribers (including Lambda
+functions). When a new message is added to a topic, it forces invocation of
+all the subscribers in parallel, thus causing the event to fan out. This
+pattern is useful if you need to invoke multiple Lambda functions at the same
+time. An SNS topic will retry, invoking your Lambda functions, if it fails to
+deliver the message or if the function fails to execute (see
+https://go.aws/3DTdCEK). Furthermore, the fan-out pattern can be used for more
+than just invocation of multiple Lambda functions.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pxsw0otnu731r63ruwgr.png)
+
+The fan-out/fan-in or push-pull messaging pattern is essentially two separate patterns working in tandem. Fan-out delivers messages to a pool of workers in a round-robin fashion and each message is delivered to only one worker. This allows for parallel processing and increased throughput. In cases where an expensive task is partitioned into many subtasks, fan-in is required to collect results from individual workers and aggregate them.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xnt3hyqp2i2u4f05uiia.png)
+
+
+
+##### fan-out with SNS
+
+SNS’s invocation per message policy is an ideal fit for fan-out as it optimizes for throughput and parallelism. For instance, in the case of a social media app, when a user makes a post, the post can be distributed to the followers' timelines as separate subtasks.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/79ad31kesg4iposoda7q.png)
+
+##### fan-out with SQS (meh)
+
+SQS was traditionally used for this type of workload before AWS Lambda. Even though SQS is not directly supported as an event source for Lambda, it can still be a good choice for distributing tasks, especially if subtasks take longer than 5 minutes to complete, exceeding the maximum execution time for Lambda.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rxgm5zxerctvtjnw7pm2.png)
+
+##### What about Kinesis or DynamoDB Streams?
+
+Kinesis or DynamoDB Streams are not ideal options for fan-out since the degree of parallelism is constrained by the number of shards, and resharding is costly and lacks flexibility in DynamoDB Streams.
+
+##### fan-in: collecting results from workers & tracking overall progress
+
+Fan-in involves collecting results from workers. This could be done by storing results in DynamoDB or S3, depending on the size of the results. But it's important to note that both methods can lead to hot partitions if not properly mitigated with a GUID for the job ID.
+
+To track the overall progress of tasks, the total number of subtasks should be recorded when the ventilator function partitions the task. Each invocation of the worker function can then atomically decrement the count until it reaches 0, signaling that all the subtasks are complete. The sink function or reducer can then aggregate the individual results.
+
+The push-pull pattern can be effectively implemented with AWS Lambda and provides a flexible solution for parallel processing of tasks and aggregating results.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/d9wbyy15ccz69hsexz1m.png)
+
+### Pub-sub 
+
+The main difference between fan-out and pub-sub  is in their focus - the fan-out pattern emphasizes multiple, simultaneous deliveries of a message, while the pub-sub pattern emphasizes the decoupling of publishers and subscribers. The pub-sub pattern is a broader concept, of which the fan-out pattern can be considered a subset.
+
+In the pub-sub pattern, one part of the system (the publisher) sends messages without knowing what parts of the system (the subscribers) will receive the message. The main advantage of this model is that it decouples the senders and receivers, allowing them to evolve separately. Amazon SNS also provides pub-sub messaging and mobile notifications for microservices, distributed systems, and serverless applications. Subscribers can include SQS queues, Lambda functions, HTTP/S webhooks, email, SMS, mobile push notifications, and more. In essence, both patterns are about decoupling components in a distributed system to create more flexible and scalable architectures. 
+
+##### SNS + Lambda
+
+Publish-Subscribe (pub-sub) is a decoupled messaging pattern where messages are transferred between publishers and subscribers through an intermediary broker such as ZeroMQ, RabbitMQ, or AWS SNS.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ea33tajnbxzzkzszusw1.png)
+
+In the context of the AWS ecosystem, SNS (Simple Notification Service) acts as the broker, with Lambda functions acting as the receivers of the messages. Each SNS message triggers a new invocation of the subscribed Lambda function, enabling high levels of parallel processing. For instance, if 100 messages are published to SNS, there can be 100 concurrent executions of the Lambda function, optimizing throughput.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qnffunmxzq1w2dn6isfy.png)
+
+However, challenges may arise due to limitations in the throughput capacities of downstream dependencies such as databases or other services. When a burst in throughput is brief, retries (with exponential back off) can usually handle any unprocessed messages, preventing message loss. However, if a burst is sustained or if a downstream dependency experiences an outage, the maximum number of retries may be exhausted, leading to message failure.
+
+When message processing fails, these messages are sent to a Dead Letter Queue (DLQ) after two unsuccessful retries. Consequently, this situation may necessitate human intervention for message recovery.
+
+Additionally, the concurrent execution of Lambda functions is subject to an account-wide limit. A high number of concurrent executions could potentially impact other AWS Lambda-dependent systems like APIs, event processing, or cron jobs.
+
+##### Kinesis + Lambda
+
+Kinesis Streams and SNS (Simple Notification Service) are different AWS services that each have unique features and use cases.
+
+Lambda interacts with these two services differently: it polls Kinesis Streams for records up to five times a second, while SNS pushes messages directly to Lambda. With Kinesis, records are received in batches up to a user-specified maximum. In contrast, SNS invokes the Lambda function with one message at a time.
+
+If a Lambda function fails to process a batch of records from Kinesis (either due to an error or a timeout), the same batch of records will be received until they are successfully processed or the data is no longer available in the stream. The parallel processing capability in Kinesis is determined by the number of shards in the stream, as there is one dedicated invocation per shard. Kinesis Streams pricing is based on the number of records pushed to the stream, shard hours, and the optional enabling of extended retention.
+
+Kinesis Streams can handle bursts in traffic and downstream outages more effectively than SNS. The maximum throughput is determined by the number of shards, maximum batch size, and reads per second, offering two levers to adjust the maximum throughput. Records are retried until success; unless the outage lasts longer than the retention policy on the stream (default is 24 hours), you will eventually be able to process the records.
+
+However, there are also operational considerations with Kinesis Streams: it's charged based on shard hours, meaning a dormant stream incurs a baseline cost. Furthermore, it lacks built-in auto-scaling capability, necessitating additional management overhead for scaling based on utilization. It's possible to build auto-scaling capabilities yourself, though.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jrrf4h7wgkivyd3dwffw.png)
+
+##### DDB Streams + Lambda
+
+Lastly, AWS offers another streaming option, DynamoDB Streams, which provides another alternative to SNS and Kinesis Streams.
+
+![img](data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='800' height='308.77500000000003'/>)![image](https://hackernoon.imgix.net/hn-images/1*3Wp0NTekhku5B6HdwpN2UQ.png?auto=format&fit=max&w=1920)
+
+DynamoDB Streams can be used as an alternative to Kinesis Streams, offering similar functionality when used with AWS Lambda. There are some operational differences worth noting:
+
+- DynamoDB Streams auto-scales the number of shards, simplifying management and scalability considerations. However, this could also lead to potentially overwhelming downstream systems during load spikes, as there's no control over the maximum number of shards a DynamoDB stream can scale up to.
+- If you're processing DynamoDB Streams with AWS Lambda, the reads from DynamoDB Streams are free, although you still have to pay for the read & write capacity units for the DynamoDB table itself.
+- Unlike Kinesis Streams, DynamoDB Streams does not offer the option to extend data retention to 7 days.
+
+The choice between Kinesis or DynamoDB Streams depends largely on your system's "source of truth". If a row being written in DynamoDB defines the state of your system, then DynamoDB Streams may be a suitable choice. On the other hand, in an event-sourced system, where the state is modelled as a sequence of events, Kinesis streams could serve as the source of truth.
+
+From a cost perspective, Kinesis Streams, despite a baseline cost, grows slower in cost with scale compared to SNS and DynamoDB Streams. However, these cost projections are based on the assumption of consistent throughput and message size, which may not reflect real-world usage.
+
+Another consideration is the aws-lambda-fanout project from awslabs, which allows Lambda functions to propagate events from Kinesis and DynamoDB Streams to other services that cannot directly subscribe to these brokers due to account/region limitations or lack of support. While this approach is beneficial for some specific needs, it also introduces added complexities, such as handling partial failures and dealing with downstream outages or misconfigurations.
+
+### Event bus
+
+An event bus can be seen as an implementation of the pub-sub pattern, where the bus serves as the central system (or broker) through which events are passed. The publishers post events onto the bus, and the subscribers listen for events on the bus. So, an event bus is a form of pub-sub system. Both focus on decoupling parts of a system to enable scalable, asynchronous processing. The event bus can be considered a more advanced or specific form of the pub-sub pattern, offering additional flexibility for routing and handling events.
+
+**Using a combination of SNS and SQS is**
+**popular for building event buses**. An SNS topic that is piped into separate SQS
 queues - in general, there is one for each event type. Subscribers, usually in
 the form of Lambda functions, are delivered messages via the queue(s) they
 subscribe to. Events are actually SNS messages that include meta-data (such as
@@ -134,6 +228,70 @@ of that type as they are published.
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2jx526h1nhbnhsizl168.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xvfb1ec9ytd7mthl4f9y.png)
+
+### Kafka
+
+In Kafka, events are also in the form of messages. Messages in Kafka are immutable, meaning that once sent, they are unable to be changed. They are also persisted in the event stream so that even after a message has been ingested by all its consumers it remains available in Kafka. If you add a new consumer or want to re-ingest messages from a certain point you can. The Extend Event Bus removes messages once they have been consumed (ephemeral).
+
+There are many differences between Event Bus and Kafka, but the high-level ones are indicated below:
+
+| **Feature**                                      | **Event Bus**                                                | **Kafka**                                                    |
+| :----------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
+| Persistent non-ephemeral messages                | ![:x:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/274c.png) | ![:white_check_mark:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/2705.png) |
+| Consumers can re-ingest messages when needed     | ![:x:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/274c.png) | ![:white_check_mark:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/2705.png) |
+| Publishing without consumers                     | ![:x:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/274c.png) | ![:white_check_mark:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/2705.png) |
+| Automatic ingest after consumer error resolution | ![:x:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/274c.png) | ![:white_check_mark:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/2705.png) |
+| Message schema registry                          | ![:x:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/274c.png) | ![:white_check_mark:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/2705.png) |
+
+(Check out the Kafka visualizer https://sturdy-doodle-d4f0fc6d.pages.github.io/ )
+
+Apache Kafka is not an event bus, but rather a distributed log storage system. 
+
+1. **Messages**: Kafka treats events as immutable messages that persist in the event stream even after consumption by all consumers. In contrast, the  Event Bus removes messages once consumed, meaning it is ephemeral.
+
+2. **Partitions**: Kafka topics are divided into partitions for horizontal scalability. Partitions also play a role in message ordering when a key is used.
+
+3. **Topic**: Kafka organizes messages into topics. Topics are string-named and can be thought of as tables in a database.
+
+   ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k5kpu27y2dmn7ocr3pkt.png)
+
+4. **Structure**: Kafka messages have a well-defined structure comprising an envelope, header (metadata including unique ID), data (actual message content), and optionally, a key (which can be used for message ordering).
+
+   ```ts
+   const message = {
+     envelope: {
+       header: {
+         ce_id: 123456789,
+         ce_time: 123456789,
+         //...
+       },
+       data: {
+         //your message content
+       },
+       key: 'foo'//optional
+     }
+   }
+   ```
+
+5. **Schemas**: Kafka makes use of schemas (written in AVRO) to define the shape of messages in each topic, allowing consumers to have confidence in what to expect from the message shape. 
+
+6. **Producer**: In Extend's Kafka implementation, each topic is owned by a single microservice, which is also the producer for the topic.
+
+7. **Consumer**: Consumers subscribe to topics. When a new consumer subscribes to an existing topic, it will ingest all existing messages, unless a custom offset is defined beforehand.
+
+8. **Consumer Group**: Consumers are always defined together in a consumer group, which can have more consumers than partitions.
+
+9. **Differences with Event Bus**: Compared to the Event Bus, Kafka supports persistent non-ephemeral messages, allows consumers to re-ingest messages when needed, enables publishing without consumers, offers automatic ingest after consumer error resolution, and provides a message schema registry.
+
+So, Kafka provides an implementation where the need for message durability, reprocessing capabilities, and a more complex data routing mechanism are critical, compared to an event bus which is simpler and ephemeral in nature.
+
+#### Regarding schemas
+
+Most event bus systems, such as Amazon's EventBridge or Google's Cloud Pub/Sub, do not natively support schemas as Apache Kafka does. They usually allow sending arbitrary data, often as a JSON object or a string, and it is up to the producers and consumers to agree on the format or schema of the data.
+
+In the case of Amazon EventBridge, AWS introduced the Schema Registry feature which allows developers to discover, create, and manage OpenAPI schemas for events on an EventBridge event bus. However, the usage and enforcement of these schemas is largely left to the individual service teams and developers.
+
+In contrast, Apache Kafka's schema management is tightly integrated with its Confluent Platform via the Schema Registry component. This allows for robust schema evolution and validation, ensuring that all producers and consumers adhere to agreed-upon message formats, thereby reducing potential issues in communication.
 
 ## Use cases
 

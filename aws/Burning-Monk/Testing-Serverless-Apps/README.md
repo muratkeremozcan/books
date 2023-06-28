@@ -226,6 +226,10 @@ For Request & Response transform, also consider [Optic](https://www.useoptic.com
 > Question to Yan: In the API gateway test strategy diagram, could we do some of the request validation, request transform and response transform with schema testing (for example with [https://useoptic.com/docs](https://t.co/dCOdJZY6DH))  and/or  consumer driven contract testing (pact) ? We are looking for ways to have less e2e, while not losing too much confidence
 >
 > Yan: You can, but you won't get the same level of confidence since Optic would be written against your service's schema / Pact tests would be written against the contract, **but you're not validating weather your configuration of API Gateway matches the schema / contract** without exercising the API endpoints in some sort of e2e tests
+>
+> If you move those into your code instead (as in, don't use API Gateway's built-in request validation, and do it in your function instead) , then the Pact tests would be much more reliable because they'd execute your code that performs those validation and transformation. So when you run your Pact tests, they'll exercise your code and you can be sure the validation logic is working. If you use API Gateway to do request validation (and I think that's better) then you won't be able to use Pact to check the request validation logic. 
+>
+> TL, DR; use e2e & API Gateway to do request validation, and you can use some lower level tests for request transform and response transform.
 
 #### Other API Gateway capabilities
 
