@@ -515,6 +515,13 @@ Regarding vendor lock-in, it as a risk but that risk has rarely materialized int
 
 In the future, serverless and containers should be used side by side, with a hybrid approach often being the most effective. Container technologies will eventually become serverless, and serverless platforms will allow users to bring their own containers, thus bridging the gap between the two technologies.
 
+- Use serverless for workloads where serverless meets their needs
+- Use containers for where it doesn’t, for example, for workloads that:
+  - are long-running
+  - require more predictable performance
+  - require more resilience than can be easily achieved with serverless
+  - run at significant scale constantly, and the pay-per-invocation pricing model becomes too costly
+
 ### [Why your business needs Serverless](https://www.jeffersonfrank.com/aws-blog/what-are-the-benefits-aws-serverless/)
 
 Serverless computing simplifies repetitive, infrastructure-heavy tasks, allowing focus on more valuable elements of projects.

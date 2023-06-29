@@ -65,165 +65,258 @@ npm run deploy
   to ensure that successfully processed items in a failed batch are not
   processed again when the batch is retried.
 
-## Patterns 
+## Patterns
 
-service-oriented architecture (SOA) is a well-known buzzword. SOA encourages
-ran architectural approach in which developers create **autonomous services that**
+service-oriented architecture (SOA) is a well-known buzzword. SOA encourages ran
+architectural approach in which developers create **autonomous services that**
 **communicate via message passing and often have a schema or a contract that**
 **defines how messages are created or exchanged**. The modern incarnation of the
 service-oriented approach is often referred to as microservices architecture.
 
 ### **GraphQL**
 
-Patterns and approaches like GraphQL are well suited to serverless
-architectures because AWS services such as AppSync are on hand and can
-integrate nicely with the rest of your architecture. GraphQL is a type of
-composite pattern that lets you aggregate data from multiple places. Reading
-and hydrating data from multiple data sources is common in web applications
-and especially so in those that adopt the microservices approach. There are
-other benefits too, including smaller payloads, avoiding the need to rebuild
-the data model, and no more versioned APIs (as compared to REST).
+Patterns and approaches like GraphQL are well suited to serverless architectures
+because AWS services such as AppSync are on hand and can integrate nicely with
+the rest of your architecture. GraphQL is a type of composite pattern that lets
+you aggregate data from multiple places. Reading and hydrating data from
+multiple data sources is common in web applications and especially so in those
+that adopt the microservices approach. There are other benefits too, including
+smaller payloads, avoiding the need to rebuild the data model, and no more
+versioned APIs (as compared to REST).
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pc091gmbi8wtfhm7l5tc.png)
 
-### **Messaging** 
+### **Messaging**
 
-software engineering patterns like messaging patterns work
-exceptionally well with serverless architectures and AWS products such as SQS.
-**Messaging patterns (figure 3.6) are popular in distributed systems because**
-**they allow developers to build scalable and robust systems by decoupling**
-**functions and services from direct dependence on one another and allowing**
-**storage of events/records/ requests in a queue**. The reliability comes from the
-fact that if the consuming service goes offline, the queue retains messages
-(for some period), which can still be processed at a later time. This pattern
-features a message queue with a sender that can post to the queue and a
-receiver that can retrieve messages from the queue. In terms of implementation
-in AWS, you can build this pattern on top of the SQS. The messaging pattern
-handles workloads and data processing. The queue serves as a buffer, so if the
-consuming service crashes, data isn’t lost. It remains in the queue until the
-service can restart and begin processing it again.
+software engineering patterns like messaging patterns work exceptionally well
+with serverless architectures and AWS products such as SQS. **Messaging patterns
+(figure 3.6) are popular in distributed systems because** **they allow
+developers to build scalable and robust systems by decoupling** **functions and
+services from direct dependence on one another and allowing** **storage of
+events/records/ requests in a queue**. The reliability comes from the fact that
+if the consuming service goes offline, the queue retains messages (for some
+period), which can still be processed at a later time. This pattern features a
+message queue with a sender that can post to the queue and a receiver that can
+retrieve messages from the queue. In terms of implementation in AWS, you can
+build this pattern on top of the SQS. The messaging pattern handles workloads
+and data processing. The queue serves as a buffer, so if the consuming service
+crashes, data isn’t lost. It remains in the queue until the service can restart
+and begin processing it again.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bn4o0isobwo8en7kat8r.png)
 
 ### Fan-out
 
-The fan-out pattern is one of the more common patterns. Knowing how to set it
-up using Amazon SNS is important to be effective with AWS. Generally, **the**
-**fan-out pattern pushes a message to all listening/subscribed clients of a**
-**particular queue or a message pipeline.** In AWS, this pattern is usually
-implemented using SNS topics that allow multiple subscribers to be invoked
-when a new message is added to a topic. The fan-out pattern is useful because
-many AWS services (such as S3) can’t invoke more than one Lambda function at a
-time when an event takes place. SNS topics are communications or messaging
-channels that can have multiple publishers and subscribers (including Lambda
-functions). When a new message is added to a topic, it forces invocation of
-all the subscribers in parallel, thus causing the event to fan out. This
-pattern is useful if you need to invoke multiple Lambda functions at the same
-time. An SNS topic will retry, invoking your Lambda functions, if it fails to
-deliver the message or if the function fails to execute (see
-https://go.aws/3DTdCEK). Furthermore, the fan-out pattern can be used for more
-than just invocation of multiple Lambda functions.
+Generally, **the** **fan-out pattern pushes a message to all
+listening/subscribed clients of a** **particular queue or a message pipeline.**
+In AWS, this pattern is usually implemented using SNS topics that allow multiple
+subscribers to be invoked when a new message is added to a topic. The fan-out
+pattern is useful because many AWS services (such as S3) can’t invoke more than
+one Lambda function at a time when an event takes place. SNS topics are
+communications or messaging channels that can have multiple publishers and
+subscribers (including Lambda functions). When a new message is added to a
+topic, it forces invocation of all the subscribers in parallel, thus causing the
+event to fan out. This pattern is useful if you need to invoke multiple Lambda
+functions at the same time. An SNS topic will retry, invoking your Lambda
+functions, if it fails to deliver the message or if the function fails to
+execute (see https://go.aws/3DTdCEK). Furthermore, the fan-out pattern can be
+used for more than just invocation of multiple Lambda functions.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pxsw0otnu731r63ruwgr.png)
 
-The fan-out/fan-in or push-pull messaging pattern is essentially two separate patterns working in tandem. Fan-out delivers messages to a pool of workers in a round-robin fashion and each message is delivered to only one worker. This allows for parallel processing and increased throughput. In cases where an expensive task is partitioned into many subtasks, fan-in is required to collect results from individual workers and aggregate them.
+The fan-out/fan-in or push-pull messaging pattern is essentially two separate
+patterns working in tandem. Fan-out delivers messages to a pool of workers in a
+round-robin fashion and each message is delivered to only one worker. This
+allows for parallel processing and increased throughput. In cases where an
+expensive task is partitioned into many subtasks, fan-in is required to collect
+results from individual workers and aggregate them.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xnt3hyqp2i2u4f05uiia.png)
 
-
-
 ##### fan-out with SNS
 
-SNS’s invocation per message policy is an ideal fit for fan-out as it optimizes for throughput and parallelism. For instance, in the case of a social media app, when a user makes a post, the post can be distributed to the followers' timelines as separate subtasks.
+SNS’s invocation per message policy is an ideal fit for fan-out as it optimizes
+for throughput and parallelism. For instance, in the case of a social media app,
+when a user makes a post, the post can be distributed to the followers'
+timelines as separate subtasks.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/79ad31kesg4iposoda7q.png)
 
 ##### fan-out with SQS (meh)
 
-SQS was traditionally used for this type of workload before AWS Lambda. Even though SQS is not directly supported as an event source for Lambda, it can still be a good choice for distributing tasks, especially if subtasks take longer than 5 minutes to complete, exceeding the maximum execution time for Lambda.
+SQS was traditionally used for this type of workload before AWS Lambda. Even
+though SQS is not directly supported as an event source for Lambda, it can still
+be a good choice for distributing tasks, especially if subtasks take longer than
+5 minutes to complete, exceeding the maximum execution time for Lambda.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rxgm5zxerctvtjnw7pm2.png)
 
 ##### What about Kinesis or DynamoDB Streams?
 
-Kinesis or DynamoDB Streams are not ideal options for fan-out since the degree of parallelism is constrained by the number of shards, and resharding is costly and lacks flexibility in DynamoDB Streams.
+Kinesis or DynamoDB Streams are not ideal options for fan-out since the degree
+of parallelism is constrained by the number of shards, and resharding is costly
+and lacks flexibility in DynamoDB Streams.
 
 ##### fan-in: collecting results from workers & tracking overall progress
 
-Fan-in involves collecting results from workers. This could be done by storing results in DynamoDB or S3, depending on the size of the results. But it's important to note that both methods can lead to hot partitions if not properly mitigated with a GUID for the job ID.
+Fan-in involves collecting results from workers. This could be done by storing
+results in DynamoDB or S3, depending on the size of the results. But it's
+important to note that both methods can lead to hot partitions if not properly
+mitigated with a GUID for the job ID.
 
-To track the overall progress of tasks, the total number of subtasks should be recorded when the ventilator function partitions the task. Each invocation of the worker function can then atomically decrement the count until it reaches 0, signaling that all the subtasks are complete. The sink function or reducer can then aggregate the individual results.
+To track the overall progress of tasks, the total number of subtasks should be
+recorded when the ventilator function partitions the task. Each invocation of
+the worker function can then atomically decrement the count until it reaches 0,
+signaling that all the subtasks are complete. The sink function or reducer can
+then aggregate the individual results.
 
-The push-pull pattern can be effectively implemented with AWS Lambda and provides a flexible solution for parallel processing of tasks and aggregating results.
+The push-pull pattern can be effectively implemented with AWS Lambda and
+provides a flexible solution for parallel processing of tasks and aggregating
+results.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/d9wbyy15ccz69hsexz1m.png)
 
-### Pub-sub 
+### Pub-sub
 
-The main difference between fan-out and pub-sub  is in their focus - the fan-out pattern emphasizes multiple, simultaneous deliveries of a message, while the pub-sub pattern emphasizes the decoupling of publishers and subscribers. The pub-sub pattern is a broader concept, of which the fan-out pattern can be considered a subset.
+The main difference between fan-out and pub-sub is in their focus - the fan-out
+pattern emphasizes multiple, simultaneous deliveries of a message, while the
+pub-sub pattern emphasizes the decoupling of publishers and subscribers. The
+pub-sub pattern is a broader concept, of which the fan-out pattern can be
+considered a subset.
 
-In the pub-sub pattern, one part of the system (the publisher) sends messages without knowing what parts of the system (the subscribers) will receive the message. The main advantage of this model is that it decouples the senders and receivers, allowing them to evolve separately. Amazon SNS also provides pub-sub messaging and mobile notifications for microservices, distributed systems, and serverless applications. Subscribers can include SQS queues, Lambda functions, HTTP/S webhooks, email, SMS, mobile push notifications, and more. In essence, both patterns are about decoupling components in a distributed system to create more flexible and scalable architectures. 
+In the pub-sub pattern, one part of the system (the publisher) sends messages
+without knowing what parts of the system (the subscribers) will receive the
+message. The main advantage of this model is that it decouples the senders and
+receivers, allowing them to evolve separately. Amazon SNS also provides pub-sub
+messaging and mobile notifications for microservices, distributed systems, and
+serverless applications. Subscribers can include SQS queues, Lambda functions,
+HTTP/S webhooks, email, SMS, mobile push notifications, and more. In essence,
+both patterns are about decoupling components in a distributed system to create
+more flexible and scalable architectures.
 
 ##### SNS + Lambda
 
-Publish-Subscribe (pub-sub) is a decoupled messaging pattern where messages are transferred between publishers and subscribers through an intermediary broker such as ZeroMQ, RabbitMQ, or AWS SNS.
+Publish-Subscribe (pub-sub) is a decoupled messaging pattern where messages are
+transferred between publishers and subscribers through an intermediary broker
+such as ZeroMQ, RabbitMQ, or AWS SNS.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ea33tajnbxzzkzszusw1.png)
 
-In the context of the AWS ecosystem, SNS (Simple Notification Service) acts as the broker, with Lambda functions acting as the receivers of the messages. Each SNS message triggers a new invocation of the subscribed Lambda function, enabling high levels of parallel processing. For instance, if 100 messages are published to SNS, there can be 100 concurrent executions of the Lambda function, optimizing throughput.
+In the context of the AWS ecosystem, SNS (Simple Notification Service) acts as
+the broker, with Lambda functions acting as the receivers of the messages. Each
+SNS message triggers a new invocation of the subscribed Lambda function,
+enabling high levels of parallel processing. For instance, if 100 messages are
+published to SNS, there can be 100 concurrent executions of the Lambda function,
+optimizing throughput.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qnffunmxzq1w2dn6isfy.png)
 
-However, challenges may arise due to limitations in the throughput capacities of downstream dependencies such as databases or other services. When a burst in throughput is brief, retries (with exponential back off) can usually handle any unprocessed messages, preventing message loss. However, if a burst is sustained or if a downstream dependency experiences an outage, the maximum number of retries may be exhausted, leading to message failure.
+However, challenges may arise due to limitations in the throughput capacities of
+downstream dependencies such as databases or other services. When a burst in
+throughput is brief, retries (with exponential back off) can usually handle any
+unprocessed messages, preventing message loss. However, if a burst is sustained
+or if a downstream dependency experiences an outage, the maximum number of
+retries may be exhausted, leading to message failure.
 
-When message processing fails, these messages are sent to a Dead Letter Queue (DLQ) after two unsuccessful retries. Consequently, this situation may necessitate human intervention for message recovery.
+When message processing fails, these messages are sent to a Dead Letter Queue
+(DLQ) after two unsuccessful retries. Consequently, this situation may
+necessitate human intervention for message recovery.
 
-Additionally, the concurrent execution of Lambda functions is subject to an account-wide limit. A high number of concurrent executions could potentially impact other AWS Lambda-dependent systems like APIs, event processing, or cron jobs.
+Additionally, the concurrent execution of Lambda functions is subject to an
+account-wide limit. A high number of concurrent executions could potentially
+impact other AWS Lambda-dependent systems like APIs, event processing, or cron
+jobs.
 
 ##### Kinesis + Lambda
 
-Kinesis Streams and SNS (Simple Notification Service) are different AWS services that each have unique features and use cases.
+Kinesis Streams and SNS (Simple Notification Service) are different AWS services
+that each have unique features and use cases.
 
-Lambda interacts with these two services differently: it polls Kinesis Streams for records up to five times a second, while SNS pushes messages directly to Lambda. With Kinesis, records are received in batches up to a user-specified maximum. In contrast, SNS invokes the Lambda function with one message at a time.
+Lambda interacts with these two services differently: it polls Kinesis Streams
+for records up to five times a second, while SNS pushes messages directly to
+Lambda. With Kinesis, records are received in batches up to a user-specified
+maximum. In contrast, SNS invokes the Lambda function with one message at a
+time.
 
-If a Lambda function fails to process a batch of records from Kinesis (either due to an error or a timeout), the same batch of records will be received until they are successfully processed or the data is no longer available in the stream. The parallel processing capability in Kinesis is determined by the number of shards in the stream, as there is one dedicated invocation per shard. Kinesis Streams pricing is based on the number of records pushed to the stream, shard hours, and the optional enabling of extended retention.
+If a Lambda function fails to process a batch of records from Kinesis (either
+due to an error or a timeout), the same batch of records will be received until
+they are successfully processed or the data is no longer available in the
+stream. The parallel processing capability in Kinesis is determined by the
+number of shards in the stream, as there is one dedicated invocation per shard.
+Kinesis Streams pricing is based on the number of records pushed to the stream,
+shard hours, and the optional enabling of extended retention.
 
-Kinesis Streams can handle bursts in traffic and downstream outages more effectively than SNS. The maximum throughput is determined by the number of shards, maximum batch size, and reads per second, offering two levers to adjust the maximum throughput. Records are retried until success; unless the outage lasts longer than the retention policy on the stream (default is 24 hours), you will eventually be able to process the records.
+Kinesis Streams can handle bursts in traffic and downstream outages more
+effectively than SNS. The maximum throughput is determined by the number of
+shards, maximum batch size, and reads per second, offering two levers to adjust
+the maximum throughput. Records are retried until success; unless the outage
+lasts longer than the retention policy on the stream (default is 24 hours), you
+will eventually be able to process the records.
 
-However, there are also operational considerations with Kinesis Streams: it's charged based on shard hours, meaning a dormant stream incurs a baseline cost. Furthermore, it lacks built-in auto-scaling capability, necessitating additional management overhead for scaling based on utilization. It's possible to build auto-scaling capabilities yourself, though.
+However, there are also operational considerations with Kinesis Streams: it's
+charged based on shard hours, meaning a dormant stream incurs a baseline cost.
+Furthermore, it lacks built-in auto-scaling capability, necessitating additional
+management overhead for scaling based on utilization. It's possible to build
+auto-scaling capabilities yourself, though.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jrrf4h7wgkivyd3dwffw.png)
 
 ##### DDB Streams + Lambda
 
-Lastly, AWS offers another streaming option, DynamoDB Streams, which provides another alternative to SNS and Kinesis Streams.
+Lastly, AWS offers another streaming option, DynamoDB Streams, which provides
+another alternative to SNS and Kinesis Streams.
 
 ![img](data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='800' height='308.77500000000003'/>)![image](https://hackernoon.imgix.net/hn-images/1*3Wp0NTekhku5B6HdwpN2UQ.png?auto=format&fit=max&w=1920)
 
-DynamoDB Streams can be used as an alternative to Kinesis Streams, offering similar functionality when used with AWS Lambda. There are some operational differences worth noting:
+DynamoDB Streams can be used as an alternative to Kinesis Streams, offering
+similar functionality when used with AWS Lambda. There are some operational
+differences worth noting:
 
-- DynamoDB Streams auto-scales the number of shards, simplifying management and scalability considerations. However, this could also lead to potentially overwhelming downstream systems during load spikes, as there's no control over the maximum number of shards a DynamoDB stream can scale up to.
-- If you're processing DynamoDB Streams with AWS Lambda, the reads from DynamoDB Streams are free, although you still have to pay for the read & write capacity units for the DynamoDB table itself.
-- Unlike Kinesis Streams, DynamoDB Streams does not offer the option to extend data retention to 7 days.
+- DynamoDB Streams auto-scales the number of shards, simplifying management and
+  scalability considerations. However, this could also lead to potentially
+  overwhelming downstream systems during load spikes, as there's no control over
+  the maximum number of shards a DynamoDB stream can scale up to.
+- If you're processing DynamoDB Streams with AWS Lambda, the reads from DynamoDB
+  Streams are free, although you still have to pay for the read & write capacity
+  units for the DynamoDB table itself.
+- Unlike Kinesis Streams, DynamoDB Streams does not offer the option to extend
+  data retention to 7 days.
 
-The choice between Kinesis or DynamoDB Streams depends largely on your system's "source of truth". If a row being written in DynamoDB defines the state of your system, then DynamoDB Streams may be a suitable choice. On the other hand, in an event-sourced system, where the state is modelled as a sequence of events, Kinesis streams could serve as the source of truth.
+The choice between Kinesis or DynamoDB Streams depends largely on your system's
+"source of truth". If a row being written in DynamoDB defines the state of your
+system, then DynamoDB Streams may be a suitable choice. On the other hand, in an
+event-sourced system, where the state is modelled as a sequence of events,
+Kinesis streams could serve as the source of truth.
 
-From a cost perspective, Kinesis Streams, despite a baseline cost, grows slower in cost with scale compared to SNS and DynamoDB Streams. However, these cost projections are based on the assumption of consistent throughput and message size, which may not reflect real-world usage.
+From a cost perspective, Kinesis Streams, despite a baseline cost, grows slower
+in cost with scale compared to SNS and DynamoDB Streams. However, these cost
+projections are based on the assumption of consistent throughput and message
+size, which may not reflect real-world usage.
 
-Another consideration is the aws-lambda-fanout project from awslabs, which allows Lambda functions to propagate events from Kinesis and DynamoDB Streams to other services that cannot directly subscribe to these brokers due to account/region limitations or lack of support. While this approach is beneficial for some specific needs, it also introduces added complexities, such as handling partial failures and dealing with downstream outages or misconfigurations.
+Another consideration is the aws-lambda-fanout project from awslabs, which
+allows Lambda functions to propagate events from Kinesis and DynamoDB Streams to
+other services that cannot directly subscribe to these brokers due to
+account/region limitations or lack of support. While this approach is beneficial
+for some specific needs, it also introduces added complexities, such as handling
+partial failures and dealing with downstream outages or misconfigurations.
 
 ### Event bus
 
-An event bus can be seen as an implementation of the pub-sub pattern, where the bus serves as the central system (or broker) through which events are passed. The publishers post events onto the bus, and the subscribers listen for events on the bus. So, an event bus is a form of pub-sub system. Both focus on decoupling parts of a system to enable scalable, asynchronous processing. The event bus can be considered a more advanced or specific form of the pub-sub pattern, offering additional flexibility for routing and handling events.
+An event bus can be seen as an implementation of the pub-sub pattern, where the
+bus serves as the central system (or broker) through which events are passed.
+The publishers post events onto the bus, and the subscribers listen for events
+on the bus. So, an event bus is a form of pub-sub system. Both focus on
+decoupling parts of a system to enable scalable, asynchronous processing. The
+event bus can be considered a more advanced or specific form of the pub-sub
+pattern, offering additional flexibility for routing and handling events.
 
-**Using a combination of SNS and SQS is**
-**popular for building event buses**. An SNS topic that is piped into separate SQS
-queues - in general, there is one for each event type. Subscribers, usually in
-the form of Lambda functions, are delivered messages via the queue(s) they
-subscribe to. Events are actually SNS messages that include meta-data (such as
-the event type) and a payload. Within a microservice, each subscribed event will
-have a corresponding SQS handler (a lambda) whose job it is to handle all events
-of that type as they are published.
+**Using a combination of SNS and SQS is** **popular for building event buses**.
+An SNS topic that is piped into separate SQS queues - in general, there is one
+for each event type. Subscribers, usually in the form of Lambda functions, are
+delivered messages via the queue(s) they subscribe to. Events are actually SNS
+messages that include meta-data (such as the event type) and a payload. Within a
+microservice, each subscribed event will have a corresponding SQS handler (a
+lambda) whose job it is to handle all events of that type as they are published.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2jx526h1nhbnhsizl168.png)
 
@@ -231,31 +324,45 @@ of that type as they are published.
 
 ### Kafka
 
-In Kafka, events are also in the form of messages. Messages in Kafka are immutable, meaning that once sent, they are unable to be changed. They are also persisted in the event stream so that even after a message has been ingested by all its consumers it remains available in Kafka. If you add a new consumer or want to re-ingest messages from a certain point you can. The Extend Event Bus removes messages once they have been consumed (ephemeral).
+In Kafka, events are also in the form of messages. Messages in Kafka are
+immutable, meaning that once sent, they are unable to be changed. They are also
+persisted in the event stream so that even after a message has been ingested by
+all its consumers it remains available in Kafka. If you add a new consumer or
+want to re-ingest messages from a certain point you can. In contrast, the Event
+Bus removes messages once they have been consumed (ephemeral).
 
-There are many differences between Event Bus and Kafka, but the high-level ones are indicated below:
+There are many differences between Event Bus and Kafka, but the high-level ones
+are indicated below:
 
-| **Feature**                                      | **Event Bus**                                                | **Kafka**                                                    |
-| :----------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
+| **Feature**                                      | **Event Bus**                                                                                                                         | **Kafka**                                                                                                                                            |
+| :----------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Persistent non-ephemeral messages                | ![:x:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/274c.png) | ![:white_check_mark:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/2705.png) |
 | Consumers can re-ingest messages when needed     | ![:x:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/274c.png) | ![:white_check_mark:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/2705.png) |
 | Publishing without consumers                     | ![:x:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/274c.png) | ![:white_check_mark:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/2705.png) |
 | Automatic ingest after consumer error resolution | ![:x:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/274c.png) | ![:white_check_mark:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/2705.png) |
 | Message schema registry                          | ![:x:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/274c.png) | ![:white_check_mark:](https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/caa27a19-fc09-4452-b2b4-a301552fd69c/64x64/2705.png) |
 
-(Check out the Kafka visualizer https://sturdy-doodle-d4f0fc6d.pages.github.io/ )
+(Check out the Kafka visualizer https://sturdy-doodle-d4f0fc6d.pages.github.io/
+)
 
-Apache Kafka is not an event bus, but rather a distributed log storage system. 
+Apache Kafka is not an event bus, but rather a distributed log storage system.
 
-1. **Messages**: Kafka treats events as immutable messages that persist in the event stream even after consumption by all consumers. In contrast, the  Event Bus removes messages once consumed, meaning it is ephemeral.
+1. **Messages**: Kafka treats events as immutable messages that persist in the
+   event stream even after consumption by all consumers. In contrast, the Event
+   Bus removes messages once consumed, meaning it is ephemeral.
 
-2. **Partitions**: Kafka topics are divided into partitions for horizontal scalability. Partitions also play a role in message ordering when a key is used.
+2. **Partitions**: Kafka topics are divided into partitions for horizontal
+   scalability. Partitions also play a role in message ordering when a key is
+   used.
 
-3. **Topic**: Kafka organizes messages into topics. Topics are string-named and can be thought of as tables in a database.
+3. **Topic**: Kafka organizes messages into topics. Topics are string-named and
+   can be thought of as tables in a database.
 
    ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k5kpu27y2dmn7ocr3pkt.png)
 
-4. **Structure**: Kafka messages have a well-defined structure comprising an envelope, header (metadata including unique ID), data (actual message content), and optionally, a key (which can be used for message ordering).
+4. **Structure**: Kafka messages have a well-defined structure comprising an
+   envelope, header (metadata including unique ID), data (actual message
+   content), and optionally, a key (which can be used for message ordering).
 
    ```ts
    const message = {
@@ -268,79 +375,106 @@ Apache Kafka is not an event bus, but rather a distributed log storage system.
        data: {
          //your message content
        },
-       key: 'foo'//optional
-     }
+       key: 'foo', //optional
+     },
    }
    ```
 
-5. **Schemas**: Kafka makes use of schemas (written in AVRO) to define the shape of messages in each topic, allowing consumers to have confidence in what to expect from the message shape. 
+5. **Schemas**: Kafka makes use of schemas (written in AVRO) to define the shape
+   of messages in each topic, allowing consumers to have confidence in what to
+   expect from the message shape.
 
-6. **Producer**: In Extend's Kafka implementation, each topic is owned by a single microservice, which is also the producer for the topic.
+6. **Producer**: In Extend's Kafka implementation, each topic is owned by a
+   single microservice, which is also the producer for the topic.
 
-7. **Consumer**: Consumers subscribe to topics. When a new consumer subscribes to an existing topic, it will ingest all existing messages, unless a custom offset is defined beforehand.
+7. **Consumer**: Consumers subscribe to topics. When a new consumer subscribes
+   to an existing topic, it will ingest all existing messages, unless a custom
+   offset is defined beforehand.
 
-8. **Consumer Group**: Consumers are always defined together in a consumer group, which can have more consumers than partitions.
+8. **Consumer Group**: Consumers are always defined together in a consumer
+   group, which can have more consumers than partitions.
 
-9. **Differences with Event Bus**: Compared to the Event Bus, Kafka supports persistent non-ephemeral messages, allows consumers to re-ingest messages when needed, enables publishing without consumers, offers automatic ingest after consumer error resolution, and provides a message schema registry.
+9. **Differences with Event Bus**: Compared to the Event Bus, Kafka supports
+   persistent non-ephemeral messages, allows consumers to re-ingest messages
+   when needed, enables publishing without consumers, offers automatic ingest
+   after consumer error resolution, and provides a message schema registry.
 
-So, Kafka provides an implementation where the need for message durability, reprocessing capabilities, and a more complex data routing mechanism are critical, compared to an event bus which is simpler and ephemeral in nature.
+So, Kafka provides an implementation where the need for message durability,
+reprocessing capabilities, and a more complex data routing mechanism are
+critical, compared to an event bus which is simpler and ephemeral in nature.
 
 #### Regarding schemas
 
-Most event bus systems, such as Amazon's EventBridge or Google's Cloud Pub/Sub, do not natively support schemas as Apache Kafka does. They usually allow sending arbitrary data, often as a JSON object or a string, and it is up to the producers and consumers to agree on the format or schema of the data.
+Most event bus systems, such as Amazon's EventBridge or Google's Cloud Pub/Sub,
+do not natively support schemas as Apache Kafka does. They usually allow sending
+arbitrary data, often as a JSON object or a string, and it is up to the
+producers and consumers to agree on the format or schema of the data.
 
-In the case of Amazon EventBridge, AWS introduced the Schema Registry feature which allows developers to discover, create, and manage OpenAPI schemas for events on an EventBridge event bus. However, the usage and enforcement of these schemas is largely left to the individual service teams and developers.
+In the case of Amazon EventBridge, AWS introduced the Schema Registry feature
+which allows developers to discover, create, and manage OpenAPI schemas for
+events on an EventBridge event bus. However, the usage and enforcement of these
+schemas is largely left to the individual service teams and developers.
 
-In contrast, Apache Kafka's schema management is tightly integrated with its Confluent Platform via the Schema Registry component. This allows for robust schema evolution and validation, ensuring that all producers and consumers adhere to agreed-upon message formats, thereby reducing potential issues in communication.
+In contrast, Apache Kafka's schema management is tightly integrated with its
+Confluent Platform via the Schema Registry component. This allows for robust
+schema evolution and validation, ensuring that all producers and consumers
+adhere to agreed-upon message formats, thereby reducing potential issues in
+communication.
 
-## Use cases
+## Use cases (Serverless vs Containers, Kinesis Services, and Cost Efficiency in AWS Serverless Architecture)
+
+> Also check out
+> [Serverless vs Containers](../yans-blog-posts.md#serverless-vs-containers)
 
 - Fargate, also an AWS service, lets you run containers without having to worry
   about underlying virtual machines. It’s part of an emerging trend for
   serverless containers, where you use containers as a utility service.
-- With API Gateway and Lambda, you pay for individual API requests. Fargate, on
-  the other hand, charges a per-hour amount based on the vCPU, memory, and
+- With API Gateway and Lambda, you pay for individual API requests. **Fargate**,
+  on the other hand, charges a per-hour amount based on the vCPU, memory, and
   storage resources that your containers use. You incur costs for as long as the
-  containers run, even if they don’t serve any user traffic. Paying for up time
-  can be inefficient for APIs that don’t receive a lot of requests. For example,
-  an API that receives a few thousand requests a day would cost significantly
-  less using API Gateway and Lambda. This is especially true when you consider
-  that you need some redundancy to ensure that your API stays up and running
-  even if a container fails or if one of the AWS availability zones (AZs)
-  hosting your containers experiences an outage. However, for high throughput
-  APIs like the Yle API, which handles hundreds of millions of requests per day,
-  running the API in Fargate can be more economical than using API Gateway and
-  Lambda.
-- An emerging trend is that of serverless containers; that is, leveraging
-  containers instead of functions to implement the custom logic and using the
-  container as a utility service and incurring costs only when the container
-  runs. Services like AWS Fargate or Google Cloud Run offer this capability. The
-  difference between the two (functions vs. containers) is just the degree to
-  which developers want to shift the boundaries of shared responsibilities.
-  Containers give you a bit more control over user space libraries and network
-  capabilities. Containers are an evolution of the existing server-based/VM
-  model, offering an easy packaging and deployment model for your application
-  stack. You are still required to define your operating system’s requirements,
-  your desired language stack, and dependencies to deploy code, which means you
-  continue to carry some of the infrastructure complexity. For
-- Because of these scaling limits, AWS API Gateway and Lambda are not a good fit
-  for APIs with extremely spiky traffic. It’s the main reason why the Yle team
-  opted to build their API with Fargate, and that was a sensible decision.
-- In general, AWS services that charge you based on up time tend to be orders of
-  magnitude cheaper when running at scale, compared with those that charge based
-  on request count. And the bigger the scale, the more you need to batch events
-  for cost and efficiency. After all, processing 1,000 events with a single
-  Lambda invocation is far cheaper and more efficient than processing those with
-  1,000 Lambda invocations.Ingestion of data such as logs, system events,
-  transactions, or user clicks can be accomplished using services such as Amazon
-  Kinesis Data Streams and Amazon Kinesis Firehose. Kinesis Data Streams and
-  Lambda functions are a good fit for applications that generate a lot of data
-  that needs to be analyzed, aggregated, and stored. When it comes to Kinesis,
-  the number of functions spawned to process messages from a stream is the same
-  as the number of shards (therefore, there’s one Lambda function per shard
-- Amazon Kinesis Firehose is another Kinesis service designed to ingest
-  gigabytes of streaming data and then push it into other services like S3,
-  RedShift, or Elasticsearch for further analytics. Firehose is a true
+  containers run, even if they don’t serve any user traffic. P**aying for up
+  time** **can be inefficient for APIs that don’t receive a lot of requests. For
+  example,** **an API that receives a few thousand requests a day would cost
+  significantly** **less using API Gateway and Lambda.** This is especially true
+  when you consider that you need some redundancy to ensure that your API stays
+  up and running even if a container fails or if one of the AWS availability
+  zones (AZs) hosting your containers experiences an outage. **However, for high
+  throughput** **APIs like the Yle API, which handles hundreds of millions of
+  requests per day,** **running the API in Fargate can be more economical than
+  using API Gateway and** **Lambda.**
+- An emerging trend is that of **serverless containers; that is, leveraging**
+  **containers instead of functions to implement the custom logic and using
+  the** **container as a utility service and incurring costs only when the
+  container** **runs.** Services like AWS Fargate or Google Cloud Run offer this
+  capability. The difference between the two (functions vs. containers) is just
+  the degree to which developers want to shift the boundaries of shared
+  responsibilities. Containers give you a bit more control over user space
+  libraries and network capabilities. Containers are an evolution of the
+  existing server-based/VM model, offering an easy packaging and deployment
+  model for your application stack. You are still required to define your
+  operating system’s requirements, your desired language stack, and dependencies
+  to deploy code, which means you continue to carry some of the infrastructure
+  complexity. For
+- **Because of these scaling limits, AWS API Gateway and Lambda are not a good
+  fit** **for APIs with extremely spiky traffic**. It’s the main reason why the
+  Yle team opted to build their API with Fargate, and that was a sensible
+  decision.
+- **In general, AWS services that charge you based on up time tend to be orders
+  of** **magnitude cheaper when running at scale, compared with those that
+  charge based** **on request count**. And the bigger the scale, the more you
+  need to batch events for cost and efficiency. After all, processing 1,000
+  events with a single Lambda invocation is far cheaper and more efficient than
+  processing those with 1,000 Lambda invocations.
+- Ingestion of data such as logs, system events, transactions, or user clicks
+  can be accomplished using services such as Amazon Kinesis Data Streams and
+  Amazon Kinesis Firehose. **Kinesis Data Streams and Lambda functions are a
+  good fit for applications that generate a lot of data that needs to be
+  analyzed, aggregated, and stored**. When it comes to Kinesis, the number of
+  functions spawned to process messages from a stream is the same as the number
+  of shards (therefore, there’s one Lambda function per shard)
+- Amazon **Kinesis Firehose is another Kinesis service designed to ingest**
+  **gigabytes of streaming data and then push it into other services like S3,**
+  **RedShift, or Elasticsearch for further analytics**. Firehose is a true
   serverless service because it is fully managed, it scales automatically
   depending on the volume of data coming in, and there’s no need to think about
   sharding as is the case with Kinesis Data Streams.
@@ -361,11 +495,11 @@ In contrast, Apache Kafka's schema management is tightly integrated with its Con
   only captures and stores data, but also can batch, compress, transform, and
   encrypt the data before delivering it to specified destinations.
 
-- To understand which service limits affect your application, look at every
-  service along the way and build a projection of how throughput changes with
-  user traffic. Take Yle’s case: as the number of concurrent users goes up,
-  there’s more traffic going through the ingestion API running in Fargate.
-
+- **To understand which service limits affect your application, look at every**
+  **service along the way and build a projection of how throughput changes
+  with** **user traffic**. Take Yle’s case: as the number of concurrent users
+  goes up, there’s more traffic going through the ingestion API running in
+  Fargate.
   - How does this increase affect the throughput that needs to be processed by
     Kinesis and, therefore, the number of shards that need to be provisioned?
   - Based on the current BatchSize and ParallelizationFactor configurations, how
@@ -375,29 +509,27 @@ In contrast, Apache Kafka's schema management is tightly integrated with its Con
     to each Kinesis Firehose stream?
   - Does your current throughput limit for Kinesis Data Firehose support that
     many events per second?
-
 - As you introduce more moving parts into your architecture and process more
   throughput, you should also pay more attention to your timeout and retry
-  configurations. There are two problems that often plague applications that
-  operate at scale:
-
-  - Thundering herd —A large number of processes waiting for an event are awaken
-    at the same time, but there aren’t enough resources to handle the requests
-    from all these newly awaken processes. This creates a lot of resource
-    contention, potentially causing the system to grind to a halt or fail over.
+  configurations. **There are two problems that often plague applications that**
+  **operate at scale:**
+  - **Thundering herd** —A large number of processes waiting for an event are
+    awaken at the same time, but there aren’t enough resources to handle the
+    requests from all these newly awaken processes. This creates a lot of
+    resource contention, potentially causing the system to grind to a halt or
+    fail over.
   - Retry storm—An anti-pattern in client-server communications. When a server
     becomes unhealthy, the client retries aggressively, which multiplies the
     volume of requests to the remaining healthy servers and, in turn, causes
     them to timeout or fail. This triggers even more retries and exacerbates the
     problem even further. Retries are a simple and effective way to handle most
-    intermittent problems, but setting these needs to be done with care. A good
-    practice is to use exponential backoff between retry attempts and the
-    circuit breaker pattern to mitigate the risk of retry storms
+    intermittent problems, but setting these needs to be done with care. **A
+    good** **practice is to use exponential backoff between retry attempts and
+    the** **circuit breaker pattern to mitigate the risk of retry storms**
     (https://martinfowler.com/bliki/CircuitBreaker.html).
-
 - The cost of Lambda is usually a small part of the overall cost of a serverless
-  application. In fact, in most production systems, the cost of Lambda often
-  pales in comparison with the cost of CloudWatch metrics, logs, and alarms.
+  application. In fact, **in most production systems, the cost of Lambda often**
+  **pales in comparison with the cost of CloudWatch metrics, logs, and alarms.**
 
 ## Practicum - things to consider when building your serverless architecture
 
@@ -410,26 +542,26 @@ scores with you and our rationale for these scores. We hope through these
 exercises you have gained some insights into how we approach problem solving and
 the considerations that goes into evaluating a potential solution:
 
-- What are the relevant service limits and how do they affect the scalability
-  requirements of the application?
-- What are the performance characteristics of the services in question and do
-  they match up with the application’s needs?
-- How are the services charged? Project the cost of the application by thinking
-  through how the application would need to use these AWS services and applying
-  the services’ billing model to that usage pattern.
+- **What are the relevant service limits and how do they affect the
+  scalability** **requirements of the application?**
+- **What are the performance characteristics of the services in question and
+  do** **they match up with the application’s needs?**
+- **How are the services charged? Project the cost of the application by
+  thinking** **through how the application would need to use these AWS services
+  and applying** **the services’ billing model to that usage pattern.**
 
 ## Parallel Computing
 
-- MapReduce can work really well with a serverless approach. Lambda invites you
-  to think about parallelization from the start so take advantage of that.
-- You can solve a lot of problems in Lambda and process vast amounts of data by
-  splitting it up into smaller chunks and parallelizing the operations.
-- Step Functions is an excellent service for defining workflows. It allows you
-  to fan-out and fan-in operations.
-- EFS for Lambda is an endless local disk—it grows as much as you need. You can
-  run applications with EFS and Lambda that you couldn’t have run before. Having
-  said that, S3 is still likely to be cheaper so make sure to do your
-  calculations and analysis before choosing EFS.
+- **MapReduce** can work really well with a serverless approach. Lambda invites
+  you to think about parallelization from the start so take advantage of that.
+- **You can solve a lot of problems in Lambda and process vast amounts of data
+  by** **splitting it up into smaller chunks and parallelizing the operations**.
+- **Step Functions** is an excellent service for defining workflows. It allows
+  you to fan-out and fan-in operations.
+- **Elastic File System (EFS)** for Lambda is an endless local disk—it grows as
+  much as you need. You can run applications with EFS and Lambda that you
+  couldn’t have run before. Having said that, **S3 is still likely to be cheaper
+  so make sure to do your** **calculations and analysis before choosing EFS.**
 - You can solve problems in different ways: You don’t have to use Step Functions
   because you can use SNS (although Step Functions adds an additional level of
   robustness and visibility). You don’t need to use EFS because you can use S3.
@@ -438,50 +570,49 @@ the considerations that goes into evaluating a potential solution:
 
 ## Code scoring service example
 
-- As a rule of thumb, you should use multiple Lambda functions when you are
-  dealing with different concerns rather than having everything lumped into one.
-  Hence, this is the reason we created two functions and introduced a message
-  queue between them.
+- **As a rule of thumb, you should use multiple Lambda functions when you are**
+  **dealing with different concerns rather than having everything lumped into
+  one.** Hence, this is the reason we created **two functions and introduced a
+  message** **queue between them.**
 
-- Another question you may have is why we used SQS rather than have functions
-  call one another directly. Our recommendation is never to have functions call
-  each other directly unless you are using a feature called Lambda Destinations
-  (which adds a hidden queue between two functions anyway). Lambda Destinations,
-  however, only works for asynchronous invocations, so it wouldn’t have been
-  possible in our case. The reason for having a queue between two functions is
-  to reduce coupling (e.g., the two functions have no direct knowledge of one
-  another) and to have an easier time handling errors and retries.
+- A**nother question you may have is why we used SQS rather than have
+  functions** **call one another directly. Our recommendation is never to have
+  functions call** **each other directly unless you are using a feature called
+  Lambda Destinations** (which adds a hidden queue between two functions
+  anyway)**. Lambda Destinations,** **however, only works for asynchronous
+  invocations**, so it wouldn’t have been possible in our case. **The reason for
+  having a queue between two functions is** **to reduce coupling (e.g., the two
+  functions have no direct knowledge of one** **another) and to have an easier
+  time handling errors and retries.**
 
-- Amazon EventBridge is a serverless event bus that can connect different AWS
-  (and non-AWS) services. It has a few great features that services like SQS,
-  SNS, and Kinesis do not possess. Chief among them is the ability to use more
-  than 90 AWS services as event sources and 17 services as targets, automated
-  scaling, content-based filtering, schema discovery, and input transformation.
-  But like any other technology, it has certain deficiencies like no guarantee
-  on ordering of events or buffering. As always, what you end up choosing should
-  depend on your requirements and the capabilities of the product you are using.
+- **Amazon EventBridge is a serverless event bus that can connect different
+  AWS** **(and non-AWS) services**. It has a few great features that services
+  like SQS, SNS, and Kinesis do not possess. Chief among them is the ability to
+  use more than 90 AWS services as event sources and 17 services as targets,
+  automated scaling, content-based filtering, schema discovery, and input
+  transformation. But like any other technology, **it has certain deficiencies
+  like no guarantee** **on ordering of events or buffering.** As always, what
+  you end up choosing should depend on your requirements and the capabilities of
+  the product you are using.
 
-- AWS Glue is a serverless ETL (extract, transform, and load) service that can
+- **AWS Glue is a serverless ETL (extract, transform, and load) service that can
   scour an S3 bucket with a crawler and update a central metadata repository
-  called the Glue Data Catalog. You and other services can then use this
+  called the Glue Data Catalog.** You and other services can then use this
   metadata repository to quickly search for relevant information among the
   records scattered in S3. Glue never actually moves or copies any data. The
   tables with metadata it creates in the Glue Data Catalog point to the data in
   S3 (or other sources like Amazon Redshift or RDS). This means that the Data
   Catalog can be recreated from the original data if necessary.
-
-- Amazon Athena is a serverless query service that can analyze data in S3 using
-  standard SQL. If you haven’t tried Athena, you have to give it a go. You
-  simply point it to S3, define the schema, and begin querying using SQL. What’s
-  even nicer is that it integrates closely with Glue and its Data Catalog (which
-  takes care of the schema). Once you have AWS Glue configured and the Data
-  Catalog created, you can begin querying Athena immediately.
-
-- Amazon QuickSight is AWS’s Business Intelligence (BI) service in the vein of
-  Tableau.
-
-- Amazon Redshift is primarily used for data analytics. Here are some specific
-  applications:
+- **Amazon Athena is a serverless query service that can analyze data in S3
+  using standard SQL. I**f you haven’t tried Athena, you have to give it a go.
+  You simply point it to S3, define the schema, and begin querying using SQL.
+  What’s even nicer is that it integrates closely with Glue and its Data Catalog
+  (which takes care of the schema). Once you have AWS Glue configured and the
+  Data Catalog created, you can begin querying Athena immediately.
+- **Amazon QuickSight is AWS’s Business Intelligence (BI) service in the vein of
+  Tableau.**
+- **Amazon Redshift is primarily used for data analytics.** Here are some
+  specific applications:
 
   1. **Data Warehousing**: Amazon Redshift is designed to handle large volumes
      of data, from a few hundred gigabytes to a petabyte or more. This makes it
@@ -512,7 +643,6 @@ the considerations that goes into evaluating a potential solution:
   do your evaluation first. Are they capable of meeting all of your
   requirements? Is there a situation where, in your case, Amazon Redshift may be
   better?
-
 - Athena’s charges are based on the amount of data scanned in each query;
   Redshift is priced based on the size of the instance. There could be
   circumstances where Athena is cheaper, but Redshift is faster, so you should
@@ -533,39 +663,38 @@ the considerations that goes into evaluating a potential solution:
   - Kinesis Firehose has a fantastic feature that allows you to modify records
     before they get to whatever destination they are going to. This is a
     fantastic feature that’s worth the price of admission.
-  - Do not have Lambda functions call each directly unless you are using Lambda
-    Destinations. Always use a queue like SQS or EventBridge if Lambda
-    Destinations is not available.
+  - **Do not have Lambda functions call each directly unless you are using
+    Lambda** **Destinations. Always use a queue like SQS or EventBridge if
+    Lambda** **Destinations is not available.**
   - EventBridge is an excellent message bus for use within AWS. Apart from not
     having FIFO functionality (this could change by the time you read this), it
     has a ton of excellent features, and we highly recommended it.
 
 ## Lambda best practices
 
-- As a reminder, you incur the cold start penalty only in two situations. First,
-  you’ll see cold starts if your function has never been invoked before or is
-  being invoked after an extended period (such that all cached execution
-  environments are removed). Second, you’ll see cold starts if there is an
-  increase in the incoming request rate such that AWS Lambda needs to spawn new
-  execution environments because all available ones are servicing requests.
-
-- We see that increasing the memory in this case keeps the cost relatively flat,
-  while increasing the performance ~10x. You’ll typically see these kind of
-  gains for CPU-bound functions like image processing; more resources can help
-  the function run faster without changing the costs. For I/O-bound operations
-  (such as those waiting for a downstream service to respond), you’ll see no
-  benefit in increasing the resource allocation. For lightweight run times like
-  Node.js and Go, you may be able to reduce the setting to the lowest (128 MB);
-  for run times like Java and C#, going lower than 256 MB can have detrimental
-  effects to how the run time loads your function code.
-
+- As a reminder, **you incur the cold start penalty only in two situations.
+  First,** **you’ll see cold starts if your function has never been invoked
+  before or is** **being invoked after an extended period (such that all cached
+  execution** **environments are removed). **
+- **Second, you’ll see cold starts if there is an increase in the incoming
+  request rate such that AWS Lambda needs to spawn new** **execution
+  environments because all available ones are servicing requests.**
+- **For CPU-bound functions like image processing; more resources can help the
+  function run faster without changing the costs.** We see that increasing the
+  memory in this case keeps the cost relatively flat, while increasing the
+  performance ~10x.
+- **For I/O-bound operations (such as those waiting for a downstream service to
+  respond), you’ll see no benefit in increasing the resource allocation**. For
+  lightweight run times like Node.js and Go, you may be able to reduce the
+  setting to the lowest (128 MB); for run times like Java and C#, going lower
+  than 256 MB can have detrimental effects to how the run time loads your
+  function code.
 - Finding the right resource allocation for your function requires some
   experimentation. The easiest path is to start with a high setting and reduce
   it until you see a change in performance characteristics. You can use the
   popular tuning tool at
   https://github.com/alexcasalboni/aws-lambda-power-tuning to help estimate your
   function’s resource usage.
-
 - AWS Lambda bills your usage based on the time your function starts executing
   to the time it stops executing, not by CPU cycles spent or any other
   time-based metrics. This implies that what your function does during that time
@@ -575,18 +704,17 @@ the considerations that goes into evaluating a potential solution:
   time spent is negligible, but this wait time can get excessive for services
   that have long response times (for example, waiting on an EC2 instance being
   provisioned) or wait times (such as downloading a very large file). There are
-  two options to minimize this idle time: Minimize orchestration in code—Instead
-  of waiting on an operation inside your function, use AWS Step functions to
-  separate the “before” and “after” logic as two separate functions. For
-  example, if you have logic that needs to run before and after an API call is
-  made, sequence them as two separate functions and use an AWS Step function to
-  orchestrate between them.
+  two options to minimize this idle time: **Minimize orchestration in
+  code—Instead** **of waiting on an operation inside your function, use AWS Step
+  functions to** **separate the “before” and “after” logic as two separate
+  functions. For** **example, if you have logic that needs to run before and
+  after an API call is** **made, sequence them as two separate functions and use
+  an AWS Step function to** **orchestrate between them.**
 
 - You can estimate the concurrency of your function at any time with the
-  following formula: `Concurrency = Requests per second * Function duration` .
-  The connection between function duration and concurrency lies in the idea that
-  the longer a function runs, the more likely it is to overlap with other
-  function invocations, thus increasing concurrency.
+  following formula: **`Concurrency = Requests per second * Function duration`**
+  . **The longer a function runs, the more likely it is to overlap with other
+  function invocations, thus increasing concurrency.**
 
   To illustrate this with a simple example, let's say you have a function that
   takes one second to execute (function duration = 1 second) and it's called 100
@@ -600,8 +728,8 @@ the considerations that goes into evaluating a potential solution:
   `Concurrency = Requests per second * Function duration = 100 * 2 = 200`.
 
 - You can monitor the concurrency for any given function (and for the overall
-  account) using the ConcurrentExecutions CloudWatch metric. AWS Lambda enforces
-  two limits to the concurrency of a function
+  account) using the **ConcurrentExecutions CloudWatch metric**. AWS Lambda
+  enforces two limits to the concurrency of a function
 
   - There is an account-wide soft limit on the total concurrent executions of
     all functions within the account. This is set by default to 1,000 at the
@@ -613,23 +741,23 @@ the considerations that goes into evaluating a potential solution:
     instantly to 3,000 concurrent and then add 500 concurrent executions every
     subsequent minute; this limit is lower in smaller regions. These limits may
     change, so be sure to refer to the latest values listed in
-    http://mng.bz/80PZ. This makes it important to always estimate what your
-    peak and average concurrency needs will be, how quickly you’ll need to ramp
-    up, and to file a request to raise limits as needed.
+    http://mng.bz/80PZ. **This makes it important to always estimate what your**
+    **peak and average concurrency needs will be, how quickly you’ll need to
+    ramp** **up, and to file a request to raise limits as needed.**
 
-- AWS offers two settings for managing concurrency. The first one is the account
-  level concurrency limit that is enforced on the total concurrency across all
-  functions within your account. This limit is set to 1,000 by default and can
-  be raised through a service limit increase ticket: you cannot “self-service”
-  this increase at the time of writing. The second is a per function concurrency
-  control, which you can use to control the concurrency of an individual
-  function. You only use the per function concurrency control if you have a
-  function that you want to “reserve” concurrency for or a function that needs
-  to be limited in its concurrency (because of a downstream resource). For
-  example, you may want to restrict how high a Lambda function scales because it
-  calls an API that can only handle a certain load. If this was left unchecked,
-  then your function could cause the downstream API to be overloaded, causing an
-  availability for your overall application.
+- **AWS offers two settings for managing concurrency. The first one is the
+  account** **level concurrency limit that is enforced on the total concurrency
+  across all** **functions within your account**. This limit is set to 1,000 by
+  default and can be raised through a service limit increase ticket: you cannot
+  “self-service” this increase at the time of writing. T**he second is a per
+  function concurrency** **control, which you can use to control the concurrency
+  of an individual** **function**. You only use the per function concurrency
+  control if you have a function that you want to “reserve” concurrency for or a
+  function that needs to be limited in its concurrency (because of a downstream
+  resource). For example, you may want to restrict how high a Lambda function
+  scales because it calls an API that can only handle a certain load. If this
+  was left unchecked, then your function could cause the downstream API to be
+  overloaded, causing an availability for your overall application.
 
 - Serverless applications do not require conventional application performance
   monitoring steps.
@@ -643,43 +771,42 @@ the considerations that goes into evaluating a potential solution:
 
 ## Emerging practices
 
-- Every AWS employee you speak to nowadays will tell you that you should have
-  multiple AWS accounts and manage them with AWS Organizations
-  (https://aws.amazon.com/organizations). At the minimum, you should have at
-  least one AWS account per environment. For larger organizations, you should go
-  further and have at least one AWS account per team per environment. There are
-  many reasons why this is considered a best practice—regardless of whether
-  you’re working with serverless technologies—including those discussed in the
-  following sections.
-
-  - Isolate security breaches
-  - Eliminate contention for shared service limits
-  - Better cost monitoring
-  - Using temporary stacks
-  - Handle sensitive data securely
-
-- Sensitive data should be encrypted both in transit and at rest. This means it
-  should be stored in an encrypted form; within AWS, you can use both the SSM
-  Parameter Store and the Secrets Manager to store it. Both services support
-  encryption at rest, integrate directly with AWS Key Management Service (KMS),
-  and allow you to use Customer Managed Keys (CMKs). The same encrypted at-rest
-  principle should be applied to how sensitive data is stored in your
+- Every AWS employee you speak to nowadays will tell you that **you should
+  have** **multiple AWS accounts and manage them with AWS Organizations**
+  (https://aws.amazon.com/organizations). **At the minimum, you should have at**
+  **least one AWS account per environment**. For larger organizations, you
+  should go further and have at least one AWS account per team per environment.
+  There are many reasons why this is considered a best practice—regardless of
+  whether you’re working with serverless technologies—including those discussed
+  in the following sections.
+  - **Isolate security breaches**
+  - **Eliminate contention for shared service limits**
+  - **Better cost monitoring**
+  - **Using temporary stacks**
+  - **Handle sensitive data securely**
+- **Sensitive data should be encrypted both in transit and at rest. This means
+  it** **should be stored in an encrypted form; within AWS, you can use both the
+  SSM** **Parameter Store and the Secrets Manager to store it.** Both services
+  support encryption at rest, integrate directly with AWS Key Management Service
+  (KMS), and allow you to use Customer Managed Keys (CMKs). The same encrypted
+  at-rest principle should be applied to how sensitive data is stored in your
   application. There are multiple ways to achieve this; for example:
-
   - Store the sensitive data in encrypted form in environment variables and
     decrypt it using KMS during cold start.
   - Keep the sensitive data in SSM Parameter Store or Secrets Manager, and
     during the Lambda function cold start, fetch it from SSM Parameter
     Store/Secrets Manager.
 
-- Use EventBridge in event-driven architectures. Amazon SNS and SQS have long
-  been the go-to option for AWS developers when it comes to service integration.
-  However, since its rebranding, Amazon EventBridge (formerly Amazon CloudWatch
-  Events) has become a popular alternative, and I would argue that it’s actually
-  a much better option as the event bus in an event-driven architecture.
+    > Check out
+    > [Libraries > middy section in blog posts on how to implement this](../yans-blog-posts.md#libraries)
+- **Use EventBridge in event-driven architectures. Amazon SNS and SQS have long**
+  **been the go-to option for AWS developers when it comes to service integration.**
+  **However, since its rebranding, Amazon EventBridge (formerly Amazon CloudWatch**
+  **Events) has become a popular alternative, and I would argue that it’s actually**
+  **a much better option as the event bus in an event-driven architecture.**
 
-  - SNS lets you filter messages via filtering policies. But you can’t filter
-    messages by their content, you can only filter by message attributes, and
+  - SNS lets you filter messages via filtering policies. But you can’t **filter**
+    **messages by their content,** you can only filter by message attributes, and
     you can only have up to 10 attributes per message. If you require
     content-based filtering, then it has to be done in code. EventBridge, on the
     other hand, supports content-based filtering and lets you pattern match
@@ -688,12 +815,12 @@ the considerations that goes into evaluating a potential solution:
     subscribe to the exact events they want without having to negotiate with the
     event publishers on what attributes to include.
 
-  - Schema discovery: a common challenge with event-driven architectures is
+  - **Schema discovery**: a common challenge with event-driven architectures is
     identifying and versioning event schemas. EventBridge deals with this
     challenge with its schema registry and provides a built-in mechanism for
     schema discovery.
 
-  - Archive and replay events: another common requirement for event-driven
+  - **Archive and replay events**: another common requirement for event-driven
     architectures is to be able to archive the ingested events and replay them
     later. The archive requirement is often part of a larger set of audit or
     compliance requirements and is therefore a must-have in many systems.
@@ -702,7 +829,7 @@ the considerations that goes into evaluating a potential solution:
     can be set to indefinite. You can optionally configure a filter so that only
     matching events are included in the archive.
 
-  - More targets: whereas SNS supports a handful of targets (such as HTTP,
+  - **More targets**: whereas SNS supports a handful of targets (such as HTTP,
     Email, SQS, Lambda, and SMS), EventBridge supports more than 15 AWS services
     (including SNS, SQS, Kinesis, and Lambda), and you can forward events to
     another EventBridge bus in another account. This extensive reach helps to
@@ -730,8 +857,8 @@ AppSync is a managed GraphQL endpoint provided by AWS.
 
 ### Simple Notification Service (SNS)
 
-Amazon Simple Notification Service (SNS) is a scalable pub/sub service designed
-to deliver messages. Producers or publishers create and send messages to a
+****Amazon Simple Notification Service (SNS) is a scalable pub/sub service designed**
+to deliver messages.** Producers or publishers create and send messages to a
 topic. Subscribers or consumers subscribe to a topic and receive messages over
 one of the supported protocols. SNS stores messages across multiple servers and
 data centers for redundancy and guarantees at-least-once delivery. At-least-once
@@ -741,8 +868,8 @@ be delivered multiple times.
 
 ### Simple Queue Service (SQS)
 
-Simple Queue Service (SQS) is Amazon’s distributed and fault-tolerant queuing
-service. It ensures at-least-once delivery of messages similar to SNS and
+****Simple Queue Service (SQS) is Amazon’s distributed and fault-tolerant queuing**
+service. It ensures at-least-once delivery of messages** similar to SNS and
 supports message payloads of up to 256 KB. SQS allows multiple publishers and
 consumers to interact with the same queue, and it has a built-in message
 lifecycle that automatically expires and deletes messages after a preset
@@ -750,7 +877,7 @@ retention period.
 
 ### DynamoDB
 
-DynamoDB is Amazon’s NoSQL database. Tables, items, and attributes are Dynamo’s
+**DynamoDB is Amazon’s NoSQL database**. Tables, items, and attributes are Dynamo’s
 main concepts. A table stores a collection of items. An item is made up of a
 collection of attributes. Each attribute is a simple piece of data such as a
 person’s name or phone number. Every
@@ -767,8 +894,8 @@ of the box. RDS uses SNS to deliver notifications when an event occurs.
 
 ### Media Services
 
-AWS Media Services is a new product designed for developers to build video
-workflows. Media Services consist of the following products: MediaConvert is
+**AWS Media Services is a new product designed for developers to build video**
+**workflows.** Media Services consist of the following products: MediaConvert is
 designed to transcode between different video formats at scale. MediaLive is a
 live video-processing service. It takes a live video source and compresses it
 into smaller versions for distribution. MediaPackage enables developers to
@@ -780,7 +907,7 @@ individually targeted ads in to the video stream.
 
 ### Kinesis Streams
 
-Kinesis Streams is a service for real-time processing of streaming big data.
+**Kinesis Streams is a service for real-time processing of streaming big data.**
 It’s typically used for quick log and data intake, metrics, analytics, and
 reporting. It’s different from SQS in that Amazon recommends that Kinesis
 Streams be used primarily for streaming big data, whereas SQS is used as a
@@ -794,7 +921,7 @@ makes scaling much more transparent.
 ### Athena
 
 AWS bills Athena as a serverless interactive query service. Essentially, this
-service allows you to query data placed into S3 using standard SQL.
+service a**llows you to query data placed into S3 using standard SQL.**
 
 ### Cognito
 
@@ -806,7 +933,7 @@ separate user database and authentication service.
 
 ### Algolia
 
-Algolia is a (non-AWS) managed search engine API. It can search through
+**Algolia is a (non-AWS) managed search engine API.** It can search through
 semi-structured data and has APIs to allow developers to integrate search
 directly into their websites and mobile applications. One of Algolia’s
 outstanding capabilities is its speed. Algolia can distribute and synchronize
@@ -815,11 +942,11 @@ center. (AWS CloudSearch alternative)
 
 ### Auth0
 
-Auth0 (recently acquired by Okta) is a non-AWS identity management product that
-has a few features that Cognito doesn’t. Auth0 integrates with more than 30
-identity providers including Google, Facebook, Twitter, Amazon, LinkedIn, and
-Windows Live. It provides a way to register new users through the use of its own
-user database, without having to integrate with an identity provider.
+**Auth0 (recently acquired by Okta) is a non-AWS identity management product that**
+**has a few features that Cognito doesn’t.** **Auth0 integrates with more than 30**
+**identity providers including Google, Facebook, Twitter, Amazon, LinkedIn, and**
+**Windows Live. It provides a way to register new users through the use of its own**
+**user database, without having to integrate with an identity provider.**
 
 ### Serverless Framework
 
@@ -914,12 +1041,12 @@ their infrastructure code and can easily share reusable patterns as packages.
 > don't think you can do anything complicated enough that would necessitate
 > focused testing.
 >
-> CDK brings with it the full expressive power of a programming language, so you
-> can add all kinds of logic to your infra-as-code, although you shouldn't, but
-> people do, because they can and when they do, and they aren't sure what their
-> CDK code would create, then testing become necessary. I'd argue that is a big
-> thing to have, and I personally prefer declarative IaC tools that doesn't give
-> you that much power.
+> **CDK brings with it the full expressive power of a programming language, so you**
+> **can add all kinds of logic to your infra-as-code, although you shouldn't, but**
+> **people do, because they can and when they do, and they aren't sure what their**
+> **CDK code would create, then testing become necessary. I'd argue that is a big**
+> **thing to have, and I personally prefer declarative IaC tools that doesn't give**
+> **you that much power.**
 >
 > There are use cases for CDK where that expressive power is necessary, but
 > honestly I don't think it applies to most, but the draw of using python/TS and
@@ -929,36 +1056,30 @@ their infrastructure code and can easily share reusable patterns as packages.
 
 Yan suggests that tests are crucial for reducing defects and improving software
 quality but they require time to create and maintain, hence should deliver
-value. For Infrastructure as Code (IaC) tools that are declarative, like
-Serverless Framework, SAM, or Terraform, unit testing is less critical because
-these tools lack business logic that needs validation and AWS CloudFormation
-already checks for syntax correctness.
+value. **For Infrastructure as Code (IaC) tools that are declarative, like**
+**Serverless Framework, SAM, or Terraform, unit testing is less critical because**
+**these tools lack business logic that needs validation and AWS CloudFormation**
+**already checks for syntax correctness.**
 
 However, this doesn't guarantee that the IaC is semantically correct (meaning
 resources are correctly configured), which is why Yan suggests unit testing
 might not be effective here due to lack of knowledge about what needs to be
 tested.
 
-For CDK, Yan points out that most applications don't require significant
-business logic and behave much like declarative configurations. In these cases,
-there might not be much value in testing such code, especially when it involves
-validating the synthesized CloudFormation template. Doing so often leads to
-duplicating work with little return.
+**For CDK, Yan points out that most applications don't require significant**
+**business logic and behave much like declarative configurations. In these cases,**
+**there might not be much value in testing such code, especially when it involves**
+**validating the synthesized CloudFormation template. Doing so often leads to**
+**duplicating work with little return.**
 
-When developers create custom constructs or embed business logic into their CDK
-application, testing becomes necessary. But when there are rules related to
-security and compliance that affect configuration of resources, it's better to
-implement these as guardrails baked into the AWS environments using tools like
-AWS Config, AWS Organizations, or Security Hub, rather than include these in CDK
-tests.
+**When developers create custom constructs or embed business logic into their CDK**
+**application, testing becomes necessary. But when there are rules related to**
+**security and compliance that affect configuration of resources, it's better to**
+**implement these as guardrails baked into the AWS environments using tools like**
+**AWS Config, AWS Organizations, or Security Hub, rather than include these in CDK**
+**tests.**
 
-### Pros and Cons of CDK
-
-This is nalysis of the Cloud Development Kit (CDK) for Infrastructure as Code
-(IaC). Yan explores the strengths and weaknesses of the CDK in various contexts,
-primarily focusing on its use within the enterprise environment.
-
-Strengths of CDK:
+### Strengths of CDK:
 
 Yan notes that CDK allows developers to write infrastructure in their preferred
 programming language, which is particularly beneficial in an enterprise setting.
@@ -968,7 +1089,9 @@ and versatility. It is not focused solely on serverless architecture and allows
 developers to manage a variety of infrastructures, such as VPCs and serverful
 resources. The ability to create and share custom CDK constructs enables the
 enforcement of security best practices and compliance measures across an
-organization. Weaknesses of CDK:
+organization. 
+
+### Weaknesses of CDK:
 
 CDK is a development kit, not an application development framework. Unlike other
 IaC tools like the Serverless framework or SAM, CDK doesn't provide a standard
