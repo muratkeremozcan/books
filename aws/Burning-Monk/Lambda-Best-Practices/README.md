@@ -126,7 +126,13 @@ Mind that when provisioned concurrency happens, the init duration does not seem 
 From Yan:
 _The actual problem with warm starts is that they don't scale beyond keeping a handful of instances of your functions warm because there's no way to direct an invocation to specific instances (ie. worker) of a function. So if you have a handful of functions and you just need to keep 1 instance of each warm for a low throughput API, then warmers are a good, cheap way to do it compared to using Provisioned Concurrency. But if you need an enterprise-scale solution that can keep 50, 100 instances of your functions warm, and auto-scale the no. of warm instances based on traffic patterns or based on a schedule, and you don't mind (potentially) paying extra for these, then use Provisioned Concurrency. I said potentially paying extra, because Provisioned Concurrency can actually work out cheaper than on-demand concurrency if you have good utilization of the Provisioned Concurrency you have (~60% is the break-even point)._
 
-> P.C. happens against a version - not sure why they have both alias and version there.
+> P.C. happens against a version
+
+When to use Provisioned Concurrency?
+
+* When we cannot optimize cold start any further.
+
+* Cold starts are stacking up in a service call (spiky traffic).
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q025m29weskbfzithk44.png)
 
@@ -440,7 +446,7 @@ Wrap all this inside middleware, share it as a package and share it across the o
 
 ### When to use Lambda Destinations
 
-Lambda Destinations allows to configure a destination / target, so that when an event succeeds the target receives a notification.
+Lambda Destinations allows to configure a destination / target, so that when an event succeeds or fails, the target receives a notification.
 
 Click [here](https://www.trek10.com/blog/lambda-destinations-what-we-learned-the-hard-way) for the Trek10 blog post on Lambda Destinations and some of its caveats.
 
@@ -451,6 +457,10 @@ In asynchronous invocation, when a function is invoked, AWS Lambda sends the eve
 The Lambda Destinations feature takes this further by providing routing options for both successful and failed function invocations. This means you can specify different destinations for success (on-success destination) and failure scenarios (on-failure destination), thus making the error handling and event management more streamlined and effective.
 
 Destinations could be another Lambda function, an Amazon SNS topic, an Amazon SQS queue, or an Amazon EventBridge event bus.
+
+For failure events, prefer Lambda Destinations to DLQs.
+
+For success events, if it is a simple 1 hop, use Lambda Destinations over complex step functions.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3hutz57bkuqbl7i33u7e.png)
 

@@ -1841,11 +1841,22 @@ Until 2020, a Lambda function was limited to 512MB of /tmp directory storage. Wh
 
 ### [Lambda extensions: what they are and why they matter](https://lumigo.io/blog/aws-lambda-extensions-what-are-they-and-why-do-they-matter/)
 
-This article, written by Yan Cui on October 8, 2020, announces the release of AWS Lambda Extensions by Amazon. AWS Lambda Extensions are designed to improve the observability of AWS customers' serverless applications, specifically by collecting telemetry data about AWS Lambda functions in a performant and cost-effective way.
+Lambda extensions allows to do background tasks that you do not want to do during lambda invocations, in between lambda invocations.
+
+Built-in background tasks: ship logs to CloudWatch Logs, put CloudWatch Metrics, put X-ray traces.
+
+What if you don't use CloudWatch logs? Lambda extensions allow vendors to do their thing during the invocations.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3023ykh6codjvbg1l5pw.png)
+
+AWS Lambda Extensions are designed to improve the observability of AWS customers' serverless applications, specifically by collecting telemetry data about AWS Lambda functions in a performant and cost-effective way.
 
 Existing Application Performance Management (APM) solutions require the deployment of an agent or daemon to collect and send telemetry data. Prior to AWS Lambda Extensions, it was difficult to install these agents/daemons on Lambda due to constraints, leading to challenges for third-party vendors who had to choose between sending telemetry data at the end of each invocation or writing telemetry data to CloudWatch Logs, both of which have their disadvantages.
 
 Lambda Extensions, however, are scripts that run alongside code, receiving updates about functions via a poll-based API. These can be internal (modifying the Lambda runtime environment and running in-process with code) or external (running in a separate process to code). They can impact the performance of functions, given they share the same resources - CPU, memory, storage, and network bandwidth. Lambda Extensions thus change the lifecycle of a Lambda Execution Environment with additional steps during initialization, invocation, and shut down. Lambda Extensions allow vendors to offer more comprehensive observability, security, and governance.
+
+When should we use Lambda Extensions?
+Letting the lambda runtime ship your logs to CloudWatch Logs is simpler in most cases, even if we have to ship them to another log application platform later. But, if the CloudWatch Logs costs are getting expensive, and it is worth optimizing at the expense of seeing your logs with a higher latency,  then do it.
 
 ### [AWS Lambda: Function URL is live!](https://lumigo.io/blog/aws-lambda-function-url-is-live/)
 
@@ -1863,8 +1874,6 @@ However, for APIs that require advanced features like user authentication with C
 
 Since March 2022, AWS Lambda functions offer the ability to expand the size of their ephemeral storage from the standard 512MB to up to 10GB. The /tmp directory, which serves as the ephemeral storage, can be used for fast I/O operations and as a cache for data between invocations on the same Lambda worker instance. Prior to this, its use was limited due to a fixed size of 512MB.
 
-The updated storage can be configured through multiple platforms such as CloudFormation, AWS CLI, AWS SDK, or the AWS console. Users will have to pay for the extra storage space, although the pricing details were not available at the time of the announcement.
-
 The increase in storage does not have a significant impact on the performance of Lambda functions nor does it change the limit on the deployment package size (still 250MB). For larger files, users can package their function as a container image or download the large files during initialization and save them into the /tmp directory.
 
 Using the ephemeral storage (i.e. the `/tmp` directory) differs from EFS in two major ways.
@@ -1874,20 +1883,24 @@ Using the ephemeral storage (i.e. the `/tmp` directory) differs from EFS in two 
 
 Lambda offers a number of storage options:
 
-- Lambda Layers
-- Ephemeral storage (`/tmp` directory)
-- EFS
-- Container images
-
 They cater for different use cases and have different characteristics and limitations. James Beswick has an excellent article on how to choose between these options [here](https://aws.amazon.com/blogs/compute/choosing-between-aws-lambda-data-storage-options-in-web-apps/).
 
 1. **Lambda Layers:** These allow for bundling of additional libraries as part of the Lambda function deployment package. A function can have up to five layers and this can be an effective way to bundle large dependencies. However, layers are static once deployed, and the contents can only be changed by deploying a new version.
 
-2. **Temporary Storage with /tmp:** The Lambda execution environment offers a /tmp file system with a fixed size of 512 MB. This area acts as a transient cache for data between invocations and is cleared each time a new execution environment is created. It is intended for ephemeral storage and should be used for data required for a single invocation.
 
-3. **Amazon EFS:** This is a fully managed, elastic, shared file system that integrates with other AWS services, and can be mounted in Lambda functions. It allows for sharing of data across invocations, supports standard file operations and is ideal for deploying code libraries or working with packages that exceed the limit of layers.
+2. **Temporary Storage with /tmp:** The Lambda execution environment offers a /tmp file system with a fixed size of 512 MB, which became 10 GB (same as EFS) in 2022. Each Lambda function has its own instance of `/tmp` directory and they don’t share any data.  It is intended for ephemeral storage and should be used for data required for a single invocation. More performant than EFS (10x).
+
+3. **Amazon EFS:** This is a fully managed, elastic, shared file system that integrates with other AWS services, and can be mounted in Lambda functions. It allows for sharing of data across invocations, supports standard file operations and is ideal for deploying code libraries or working with packages that exceed the limit of layers. Compared to S3, EFS is slightly faster and has more predictable latency. Has no impact on cold start performance. We can use Provisioned concurrency to mitigate the high read latency.
 
 4. **Amazon S3:** This object storage service scales elastically, offering high availability and durability. Ideal for storing unstructured data such as images, media, log files and sensor data, it features event integrations with Lambda and allows for automated workflows.
+
+So EFS has 10GB limit (same as /tmp), slower than /tmp, but can share data between all the components (Lambda functions, EC2 instances or containers) that are connected to the same EFS file system.
+
+General rule of thumb is to use S3 for storing user data, whereas EFS & /tmp are useful for storing system data, and only use Lambda layers as an optimization to avoid uploading the same dependencies over & over.
+
+> From Yan: I’ve come across very few legit use cases for using the /tmp folder, the best two is to 1) download large static file at cold start and then cache it in the /tmp folder, and 2) clone git repos into
+>
+> Same goes for EFS, can be useful for putting large files, like ML models in there, so you can share it with multiple functions, and get some benefit from the caching at the NFS layer, which might make it faster to load than S3
 
 ### [Graviton-based Lambda functions, what it means for you](https://lumigo.io/blog/graviton-based-lambda-functions-what-it-means-for-you/)
 
