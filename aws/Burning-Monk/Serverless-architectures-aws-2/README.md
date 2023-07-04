@@ -842,14 +842,11 @@ the considerations that goes into evaluating a potential solution:
 
 ### API Gateway
 
-The Amazon API Gateway is a service that you can use to create an API layer
-between the frontend and backend services. The lifecycle management of the API
-Gateway allows multiple versions of the API to be run at the same time, and it
-supports multiple release stages such as development, staging, and production.
-API Gateway also comes with useful features like caching and throttling
-requests. The API is defined around resources and methods. A resource is a
-logical entity such as a user or product. A method is a combination of an HTTP
-verb (such as GET, POST, PUT, or DELETE) and the resource path.
+The Amazon API Gateway is a service that you can use to create an API layer between the frontend and backend services (an http router). 
+
+Allows multiple versions of the API to be run at the same time, and it supports multiple release stages such as development, staging, and production. Supports Authentication, Request Validation, Rate Limiting, Web-sockets, Caching, Monitoring, custom domain names, integrates with web application firewall (WAF).
+
+The API is defined around resources and methods. A resource is a logical entity such as a user or product. A method is a combination of an HTTP verb (such as GET, POST, PUT, or DELETE) and the resource path.
 
 ### Appsync
 
@@ -877,10 +874,37 @@ retention period.
 
 ### DynamoDB
 
-**DynamoDB is Amazon’s NoSQL database**. Tables, items, and attributes are Dynamo’s
-main concepts. A table stores a collection of items. An item is made up of a
-collection of attributes. Each attribute is a simple piece of data such as a
-person’s name or phone number. Every
+**DynamoDB is Amazon’s NoSQL database**. Tables, items, and attributes are Dynamo’s main concepts. 
+
+A **table** stores a collection of **items**. An item is made up of a collection of **attributes**. 
+
+Each attribute is a simple piece of data such as a person’s name or phone number. 
+
+multi-AZ by default
+
+multi-region via global tables (by request)
+
+Here there is one table, with a few items, the attributes being name, image, themes.
+
+The primary key consists of just the partition key `name`. So, `name` attribute has to be unique in the table
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mwutpn2sf92lnnvrb5cv.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/g7sqd04v9m8jteillqg2.png)
+
+On-demand mode is good for unpredictable workload; pay for what you use.
+
+Provisioned mode is good for predictable and consistent workload.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/eh51gcqgw2ldxgx63xhb.png)
+
+Prefer to search for items via Query (partition key + sort key)
+
+Avoid Scan if possible
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/23qxe74igxpvcdlbu7lg.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/24jupinzpv7ityfjeogw.png)
 
 ### Relational Database Service (RDS)
 
