@@ -439,7 +439,19 @@ With FF, we can do all A/B testing, Canary testing, and we can roll back changes
 
 We can also ensure the changes are per user (ex: paid vs free), demographics, % (only 10% of free uses in the west coast), and other controllable attributes. LaunchDarkly is popular in this space.
 
-The LaunchDarkly SDK relies on a persistent connection to their streaming API to receive server-sent events (SSE) whenever feature flags change. But the [Node.js SDK](https://docs.launchdarkly.com/docs/node-sdk-reference) gives us the option to use polling mode instead. The use of persistent connections immediately signals trouble as they don’t work well with Lambda. They are often the source of problems for Lambda functions that have to use RDS. Indeed, a [set of practices](https://www.jeremydaly.com/manage-rds-connections-aws-lambda/) were necessary to make them bearable in the context of RDS, which is not applicable here.
+The LaunchDarkly Node SDK supports two modes for receiving feature flag updates:
+
+1. **Streaming Mode**: This is the default mode. In this mode, the SDK maintains a persistent connection to the LaunchDarkly streaming API. Whenever there's a change to a feature flag, the streaming API sends an update to the SDK using Server-Sent Events (SSE). This enables near real-time propagation of feature flag changes.
+2. **Polling Mode**: In this mode, the SDK periodically sends a request to the LaunchDarkly servers to fetch the latest feature flags. The frequency of these requests can be configured based on user requirements. However, changes to feature flags will not be propagated in real-time as they are in streaming mode, and the timing of updates will be affected by the SDK's polling schedule.
+
+The issue with using LaunchDarkly's Streaming Mode in AWS Lambda relates to the persistent connections required by the Streaming Mode. AWS Lambda functions are ephemeral and stateless, making the maintenance of such connections difficult. Additionally, LaunchDarkly limits the number of server connections depending on the pricing plan, and each concurrent Lambda execution needs a separate connection. Thus, with sufficient concurrent executions, these connection limits can easily be surpassed, potentially leading to throttling of new connections.
+
+There are 2 recommendations for using LD with Lambda:
+
+1. **Switch to Polling Mode**: The LaunchDarkly Node.js SDK allows users to switch to Polling Mode. This mode doesn't require a persistent connection, making it more compatible with Lambda's stateless architecture. However, the trade-off is that feature flag updates won't be propagated in real time. You'd also need to ensure that the polling frequency is appropriately set to prevent overloading the LaunchDarkly API, and to synchronize updates across functions.
+2. **Adjusting the LaunchDarkly Plan**: If Streaming Mode is critical for your use case and you often have high concurrent executions, consider upgrading to a LaunchDarkly plan that allows more server connections. However, this could increase your costs.
+
+TL, DR; get LD enterprise and use streaming mode for faster flag updates.
 
 ### [How to include SNS and Kinesis in your e2e tests](https://theburningmonk.com/2019/09/how-to-include-sns-and-kinesis-in-your-e2e-tests/)
 

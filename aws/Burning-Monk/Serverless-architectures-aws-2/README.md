@@ -955,6 +955,30 @@ own system. Cognito supports user pools, which allow you to create your own user
 directory. This lets you register and authenticate users without having to run a
 separate user database and authentication service.
 
+User Pools
+
+Primarily we use it to provide Authentication for AWS services like Appsync & API gateway
+
+It also supports user flows & user management)
+
+* Registration
+* Verify email/phone
+* Secure sign-in
+* Forgotten password
+* Change password
+* Sign out
+* User groups
+* Find user by username/email etc.
+* Admin methods to create user etc.
+
+Identity Pools: takes authorization tokens issued by identity providers and exchange them for temporary AWS credentials.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/okx4h89v8ls29wqzzykd.png)
+
+Sync : allows to sync user profile data across multiple devices (not used so much).
+
+
+
 ### Algolia
 
 **Algolia is a (non-AWS) managed search engine API.** It can search through

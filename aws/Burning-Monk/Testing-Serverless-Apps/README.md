@@ -1,5 +1,23 @@
 ## Ch01 how to test serverless architectures
 
+### Serverless requires a different approach to testing
+
+**Observations**
+
+1. We use more managed services when working with AWS lambda.
+
+2. Most lambda functions are simple and have a single purpose.
+
+   Conclusion 1: The risk of shipping broken software has largely shifted to how your lambda functions integrate with external services.
+
+3.  Smaller units of deployment means finer grained control of access, and more things to secure.
+
+4. Smaller units of deployment also means more application configuration in general
+
+   Conclusion 2: The risk of misconfiguration (both application & IAM) as exploded.
+
+Consequently, our approach to testing also has to change.
+
 ### Unit vs Integration vs E2e
 
 Unit: test your code at the object/module level, I generally think unit tests don’t have a great return on investment and I only write these if I have genuinely complex business logic.
