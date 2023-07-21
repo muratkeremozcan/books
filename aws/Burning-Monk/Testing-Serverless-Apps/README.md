@@ -290,7 +290,7 @@ The challenge is hard to control test inputs down the branches; unhappy paths.
 
 ### Choreography vs Orchestration (communication between microservices)
 
-Controller process that orchestrates everything vs every component makes its own decisions based on a contract.
+Every component makes its own decisions based on a contract vs a controller process that orchestrates everything.
 
 Choreography approach with events:
 

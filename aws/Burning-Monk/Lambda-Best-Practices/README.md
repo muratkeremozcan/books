@@ -234,6 +234,9 @@ Click [here](https://amzn.to/2RudmGV) for how Lambda works with SQS.
 
 ### Controlling concurrency
 
+Suppose we have a downstream system that just can't keep up with the scaling.
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1gioxd5lwdjyui8s494f.png)
+
 With fan-out, there are cases where we want to control the concurrency, and instead of scaling we want to push to work into a backlog.
 
 Plausible case: the spike errors are retried.
