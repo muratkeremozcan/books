@@ -1,0 +1,17 @@
+{
+  "domain_name": "cdkbookmurat.click",
+  "environments": {
+    "dev": {
+      "backend_subdomain": "dev-backend-cdk-book",
+      "frontend_subdomain": "dev-frontend-cdk-book"
+    },
+    "prod": {
+      "backend_subdomain": "backend-cdk-book",
+      "frontend_subdomain": "frontend-cdk-book"
+    },
+    "stage": {
+      "backend_subdomain": "stage-backend-cdk-book",
+      "frontend_subdomain": "stage-frontend-cdk-book"
+    }
+  }
+}
