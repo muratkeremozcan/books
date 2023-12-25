@@ -1,5 +1,5 @@
 // Ramda: It is more focused on functional utilities that make it easier to work with JavaScript in a functional style.
-//  It provides a range of functions for list transformations, function composition, and other typical functional programming operations.
+// It provides a range of functions for list transformations, function composition, and other typical functional programming operations.
 // However, it doesn't delve deeply into the type-level abstractions and monadic structures that are prevalent in more strongly-typed functional languages.
 
 // fp-ts: It fills the gap by providing more advanced functional programming constructs like Either, Option, IO, Task, and more.
@@ -12,7 +12,6 @@ import {IOEither, tryCatch as tryCatchIO} from 'fp-ts/IOEither'
 import {IO} from 'fp-ts/IO'
 import type {Option} from 'fp-ts/Option'
 import * as fs from 'fs'
-import {createInterface} from 'readline'
 import {Task} from 'fp-ts/Task'
 import {TaskEither, tryCatch as tryCatchTaskEither} from 'fp-ts/TaskEither'
 
@@ -22,6 +21,7 @@ import {TaskEither, tryCatch as tryCatchTaskEither} from 'fp-ts/TaskEither'
 /* 
 Use case: an API that may fail and returns a special value
 which is common in many APIs and standard library functions.
+
 Problem with Sentinels: Using special values (like -1 in this case)
 as sentinels to indicate failure or a special condition can lead to errors if not handled properly.
 For example, a programmer might forget to check for -1 and erroneously use it as a valid array index
