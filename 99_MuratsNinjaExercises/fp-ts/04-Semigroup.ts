@@ -2,8 +2,9 @@
 
 import {number} from 'fp-ts'
 import type {Ord} from 'fp-ts/Ord'
-import {max, min, struct, type Semigroup} from 'fp-ts/Semigroup'
+import {max, min, struct, type Semigroup, concatAll} from 'fp-ts/Semigroup'
 import {SemigroupAll} from 'fp-ts/boolean'
+import {getApplySemigroup, some, none, fold} from 'fp-ts/Option'
 
 /*
 A semigroup is a pair (A, *) in which A is a non-empty set and * is a binary associative operation on A, 
@@ -40,18 +41,21 @@ you can define a general pattern of 'combination' and reuse it.
 */
 
 /** number `Semigroup` under multiplication */
-const semigroupProduct: Semigroup<number> = {
-  concat: (x, y) => x * y,
-}
-
-semigroupProduct.concat(1, 2) //?
+// const semigroupProduct: Semigroup<number> = {
+//   concat: (x, y) => x * y,
+// }
 
 /** number `Semigroup` under addition */
-const semigroupSum: Semigroup<number> = {
-  concat: (x, y) => x + y,
-}
+// const semigroupSum: Semigroup<number> = {
+//   concat: (x, y) => x + y,
+// }
 
-semigroupSum.concat(1, 2) //?
+// in v2.0 Use SemigroupSum and SemigroupProduct from 'fp-ts/number'
+const SemigroupSum: Semigroup<number> = number.SemigroupSum
+const SemigroupProduct: Semigroup<number> = number.SemigroupProduct
+
+SemigroupSum.concat(1, 2) //?
+SemigroupProduct.concat(1, 2) //?
 
 /** string Semigroup under addition */
 const semigroupString: Semigroup<string> = {
@@ -111,13 +115,13 @@ type Point = {
 
 const semigroupPointBoilerP: Semigroup<Point> = {
   concat: (p1, p2) => ({
-    x: semigroupSum.concat(p1.x, p2.x),
-    y: semigroupSum.concat(p1.y, p2.y),
+    x: SemigroupSum.concat(p1.x, p2.x),
+    y: SemigroupSum.concat(p1.y, p2.y),
   }),
 }
 
 // fp-ts/Semigroup module exports a struct combinator:
-const semigroupPoint: Semigroup<Point> = struct({x: semigroupSum, y: semigroupSum})
+const semigroupPoint: Semigroup<Point> = struct({x: SemigroupSum, y: SemigroupSum})
 
 // usage
 const point1: Point = {x: 1, y: 2}
@@ -157,3 +161,39 @@ const isPositiveY = (p: Point): boolean => p.y > 0
 semigroupPredicate.concat(isPositiveX, isPositiveY)
 isPositiveX({x: 1, y: 2}) //?
 isPositiveY({x: 1, y: 2}) //?
+
+/////// Folding (concatAll in 2.0)
+// concat works with only two elements of A, what if we want to concat more elements?
+// the fold function takes a semigroup instance, an initial value and an array of elements:
+
+// Create functions for sum and product
+const sum = concatAll(SemigroupSum)(0)
+const product = concatAll(SemigroupProduct)(1)
+
+sum([1, 2, 3, 4]) //?
+product([1, 2, 3, 4]) //?
+
+///////// Semigroups for type constructors
+// What if we want to "merge" two Option<A>? There are four cases,
+// and there's a problem with the last one, we'd need something to "merge" two As.
+// x	      y		    concat(x, y)
+// none	    none	  none
+// some(a)	none  	none
+// none	    some(a)	none
+// some(a)	some(b)	?
+
+// That's what Semigroup does! We can require a semigroup instance for A
+// and then derive a semigroup instance for Option<A>.
+// This is how the getApplySemigroup combinator works
+
+const S = getApplySemigroup(SemigroupSum)
+S.concat(some(1), none) //?
+S.concat(some(1), some(2)) //?
+
+// Handling the result safely
+const handleResultOption = fold(
+  () => null,
+  (value: number) => value,
+)
+
+handleResultOption(S.concat(some(1), some(2))) //?

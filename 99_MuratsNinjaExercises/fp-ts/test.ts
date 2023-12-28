@@ -1,21 +1,13 @@
-import {Semigroup} from 'fp-ts/Semigroup'
-import {SemigroupAll} from 'fp-ts/boolean'
+import {Semigroup, concatAll} from 'fp-ts/Semigroup'
+import {number} from 'fp-ts'
 
-type Point = {
-  x: number
-  y: number
-}
+// Use SemigroupSum and SemigroupProduct from 'fp-ts/number'
+const SemigroupSum: Semigroup<number> = number.SemigroupSum
+const SemigroupProduct: Semigroup<number> = number.SemigroupProduct
 
-// Semigroup for predicates on Point
-const semigroupPredicate: Semigroup<(p: Point) => boolean> = {
-  concat: (f, g) => p => SemigroupAll.concat(f(p), g(p)),
-}
+// Create functions for sum and product
+const sum = concatAll(SemigroupSum)(0)
+const product = concatAll(SemigroupProduct)(1)
 
-// Usage example:
-const isPositiveX = (p: Point): boolean => p.x > 0
-const isPositiveY = (p: Point): boolean => p.y > 0
-
-const isPositiveXY = semigroupPredicate.concat(isPositiveX, isPositiveY)
-
-console.log(isPositiveXY({x: 5, y: -3})) // false
-console.log(isPositiveXY({x: 5, y: 3})) // true
+console.log(sum([1, 2, 3, 4])) // Output: 10
+console.log(product([1, 2, 3, 4])) // Output: 48
