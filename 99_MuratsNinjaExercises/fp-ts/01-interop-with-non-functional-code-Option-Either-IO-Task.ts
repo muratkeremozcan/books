@@ -271,8 +271,6 @@ Uncertainty and Complexity: Asynchronous operations can complete at any time, in
 Error Handling: Asynchronous computations can fail or reject, and handling these scenarios gracefully is vital for application stability.
 Side Effects: These operations often involve side effects, which can be challenging to manage in a functional programming paradigm.
 
-Example: reading from standard input
-
 Functional Programming Solution: Task and TaskEither
 Task Type: In fp-ts, a Task represents an asynchronous computation that eventually produces a result. 
 It encapsulates an operation that will execute in the future, providing a way to manage side effects in a lazy and controlled manner.
