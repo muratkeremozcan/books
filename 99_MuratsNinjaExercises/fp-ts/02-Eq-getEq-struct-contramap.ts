@@ -188,7 +188,8 @@ Transformation Goal: Now, suppose you want to compare objects of a different typ
 
 Using contramap: You can use contramap to transform the Eq<number> instance into an Eq<User> instance. 
 You provide a function that transforms (or extracts) a number (the userId) from a User object. 
-contramap then uses this function to transform each User object into a number before applying the original Eq<number> comparison logic.
+contramap then uses this function to transform each User object into a number 
+before applying the original Eq<number> comparison logic.
 */
 
 type User = {

@@ -194,3 +194,5 @@ const foldSettings = {
   fontSize: foldOptionToNumber(combinedSettings.fontSize, -1),
   maxColumn: foldOptionToNumber(combinedSettings.maxColumn, -1),
 }
+
+foldSettings //?

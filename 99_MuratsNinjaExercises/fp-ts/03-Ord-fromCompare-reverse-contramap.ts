@@ -1,4 +1,5 @@
 import {type Ord, fromCompare, contramap, reverse} from 'fp-ts/Ord'
+import {number} from 'fp-ts'
 // https://dev.to/gcanti/getting-started-with-fp-ts-ord-5f1e
 
 /*
@@ -36,7 +37,9 @@ const ordNumber: Ord<number> = {
 */
 
 // fp-ts/Ord exports an handy fromCompare helper which allows you to define an Ord instance by specifying a compare function
-const ordNumber: Ord<number> = fromCompare((x, y) => (x < y ? -1 : x > y ? 1 : 0))
+// const ordNumber: Ord<number> = fromCompare((x, y) => (x < y ? -1 : x > y ? 1 : 0))
+// Predefined Ord instance for numbers
+const ordNumber: Ord<number> = number.Ord
 
 // A programmer could then define a function min (which takes the minimum of two values) in the following way
 const min =
