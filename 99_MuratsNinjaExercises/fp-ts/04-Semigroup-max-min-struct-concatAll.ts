@@ -157,10 +157,10 @@ const semigroupPredicate: Semigroup<(p: Point) => boolean> = {
 // Usage example:
 const isPositiveX = (p: Point): boolean => p.x > 0
 const isPositiveY = (p: Point): boolean => p.y > 0
-
-semigroupPredicate.concat(isPositiveX, isPositiveY)
-isPositiveX({x: 1, y: 2}) //?
-isPositiveY({x: 1, y: 2}) //?
+const somePoint = {x: 1, y: -2}
+isPositiveX(somePoint) //?
+isPositiveY(somePoint) //?
+semigroupPredicate.concat(isPositiveX, isPositiveY)(somePoint) //?
 
 /////// Folding (concatAll in 2.0)
 // concat works with only two elements of A, what if we want to concat more elements?

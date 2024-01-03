@@ -40,6 +40,8 @@ const ordNumber: Ord<number> = {
 // const ordNumber: Ord<number> = fromCompare((x, y) => (x < y ? -1 : x > y ? 1 : 0))
 // Predefined Ord instance for numbers
 const ordNumber: Ord<number> = number.Ord
+ordNumber.compare(2, 1) //?
+ordNumber.compare(1, 2) //?
 
 // A programmer could then define a function min (which takes the minimum of two values) in the following way
 const min =
@@ -65,8 +67,8 @@ type User = {
 
 const byAge: Ord<User> = fromCompare((x, y) => (x.age < y.age ? -1 : x.age > y.age ? 1 : 0))
 
-byAge.compare({name: 'Murat', age: 1}, {name: 'Kerem', age: 2}) //?
-byAge.compare({name: 'Ozcan', age: 3}, {name: 'Kerem', age: 2}) //?
+byAge.compare({name: 'Murat', age: 3}, {name: 'Kerem', age: 2}) //?
+byAge.compare({name: 'Ozcan', age: 1}, {name: 'Kerem', age: 2}) //?
 
 // We can avoid some boilerplate by using the contramap combinator:
 // given an instance of Ord for A and a function from B to A, we can derive an instance of Ord for B
@@ -75,15 +77,15 @@ byAge.compare({name: 'Ozcan', age: 3}, {name: 'Kerem', age: 2}) //?
 
 const byAgeC: Ord<User> = contramap((user: User) => user.age)(ordNumber)
 
-byAgeC.compare({name: 'Murat', age: 1}, {name: 'Kerem', age: 2}) //?
-byAgeC.compare({name: 'Ozcan', age: 3}, {name: 'Kerem', age: 2}) //?
+byAgeC.compare({name: 'Murat', age: 3}, {name: 'Kerem', age: 2}) //?
+byAgeC.compare({name: 'Ozcan', age: 1}, {name: 'Kerem', age: 2}) //?
 
 const getYounger = min(byAgeC)
 
-getYounger({name: 'Murat', age: 1}, {name: 'Kerem', age: 2}) //?
-getYounger({name: 'Ozcan', age: 3}, {name: 'Kerem', age: 2}) //?
+getYounger({name: 'Murat', age: 3}, {name: 'Kerem', age: 2}) //?
+getYounger({name: 'Ozcan', age: 1}, {name: 'Kerem', age: 2}) //?
 
 const getOlder = max(byAgeC)
 
-getOlder({name: 'Murat', age: 1}, {name: 'Kerem', age: 2}) //?
-getOlder({name: 'Ozcan', age: 3}, {name: 'Kerem', age: 2}) //?
+getOlder({name: 'Murat', age: 3}, {name: 'Kerem', age: 2}) //?
+getOlder({name: 'Ozcan', age: 1}, {name: 'Kerem', age: 2}) //?

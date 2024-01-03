@@ -19,18 +19,18 @@ import {TaskEither, tryCatch as tryCatchTaskEither} from 'fp-ts/TaskEither'
 
 /////////////////////// # 1. Sentinels -> Option none & some
 /* 
-Use case: an API that may fail and returns a special value
-which is common in many APIs and standard library functions.
+Use case: an API that may fail and returns a special value.
 
 Problem with Sentinels: Using special values (like -1 in this case)
 as sentinels to indicate failure or a special condition can lead to errors if not handled properly.
-For example, a programmer might forget to check for -1 and erroneously use it as a valid array index
+For example, a programmer might forget to check for -1 and erroneously use it as a valid array index.
 
 Example: Array.prototype.findIndex
 
 the Functional Programming Solution: Option Type
 To handle these kinds of scenarios more safely and expressively, functional programming languages
 (and libraries like fp-ts in TypeScript) introduce the concept of Option types.
+
 How Option Works: An Option type can have one of two values: Some(value) or None.
 Some(value) represents a successful outcome (like finding an index), 
 while None represents an absence of value (like not finding an index).
@@ -42,8 +42,8 @@ reducing the risk of errors due to unhandled conditions.
 /**
  * Safely searches for the index of the first element in an array that satisfies a provided testing function.
  *
- * @param {Array<T>} arr - The array to search within.
- * @param {(a: T) => boolean} predicate - A function to test each element of the array.
+ * @param {Array<A>} arr - The array to search within.
+ * @param {(a: A) => boolean} predicate - A function to test each element of the array.
  * @returns {Option<number>} - An Option type that is:
  *         - `some(index)` if an index of an element satisfying the predicate is found, or
  *         - `none` if no such element is found.
@@ -155,7 +155,7 @@ const parseResult = parse(jsonString) //?
 
 const handleResultEither = foldEither(
   (error: Error) => `Error occurred: ${error.message}`, // Handle left case (Error)
-  (data: unknown) => `${JSON.stringify(data)}`, // Handle right case (Success)
+  (data: unknown) => data, // Handle right case (Success)
 )
 
 handleResultEither(parseResult) //?

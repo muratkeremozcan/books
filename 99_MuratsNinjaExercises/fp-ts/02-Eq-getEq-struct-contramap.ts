@@ -5,7 +5,6 @@ import {getEq} from 'fp-ts/Array'
 /*
 Type classes, like the Eq type class in fp-ts, are significant in functional programming 
 because they provide a way to define generic operations that can work with any type that implements the type class. 
-They offer a structured and reusable approach to solving certain kinds of problems
 
 A type class Eq, intended to contain types that admit equality, is declared in the following way
 // returns `true` if `x` is equal to `y` 
@@ -20,7 +19,6 @@ const eqNumber: Eq<number> = {
 }
 
 // A programmer could then define a function elem (which determines if an element is in an array) in the following way
-
 const elem =
   <A>(E: Eq<A>): ((a: A, arr: Array<A>) => boolean) =>
   (a, arr) =>
@@ -150,7 +148,7 @@ Changes in equality logic for a type (like Point) automatically propagate to all
 ////////
 // getEq combinator allows to derive an Eq instance for arrays
 
-const eqArrayOfPoints: Eq<Array<Point>> = getEq(eqPoint)
+const eqArrayOfPoints: Eq<Point[]> = getEq(eqPoint)
 
 eqArrayOfPoints.equals([point1, point2], [point2, point1]) //?
 eqArrayOfPoints.equals([point1, point2], [point2, point3]) //?
