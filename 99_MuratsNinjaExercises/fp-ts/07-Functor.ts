@@ -27,6 +27,7 @@ const liftJS = g => fb => fb.map(g)
 
 // example: F = Array
 const double = (x: number) => x * 2
+
 const liftDouble = lift(double)
 liftDouble([1, 2, 3]) //?
 
@@ -100,7 +101,7 @@ lengthTask().then(length => {
 
 // Module Augmentation: It uses TypeScript's module augmentation feature to add new declarations to an existing module, in this case, fp-ts/HKT.
 // This is a way of telling TypeScript about new capabilities added to a library module after its initial declaration.
-// Higher Kinded Types (HKTs): fp-ts uses a technique to simulate HKTs in TypeScript, which doesn't natively support them. H
+// Higher Kinded Types (HKTs): fp-ts uses a technique to simulate HKTs in TypeScript, which doesn't natively support them.
 
 // The URI property in the functorResponse object is a part of the design pattern used in fp-ts to simulate Higher Kinded Types (HKTs) in TypeScript.
 // HKTs are not natively supported in TypeScript, so fp-ts uses a workaround involving this URI property.

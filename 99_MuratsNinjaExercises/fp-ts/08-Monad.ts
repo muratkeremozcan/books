@@ -65,11 +65,11 @@ const inverseHeadChain: Option<number> = chainOption(inverse)(sampleArrHead) // 
 inverseHead //?
 // we have to flatten it
 flattenOption(inverseHead) //?
+const flatInverseHead = flattenOption(inverseHead)
+flatInverseHead //?
 
 // but, chain is already flattened
 inverseHeadChain //?
-const flatInverseHead = flattenOption(inverseHead)
-flatInverseHead //?
 
 const foldOptionToNumber = (option: Option<number>, defaultValue: number) =>
   fold(

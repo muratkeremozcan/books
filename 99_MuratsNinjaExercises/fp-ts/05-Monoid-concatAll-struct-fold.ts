@@ -7,7 +7,6 @@ import {first, last} from 'fp-ts/Semigroup'
 In the last post we saw that a Semigroup captures the concept of "merging" values (via concat). 
 A Monoid is any Semigroup that happens to have a special value which is "neutral" with respect to concat.
 
-
 Monoids are important in functional programming for several reasons:
 
 Identity Element: A Monoid extends a Semigroup by adding an identity element. 
