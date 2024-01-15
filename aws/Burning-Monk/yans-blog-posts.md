@@ -10,7 +10,154 @@ For some of these scenarios, we can use mock APIs and return dummy results for o
 
 **Component testing on individual Lambda functions**: this section is basically unit + integration from the above section.
 
-# Tips for writing Lambda functions
+### [Does Step Function's new TestState API make end-to-end tests obsolete?](https://lumigo.io/blog/does-step-functions-new-teststate-api-make-end-to-end-tests-obsolete/?utm_campaign=sfn-teststate-api&utm_source=yan&utm_medium=newsletter)
+
+Step Function [added support for testing individual states](https://aws.amazon.com/blogs/aws/external-endpoints-and-testing-of-task-states-now-available-in-aws-step-functions/) with the new [TestState API](https://docs.aws.amazon.com/step-functions/latest/apireference/API_TestState.html). Which lets you execute individual states with the following:
+
+- the state definition
+- an input
+- an IAM role
+
+And returns the following:
+
+- the output of the state
+- the status — whether it succeeded, errored, or caught an error
+- the next state in the execution
+- the error and cause (where applicable)
+
+With the TestState API, you can thoroughly test every state and achieve close to 100% coverage of a state machine.
+
+#### Approach to testing step functions:
+
+Components are easy to test in isolation with unit and integration.
+Happy path through the state machine with e2e is easy too.
+The challenge is hard to control test inputs down the branches; unhappy paths.
+
+1. **Use component testing on the individual Lambda functions**. Encapsulate any business logic and unit test them. Test the handler functions locally with integration tests. Use “remocal testing” (i.e. execute the Lambda function code locally against remote AWS resources) to maintain a fast feedback loop as you iterate on your Lambda function. Finally, these Lambda functions would be covered in your end-to-end tests as well, so we want to cover as many of the execution paths as possible using end-to-end tests.
+
+2. **Use end-to-end tests to cover as many execution paths as possible**. But this is not always possible, for example, when you are dealing with Wait states and Task timeouts. And sometimes it's difficult to force the execution down the path that you need for your test case. So there will likely be gaps in your end-to-end tests.
+
+3. (Old approach) **Use Step Functions Local and its mocks to fill the gaps in your end-to-end tests**. With its limitations, it's often not feasible to use Step Functions Local to test your state machine without first deploying all the resources to AWS. But it's still a very useful tool that can help you test those hard-to-reach execution paths with mocks.
+
+   Step Functions Local was best used to test execution paths that are difficult to reach, thanks to its mocking capability. The ability to test individual states means this is no longer necessary.
+
+   (New approach) is **TestState API**
+
+   Con: it is not local (suffers from feedback loop). For example, if you’re testing a Lambda-based `Task` state, then the referenced Lambda function and the relevant IAM role must be deployed first. Similarly, after you change the Lambda function, you have to deploy the change before you can test the state.
+
+   Pro: TestState API is for testing [input or output processing logic](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-input-output-filtering.html) [5]. This includes modifying the current input with the `Pass` state’s `Result` field.
+
+   Because the TestState API takes the state definition as an argument, you do not have to redeploy the state machine after every change. Instead, you can iterate and test your settings by passing the modified state definition to the TestState API.
+
+![chart](https://lumigo.io/wp-content/uploads/2023/12/sfn-01.png)
+
+Workflow:
+
+1. Work on the state machine design.
+2. Implement the Lambda functions.
+3. Deploy the project, including the state machine, Lambda functions, IAM roles, etc.
+4. Run tests against individual states.
+
+ [sample repo here](https://github.com/theburningmonk/sfn-teststate-api-demo) 
+
+Given a state machine
+
+```yml
+
+Task 2:
+  Type: Task
+  Resource: !GetAtt task2.Arn
+  Catch:
+    - ErrorEquals: [ "States.ALL" ]
+      Next: Task 3
+  End: true
+```
+
+We can write tests to make sure that:
+
+1. In the happy path, the execution succeeds and there is no `nextState`.
+2. In the error case, the execution errs, but the error is caught, and the execution should proceed to the `Task 3` state.
+
+```js
+// given module
+const { SFNClient, DescribeStateMachineCommand } = require("@aws-sdk/client-sfn")
+const client = new SFNClient()
+
+const a_state_machine = async (stateMachineArn) => {
+  const command = new DescribeStateMachineCommand({ 
+    stateMachineArn
+  })
+  const resp = await client.send(command)
+  
+  return {
+    definition: JSON.parse(resp.definition),
+    roleArn: resp.roleArn
+  }
+}
+
+module.exports = {
+  a_state_machine
+}
+```
+
+```js
+const { SFNClient, TestStateCommand } = require("@aws-sdk/client-sfn")
+const client = new SFNClient()
+
+const we_invoke_a_state = async (state, input, roleArn) => {
+  const command = new TestStateCommand({ 
+    definition: JSON.stringify(state),
+    input: JSON.stringify(input),
+    roleArn
+  })
+
+  const response = await client.send(command)
+  return response
+}
+
+module.exports = {
+  we_invoke_a_state
+}
+```
+
+The test:
+
+```js
+require('../steps/init')
+const given = require('../steps/given')
+const when = require('../steps/when')
+
+describe('When the task errors', () => {
+  it('"Task 3" should be the next state', async () => {
+    const { definition, roleArn } = await given.a_state_machine(process.env.MyStateMachineArn)
+    const choice = definition.States['Task 2']
+    const resp = await when.we_invoke_a_state(choice, { ErrorProbability: 1 }, roleArn)
+    expect(resp.status).toEqual('CAUGHT_ERROR')
+    expect(resp.nextState).toEqual('Task 3')
+  })
+})
+
+describe('When the task succeeds', () => {
+  it('The execution should end', async () => {
+    const { definition, roleArn } = await given.a_state_machine(process.env.MyStateMachineArn)
+    const choice = definition.States['Task 2']
+    const resp = await when.we_invoke_a_state(choice, { ErrorProbability: 0 }, roleArn)
+    expect(resp.nextState).toBeUndefined()    
+    expect(resp.status).toEqual('SUCCEEDED')
+  })
+})
+```
+
+##### Summary
+
+- The new TestState API is awesome! You can use it to achieve nearly 100% test coverage of your state machines.
+- Because the business logic of a state machine is often split across Lambda functions and state definitions, you should still have tests for Lambda functions.
+- You should use “remocal tests” for Lambda functions to help you maintain a fast feedback loop.
+- Because the TestState API invokes the remote resources referenced by the `Task` state, you still have to deploy the project first.
+- You don’t need to use Step Functions Local anymore.
+- There is still value in end-to-end tests. You should use them to ensure critical business workflows work end-to-end.
+
+##  Tips for writing Lambda functions
 
 ### [Running and debugging AWS Lambda functions locally with the Serverless framework and VS Code](https://theburningmonk.com/2017/08/running-and-debugging-aws-lambda-functions-locally-with-the-serverless-framework-and-vs-code/)
 
