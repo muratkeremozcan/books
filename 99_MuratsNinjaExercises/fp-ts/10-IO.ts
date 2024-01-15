@@ -50,4 +50,3 @@ const program: IO<void> = pipe(randomBool, log)
 // That's because program is a value which just represents an effectful computation,
 // so in order to execute any side effect you must "run the IO action".
 program() //?
-

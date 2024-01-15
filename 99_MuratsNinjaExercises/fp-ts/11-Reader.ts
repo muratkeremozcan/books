@@ -35,7 +35,7 @@ const arg: Dependencies = {i18n: {true: 'vero', false: 'falso'}}
 
   const h = (s: string, deps: Dependencies): string => g(s.length + 1, deps)
 
-  h('foo', arg) //?
+  p
 }
 
 // using Reader, we only have to change f
