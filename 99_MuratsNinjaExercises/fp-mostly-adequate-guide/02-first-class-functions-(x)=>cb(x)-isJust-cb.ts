@@ -1,9 +1,9 @@
 const hi = (name: string) => `Hi ${name}`
 
 // (x) => cb(x) isJust cb
-// these tow are the same, try toggling
-const greeting = (name: string) => hi(name)
-// const greeting = hi
+// these two are the same, try toggling
+// const greeting = (name: string) => hi(name)
+const greeting = hi
 
 hi('Joe') //?
 greeting('Joe') //?

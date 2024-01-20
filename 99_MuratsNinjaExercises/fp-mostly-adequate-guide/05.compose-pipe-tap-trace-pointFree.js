@@ -42,11 +42,13 @@ const shoutR = compose(
   toUpperCase,
   tap(console.log),
 )
+const shoutRp = pipe(toUpperCase, exclaim)
 
 shoutC('send in the clowns') //?
 shout1('send in the clowns') //?
 shout2('send in the clowns') //?
 shoutR('send in the clowns') //?
+shoutRp('send in the clowns') //?
 
 /////
 const head = x => x[0]
@@ -98,8 +100,7 @@ snakeCaseR('Hello World') //?
 snakeCaseRC('Hello World') //?
 
 // not pointfree because we mention the data: name
-const initials = name =>
-  name.split(' ').map(compose(toUpperCase, head)).join('. ')
+const initials = name => name.split(' ').map(compose(toUpperCase, head)).join('. ')
 const initialsR = pipe(
   // tap(d => {
   //   console.log(d)
