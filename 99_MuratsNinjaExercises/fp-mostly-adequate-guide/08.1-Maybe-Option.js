@@ -112,7 +112,7 @@ const updateLedger = account => account
 // remainingBalance :: Account -> String
 const remainingBalance = ({balance}) => `Your balance is $${balance}`
 // finishTransaction :: Account -> String
-const finishTransaction = pipe(remainingBalance, updateLedger)
+const finishTransaction = pipe(updateLedger, remainingBalance)
 {
   // withdraw :: Number -> Account -> Maybe(Account)
   const withdraw = curry((amount, {balance}) =>
@@ -138,10 +138,7 @@ const finishTransaction = pipe(remainingBalance, updateLedger)
 
   // with maybe it is like:  if/else
   // getTwenty :: Account -> String
-  const getTwentyMaybe = pipe(
-    withdraw(20),
-    maybe("You're broke!", finishTransaction),
-  )
+  const getTwentyMaybe = pipe(withdraw(20), maybe("You're broke!", finishTransaction))
 
   getTwentyMaybe({balance: 200.0}) //?
   getTwentyMaybe({balance: 10.0}) //?
@@ -168,10 +165,7 @@ const finishTransaction = pipe(remainingBalance, updateLedger)
   })
 
   // with maybe it is like:  if/else
-  const getTwentyMaybe = pipe(
-    withdraw(20),
-    maybe("You're broke!", finishTransaction),
-  )
+  const getTwentyMaybe = pipe(withdraw(20), maybe("You're broke!", finishTransaction))
 
   getTwentyMaybe({balance: 200.0}) //?
   getTwentyMaybe({balance: 10.0}) //?
