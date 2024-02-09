@@ -1,5 +1,20 @@
 # Notes
 
+**AI** is the ability of a machine to learn patterns and make predictions
+
+**Augmented Intelligence**, emphasizes the enhancement of human intelligence with AI technologies. Instead of replacing human intelligence, it aims to augment it, making people more capable of solving complex problems, making decisions, or generating creative ideas.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mkctvew84f60yjxyss7l.png)
+
+What does AI do?
+Based on data **analysis**, they make **predictions**
+
+**Narrow AI** is specialized and limited to specific tasks
+
+**Broad AI** covers a wider range of activities with greater flexibility, 
+
+**General AI** (AGI) aims for the comprehensive cognitive abilities of humans, capable of performing any task with human-like versatility.
+
 ## Intro
 
 **Machine Learning** (ML) enables computers to learn from data, shifting away from rigid programming to allowing algorithms to make predictions or decisions based on that data.
