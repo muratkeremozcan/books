@@ -1,5 +1,7 @@
 # Notes
 
+## Intro
+
 **Machine Learning** (ML) enables computers to learn from data, shifting away from rigid programming to allowing algorithms to make predictions or decisions based on that data.
 
 **Deep Learning** (DL), a more advanced branch of ML, employs multi-layered artificial neural networks to mimic the human brain's processing, enabling learning from vast datasets.
@@ -8,20 +10,20 @@
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6yd49mgv2drn07gmcc8t.png)
 
-## What can we generate?
+### What can we generate?
 
 - Images
 - Videos
 - Text (language or code)
 - music
 
-## Use cases for Generative AI
+### Use cases for Generative AI
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vdnsruk0qv0wqxlmqsbn.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fi5aa7h0ktfadhwzphut.png)
 
-## Traditional vs Generative AI
+### Traditional vs Generative AI
 
 Traditional AI operates in pre-defined narrow swim lanes and can act only in those dimensions, unlike generative AI, which is broader and allows for more flexibility.
 
@@ -31,7 +33,7 @@ Conversely, generative AI adopts a probabilistic approach, generating new output
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nv3m4jqt7jjonjcpt2l3.png)
 
-## Unified Approach for Implementing Generative AI in Enterprises:
+### Unified Approach for Implementing Generative AI in Enterprises:
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6mazem3gaqbandqbmqzb.png)
 
@@ -55,7 +57,7 @@ Conversely, generative AI adopts a probabilistic approach, generating new output
 
 10. **Informed Model Selection**: Make informed decisions between commercial and open-source models based on project-specific needs, licensing terms, and compliance with legal and regulatory requirements.
 
-## Rollout
+### Rollout
 
 To effectively implement generative AI in an enterprise, follow these steps:
 
@@ -68,3 +70,33 @@ To effectively implement generative AI in an enterprise, follow these steps:
 4. **Integration**: Embed the generative AI, such as an Enterprise ChatBot, into business applications that directly address your identified goals, while also managing generative AI-related risks and implementing policies on safety and responsible AI use.
 
 5. **Continuous Improvement**: Recognize that deploying generative AI is an ongoing process that involves regular monitoring, testing, and adjustments to achieve optimal and responsible functionality. Begin with small-scale projects and expand as your capability and understanding of the technology grow.
+
+## LLMs
+
+- - **Large Language Models (LLMs)**: Generative AI capable of producing human-like text, adaptable for specialized tasks with fine-tuning.
+  - **Foundational Models**: Encompass LLMs and extend to models that process images and audio, offering a broader application range.
+
+- **Architecture & Capabilities**:
+  - **Transformer Architecture**: Core to modern AI, enables processing of sequential data and underpins both LLMs and foundational models for scalable and efficient computation.
+  - **Training Cut-off**: LLMs do not update knowledge post-training, limiting real-time data access or external database retrieval.
+
+- **Application in Enterprise**:
+  - **Base LLMs**: Broadly capable but may lack task-specific precision in enterprise settings without additional training.
+  - **Instruction-based Usage**: Enhances performance through prompt engineering but doesn't expand core model capabilities.
+  - **Fine-tuning**: Improves task-specific performance but requires extra resources and risks overfitting.
+
+- **LLMs in Detail**:
+  - **General-purpose Use**: Capable of diverse tasks like question-answering, content generation, and translation without specific training.
+  - **Key Use Cases**: Include summarization, chatbots, content generation, translation, and more, powered by foundational models.
+  - **Types of LLMs**: Base, Instruction-based, and Fine-tuned, each with distinct advantages and considerations.
+  - **Concepts**: Include prompts, embeddings, tokens, model parameters, and transformer architecture.
+  - **Open-source vs. Commercial**: Commercial models often offer advanced performance; open-source models provide customization flexibility.
+  - **Small Language Models (SLMs)**: Emerging as lightweight alternatives, offering comparable capabilities to larger models in some cases.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fy4e9eb3swm9t6djmru1.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i4z7hmq5litcc8muv243.png)
+
+
+
+- 
