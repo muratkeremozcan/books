@@ -1,5 +1,7 @@
 # Notes
 
+## Intro to AI
+
 **AI** is the ability of a machine to learn patterns and make predictions
 
 **Augmented Intelligence**, emphasizes the enhancement of human intelligence with AI technologies. Instead of replacing human intelligence, it aims to augment it, making people more capable of solving complex problems, making decisions, or generating creative ideas.
@@ -9,11 +11,33 @@
 What does AI do?
 Based on data **analysis**, they make **predictions**
 
-**Narrow AI** is specialized and limited to specific tasks
+### 3 levels/types of AI
 
-**Broad AI** covers a wider range of activities with greater flexibility, 
+1. **Narrow AI** is specialized and limited to specific tasks.
 
-**General AI** (AGI) aims for the comprehensive cognitive abilities of humans, capable of performing any task with human-like versatility.
+2. **Broad AI** covers a wider range of activities with greater flexibility.
+
+3. **General AI** (AGI) aims for the comprehensive cognitive abilities of humans, capable of performing any task with human-like versatility.
+
+### 3 types of data
+
+1. **Structured Data**: This is quantitative and well-organized in rows and columns, making it suitable for spreadsheets like Google Sheets or Microsoft Excel. It includes data such as names, dates, addresses, and stock information.
+
+2. **Unstructured Data**: Known as qualitative or dark data, this type lacks inherent organization, making it challenging for conventional tools to process and analyze. Examples include images, texts, customer feedback, medical records, and song lyrics.
+
+3. **Semi-Structured Data**: Acting as a midpoint between structured and unstructured data, it lacks a rigid data model but incorporates elements of both types. It uses metadata for organization, making it easier to manage than purely unstructured data. Examples include videos on social media, which are unstructured by nature but tagged with searchable metadata like hashtags.
+
+### 3 common methods of machine learning
+
+1. **Supervised Learning**: This method involves learning a function that maps an input to an output based on example input-output pairs. It uses **labeled** datasets to train algorithms to classify data or predict outcomes accurately.
+
+2. **Unsupervised Learning**: In this approach, the algorithm learns patterns from untagged data. The system tries to learn without explicit instructions, identifying hidden structures in **unlabeled** data.
+
+3. **Reinforcement Learning**: This technique teaches the model to make decisions through **trial and error**. It learns to achieve a goal in a complex, uncertain environment by taking actions and receiving feedback in the form of rewards or penalties.
+
+## Natural Language Processing and Computer Vision
+
+
 
 ## Intro
 
