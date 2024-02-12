@@ -37,7 +37,39 @@ Based on data **analysis**, they make **predictions**
 
 ## Natural Language Processing and Computer Vision
 
+Machines require systems that research scientists call **natural language processing**, or **NLP**, to understand human language.
 
+**Corpus** is collection of text and data used to train AI.
+
+**Sentence Segmentation:** dividing a text into individual sentences. It is a fundamental step in natural language processing (NLP) to prepare text for further analysis or processing.
+
+**Tokens:** In the context of NLP, tokens are the basic units of text, resulting from the process of tokenization. Tokens can be words, numbers, or punctuation marks. Tokenization involves splitting a text into these individual elements, making it easier for AI models to analyze or understand the text's structure and meaning.
+
+An **entity** is a noun representing a person, place, or thing. It’s not an adjective, verb, or other article of speech.
+
+A **relationship** is a group of two or more entities that have a strong connection to one another.
+
+A **concept** is something implied in a sentence but not actually stated. This is trickier because it involves matching ideas rather than the specific words present in the sentence.
+
+**Emotion detection** identifies distinct human emotion types.
+
+**Sentiment analysis** isn’t a specific emotion —at least, not as computer scientists use the term. Instead, it’s a measure of the strength of an emotion. 
+
+### Chatbots and NLP
+
+Chatbots **understand** a question by breaking it into parts called **entities** and **intents**, then use what it’s found to trigger a **dialog**.
+
+A dialog is represented by a **flowchart** that illustrates how a chatbot will respond after a human asks a question.
+
+### Image recognition and **convolutional neural network (CNN)**
+
+An AI system uses a **convolutional neural network (CNN)** to analyze images. In a **CNN**, two small groups of pixels that overlap each other are compared mathematically to get a value. AI can use thousands of these small comparisons to identify individual parts of an image, then compare them to images in its corpus. From this, AI can put together an overall identification, without being overwhelmed.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bqwwtnwqtw9660j6fqdk.png)
+
+### Generative adversarial networks
+
+**GAN**: in effect, the CNNs (Generator vs Discriminator) battle each other until one of them becomes pretty good at creating art.
 
 ## Intro
 
