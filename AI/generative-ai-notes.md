@@ -71,7 +71,9 @@ An AI system uses a **convolutional neural network (CNN)** to analyze images. In
 
 **GAN**: in effect, the CNNs (Generator vs Discriminator) battle each other until one of them becomes pretty good at creating art.
 
-## Intro
+## Machine Learning & Deep Learning
+
+**Artificial Intelligence** (AI) describes computer systems that can apply reasoning to subjects that previously required human intelligence.
 
 **Machine Learning** (ML) enables computers to learn from data, shifting away from rigid programming to allowing algorithms to make predictions or decisions based on that data.
 
@@ -80,6 +82,32 @@ An AI system uses a **convolutional neural network (CNN)** to analyze images. In
 **Generative AI** represents a further advancement in DL, focusing on creating new, original content or data patterns by learning from existing data. It not only predicts but also generates previously unseen outputs, such as text, images, or music, demonstrating a significant leap in AI's ability to understand and innovate.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6yd49mgv2drn07gmcc8t.png)
+
+### Classical machine learning
+
+A **decision tree** is a supervised learning algorithm. It operates like a flowcharts
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3dhqge73g39nqykhhwea.png)
+
+A **linear** regression answers a question such as “If this increases by X, how much will Y increase?”
+
+A **logistic** regression answers a question such as “If this increases by X, will the value of Y be closer to 0 or 1?”
+
+### Human brain comparison
+
+In the brain, cells called neurons have a cell body at one end where the nucleus resides, and a long axon leading to a set of branching terminals at the other end. Neurons communicate to each other by receiving signals into the axon, altering those signals, then transmitting them out through the terminals to other neurons.
+
+In a neural network, a building block, called a **perceptron**, acts as the equivalent of a single neuron. A perceptron has an **input** layer, one or more **hidden layers**, and an **output** layer. A signal enters the input layer and the hidden layers run algorithms on the signal. Then, the result is passed to the output layer.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/825d308a784dh5os2fkn.png)
+
+### Generative AI
+
+
+
+
+
+## Book
 
 ### What can we generate?
 
