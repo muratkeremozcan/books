@@ -69,7 +69,7 @@ An AI system uses a **convolutional neural network (CNN)** to analyze images. In
 
 ### Generative adversarial networks
 
-**GAN**: in effect, the CNNs (Generator vs Discriminator) battle each other until one of them becomes pretty good at creating art.
+**Generative Adversarial Network (GAN):** GANs consist of two Convolutional Neural Networks (CNNs), a generator and a discriminator, that are trained simultaneously through adversarial processes. The generator creates data (like images) that is as realistic as possible, while the discriminator tries to distinguish between real and generated data. GANs are widely used for high-quality image generation, style transfer, and more.
 
 ## Machine Learning & Deep Learning
 
@@ -103,13 +103,13 @@ In a neural network, a building block, called a **perceptron**, acts as the equi
 
 ### Generative AI
 
+Traditional AI relies on specific, predetermined processes to produce expected outcomes, such as automating customer service responses, 
 
+Generative AI uses a probabilistic approach to create novel outputs from learned patterns. This enables it to generate unique content, including images, music, and text, beyond predefined constraints. Generative AI's interaction through prompts facilitates dynamic and innovative applications, marking a significant evolution in AI capabilities.
 
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nv3m4jqt7jjonjcpt2l3.png)
 
-
-## Book
-
-### What can we generate?
+What can we generate?
 
 - Images
 - Videos
@@ -121,16 +121,6 @@ In a neural network, a building block, called a **perceptron**, acts as the equi
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vdnsruk0qv0wqxlmqsbn.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fi5aa7h0ktfadhwzphut.png)
-
-### Traditional vs Generative AI
-
-Traditional AI operates in pre-defined narrow swim lanes and can act only in those dimensions, unlike generative AI, which is broader and allows for more flexibility.
-
-Traditional AI operates within strict, predefined parameters, focusing on specific tasks through a set process involving data collection, preparation, analysis, feature engineering, training, and validation. It produces deterministic and predictable outcomes within its training boundaries, like automating responses in customer service chatbots.
-
-Conversely, generative AI adopts a probabilistic approach, generating new outputs based on learned data patterns, not just hardcoded information. This flexibility enables generative AI to handle novel data types and content, assess output quality, and ensure ethical use. A key distinction is that generative AI interacts through prompts, allowing for more dynamic and innovative applications.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nv3m4jqt7jjonjcpt2l3.png)
 
 ### Unified Approach for Implementing Generative AI in Enterprises:
 
@@ -169,6 +159,16 @@ To effectively implement generative AI in an enterprise, follow these steps:
 4. **Integration**: Embed the generative AI, such as an Enterprise ChatBot, into business applications that directly address your identified goals, while also managing generative AI-related risks and implementing policies on safety and responsible AI use.
 
 5. **Continuous Improvement**: Recognize that deploying generative AI is an ongoing process that involves regular monitoring, testing, and adjustments to achieve optimal and responsible functionality. Begin with small-scale projects and expand as your capability and understanding of the technology grow.
+
+
+
+### Types of generative AI models
+
+**Variational Autoencoder (VAE):** VAEs are a class of generative models that use neural networks to encode input data into a lower-dimensional representation and then decode it back to reconstruct the original data. They are particularly useful for tasks like image generation, where they can learn to produce new images similar to those in the training set. Think of it as a skilled artist who can look at a painting, quickly sketch a simplified version of it, and then recreate a new painting using only that simplified sketch as a reference.
+
+**Generative Adversarial Network (GAN):** GANs consist of two Convolutional Neural Networks (CNNs), a generator and a discriminator, that are trained simultaneously through adversarial processes. The generator creates data (like images) that is as realistic as possible, while the discriminator tries to distinguish between real and generated data. GANs are widely used for high-quality image generation, style transfer, and more.
+
+**Autoregressive Models:** These models generate sequences of data by predicting each next item based on the preceding ones. They are used in various applications, including text generation (like completing sentences), and can produce highly coherent and contextually relevant outputs. Imagine an **autoregressive** model as a skilled storyteller who listens to the beginning of a story and then continues it by predicting what comes next based on the words and events that have occurred so far.
 
 ## LLMs
 
