@@ -9,7 +9,7 @@
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mkctvew84f60yjxyss7l.png)
 
 What does AI do?
-Based on data **analysis**, they make **predictions**
+Based on data **analysis**, they make **predictions**.
 
 ### 3 levels/types of AI
 
@@ -75,7 +75,7 @@ An AI system uses a **convolutional neural network (CNN)** to analyze images. In
 
 **Artificial Intelligence** (AI) describes computer systems that can apply reasoning to subjects that previously required human intelligence.
 
-**Machine Learning** (ML) enables computers to learn from data, shifting away from rigid programming to allowing algorithms to make predictions or decisions based on that data.
+**Machine Learning** (ML) enables computers to learn from data, shifting away from rigid programming to allowing algorithms to make predictions or decisions based on that data. A **machine learning algorithm** is a set of program code. A **machine learning model** is a group of machine learning algorithms.
 
 **Deep Learning** (DL), a more advanced branch of ML, employs multi-layered artificial neural networks to mimic the human brain's processing, enabling learning from vast datasets.
 
