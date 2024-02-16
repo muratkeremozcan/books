@@ -170,6 +170,18 @@ To effectively implement generative AI in an enterprise, follow these steps:
 
 **Autoregressive Models:** These models generate sequences of data by predicting each next item based on the preceding ones. They are used in various applications, including text generation (like completing sentences), and can produce highly coherent and contextually relevant outputs. Imagine an **autoregressive** model as a skilled storyteller who listens to the beginning of a story and then continues it by predicting what comes next based on the words and events that have occurred so far.
 
+## AI Ethics
+
+**Explainability** refers to the ability to describe an AI system's decisions or actions in understandable terms to humans. 
+
+**Robustness** in AI refers to the ability of AI systems to operate effectively under a variety of conditions, including handling unexpected inputs, resisting manipulation, and recovering from errors.
+
+**Transparency** in AI involves clear communication about how AI systems work, the data they use, and their decision-making processes. Just like a nutritional label on a box of food.
+
+**Fairness** in AI refers to the principle that AI systems should not create or reinforce unfair bias or discrimination against certain groups or individuals.
+
+**Privacy** in terms of AI ethics refers to the right to control access to personal information and the respect for the confidentiality of such information when collected, processed, shared, and stored by AI systems.
+
 ## LLMs
 
 - - **Large Language Models (LLMs)**: Generative AI capable of producing human-like text, adaptable for specialized tasks with fine-tuning.
