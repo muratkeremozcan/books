@@ -232,4 +232,25 @@ To effectively implement generative AI in an enterprise, follow these steps:
 
 
 
-- 
+## Prompting
+
+Prompt engineering is the process of crafting prompt text to best effect for a given model and parameters. 
+
+### Prompt elements
+
+**Instruction:** This is the explicit task or direction you give to the model.
+
+**Context:** This is information that provides additional background or details that help the model better understand the task.
+
+**Input data:** This refers to the specific information you want the model to process and generate insights or answers based on.
+
+**Output indicator:** The output indicator specifies the desired format or type of the model's response. 
+
+### Prompt engineering techniques
+
+1. **Zero-shot Prompting**: This approach involves presenting a task to the AI model without any prior examples or training specific to that task. The model uses its pre-existing knowledge to generate a response. Zero-shot prompting is important because it tests the model's ability to apply its learned knowledge to new situations without any additional training, showcasing its generalization capabilities.
+2. **Few-shot Prompting**: In this method, the AI model is given a small number of examples (a "few shots") before being asked to perform a task. These examples serve as a context or guide for the model to understand the task at hand. Few-shot prompting is crucial because it helps the model quickly adapt to new tasks with minimal examples, making AI systems more efficient and practical for real-world applications where large datasets might not be available.
+3. **One-shot Prompting**: This technique provides the AI model with a single example to guide its understanding of the task before asking it to complete a similar task. One-shot prompting is important as it demonstrates the model's ability to learn from very limited information, reflecting a more human-like understanding and adaptability.
+4. **Chain-of-thought Prompting**:  instead of directly answering a question or solving a problem, the AI is prompted to generate a step-by-step reasoning process that leads to the final answer or solution. It is important because it can significantly enhance the model's performance on complex tasks that require logic, reasoning, and understanding of context. 
+5. **Generated-knowledge prompting**: a technique used to improve the knowledge and reasoning capabilities of AI language models. It involves providing these models with generated or simulated data as prompts, enabling them to learn from beyond their initial training datasets. This approach is crucial because it helps overcome the limitations of models that only rely on existing human-generated text, allowing them to provide more accurate, informed, and up-to-date responses, especially in areas where they may lack direct information or in rapidly evolving fields.
+6. **Retrieval-Augmented Generation**: (use browser) a method that combines the traditional neural language model's capabilities with an external information retrieval mechanism to enhance the model's ability to provide informed and contextually accurate responses. It matters because it significantly improves the quality of the generated text, particularly for knowledge-intensive tasks, by incorporating relevant external information into the response generation process, thus making AI outputs more factual and contextually rich.
