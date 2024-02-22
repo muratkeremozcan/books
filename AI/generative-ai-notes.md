@@ -93,13 +93,57 @@ A **linear** regression answers a question such as “If this increases by X, ho
 
 A **logistic** regression answers a question such as “If this increases by X, will the value of Y be closer to 0 or 1?”
 
-### Human brain comparison
+### Human brain comparison to neural networks
 
 In the brain, cells called neurons have a cell body at one end where the nucleus resides, and a long axon leading to a set of branching terminals at the other end. Neurons communicate to each other by receiving signals into the axon, altering those signals, then transmitting them out through the terminals to other neurons.
 
 In a neural network, a building block, called a **perceptron**, acts as the equivalent of a single neuron. A perceptron has an **input** layer, one or more **hidden layers**, and an **output** layer. A signal enters the input layer and the hidden layers run algorithms on the signal. Then, the result is passed to the output layer.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/825d308a784dh5os2fkn.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/50yoqchbtxcrrw26dmwt.png)
+
+#### Types of neural network activation functions
+
+Sigmoid and Perceptron maps input to a range between 0 and 1.
+
+Tanh maps input to a range between -1 and 1.
+
+ReLU applies a threshold at zero to each input.
+
+No activation function is perfect, but activation functions  are crucial for introducing non-linearity into the network, enabling it to learn complex patterns. Sigmoid and Tanh are used for their smooth gradient properties, ReLU is favored for its computational efficiency and ability to address vanishing gradient issues, making each essential for different contexts and network requirements.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/r0ah45vkz06x9hz3xpvy.png)
+
+**Gradient Descent**
+
+Gradient descent is related to activation functions in neural networks through the process of backpropagation, where the goal is to minimize the loss function of the model. Activation functions introduce non-linearity into the network, enabling it to learn complex patterns in the data.
+
+Gradient descent is an optimization algorithm used to minimize the cost function in machine learning and deep learning models. It's important because it guides the adjustment of parameters (weights and biases) of the model to reduce errors (differences between predicted and actual values). 
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vmrizeaofagfcqsok9dk.png)
+
+#### Types of neural network layers
+
+**Dense layers** are fully connected and fundamental for learning high-level patterns in data.
+
+**Softmax layers** are used in classification to convert outputs into probability distributions
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mebuj2c4ft1tf8l4ft9v.png)![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/95ajomq9njn7ozhtn5ne.png)
+
+**Batch normalization** standardizes the inputs to a layer, improving stability and speed in training.
+
+**Flatten layers** convert multidimensional inputs into a single dimension, enabling them to be processed by dense layers.
+
+These layers are crucial for constructing effective neural network architectures that can learn from complex data and perform a wide range of tasks.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rgqfosnvhwdpv90qhp7g.png)
+
+**Convolutional layers** extract key features from images through filter operations, enabling the network to learn complex patterns efficiently
+
+**Max pooling layers** reduce the size of feature maps by selecting maximum values, simplifying the network's input and enhancing feature detection.
+
+They matter because they allow neural networks, especially in image processing tasks, to understand and interpret visual data more effectively and efficiently, leading to more accurate predictions and classifications in tasks like image recognition and computer vision.
 
 ### Generative AI
 
