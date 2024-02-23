@@ -3,10 +3,13 @@
 Learning path:
 
 * [IBM AI fundamentals](https://skills.yourlearning.ibm.com/activity/PLAN-7913EE1DB030) 
-* [Kickstart Artificial Intelligence](https:
 * [[Artificial Intelligence: Preparing Your Career for AI](https://www.udemy.com/course/artificial-intelligence-preparing-your-career-for-ai/)
 * [All the Math You Need to Know in Artificial Intelligence](https://www.freecodecamp.org/news/all-the-math-you-need-in-artificial-intelligence/)
 * [Machine Learning for Everyone](https://www.datacamp.com/courses/machine-learning-for-everyone)//www.udemy.com/course/kickstart-ai/)
+* [more courses](https://youtu.be/gUmagAluXpk?si=OPdKRG7VubfXY7sW) (put them here)
+* [AI roadmap](https://drive.google.com/file/d/1dEfzIA7CS3bpHSkOV9h5Y7gripHPiTid/view?usp=drivesdk) (put them here)
+* [book: Generative AI in Action](https://www.manning.com/books/generative-ai-in-action) (fall 2024)
+* [book: Tensorflow in Action](https://www.manning.com/books/tensorflow-in-action) (maybe)
 
 The following content represents a consolidated and streamlined compilation of notes from all the above-listed resources.
 
