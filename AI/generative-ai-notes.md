@@ -311,3 +311,95 @@ Prompt engineering is the process of crafting prompt text to best effect for a g
 4. **Chain-of-thought Prompting**:  instead of directly answering a question or solving a problem, the AI is prompted to generate a step-by-step reasoning process that leads to the final answer or solution. It is important because it can significantly enhance the model's performance on complex tasks that require logic, reasoning, and understanding of context. 
 5. **Generated-knowledge prompting**: a technique used to improve the knowledge and reasoning capabilities of AI language models. It involves providing these models with generated or simulated data as prompts, enabling them to learn from beyond their initial training datasets. This approach is crucial because it helps overcome the limitations of models that only rely on existing human-generated text, allowing them to provide more accurate, informed, and up-to-date responses, especially in areas where they may lack direct information or in rapidly evolving fields.
 6. **Retrieval-Augmented Generation**: (use browser) a method that combines the traditional neural language model's capabilities with an external information retrieval mechanism to enhance the model's ability to provide informed and contextually accurate responses. It matters because it significantly improves the quality of the generated text, particularly for knowledge-intensive tasks, by incorporating relevant external information into the response generation process, thus making AI outputs more factual and contextually rich.
+
+## All the math you need for AI
+
+### 1. Algebra
+
+Knowledge of algebra is perhaps fundamental to math in general. Besides mathematical operations like addition, subtraction, multiplication and division, you'll need to know the following:
+
+- [Exponents](http://www.mclph.umn.edu/mathrefresh/exponents.html)
+- [Radicals](https://tutorial.math.lamar.edu/classes/alg/Radicals.aspx)
+- [Factorials](https://www.youtube.com/watch?v=pGg40oiQsUk&feature=youtu.be)
+- [Summations](https://www.youtube.com/watch?v=LDfaYXXAcHY&feature=youtu.be)
+- [Scientific Notations](https://www.khanacademy.org/math/pre-algebra/pre-algebra-exponents-radicals)
+
+### 2. Linear Algebra
+
+Linear Algebra is the primary mathematical computation tool in Artificial Intelligence and many areas of Science and Engineering. In this, 4 primary mathematical objects and their properties need to be understood:
+
+- [Scalars](http://www.sciencebits.com/vector_algebra) - a single number (can be real or natural).
+
+- [Vectors](http://www.sciencebits.com/vector_algebra) - a list of numbers, arranged in order. Consider them as points in space with each element representing the coordinate along an axis.
+
+- [Matrices](https://www.mathsisfun.com/algebra/matrix-introduction.html) - a 2-D array of numbers where each number is identified by 2 indices.
+
+- [Tensors](https://mathworld.wolfram.com/Tensor.html) -Tensors are mathematical objects that generalize scalars, vectors, and matrices to higher dimensions. For example, a scalar is a zero-order tensor, a vector is a first-order tensor, and a matrix is a second-order tensor. Higher-order tensors (third-order, fourth-order, etc.) can represent data with more dimensions. In machine learning, tensors are used to generalize data structures, allowing for the handling of higher-dimensional datasets. For instance, in deep learning, data such as images can be represented as third-order tensors (height x width x color channels).
+
+- [Eigenvectors & Eigenvalues](https://www.mathsisfun.com/algebra/eigenvalue.html) -  In linear algebra, eigenvectors are non-zero vectors that only change by a scalar factor when a linear transformation is applied to them. This scalar factor is called the eigenvalue. 
+
+  Eigenvectors and eigenvalues are important because they give insight into the properties of the linear transformation represented by the matrix. For example, they can be used to understand the directions in which a transformation stretches or compresses, and by how much. This concept is widely used in areas such as physics, engineering, and computer science, particularly in stability analysis, system dynamics, and principal component analysis (PCA).
+
+- [Singular Value Decomposition](https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm) - factorization of a matrix into 3 matrices. 
+
+  Think of SVD as a way to break down a big, complex dataset into simpler, smaller pieces that are easier to study and understand. It's like taking a complicated machine apart to understand what each part does and how important it is.
+
+  In the context of AI, imagine you have a lot of data about movies (like user ratings, genres, etc.). SVD helps by finding patterns and simplifying the data into components: what's common among movies, what's common among users' preferences, and how important each pattern is. This can help in making better recommendations for users based on fewer, more relevant pieces of information.
+
+  Essentially, SVD helps in distilling large data sets into their essential parts, making the data easier to work with and insights easier to find, which is crucial for many AI applications, such as recommendation systems and image compression.
+
+- [Principal Component Analysis (PCA)](https://royalsocietypublishing.org/doi/10.1098/rsta.2015.0202) - is a statistical method used to reduce the dimensionality of a dataset while retaining as much information as possible. It identifies the directions (called principal components) in which the data varies the most. In simpler terms, imagine you have a cloud of data points spread out in space; PCA finds the best flat direction to view this cloud so that you can see its structure using fewer dimensions.
+
+  Here's why it matters for AI: PCA helps in compressing data by reducing the number of features, which speeds up learning algorithms and removes noise, making the patterns in the data more visible. This simplification makes it easier for AI systems to understand and work with large datasets.
+
+Properties such as the [Dot product](https://betterexplained.com/articles/vector-calculus-understanding-the-dot-product/), [Vector product](http://hyperphysics.phy-astr.gsu.edu/hbase/vvec.html) and the [Hadamard product](https://handwiki.org/wiki/Hadamard_product_(matrices)) are useful to know as well.
+
+### 3. Calculus
+
+Calculus deals with changes in parameters, functions, errors and approximations. Working knowledge of multi-dimensional calculus is imperative in Data Science. The following are the most important concepts (albeit non-exhaustive) in Calculus:
+
+- [Derivatives](https://www.mathsisfun.com/calculus/derivatives-introduction.html) - measure how a function changes as its input changes. They're foundational in optimizing AI models by adjusting parameters to minimize loss functions.
+
+  **Rules**:
+  - **Addition Rule**: The derivative of a sum is the sum of the derivatives.
+  - **Product Rule**: The derivative of a product of two functions is given by the first times the derivative of the second plus the second times the derivative of the first.
+  - **Chain Rule**: Used to differentiate a composite function; if a variable is changed by another, which in turn is changed by another, the total effect is the product of the individual changes.
+
+  **Hyperbolic Derivatives**:
+  - Functions like tanh (hyperbolic tangent) and cosh (hyperbolic cosine) are used in AI for activation functions. Their derivatives, which describe how changes in inputs affect outputs, are crucial for backpropagation in neural networks.
+
+  **Partial Derivatives**:
+  - In multivariable functions, partial derivatives measure how a function changes as one variable changes, holding others constant. This is essential in AI for functions of multiple variables, helping to optimize parameters in models like neural networks.
+
+- [Vector/Matrix Calculus](http://www.personal.rdg.ac.uk/~sis01xh/teaching/CY4C9/ANN3.pdf) 
+
+  **Gradient**: A vector showing the direction and rate of the steepest increase of a function. For AI, it helps in optimizing functions, like finding the minimum loss in neural networks.
+
+  **Jacobian**: A matrix representing all first-order partial derivatives of a vector-valued function. In AI, it's important for understanding how changes in inputs affect outputs, particularly in complex systems.
+
+  **Hessian**: A square matrix of second-order partial derivatives of a scalar-valued function. It's used in AI to understand the curvature of error surfaces, helping to find minima or maxima efficiently.
+
+  **Laplacian**: A differential operator that calculates the divergence of the gradient of a function. In AI, it's used for image processing, helping to enhance edges and remove noise.
+
+- [Gradient Algorithms](https://towardsdatascience.com/gradient-descent-algorithm-and-its-variants-10f652806a3) - local/global maxima & minima, saddle points, convex functions, batches & mini-batches, stochastic gradient descent, and performance comparison.
+
+### 4. Statistics & Probability
+
+- [Basic Statistics](https://www.dummies.com/education/math/statistics/statistics-for-dummies-cheat-sheet/) - Mean, median, mode, variance, covariance etc
+- [Basic rules in probability](http://www.milefoot.com/math/stat/prob-rules.htm) - events (dependent & independent), sample spaces, conditional probability.
+- [Random variables](https://www.khanacademy.org/math/statistics-probability/random-variables-stats-library) - continuous & discrete, expectation, variance, distributions (joint & conditional).
+- [Bayes' Theorem](https://blogs.scientificamerican.com/cross-check/bayes-s-theorem-what-s-the-big-deal/) - calculates validity of beliefs. Bayesian software helps machines recognize patterns and make decisions.
+- [Maximum Likelihood Estimation (MLE)](https://towardsdatascience.com/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1) - parameter estimation. Requires knowledge of fundamental probability concepts (joint probability and independence of events).
+- [Common Distributions](https://www.stat.tamu.edu/~twehrly/611/distab.pdf) - binomial, poisson, bernoulli, gaussian, exponential.
+
+### 5. Information Theory
+
+An important field that has made significant contributions to AI and Deep Learning, and is yet unknown to many. It can be thought of as an amalgamation of calculus, statistics and probability.
+
+- [Entropy](https://mathoverflow.net/questions/146463/what-is-entropy-really) - also called Shannon Entropy. Used to measure the uncertainty of in an experiment.
+- [Cross-Entropy](https://machinelearningmastery.com/cross-entropy-for-machine-learning) - compares two probability distrubutions & tells us how similar they are.
+- [Kullback Leibler Divergence](https://www.countbayesie.com/blog/2017/5/9/kullback-leibler-divergence-explained) - another measure of how similar two probability distrubutions are.
+- [Viterbi Algorithm](https://www.cis.upenn.edu/~cis262/notes/Example-Viterbi-DNA.pdf) - widely used in Natural Language Processing (NLP) & Speech
+- [Encoder-Decoder](https://hackernoon.com/information-theory-of-neural-networks-c96a0f0a8d9) - used in Machine Translation RNNs & other models.
+
+------
