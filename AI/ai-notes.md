@@ -385,21 +385,113 @@ Calculus deals with changes in parameters, functions, errors and approximations.
 
 ### 4. Statistics & Probability
 
-- [Basic Statistics](https://www.dummies.com/education/math/statistics/statistics-for-dummies-cheat-sheet/) - Mean, median, mode, variance, covariance etc
+- [Basic Statistics](https://www.dummies.com/education/math/statistics/statistics-for-dummies-cheat-sheet/) - Mean, median, mode, variance, covariance.
+
+  Assume we have the following set of numbers: **4, 8, 3, 8, 9**
+
+  Mean is plain average: 6.4
+
+  **Median**:
+  To find the median, we first sort the numbers in ascending order: 3, 4, 8, 8, 9. Since there is an odd number of numbers, the median is the middle one, which is **8**.
+
+  **Mode**:
+  In this set, the number **8** appears twice while all others appear only once. Therefore, 8 is the mode since it's the most frequent number.
+
+  **Variance**:
+  1. Find the mean (average): (4 + 8 + 3 + 8 + 9) / 5 = 6.4
+  2. Calculate the squared differences from the mean: (4 - 6.4)², (8 - 6.4)², (3 - 6.4)², (8 - 6.4)², (9 - 6.4)² = 5.76, 2.56, 11.56, 2.56, 6.76
+  3. Find the average of these squared differences: (5.76 + 2.56 + 11.56 + 2.56 + 6.76) / 5 = 5.84. So, the variance is **5.84**.
+
+  **Covariance** (using another set for comparison, let's say: **2, 5, 4, 5, 6**):
+  1. Find the means of the original set and the new set: 6.4 and 4.4, respectively.
+  2. Multiply the deviations from the mean for each pair of values from the two sets: (4 - 6.4) * (2 - 4.4), (8 - 6.4) * (5 - 4.4), and so on.
+  3. Add all these products together and then divide by the number of pairs (in this case, 5): This results in the covariance, but since we haven't computed each step due to simplicity, let's assume this process shows how the values of one set move with respect to another. If the result is positive, the sets vary together in the same direction; if negative, they vary in opposite directions. For simplicity's sake, I haven't calculated the exact value here, but this is the process you would follow.
+
 - [Basic rules in probability](http://www.milefoot.com/math/stat/prob-rules.htm) - events (dependent & independent), sample spaces, conditional probability.
+
+  **Sample Spaces**: The set of all possible outcomes of a probability experiment. For example, the sample space for flipping a coin is {Heads, Tails}.
+
+  **Events**: Outcomes or combinations of outcomes from a probability experiment. Events can be:
+  - **Independent**: Two events are independent if the occurrence of one does not affect the probability of the other. For example, flipping a coin and rolling a die are independent events.
+  - **Dependent**: Two events are dependent if the occurrence of one affects the probability of the other. For example, drawing two cards from a deck without replacing the first one affects the outcome of the second draw.
+
+  **Conditional Probability**: The probability of an event occurring given that another event has already occurred. It is denoted as P(A|B), meaning the probability of A given B. For example, if B represents "rainy days" and A represents "carrying an umbrella," P(A|B) would be the probability of someone carrying an umbrella given that it is a rainy day.
+
+  These concepts form the foundation of probability theory and are crucial for understanding more complex statistical methods and analyses.
+
 - [Random variables](https://www.khanacademy.org/math/statistics-probability/random-variables-stats-library) - continuous & discrete, expectation, variance, distributions (joint & conditional).
+
+  **Random Variables**: A random variable is a numerical description of the outcome of a statistical experiment. They are classified into two types:
+
+  - **Discrete Random Variables**: These take on a countable number of distinct values. Examples include the number of heads in a series of coin tosses or the number of students present in a class.
+  - **Continuous Random Variables**: These can take on any value within a given range. Examples include the height of students in a school or the time it takes to commute to work.
+
+  **Expectation (Expected Value)**: This is the average value a random variable takes over numerous samples. For a discrete random variable, it is calculated by summing all possible values multiplied by their probabilities. For continuous random variables, it involves integration over all possible values.
+
+  **Variance**: This measures the spread of a random variable's possible values. It is the expected value of the squared deviation from the mean, indicating how much the values of the variable are likely to differ from the expected value.
+
+  **Distributions**:
+  - **Joint Distribution**: Describes the probability distribution for two or more random variables simultaneously. It helps in understanding the relationship between multiple variables.
+  - **Conditional Distribution**: The probability distribution of a random variable given that another variable takes a certain value. It helps in understanding the behavior of one variable when the outcome of another is known.
+
+  These concepts are fundamental in the study of statistics and probability, as they provide a framework for understanding and analyzing the randomness and variability in data.
+
 - [Bayes' Theorem](https://blogs.scientificamerican.com/cross-check/bayes-s-theorem-what-s-the-big-deal/) - calculates validity of beliefs. Bayesian software helps machines recognize patterns and make decisions.
-- [Maximum Likelihood Estimation (MLE)](https://towardsdatascience.com/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1) - parameter estimation. Requires knowledge of fundamental probability concepts (joint probability and independence of events).
+
+  Bayes' Theorem is a fundamental concept in probability theory and statistics, providing a way to update the probability of a hypothesis as more evidence or information becomes available. In the context of AI, Bayes' Theorem is crucial for making predictions and decisions under uncertainty.
+
+  It is particularly relevant in areas like machine learning, where it helps in developing algorithms for classification, such as the Naive Bayes classifier. This theorem allows AI systems to improve their predictions or beliefs in light of new, incoming data, which is essential for tasks such as spam filtering, medical diagnosis, and sentiment analysis. Essentially, it provides a mathematical framework for incorporating prior knowledge with new observations, enhancing the decision-making capabilities of AI models.
+
+- [Maximum Likelihood Estimation (MLE)](https://towardsdatascience.com/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1) -   is a statistical method used to estimate the parameters of a model by maximizing a likelihood function, so the observed data is most probable under the assumed statistical model. In the context of AI, particularly in machine learning, MLE is used to find the best-fitting model to describe the underlying structure of the data. It helps in defining the parameters that make the observed data most likely to occur, leading to more accurate predictions and inferences from AI models. MLE is fundamental in training many types of machine learning algorithms, including regression models and neural networks, by optimizing the parameters to improve model performance on given tasks.
+
 - [Common Distributions](https://www.stat.tamu.edu/~twehrly/611/distab.pdf) - binomial, poisson, bernoulli, gaussian, exponential.
+
+  **Binomial Distribution**: Describes the number of successes in a fixed number of independent trials, with each trial having the same probability of success. Commonly used in scenarios like flipping a coin a certain number of times and counting the number of heads.
+
+  **Poisson Distribution**: Used for counting the number of events that occur in a fixed interval of time or space, under the assumption that these events occur with a known constant mean rate and independently of the time since the last event. For example, it can model the number of emails received in an hour.
+
+  **Bernoulli Distribution**: Represents two possible outcomes of a single trial (e.g., success or failure, yes or no). It is a special case of the binomial distribution where the number of trials is one. For instance, it can represent flipping a coin once and getting either heads or tails.
+
+  **Gaussian (Normal) Distribution**: Describes data that clusters around a mean or average. The bell curve or normal curve is a typical example, representing things like the distribution of IQ scores or heights of people.
+
+  **Exponential Distribution**: Models the time between events in a process where events occur continuously and independently at a constant average rate. It's often used to model waiting times, like how long it takes for a radioactive atom to decay or the time between bus arrivals.
 
 ### 5. Information Theory
 
 An important field that has made significant contributions to AI and Deep Learning, and is yet unknown to many. It can be thought of as an amalgamation of calculus, statistics and probability.
 
 - [Entropy](https://mathoverflow.net/questions/146463/what-is-entropy-really) - also called Shannon Entropy. Used to measure the uncertainty of in an experiment.
+
+  Entropy, or Shannon Entropy, is a measure of the uncertainty or randomness in information. In the context of AI, particularly in machine learning and information theory, entropy quantifies the amount of unpredictability or disorder within a dataset or information source. High entropy means more unpredictability and low entropy indicates less uncertainty.
+
+  In AI, entropy is crucial for tasks like decision tree learning, where it helps to determine the best features for splitting the data to maximize information gain — essentially choosing the most informative questions to ask. It's also used in various algorithms for data compression and cryptography, as well as in evaluating the efficiency of communication systems by measuring the average rate at which information is produced.
+
 - [Cross-Entropy](https://machinelearningmastery.com/cross-entropy-for-machine-learning) - compares two probability distrubutions & tells us how similar they are.
+
+  Cross-Entropy is a metric used in the context of AI, particularly in machine learning, to measure the difference between two probability distributions, typically the true distribution of labels in the data and the predicted distribution by the model. It is commonly used as a loss function in classification problems, especially in neural networks with softmax outputs, such as in logistic regression or deep learning classifiers.
+
+  In AI, minimizing the cross-entropy helps in adjusting the model parameters to make the predicted distribution as close as possible to the true distribution. This process improves model accuracy by penalizing predictions that diverge significantly from the actual outcomes, thus making it a crucial concept in training effective machine learning models.
+
 - [Kullback Leibler Divergence](https://www.countbayesie.com/blog/2017/5/9/kullback-leibler-divergence-explained) - another measure of how similar two probability distrubutions are.
-- [Viterbi Algorithm](https://www.cis.upenn.edu/~cis262/notes/Example-Viterbi-DNA.pdf) - widely used in Natural Language Processing (NLP) & Speech
-- [Encoder-Decoder](https://hackernoon.com/information-theory-of-neural-networks-c96a0f0a8d9) - used in Machine Translation RNNs & other models.
+
+  Kullback-Leibler (KL) Divergence is a measure used in the context of AI to quantify the difference between two probability distributions. Unlike cross-entropy, which is symmetric, KL Divergence is asymmetric and measures how one probability distribution diverges from a second, reference probability distribution.
+
+  In AI, particularly in machine learning and statistical modeling, KL Divergence is used for various purposes such as quantifying information loss when approximating one distribution with another, in model selection, and in Bayesian inference methods. It's especially important in scenarios like variational autoencoders (VAEs) and reinforcement learning, where understanding the difference between the expected and actual outcomes can significantly impact the performance and decision-making process of AI models. By minimizing KL Divergence, we aim to make the model's predictions or learned distributions as close as possible to the true data distributions.
+
+- [Viterbi Algorithm](https://www.cis.upenn.edu/~cis262/notes/Example-Viterbi-DNA.pdf) - widely used in Natural Language Processing (NLP) & Speech. 
+
+  The Viterbi Algorithm is a dynamic programming algorithm used to find the most likely sequence of hidden states (called the Viterbi path) in a particular type of model known as a Hidden Markov Model (HMM). In the context of AI, particularly in Natural Language Processing (NLP) and speech recognition, the Viterbi Algorithm is used to decode the sequence of states (such as parts of speech or phonemes) that are most likely to have resulted in a given sequence of observed events (such as words in a sentence or sounds in speech).
+
+  This algorithm is crucial for tasks like tagging words in sentences, understanding spoken language, and bioinformatics applications (like gene sequencing). It helps AI systems efficiently compute the best guess for the underlying sequence of states, improving the accuracy and effectiveness of language understanding and speech recognition models.
+
+- [Encoder-Decoder](https://hackernoon.com/information-theory-of-neural-networks-c96a0f0a8d9) - used in Machine Translation RNNs & other models. 
+
+  In the context of AI, the Encoder-Decoder framework is commonly used in machine translation and other sequence-to-sequence (seq2seq) tasks. This architecture consists of two main parts:
+
+  1. **Encoder**: This component takes the input sequence (such as a sentence in the source language) and converts it into a fixed-size context vector, which is a representation that captures the essence of the input. In recurrent neural networks (RNNs), this is typically done by processing the input sequence one element at a time and updating the internal state accordingly.
+
+  2. **Decoder**: Starting from the context vector created by the encoder, the decoder generates the output sequence (such as the translated sentence in the target language) one element at a time. It is trained to predict the next element based on the previous elements it has produced, along with the context vector.
+
+  This encoder-decoder structure allows neural networks, especially RNNs and their variants like LSTM and GRU, to handle variable-length input and output sequences, making it ideal for tasks like machine translation, text summarization, and speech recognition. The approach enables AI models to translate sentences, generate responses in chatbots, or create textual content by learning from large datasets of paired sequences.
 
 ------
