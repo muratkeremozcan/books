@@ -3,9 +3,10 @@
 Learning path:
 
 * [IBM AI fundamentals](https://skills.yourlearning.ibm.com/activity/PLAN-7913EE1DB030) 
-* [[Artificial Intelligence: Preparing Your Career for AI](https://www.udemy.com/course/artificial-intelligence-preparing-your-career-for-ai/)
+* [Udemy kickstart-ai](www.udemy.com/course/kickstart-ai/) 
+* [Artificial Intelligence: Preparing Your Career for AI](https://www.udemy.com/course/artificial-intelligence-preparing-your-career-for-ai/)
 * [All the Math You Need to Know in Artificial Intelligence](https://www.freecodecamp.org/news/all-the-math-you-need-in-artificial-intelligence/)
-* [Machine Learning for Everyone](https://www.datacamp.com/courses/machine-learning-for-everyone)//www.udemy.com/course/kickstart-ai/)
+* [Machine Learning for Everyone](https://www.datacamp.com/courses/machine-learning-for-everyone)
 * [more courses](https://youtu.be/gUmagAluXpk?si=OPdKRG7VubfXY7sW) (put them here)
 * [AI roadmap](https://drive.google.com/file/d/1dEfzIA7CS3bpHSkOV9h5Y7gripHPiTid/view?usp=drivesdk) (put them here)
 * [book: Generative AI in Action](https://www.manning.com/books/generative-ai-in-action) (fall 2024)
@@ -105,6 +106,23 @@ A **decision tree** is a supervised learning algorithm. It operates like a flowc
 A **linear** regression answers a question such as “If this increases by X, how much will Y increase?”
 
 A **logistic** regression answers a question such as “If this increases by X, will the value of Y be closer to 0 or 1?”
+
+### Machine learning workflow (supervised learning)
+
+1. Extract features: choose features and manipulate the dataset. Features are table headings, labels are the values. Target value is the final result.
+2. Split the dataset: We want to save some of the data set for testing/evaluation.
+3. Train the model: There are many models to choose from. Pick one and input train dataset into the model.
+4. Evaluate: if desired performance isn't reached, tune the model and repeat step 3.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/h0fk8lswdlwy1dhv1vtk.png)
+
+
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/j11rsi2mjony0yjzby22.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/exffjdlq1f0rxprpnjlt.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k4tzjzjqud80ha1jf9ev.png)
 
 ### Human brain comparison to neural networks
 
