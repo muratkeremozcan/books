@@ -25,6 +25,18 @@ The following content represents a consolidated and streamlined compilation of n
 What does AI do?
 Based on data **analysis**, they make **predictions**.
 
+### AI, ML, DL, Gen AI
+
+**Artificial Intelligence** (AI) describes computer systems that can apply reasoning to subjects that previously required human intelligence.
+
+**Machine Learning** (ML) enables computers to learn from data, shifting away from rigid programming to allowing algorithms to make predictions or decisions based on that data. A **machine learning algorithm** is a set of program code. A **machine learning model** is a group of machine learning algorithms.
+
+**Deep Learning** (DL), a more advanced branch of ML, employs multi-layered artificial neural networks to mimic the human brain's processing, enabling learning from vast datasets.
+
+**Generative AI** represents a further advancement in DL, focusing on creating new, original content or data patterns by learning from existing data. It not only predicts but also generates previously unseen outputs, such as text, images, or music, demonstrating a significant leap in AI's ability to understand and innovate.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6yd49mgv2drn07gmcc8t.png)
+
 ### 3 levels/types of AI
 
 1. **Narrow AI** is specialized and limited to specific tasks.
@@ -41,61 +53,22 @@ Based on data **analysis**, they make **predictions**.
 
 3. **Semi-Structured Data**: Acting as a midpoint between structured and unstructured data, it lacks a rigid data model but incorporates elements of both types. It uses metadata for organization, making it easier to manage than purely unstructured data. Examples include videos on social media, which are unstructured by nature but tagged with searchable metadata like hashtags.
 
+
+
+## Machine Learning 
+
 ### 3 common methods of machine learning
 
 1. **Supervised Learning**: This method involves learning a function that maps an input to an output based on example input-output pairs. It uses **labeled** datasets to train algorithms to classify data or predict outcomes accurately.
+   * Classification: assigning a category (ex: boolean, cold/mild/hot)
+   * Regression: assigning a continuous variable (ex: how much the stock is worth)
 
-2. **Unsupervised Learning**: In this approach, the algorithm learns patterns from untagged data. The system tries to learn without explicit instructions, identifying hidden structures in **unlabeled** data.
+2. **Unsupervised Learning**: In this approach, the algorithm learns **patterns** from untagged data. The system tries to learn without explicit instructions, identifying hidden structures in **unlabeled** data.
+   * Clustering: identifying groups
+   * Anomaly detection: detecting outliers
+   * Association: finding events that happen together (customers who bought this also bought...)
 
 3. **Reinforcement Learning**: This technique teaches the model to make decisions through **trial and error**. It learns to achieve a goal in a complex, uncertain environment by taking actions and receiving feedback in the form of rewards or penalties.
-
-## Natural Language Processing and Computer Vision
-
-Machines require systems that research scientists call **natural language processing**, or **NLP**, to understand human language.
-
-**Corpus** is collection of text and data used to train AI.
-
-**Sentence Segmentation:** dividing a text into individual sentences. It is a fundamental step in natural language processing (NLP) to prepare text for further analysis or processing.
-
-**Tokens:** In the context of NLP, tokens are the basic units of text, resulting from the process of tokenization. Tokens can be words, numbers, or punctuation marks. Tokenization involves splitting a text into these individual elements, making it easier for AI models to analyze or understand the text's structure and meaning.
-
-An **entity** is a noun representing a person, place, or thing. It’s not an adjective, verb, or other article of speech.
-
-A **relationship** is a group of two or more entities that have a strong connection to one another.
-
-A **concept** is something implied in a sentence but not actually stated. This is trickier because it involves matching ideas rather than the specific words present in the sentence.
-
-**Emotion detection** identifies distinct human emotion types.
-
-**Sentiment analysis** isn’t a specific emotion —at least, not as computer scientists use the term. Instead, it’s a measure of the strength of an emotion. 
-
-### Chatbots and NLP
-
-Chatbots **understand** a question by breaking it into parts called **entities** and **intents**, then use what it’s found to trigger a **dialog**.
-
-A dialog is represented by a **flowchart** that illustrates how a chatbot will respond after a human asks a question.
-
-### Image recognition and **convolutional neural network (CNN)**
-
-An AI system uses a **convolutional neural network (CNN)** to analyze images. In a **CNN**, two small groups of pixels that overlap each other are compared mathematically to get a value. AI can use thousands of these small comparisons to identify individual parts of an image, then compare them to images in its corpus. From this, AI can put together an overall identification, without being overwhelmed.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bqwwtnwqtw9660j6fqdk.png)
-
-### Generative adversarial networks
-
-**Generative Adversarial Network (GAN):** GANs consist of two Convolutional Neural Networks (CNNs), a generator and a discriminator, that are trained simultaneously through adversarial processes. The generator creates data (like images) that is as realistic as possible, while the discriminator tries to distinguish between real and generated data. GANs are widely used for high-quality image generation, style transfer, and more.
-
-## Machine Learning & Deep Learning
-
-**Artificial Intelligence** (AI) describes computer systems that can apply reasoning to subjects that previously required human intelligence.
-
-**Machine Learning** (ML) enables computers to learn from data, shifting away from rigid programming to allowing algorithms to make predictions or decisions based on that data. A **machine learning algorithm** is a set of program code. A **machine learning model** is a group of machine learning algorithms.
-
-**Deep Learning** (DL), a more advanced branch of ML, employs multi-layered artificial neural networks to mimic the human brain's processing, enabling learning from vast datasets.
-
-**Generative AI** represents a further advancement in DL, focusing on creating new, original content or data patterns by learning from existing data. It not only predicts but also generates previously unseen outputs, such as text, images, or music, demonstrating a significant leap in AI's ability to understand and innovate.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6yd49mgv2drn07gmcc8t.png)
 
 ### Classical machine learning
 
@@ -109,9 +82,14 @@ A **logistic** regression answers a question such as “If this increases by X, 
 
 ### Machine learning workflow (supervised learning)
 
-1. Extract features: choose features and manipulate the dataset. Features are table headings, labels are the values. Target value is the final result.
+1. Extract features: choose features and manipulate the dataset. Features are table headings (green), labels are the values. Target value is the final result (red).
+
+   ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4zv2fcz2a9gcytzv4enu.png)
+
 2. Split the dataset: We want to save some of the data set for testing/evaluation.
+
 3. Train the model: There are many models to choose from. Pick one and input train dataset into the model.
+
 4. Evaluate: if desired performance isn't reached, tune the model and repeat step 3.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/h0fk8lswdlwy1dhv1vtk.png)
@@ -124,6 +102,82 @@ A **logistic** regression answers a question such as “If this increases by X, 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k4tzjzjqud80ha1jf9ev.png)
 
+#### Evaluating Model Performance 
+
+When evaluating model performance in machine learning, here's what you typically do:
+
+**Overfitting Check**: Compare the model’s performance on the training dataset versus the test dataset. If the model performs exceptionally well on the training data but poorly on the test data, it may be overfitting. To combat overfitting, you could simplify the model, add more training data, or apply regularization techniques. The goal is to ensure the model generalizes well to new, unseen data.
+
+**Accuracy Assessment**: Use accuracy as a metric to determine the overall effectiveness of the model in classifying new instances correctly. While high accuracy is desirable, it's also important to ensure that the metric is suitable for your dataset (especially if it's unbalanced between classes).
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nn0alvkg8ojp0b8nez96.png)
+
+**Confusion Matrix Analysis**: The confusion matrix helps you understand the types of errors your model is making. By examining the true positives, false positives, true negatives, and false negatives, you can:
+
+- Calculate additional metrics like precision, recall, and F1-score, which are important in cases where classes are imbalanced or when false positives and false negatives have different implications.
+- Identify whether the model is biased towards a particular class.
+- Determine areas for improvement, such as gathering more representative data or tweaking the model to reduce specific types of errors.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5cqwp0ms6ehlb7hbiulh.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9kn0yth9pe00ml5pi31l.png)
+
+### Improving performance
+
+**Dimensionality reduction**: reducing the number of features/input variables in your dataset.  (some features don't carry useful information, some features might be correlated). This involves reducing the number of Techniques like Principal Component Analysis (PCA) or t-Distributed Stochastic Neighbor Embedding (t-SNE) can help remove irrelevant or redundant features, which can improve model accuracy, reduce overfitting, and decrease training time. By focusing on the most informative features, the model can perform more efficiently and effectively.
+
+**Hyperparameter tuning:**  Hyperparameters are the settings of the algorithm that can be adjusted to optimize performance. Methods like grid search, random search, or Bayesian optimization can be used to systematically experiment with different combinations of hyperparameters to find the set that results in the best performance of the model. Proper tuning can significantly improve the model's accuracy and generalization capabilities.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lsjnq3hifzydvmyt9plh.png)
+
+**Ensemble methods:** These methods combine multiple models to improve predictions. Techniques like Bagging, Boosting, and Stacking can lead to better performance than any single model. For example, Random Forest (an ensemble of decision trees) often outperforms a single decision tree. Ensemble methods can reduce overfitting, increase robustness, and improve overall prediction accuracy by leveraging the strengths and mitigating the weaknesses of individual models
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cwyshuprtnmj3xbdqwkp.png)
+
+## Deep Learning
+
+Deep learning, a subset of machine learning, employs neural networks with layers of nodes, mirroring the human brain's structure, to process unstructured data like images or text. It excels in handling complex problems but requires high amounts of data.
+
+**A Neural network's job is to map relationships between different combinations of variables to the desired output.**
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hnukk6x6m2rljncusprb.png)
+
+We have a neuron that estimates spend as a function of the budget and the advertising costs.
+
+The 2nd neuron estimates awareness as a function of advertising and star power
+
+The 3rd neuron estimates distribution as a function of budget, advertising and timing.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3tp883zfw8mxn28soypb.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/s4wrnu5l1zj4ydpoyohg.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jeqslwqjrwedaegv7mer.png)
+
+In the real world, for tasks like predicting box office revenue, we often use machine learning models such as neural networks, decision trees, or ensemble methods like random forests or gradient boosting machines.
+
+Initially, we might not know the exact relationships between factors like spend, awareness, and distribution. Instead, we collect relevant data (budget, advertising costs, star power, timing, etc.) and feed this data into the machine learning model. The model then "learns" from this data: it identifies patterns, correlations, and relationships between the different features and the target variable (in this case, box office revenue).
+
+During the training process, the model adjusts its parameters to minimize errors between its predictions and the actual outcomes. This way, the model itself "figures out" the key relationships without being explicitly programmed to understand them. After training, the model can be used to make predictions on new, unseen data, hopefully accurately projecting box office revenues based on the input features it has learned to associate with different levels of success.
+
+These models are created by a variety of professionals working in the field of Artificial Intelligence and Data Science, including:
+
+1. **Data Scientists**: They analyze and interpret complex digital data, such as the usage statistics of a website, especially in order to assist a business in its decision-making. They often use machine learning models to predict future trends based on past data.
+
+2. **Machine Learning Engineers**: These are experts in using data to train models. The models are then used to automate processes like image recognition, speech recognition, and market forecasting.
+
+3. **AI Researchers**: Academics and researchers in the field of AI who explore new approaches and techniques in machine learning, deep learning, and cognitive computing.
+
+4. **Software Engineers**: Especially those specializing in AI, who develop the algorithms and systems that can learn from and make decisions or predictions based on data.
+
+These professionals often work together in interdisciplinary teams, combining their skills in mathematics, statistics, computer science, and domain expertise to build and refine machine learning models. They use a variety of tools and platforms, engage in extensive testing and validation, and apply their knowledge of algorithms and computational theory to create systems that can learn from and adapt to new data.
+
+There is a vast array of open-source models available for a wide range of industry problems. The open-source community and various organizations have contributed numerous models that can be adapted and used for different purposes. Some of the most popular open-source machine learning frameworks and libraries that provide pre-built models include TensorFlow, PyTorch, Scikit-learn, and Keras, among others.
+
+These models cover a wide range of applications, from natural language processing, computer vision, and speech recognition, to more general predictive analytics tasks. They can serve as excellent starting points and can often be used with little modification in many applications. Moreover, platforms like GitHub and model sharing platforms like Hugging Face and Model Zoo host thousands of models contributed by the community.
+
+While many problems can be addressed using these existing models, sometimes customization or fine-tuning is necessary to tailor the model to specific business needs or unique datasets. However, the availability of open-source models significantly reduces the barrier to entry for implementing AI solutions, allowing companies and individuals to leverage advanced AI technologies without having to develop complex models from scratch.
+
 ### Human brain comparison to neural networks
 
 In the brain, cells called neurons have a cell body at one end where the nucleus resides, and a long axon leading to a set of branching terminals at the other end. Neurons communicate to each other by receiving signals into the axon, altering those signals, then transmitting them out through the terminals to other neurons.
@@ -131,6 +185,8 @@ In the brain, cells called neurons have a cell body at one end where the nucleus
 In a neural network, a building block, called a **perceptron**, acts as the equivalent of a single neuron. A perceptron has an **input** layer, one or more **hidden layers**, and an **output** layer. A signal enters the input layer and the hidden layers run algorithms on the signal. Then, the result is passed to the output layer.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/825d308a784dh5os2fkn.png)
+
+
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/50yoqchbtxcrrw26dmwt.png)
 
@@ -176,7 +232,45 @@ These layers are crucial for constructing effective neural network architectures
 
 They matter because they allow neural networks, especially in image processing tasks, to understand and interpret visual data more effectively and efficiently, leading to more accurate predictions and classifications in tasks like image recognition and computer vision.
 
-### Generative AI
+## Natural Language Processing and Computer Vision
+
+Machines require systems that research scientists call **natural language processing**, or **NLP**, to understand human language.
+
+**Corpus** is collection of text and data used to train AI.
+
+**Sentence Segmentation:** dividing a text into individual sentences. It is a fundamental step in natural language processing (NLP) to prepare text for further analysis or processing.
+
+**Tokens:** In the context of NLP, tokens are the basic units of text, resulting from the process of tokenization. Tokens can be words, numbers, or punctuation marks. Tokenization involves splitting a text into these individual elements, making it easier for AI models to analyze or understand the text's structure and meaning.
+
+An **entity** is a noun representing a person, place, or thing. It’s not an adjective, verb, or other article of speech.
+
+A **relationship** is a group of two or more entities that have a strong connection to one another.
+
+A **concept** is something implied in a sentence but not actually stated. This is trickier because it involves matching ideas rather than the specific words present in the sentence.
+
+**Emotion detection** identifies distinct human emotion types.
+
+**Sentiment analysis** isn’t a specific emotion —at least, not as computer scientists use the term. Instead, it’s a measure of the strength of an emotion. 
+
+### Chatbots and NLP
+
+Chatbots **understand** a question by breaking it into parts called **entities** and **intents**, then use what it’s found to trigger a **dialog**.
+
+A dialog is represented by a **flowchart** that illustrates how a chatbot will respond after a human asks a question.
+
+### Image recognition and **convolutional neural network (CNN)**
+
+An AI system uses a **convolutional neural network (CNN)** to analyze images. In a **CNN**, two small groups of pixels that overlap each other are compared mathematically to get a value. AI can use thousands of these small comparisons to identify individual parts of an image, then compare them to images in its corpus. From this, AI can put together an overall identification, without being overwhelmed.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bqwwtnwqtw9660j6fqdk.png)
+
+### Generative adversarial networks
+
+**Generative Adversarial Network (GAN):** GANs consist of two Convolutional Neural Networks (CNNs), a generator and a discriminator, that are trained simultaneously through adversarial processes. The generator creates data (like images) that is as realistic as possible, while the discriminator tries to distinguish between real and generated data. GANs are widely used for high-quality image generation, style transfer, and more.
+
+
+
+## Generative AI
 
 Traditional AI relies on specific, predetermined processes to produce expected outcomes, such as automating customer service responses, 
 
