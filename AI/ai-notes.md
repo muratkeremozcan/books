@@ -236,6 +236,10 @@ They matter because they allow neural networks, especially in image processing t
 
 Machines require systems that research scientists call **natural language processing**, or **NLP**, to understand human language.
 
+### Sentiment analysis
+
+**Sentiment Analysis**, in the realm of NLP, involves evaluating and interpreting the emotional tone behind a series of words, used to gain an understanding of the attitudes, opinions, and emotions expressed within an online mention, text, or document. It works by using algorithms to classify pieces of text as positive, negative, or neutral, often by examining word usage and context. This is crucial for businesses and researchers as it allows them to gauge public sentiment towards products, services, or topics, helping in market analysis, customer service, and social media monitoring. Sentiment analysis isn’t a specific emotion —at least, not as computer scientists use the term. Instead, it’s a measure of the strength of an emotion. 
+
 **Corpus** is collection of text and data used to train AI.
 
 **Sentence Segmentation:** dividing a text into individual sentences. It is a fundamental step in natural language processing (NLP) to prepare text for further analysis or processing.
@@ -250,9 +254,19 @@ A **concept** is something implied in a sentence but not actually stated. This i
 
 **Emotion detection** identifies distinct human emotion types.
 
-**Sentiment analysis** isn’t a specific emotion —at least, not as computer scientists use the term. Instead, it’s a measure of the strength of an emotion. 
+### n-grams (bag of words)
 
-### Chatbots and NLP
+In the context of Natural Language Processing (NLP), n-grams are continuous sequences of n items from a given sample of text or speech. These items can be phonemes, syllables, letters, words, or base pairs, depending on the application. For example, in text analysis, the sequence "thanks for watching" would be broken down into the following n-grams: 
+
+- 1-grams (unigrams): "thanks", "for", "watching"
+- 2-grams (bigrams): "thanks for", "for watching"
+- 3-grams (trigrams): "thanks for watching"
+
+N-grams are important because they help in capturing the context of words within a sentence, which improves the performance of various NLP tasks such as text classification, sentiment analysis, language modeling, and machine translation. They allow algorithms to recognize patterns of language usage and predict the likelihood of sequences of words, which is critical for understanding and generating human-like text.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vte5bb7i7ap5pufwmc7d.png)
+
+### Chatbots
 
 Chatbots **understand** a question by breaking it into parts called **entities** and **intents**, then use what it’s found to trigger a **dialog**.
 
@@ -263,6 +277,21 @@ A dialog is represented by a **flowchart** that illustrates how a chatbot will r
 An AI system uses a **convolutional neural network (CNN)** to analyze images. In a **CNN**, two small groups of pixels that overlap each other are compared mathematically to get a value. AI can use thousands of these small comparisons to identify individual parts of an image, then compare them to images in its corpus. From this, AI can put together an overall identification, without being overwhelmed.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bqwwtnwqtw9660j6fqdk.png)
+
+Images can be interpreted as numbers (RGB or grayscale intensity) and these numbers can be used as features for the ML model. (RGB requires 3x the data vs grayscale)
+
+Part of the magic of neural networks is that you don't really need to worry about what it is doing in the middle. All you need to do is give it a lot of images of faces, the features, the labels, and during training the learning algorithm will figure out by itself what each of these neurons in the middle should be computing.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/leiwxcdxh3mblkbam5u0.png)
+
+## Limits of machine learning
+
+High-quality data requires:
+
+* Data analysis
+* Review of outlier
+* Domain expertise
+* Documentation
 
 ### Generative adversarial networks
 
@@ -360,8 +389,12 @@ To effectively implement generative AI in an enterprise, follow these steps:
 **Explainability**
 
 - AI systems are explainable when everyday people, who do not have any special training in AI, can understand how and why the system came to a particular prediction or recommendation.
+
 - Interpretability is the degree to which an observer can understand the cause of a decision.
+
 - Explainability looks at how the AI system arrived at the result.
+
+  ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c99olceqlwhpcfz5pzrd.png)
 
 **Transparency**
 
