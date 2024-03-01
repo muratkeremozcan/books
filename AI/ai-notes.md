@@ -14,18 +14,7 @@ Learning path:
 
 The following content represents a consolidated and streamlined compilation of notes from all the above-listed resources.
 
-## Intro to AI
-
-**AI** is the ability of a machine to learn patterns and make predictions
-
-**Augmented Intelligence**, emphasizes the enhancement of human intelligence with AI technologies. Instead of replacing human intelligence, it aims to augment it, making people more capable of solving complex problems, making decisions, or generating creative ideas.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mkctvew84f60yjxyss7l.png)
-
-What does AI do?
-Based on data **analysis**, they make **predictions**.
-
-### AI, ML, DL, Gen AI
+## Intro: AI, ML, DL, Gen AI
 
 **Artificial Intelligence** (AI) describes computer systems that can apply reasoning to subjects that previously required human intelligence.
 
@@ -37,6 +26,13 @@ Based on data **analysis**, they make **predictions**.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6yd49mgv2drn07gmcc8t.png)
 
+## AI
+
+**AI** is the ability of a machine to **learn pattern**s and **make predictions**.
+
+What does AI do?
+Based on data **analysis**, they make **predictions**.
+
 ### 3 levels/types of AI
 
 1. **Narrow AI** is specialized and limited to specific tasks.
@@ -45,6 +41,42 @@ Based on data **analysis**, they make **predictions**.
 
 3. **General AI** (AGI) aims for the comprehensive cognitive abilities of humans, capable of performing any task with human-like versatility.
 
+### Some of the things AI can do
+
+**Predictions and inference**
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zztqy89pdk8udd8mh2km.png)
+
+**Pattern recognition**
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/io7miyw94cpl4vj0k773.png)
+
+**Optimization**
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/egquh8xt3meapfysk3k2.png)
+
+**Automation**
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qfcle5ke2uqdiuo7ed9j.png)
+
+### Limitations of AI
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/m1pe0e8bqo20qo7o3hg0.png)
+
+### Algorithms and AI Systems
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mgnbzyhyfj2tbptt144u.png)
+
+**Algorithms in computer science vs AI algorithms**
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wbpiws3cukh8eou2ifxb.png)
+
+**AI system**
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lqny4x9ogam8rb06gfj2.png)
+
+
+
 ### 3 types of data
 
 1. **Structured Data**: This is quantitative and well-organized in rows and columns, making it suitable for spreadsheets like Google Sheets or Microsoft Excel. It includes data such as names, dates, addresses, and stock information.
@@ -52,6 +84,12 @@ Based on data **analysis**, they make **predictions**.
 2. **Unstructured Data**: Known as qualitative or dark data, this type lacks inherent organization, making it challenging for conventional tools to process and analyze. Examples include images, texts, customer feedback, medical records, and song lyrics.
 
 3. **Semi-Structured Data**: Acting as a midpoint between structured and unstructured data, it lacks a rigid data model but incorporates elements of both types. It uses metadata for organization, making it easier to manage than purely unstructured data. Examples include videos on social media, which are unstructured by nature but tagged with searchable metadata like hashtags.
+
+### Augmented Intelligence
+
+**Augmented Intelligence**, emphasizes the enhancement of human intelligence with AI technologies. Instead of replacing human intelligence, it aims to augment it, making people more capable of solving complex problems, making decisions, or generating creative ideas.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mkctvew84f60yjxyss7l.png)
 
 
 
