@@ -322,6 +322,10 @@ Part of the magic of neural networks is that you don't really need to worry abou
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/leiwxcdxh3mblkbam5u0.png)
 
+### Generative adversarial networks
+
+**Generative Adversarial Network (GAN):** GANs consist of two Convolutional Neural Networks (CNNs), a generator and a discriminator, that are trained simultaneously through adversarial processes. The generator creates data (like images) that is as realistic as possible, while the discriminator tries to distinguish between real and generated data. GANs are widely used for high-quality image generation, style transfer, and more.
+
 ## Limits of machine learning
 
 High-quality data requires:
@@ -331,9 +335,41 @@ High-quality data requires:
 * Domain expertise
 * Documentation
 
-### Generative adversarial networks
+## Acquiring Data
 
-**Generative Adversarial Network (GAN):** GANs consist of two Convolutional Neural Networks (CNNs), a generator and a discriminator, that are trained simultaneously through adversarial processes. The generator creates data (like images) that is as realistic as possible, while the discriminator tries to distinguish between real and generated data. GANs are widely used for high-quality image generation, style transfer, and more.
+NLP and audio: capturing speech and sound
+
+Computer vision: satellite images, fingerprints
+
+Robotics and sensors: temperature, touch, motion
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5ofp3osmm6dtxg3m67y9.png)
+
+Datasets:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qh7t7krbvsvdjst83klh.png)
+
+### Machine learning
+
+Once data has been acquired, almost every AI system relies on machine learning and deep learning techniques
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5mht62qsw0k4ra3aj4e1.png)
+
+#### Supervised learning: classification
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/z3f4arei8660d6nm8ndi.png)
+
+#### Supervised learning: regression
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ffyeimlpewu57pkhqrff.png)
+
+#### Unsupervised and reinforcement learning
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kwt0qk0kp9yobsm56h4j.png)
+
+### Deep learning
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/se2g4mjwex82lhniad60.png)
 
 
 
