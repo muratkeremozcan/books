@@ -480,6 +480,28 @@ To effectively implement generative AI in an enterprise, follow these steps:
 - Personal and sensitive personal information can be used to train models, as long as privacy techniques are applied to the data to preserve the privacy of individuals whose data is included.
 - Many privacy techniques that can be applied to fortify AI against potential breaches of personal or sensitive data. Two that occur during model training are model anonymization and differential privacy. One that occurs after model training is data minimization.
 
+## Building an AI driven organization
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/l0h1ui88pbyl2xpssxn5.png)
+
+### AI Roadmap
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/395pu6bxy1160esyzpou.png)
+
+### Data strategy and governance
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jr53szv6w5qxez9me6wp.png)
+
+### AI infrastructure & resources
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/57jpgxc9j6qgc6gzgjsn.png)
+
+ML Ops:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/r29to6dh8lwaa6yk4wkj.png)
+
+
+
 ## LLMs
 
 - - **Large Language Models (LLMs)**: Generative AI capable of producing human-like text, adaptable for specialized tasks with fine-tuning.
