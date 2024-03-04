@@ -2,17 +2,79 @@
 
 Learning path:
 
-* [IBM AI fundamentals](https://skills.yourlearning.ibm.com/activity/PLAN-7913EE1DB030) 
-* [Udemy kickstart-ai](www.udemy.com/course/kickstart-ai/) 
-* [Artificial Intelligence: Preparing Your Career for AI](https://www.udemy.com/course/artificial-intelligence-preparing-your-career-for-ai/)
-* [All the Math You Need to Know in Artificial Intelligence](https://www.freecodecamp.org/news/all-the-math-you-need-in-artificial-intelligence/)
-* [Machine Learning for Everyone](https://www.datacamp.com/courses/machine-learning-for-everyone)
-* [more courses](https://youtu.be/gUmagAluXpk?si=OPdKRG7VubfXY7sW) (put them here)
-* [AI roadmap](https://drive.google.com/file/d/1dEfzIA7CS3bpHSkOV9h5Y7gripHPiTid/view?usp=drivesdk) (put them here)
-* [book: Generative AI in Action](https://www.manning.com/books/generative-ai-in-action) (fall 2024)
-* [book: Tensorflow in Action](https://www.manning.com/books/tensorflow-in-action) (maybe)
+- [IBM AI fundamentals](https://skills.yourlearning.ibm.com/activity/PLAN-7913EE1DB030)
+- [Udemy kickstart-ai](www.udemy.com/course/kickstart-ai/)
+- [Artificial Intelligence: Preparing Your Career for AI](https://www.udemy.com/course/artificial-intelligence-preparing-your-career-for-ai/)
+- [All the Math You Need to Know in Artificial Intelligence](https://www.freecodecamp.org/news/all-the-math-you-need-in-artificial-intelligence/)
+- [Machine Learning for Everyone](https://www.datacamp.com/courses/machine-learning-for-everyone)
+- [Understanding Artificial Intelligence](https://app.datacamp.com/learn/courses/understanding-artificial-intelligence)
+- [more courses](https://youtu.be/gUmagAluXpk?si=OPdKRG7VubfXY7sW) (put them here)
+- [AI roadmap](https://drive.google.com/file/d/1dEfzIA7CS3bpHSkOV9h5Y7gripHPiTid/view?usp=drivesdk) (put them here)
+- [book: Generative AI in Action](https://www.manning.com/books/generative-ai-in-action) (fall 2024)
+- [book: Tensorflow in Action](https://www.manning.com/books/tensorflow-in-action) (maybe)
 
 The following content represents a consolidated and streamlined compilation of notes from all the above-listed resources.
+
+## ToC
+
+- [Intro: AI, ML, DL, Gen AI](#intro-ai-ml-dl-gen-ai)
+- [AI](#ai)
+  - [3 levels/types of AI](#3-levelstypes-of-ai)
+  - [Some of the things AI can do](#some-of-the-things-ai-can-do)
+  - [Limitations of AI](#limitations-of-ai)
+  - [Algorithms and AI Systems](#algorithms-and-ai-systems)
+  - [3 types of data](#3-types-of-data)
+  - [Augmented Intelligence](#augmented-intelligence)
+- [Machine Learning](#machine-learning)
+  - [3 common methods of machine learning](#3-common-methods-of-machine-learning)
+  - [Classical machine learning](#classical-machine-learning)
+  - [Machine learning workflow (supervised learning)](#machine-learning-workflow-supervised-learning)
+    - [Evaluating Model Performance](#evaluating-model-performance)
+  - [Improving performance](#improving-performance)
+- [Deep Learning](#deep-learning)
+  - [Human brain comparison to neural networks](#human-brain-comparison-to-neural-networks)
+    - [Types of neural network activation functions](#types-of-neural-network-activation-functions)
+    - [Types of neural network layers](#types-of-neural-network-layers)
+- [Natural Language Processing and Computer Vision](#natural-language-processing-and-computer-vision)
+  - [Sentiment analysis](#sentiment-analysis)
+  - [n-grams (bag of words)](#n-grams-bag-of-words)
+  - [Chatbots](#chatbots)
+  - [Image recognition and **convolutional neural network (CNN)**](#image-recognition-and-convolutional-neural-network-cnn)
+  - [Generative adversarial networks](#generative-adversarial-networks)
+- [Generative AI](#generative-ai)
+  - [Use cases for Generative AI](#use-cases-for-generative-ai)
+  - [Unified Approach for Implementing Generative AI in Enterprises:](#unified-approach-for-implementing-generative-ai-in-enterprises)
+  - [Rollout](#rollout)
+  - [Types of generative AI models](#types-of-generative-ai-models)
+- [Limits of machine learning](#limits-of-machine-learning)
+- [Acquiring Data](#acquiring-data)
+  - [Machine learning](#machine-learning-1)
+    - [Supervised learning: classification](#supervised-learning-classification)
+    - [Supervised learning: regression](#supervised-learning-regression)
+    - [Unsupervised and reinforcement learning](#unsupervised-and-reinforcement-learning)
+  - [Deep learning](#deep-learning-1)
+- [Math for AI](#math-for-ai)
+  - [1. Algebra](#1-algebra)
+  - [2. Linear Algebra](#2-linear-algebra)
+  - [3. Calculus](#3-calculus)
+  - [4. Statistics \& Probability](#4-statistics--probability)
+  - [5. Information Theory](#5-information-theory)
+- [AI Explainability](#ai-explainability)
+- [AI Ethics](#ai-ethics)
+  - [Fairness](#fairness)
+  - [Robustness](#robustness)
+  - [Privacy](#privacy)
+- [Building an AI driven organization](#building-an-ai-driven-organization)
+  - [AI Roadmap](#ai-roadmap)
+  - [Data strategy and governance](#data-strategy-and-governance)
+  - [AI infrastructure \& resources](#ai-infrastructure--resources)
+- [Measuring the success of the AI system](#measuring-the-success-of-the-ai-system)
+  - [Measuring performance offline](#measuring-performance-offline)
+  - [Measuring performance in production](#measuring-performance-in-production)
+- [LLMs](#llms)
+- [Prompting](#prompting)
+  - [Prompt elements](#prompt-elements)
+  - [Prompt engineering techniques](#prompt-engineering-techniques)
 
 ## Intro: AI, ML, DL, Gen AI
 
@@ -75,8 +137,6 @@ Based on data **analysis**, they make **predictions**.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lqny4x9ogam8rb06gfj2.png)
 
-
-
 ### 3 types of data
 
 1. **Structured Data**: This is quantitative and well-organized in rows and columns, making it suitable for spreadsheets like Google Sheets or Microsoft Excel. It includes data such as names, dates, addresses, and stock information.
@@ -91,20 +151,20 @@ Based on data **analysis**, they make **predictions**.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mkctvew84f60yjxyss7l.png)
 
-
-
-## Machine Learning 
+## Machine Learning
 
 ### 3 common methods of machine learning
 
 1. **Supervised Learning**: This method involves learning a function that maps an input to an output based on example input-output pairs. It uses **labeled** datasets to train algorithms to classify data or predict outcomes accurately.
-   * Classification: assigning a category (ex: boolean, cold/mild/hot)
-   * Regression: assigning a continuous variable (ex: how much the stock is worth)
+
+   - Classification: assigning a category (ex: boolean, cold/mild/hot)
+   - Regression: assigning a continuous variable (ex: how much the stock is worth)
 
 2. **Unsupervised Learning**: In this approach, the algorithm learns **patterns** from untagged data. The system tries to learn without explicit instructions, identifying hidden structures in **unlabeled** data.
-   * Clustering: identifying groups
-   * Anomaly detection: detecting outliers
-   * Association: finding events that happen together (customers who bought this also bought...)
+
+   - Clustering: identifying groups
+   - Anomaly detection: detecting outliers
+   - Association: finding events that happen together (customers who bought this also bought...)
 
 3. **Reinforcement Learning**: This technique teaches the model to make decisions through **trial and error**. It learns to achieve a goal in a complex, uncertain environment by taking actions and receiving feedback in the form of rewards or penalties.
 
@@ -132,15 +192,13 @@ A **logistic** regression answers a question such as “If this increases by X, 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/h0fk8lswdlwy1dhv1vtk.png)
 
-
-
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/j11rsi2mjony0yjzby22.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/exffjdlq1f0rxprpnjlt.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k4tzjzjqud80ha1jf9ev.png)
 
-#### Evaluating Model Performance 
+#### Evaluating Model Performance
 
 When evaluating model performance in machine learning, here's what you typically do:
 
@@ -162,9 +220,9 @@ When evaluating model performance in machine learning, here's what you typically
 
 ### Improving performance
 
-**Dimensionality reduction**: reducing the number of features/input variables in your dataset.  (some features don't carry useful information, some features might be correlated). This involves reducing the number of Techniques like Principal Component Analysis (PCA) or t-Distributed Stochastic Neighbor Embedding (t-SNE) can help remove irrelevant or redundant features, which can improve model accuracy, reduce overfitting, and decrease training time. By focusing on the most informative features, the model can perform more efficiently and effectively.
+**Dimensionality reduction**: reducing the number of features/input variables in your dataset. (some features don't carry useful information, some features might be correlated). This involves reducing the number of Techniques like Principal Component Analysis (PCA) or t-Distributed Stochastic Neighbor Embedding (t-SNE) can help remove irrelevant or redundant features, which can improve model accuracy, reduce overfitting, and decrease training time. By focusing on the most informative features, the model can perform more efficiently and effectively.
 
-**Hyperparameter tuning:**  Hyperparameters are the settings of the algorithm that can be adjusted to optimize performance. Methods like grid search, random search, or Bayesian optimization can be used to systematically experiment with different combinations of hyperparameters to find the set that results in the best performance of the model. Proper tuning can significantly improve the model's accuracy and generalization capabilities.
+**Hyperparameter tuning:** Hyperparameters are the settings of the algorithm that can be adjusted to optimize performance. Methods like grid search, random search, or Bayesian optimization can be used to systematically experiment with different combinations of hyperparameters to find the set that results in the best performance of the model. Proper tuning can significantly improve the model's accuracy and generalization capabilities.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lsjnq3hifzydvmyt9plh.png)
 
@@ -224,8 +282,6 @@ In a neural network, a building block, called a **perceptron**, acts as the equi
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/825d308a784dh5os2fkn.png)
 
-
-
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/50yoqchbtxcrrw26dmwt.png)
 
 #### Types of neural network activation functions
@@ -236,7 +292,7 @@ Tanh maps input to a range between -1 and 1.
 
 ReLU applies a threshold at zero to each input.
 
-No activation function is perfect, but activation functions  are crucial for introducing non-linearity into the network, enabling it to learn complex patterns. Sigmoid and Tanh are used for their smooth gradient properties, ReLU is favored for its computational efficiency and ability to address vanishing gradient issues, making each essential for different contexts and network requirements.
+No activation function is perfect, but activation functions are crucial for introducing non-linearity into the network, enabling it to learn complex patterns. Sigmoid and Tanh are used for their smooth gradient properties, ReLU is favored for its computational efficiency and ability to address vanishing gradient issues, making each essential for different contexts and network requirements.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/r0ah45vkz06x9hz3xpvy.png)
 
@@ -244,7 +300,7 @@ No activation function is perfect, but activation functions  are crucial for int
 
 Gradient descent is related to activation functions in neural networks through the process of backpropagation, where the goal is to minimize the loss function of the model. Activation functions introduce non-linearity into the network, enabling it to learn complex patterns in the data.
 
-Gradient descent is an optimization algorithm used to minimize the cost function in machine learning and deep learning models. It's important because it guides the adjustment of parameters (weights and biases) of the model to reduce errors (differences between predicted and actual values). 
+Gradient descent is an optimization algorithm used to minimize the cost function in machine learning and deep learning models. It's important because it guides the adjustment of parameters (weights and biases) of the model to reduce errors (differences between predicted and actual values).
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vmrizeaofagfcqsok9dk.png)
 
@@ -276,7 +332,7 @@ Machines require systems that research scientists call **natural language proces
 
 ### Sentiment analysis
 
-**Sentiment Analysis**, in the realm of NLP, involves evaluating and interpreting the emotional tone behind a series of words, used to gain an understanding of the attitudes, opinions, and emotions expressed within an online mention, text, or document. It works by using algorithms to classify pieces of text as positive, negative, or neutral, often by examining word usage and context. This is crucial for businesses and researchers as it allows them to gauge public sentiment towards products, services, or topics, helping in market analysis, customer service, and social media monitoring. Sentiment analysis isn’t a specific emotion —at least, not as computer scientists use the term. Instead, it’s a measure of the strength of an emotion. 
+**Sentiment Analysis**, in the realm of NLP, involves evaluating and interpreting the emotional tone behind a series of words, used to gain an understanding of the attitudes, opinions, and emotions expressed within an online mention, text, or document. It works by using algorithms to classify pieces of text as positive, negative, or neutral, often by examining word usage and context. This is crucial for businesses and researchers as it allows them to gauge public sentiment towards products, services, or topics, helping in market analysis, customer service, and social media monitoring. Sentiment analysis isn’t a specific emotion —at least, not as computer scientists use the term. Instead, it’s a measure of the strength of an emotion.
 
 **Corpus** is collection of text and data used to train AI.
 
@@ -294,7 +350,7 @@ A **concept** is something implied in a sentence but not actually stated. This i
 
 ### n-grams (bag of words)
 
-In the context of Natural Language Processing (NLP), n-grams are continuous sequences of n items from a given sample of text or speech. These items can be phonemes, syllables, letters, words, or base pairs, depending on the application. For example, in text analysis, the sequence "thanks for watching" would be broken down into the following n-grams: 
+In the context of Natural Language Processing (NLP), n-grams are continuous sequences of n items from a given sample of text or speech. These items can be phonemes, syllables, letters, words, or base pairs, depending on the application. For example, in text analysis, the sequence "thanks for watching" would be broken down into the following n-grams:
 
 - 1-grams (unigrams): "thanks", "for", "watching"
 - 2-grams (bigrams): "thanks for", "for watching"
@@ -326,56 +382,9 @@ Part of the magic of neural networks is that you don't really need to worry abou
 
 **Generative Adversarial Network (GAN):** GANs consist of two Convolutional Neural Networks (CNNs), a generator and a discriminator, that are trained simultaneously through adversarial processes. The generator creates data (like images) that is as realistic as possible, while the discriminator tries to distinguish between real and generated data. GANs are widely used for high-quality image generation, style transfer, and more.
 
-## Limits of machine learning
-
-High-quality data requires:
-
-* Data analysis
-* Review of outlier
-* Domain expertise
-* Documentation
-
-## Acquiring Data
-
-NLP and audio: capturing speech and sound
-
-Computer vision: satellite images, fingerprints
-
-Robotics and sensors: temperature, touch, motion
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5ofp3osmm6dtxg3m67y9.png)
-
-Datasets:
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qh7t7krbvsvdjst83klh.png)
-
-### Machine learning
-
-Once data has been acquired, almost every AI system relies on machine learning and deep learning techniques
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5mht62qsw0k4ra3aj4e1.png)
-
-#### Supervised learning: classification
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/z3f4arei8660d6nm8ndi.png)
-
-#### Supervised learning: regression
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ffyeimlpewu57pkhqrff.png)
-
-#### Unsupervised and reinforcement learning
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kwt0qk0kp9yobsm56h4j.png)
-
-### Deep learning
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/se2g4mjwex82lhniad60.png)
-
-
-
 ## Generative AI
 
-Traditional AI relies on specific, predetermined processes to produce expected outcomes, such as automating customer service responses, 
+Traditional AI relies on specific, predetermined processes to produce expected outcomes, such as automating customer service responses,
 
 Generative AI uses a probabilistic approach to create novel outputs from learned patterns. This enables it to generate unique content, including images, music, and text, beyond predefined constraints. Generative AI's interaction through prompts facilitates dynamic and innovative applications, marking a significant evolution in AI capabilities.
 
@@ -432,8 +441,6 @@ To effectively implement generative AI in an enterprise, follow these steps:
 
 5. **Continuous Improvement**: Recognize that deploying generative AI is an ongoing process that involves regular monitoring, testing, and adjustments to achieve optimal and responsible functionality. Begin with small-scale projects and expand as your capability and understanding of the technology grow.
 
-
-
 ### Types of generative AI models
 
 **Variational Autoencoder (VAE):** VAEs are a class of generative models that use neural networks to encode input data into a lower-dimensional representation and then decode it back to reconstruct the original data. They are particularly useful for tasks like image generation, where they can learn to produce new images similar to those in the training set. Think of it as a skilled artist who can look at a painting, quickly sketch a simplified version of it, and then recreate a new painting using only that simplified sketch as a reference.
@@ -442,118 +449,52 @@ To effectively implement generative AI in an enterprise, follow these steps:
 
 **Autoregressive Models:** These models generate sequences of data by predicting each next item based on the preceding ones. They are used in various applications, including text generation (like completing sentences), and can produce highly coherent and contextually relevant outputs. Imagine an **autoregressive** model as a skilled storyteller who listens to the beginning of a story and then continues it by predicting what comes next based on the words and events that have occurred so far.
 
-## AI Ethics
+## Limits of machine learning
 
-**Fairness**
+High-quality data requires:
 
-- In AI, fairness is the equitable treatment of individuals or groups of individuals.
-- Fairness is achieved when unwanted bias is mitigated.
-- Protected attributes separate populations into groups.
-- Groups that traditionally receive more favorable outcomes are called privileged groups.
-- Groups that traditionally receive less or no favorable outcomes are called unprivileged groups.
-- There isn’t a defined set of protected attributes.
-- Bias is a systematic error that, intentionally or not, might generate unfair decisions.
+- Data analysis
+- Review of outliers
+- Domain expertise
+- Documentation
 
-**Robustness**
+## Acquiring Data
 
-- A robust AI system can effectively handle exceptional conditions, like abnormalities in input or malicious attacks, without causing unintentional harm.
-- Adversarial attacks are intentionally carried out on AI systems to accomplish a malicious end goal by exploiting AI system vulnerabilities.
-- Two types of adversarial attacks are poisoning and evasion.
+NLP and audio: capturing speech and sound
 
-**Explainability**
+Computer vision: satellite images, fingerprints
 
-- AI systems are explainable when everyday people, who do not have any special training in AI, can understand how and why the system came to a particular prediction or recommendation.
+Robotics and sensors: temperature, touch, motion
 
-- Interpretability is the degree to which an observer can understand the cause of a decision.
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5ofp3osmm6dtxg3m67y9.png)
 
-- Explainability looks at how the AI system arrived at the result.
+Datasets:
 
-  ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c99olceqlwhpcfz5pzrd.png)
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qh7t7krbvsvdjst83klh.png)
 
-**Transparency**
+### Machine learning
 
-- Transparency is disclosing information related to the data used for building AI systems, design decisions made throughout the process, model creation, model evaluation, and model deployment.
-- Governance ensures the process followed during the creation and deployment follows the internal policies.
+Once data has been acquired, almost every AI system relies on machine learning and deep learning techniques
 
-**Privacy**
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5mht62qsw0k4ra3aj4e1.png)
 
-- Personal and sensitive personal information can be used to train models, as long as privacy techniques are applied to the data to preserve the privacy of individuals whose data is included.
-- Many privacy techniques that can be applied to fortify AI against potential breaches of personal or sensitive data. Two that occur during model training are model anonymization and differential privacy. One that occurs after model training is data minimization.
+#### Supervised learning: classification
 
-## Building an AI driven organization
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/z3f4arei8660d6nm8ndi.png)
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/l0h1ui88pbyl2xpssxn5.png)
+#### Supervised learning: regression
 
-### AI Roadmap
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ffyeimlpewu57pkhqrff.png)
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/395pu6bxy1160esyzpou.png)
+#### Unsupervised and reinforcement learning
 
-### Data strategy and governance
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kwt0qk0kp9yobsm56h4j.png)
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jr53szv6w5qxez9me6wp.png)
+### Deep learning
 
-### AI infrastructure & resources
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/se2g4mjwex82lhniad60.png)
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/57jpgxc9j6qgc6gzgjsn.png)
-
-ML Ops:
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/r29to6dh8lwaa6yk4wkj.png)
-
-
-
-## LLMs
-
-- - **Large Language Models (LLMs)**: Generative AI capable of producing human-like text, adaptable for specialized tasks with fine-tuning.
-  - **Foundational Models**: Encompass LLMs and extend to models that process images and audio, offering a broader application range.
-
-- **Architecture & Capabilities**:
-  - **Transformer Architecture**: Core to modern AI, enables processing of sequential data and underpins both LLMs and foundational models for scalable and efficient computation.
-  - **Training Cut-off**: LLMs do not update knowledge post-training, limiting real-time data access or external database retrieval.
-
-- **Application in Enterprise**:
-  - **Base LLMs**: Broadly capable but may lack task-specific precision in enterprise settings without additional training.
-  - **Instruction-based Usage**: Enhances performance through prompt engineering but doesn't expand core model capabilities.
-  - **Fine-tuning**: Improves task-specific performance but requires extra resources and risks overfitting.
-
-- **LLMs in Detail**:
-  - **General-purpose Use**: Capable of diverse tasks like question-answering, content generation, and translation without specific training.
-  - **Key Use Cases**: Include summarization, chatbots, content generation, translation, and more, powered by foundational models.
-  - **Types of LLMs**: Base, Instruction-based, and Fine-tuned, each with distinct advantages and considerations.
-  - **Concepts**: Include prompts, embeddings, tokens, model parameters, and transformer architecture.
-  - **Open-source vs. Commercial**: Commercial models often offer advanced performance; open-source models provide customization flexibility.
-  - **Small Language Models (SLMs)**: Emerging as lightweight alternatives, offering comparable capabilities to larger models in some cases.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fy4e9eb3swm9t6djmru1.png)
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i4z7hmq5litcc8muv243.png)
-
-
-
-## Prompting
-
-Prompt engineering is the process of crafting prompt text to best effect for a given model and parameters. 
-
-### Prompt elements
-
-**Instruction:** This is the explicit task or direction you give to the model.
-
-**Context:** This is information that provides additional background or details that help the model better understand the task.
-
-**Input data:** This refers to the specific information you want the model to process and generate insights or answers based on.
-
-**Output indicator:** The output indicator specifies the desired format or type of the model's response. 
-
-### Prompt engineering techniques
-
-1. **Zero-shot Prompting**: This approach involves presenting a task to the AI model without any prior examples or training specific to that task. The model uses its pre-existing knowledge to generate a response. Zero-shot prompting is important because it tests the model's ability to apply its learned knowledge to new situations without any additional training, showcasing its generalization capabilities.
-2. **Few-shot Prompting**: In this method, the AI model is given a small number of examples (a "few shots") before being asked to perform a task. These examples serve as a context or guide for the model to understand the task at hand. Few-shot prompting is crucial because it helps the model quickly adapt to new tasks with minimal examples, making AI systems more efficient and practical for real-world applications where large datasets might not be available.
-3. **One-shot Prompting**: This technique provides the AI model with a single example to guide its understanding of the task before asking it to complete a similar task. One-shot prompting is important as it demonstrates the model's ability to learn from very limited information, reflecting a more human-like understanding and adaptability.
-4. **Chain-of-thought Prompting**:  instead of directly answering a question or solving a problem, the AI is prompted to generate a step-by-step reasoning process that leads to the final answer or solution. It is important because it can significantly enhance the model's performance on complex tasks that require logic, reasoning, and understanding of context. 
-5. **Generated-knowledge prompting**: a technique used to improve the knowledge and reasoning capabilities of AI language models. It involves providing these models with generated or simulated data as prompts, enabling them to learn from beyond their initial training datasets. This approach is crucial because it helps overcome the limitations of models that only rely on existing human-generated text, allowing them to provide more accurate, informed, and up-to-date responses, especially in areas where they may lack direct information or in rapidly evolving fields.
-6. **Retrieval-Augmented Generation**: (use browser) a method that combines the traditional neural language model's capabilities with an external information retrieval mechanism to enhance the model's ability to provide informed and contextually accurate responses. It matters because it significantly improves the quality of the generated text, particularly for knowledge-intensive tasks, by incorporating relevant external information into the response generation process, thus making AI outputs more factual and contextually rich.
-
-## All the math you need for AI
+## Math for AI
 
 ### 1. Algebra
 
@@ -577,11 +518,11 @@ Linear Algebra is the primary mathematical computation tool in Artificial Intell
 
 - [Tensors](https://mathworld.wolfram.com/Tensor.html) -Tensors are mathematical objects that generalize scalars, vectors, and matrices to higher dimensions. For example, a scalar is a zero-order tensor, a vector is a first-order tensor, and a matrix is a second-order tensor. Higher-order tensors (third-order, fourth-order, etc.) can represent data with more dimensions. In machine learning, tensors are used to generalize data structures, allowing for the handling of higher-dimensional datasets. For instance, in deep learning, data such as images can be represented as third-order tensors (height x width x color channels).
 
-- [Eigenvectors & Eigenvalues](https://www.mathsisfun.com/algebra/eigenvalue.html) -  In linear algebra, eigenvectors are non-zero vectors that only change by a scalar factor when a linear transformation is applied to them. This scalar factor is called the eigenvalue. 
+- [Eigenvectors & Eigenvalues](https://www.mathsisfun.com/algebra/eigenvalue.html) - In linear algebra, eigenvectors are non-zero vectors that only change by a scalar factor when a linear transformation is applied to them. This scalar factor is called the eigenvalue.
 
   Eigenvectors and eigenvalues are important because they give insight into the properties of the linear transformation represented by the matrix. For example, they can be used to understand the directions in which a transformation stretches or compresses, and by how much. This concept is widely used in areas such as physics, engineering, and computer science, particularly in stability analysis, system dynamics, and principal component analysis (PCA).
 
-- [Singular Value Decomposition](https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm) - factorization of a matrix into 3 matrices. 
+- [Singular Value Decomposition](https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm) - factorization of a matrix into 3 matrices.
 
   Think of SVD as a way to break down a big, complex dataset into simpler, smaller pieces that are easier to study and understand. It's like taking a complicated machine apart to understand what each part does and how important it is.
 
@@ -593,7 +534,7 @@ Linear Algebra is the primary mathematical computation tool in Artificial Intell
 
   Here's why it matters for AI: PCA helps in compressing data by reducing the number of features, which speeds up learning algorithms and removes noise, making the patterns in the data more visible. This simplification makes it easier for AI systems to understand and work with large datasets.
 
-Properties such as the [Dot product](https://betterexplained.com/articles/vector-calculus-understanding-the-dot-product/), [Vector product](http://hyperphysics.phy-astr.gsu.edu/hbase/vvec.html) and the [Hadamard product](https://handwiki.org/wiki/Hadamard_product_(matrices)) are useful to know as well.
+Properties such as the [Dot product](https://betterexplained.com/articles/vector-calculus-understanding-the-dot-product/), [Vector product](http://hyperphysics.phy-astr.gsu.edu/hbase/vvec.html) and the [Hadamard product](<https://handwiki.org/wiki/Hadamard_product_(matrices)>) are useful to know as well.
 
 ### 3. Calculus
 
@@ -602,17 +543,20 @@ Calculus deals with changes in parameters, functions, errors and approximations.
 - [Derivatives](https://www.mathsisfun.com/calculus/derivatives-introduction.html) - measure how a function changes as its input changes. They're foundational in optimizing AI models by adjusting parameters to minimize loss functions.
 
   **Rules**:
+
   - **Addition Rule**: The derivative of a sum is the sum of the derivatives.
   - **Product Rule**: The derivative of a product of two functions is given by the first times the derivative of the second plus the second times the derivative of the first.
   - **Chain Rule**: Used to differentiate a composite function; if a variable is changed by another, which in turn is changed by another, the total effect is the product of the individual changes.
 
   **Hyperbolic Derivatives**:
+
   - Functions like tanh (hyperbolic tangent) and cosh (hyperbolic cosine) are used in AI for activation functions. Their derivatives, which describe how changes in inputs affect outputs, are crucial for backpropagation in neural networks.
 
   **Partial Derivatives**:
+
   - In multivariable functions, partial derivatives measure how a function changes as one variable changes, holding others constant. This is essential in AI for functions of multiple variables, helping to optimize parameters in models like neural networks.
 
-- [Vector/Matrix Calculus](http://www.personal.rdg.ac.uk/~sis01xh/teaching/CY4C9/ANN3.pdf) 
+- [Vector/Matrix Calculus](http://www.personal.rdg.ac.uk/~sis01xh/teaching/CY4C9/ANN3.pdf)
 
   **Gradient**: A vector showing the direction and rate of the steepest increase of a function. For AI, it helps in optimizing functions, like finding the minimum loss in neural networks.
 
@@ -639,13 +583,15 @@ Calculus deals with changes in parameters, functions, errors and approximations.
   In this set, the number **8** appears twice while all others appear only once. Therefore, 8 is the mode since it's the most frequent number.
 
   **Variance**:
+
   1. Find the mean (average): (4 + 8 + 3 + 8 + 9) / 5 = 6.4
   2. Calculate the squared differences from the mean: (4 - 6.4)², (8 - 6.4)², (3 - 6.4)², (8 - 6.4)², (9 - 6.4)² = 5.76, 2.56, 11.56, 2.56, 6.76
   3. Find the average of these squared differences: (5.76 + 2.56 + 11.56 + 2.56 + 6.76) / 5 = 5.84. So, the variance is **5.84**.
 
   **Covariance** (using another set for comparison, let's say: **2, 5, 4, 5, 6**):
+
   1. Find the means of the original set and the new set: 6.4 and 4.4, respectively.
-  2. Multiply the deviations from the mean for each pair of values from the two sets: (4 - 6.4) * (2 - 4.4), (8 - 6.4) * (5 - 4.4), and so on.
+  2. Multiply the deviations from the mean for each pair of values from the two sets: (4 - 6.4) _ (2 - 4.4), (8 - 6.4) _ (5 - 4.4), and so on.
   3. Add all these products together and then divide by the number of pairs (in this case, 5): This results in the covariance, but since we haven't computed each step due to simplicity, let's assume this process shows how the values of one set move with respect to another. If the result is positive, the sets vary together in the same direction; if negative, they vary in opposite directions. For simplicity's sake, I haven't calculated the exact value here, but this is the process you would follow.
 
 - [Basic rules in probability](http://www.milefoot.com/math/stat/prob-rules.htm) - events (dependent & independent), sample spaces, conditional probability.
@@ -653,6 +599,7 @@ Calculus deals with changes in parameters, functions, errors and approximations.
   **Sample Spaces**: The set of all possible outcomes of a probability experiment. For example, the sample space for flipping a coin is {Heads, Tails}.
 
   **Events**: Outcomes or combinations of outcomes from a probability experiment. Events can be:
+
   - **Independent**: Two events are independent if the occurrence of one does not affect the probability of the other. For example, flipping a coin and rolling a die are independent events.
   - **Dependent**: Two events are dependent if the occurrence of one affects the probability of the other. For example, drawing two cards from a deck without replacing the first one affects the outcome of the second draw.
 
@@ -672,6 +619,7 @@ Calculus deals with changes in parameters, functions, errors and approximations.
   **Variance**: This measures the spread of a random variable's possible values. It is the expected value of the squared deviation from the mean, indicating how much the values of the variable are likely to differ from the expected value.
 
   **Distributions**:
+
   - **Joint Distribution**: Describes the probability distribution for two or more random variables simultaneously. It helps in understanding the relationship between multiple variables.
   - **Conditional Distribution**: The probability distribution of a random variable given that another variable takes a certain value. It helps in understanding the behavior of one variable when the outcome of another is known.
 
@@ -683,7 +631,7 @@ Calculus deals with changes in parameters, functions, errors and approximations.
 
   It is particularly relevant in areas like machine learning, where it helps in developing algorithms for classification, such as the Naive Bayes classifier. This theorem allows AI systems to improve their predictions or beliefs in light of new, incoming data, which is essential for tasks such as spam filtering, medical diagnosis, and sentiment analysis. Essentially, it provides a mathematical framework for incorporating prior knowledge with new observations, enhancing the decision-making capabilities of AI models.
 
-- [Maximum Likelihood Estimation (MLE)](https://towardsdatascience.com/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1) -   is a statistical method used to estimate the parameters of a model by maximizing a likelihood function, so the observed data is most probable under the assumed statistical model. In the context of AI, particularly in machine learning, MLE is used to find the best-fitting model to describe the underlying structure of the data. It helps in defining the parameters that make the observed data most likely to occur, leading to more accurate predictions and inferences from AI models. MLE is fundamental in training many types of machine learning algorithms, including regression models and neural networks, by optimizing the parameters to improve model performance on given tasks.
+- [Maximum Likelihood Estimation (MLE)](https://towardsdatascience.com/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1) - is a statistical method used to estimate the parameters of a model by maximizing a likelihood function, so the observed data is most probable under the assumed statistical model. In the context of AI, particularly in machine learning, MLE is used to find the best-fitting model to describe the underlying structure of the data. It helps in defining the parameters that make the observed data most likely to occur, leading to more accurate predictions and inferences from AI models. MLE is fundamental in training many types of machine learning algorithms, including regression models and neural networks, by optimizing the parameters to improve model performance on given tasks.
 
 - [Common Distributions](https://www.stat.tamu.edu/~twehrly/611/distab.pdf) - binomial, poisson, bernoulli, gaussian, exponential.
 
@@ -719,13 +667,13 @@ An important field that has made significant contributions to AI and Deep Learni
 
   In AI, particularly in machine learning and statistical modeling, KL Divergence is used for various purposes such as quantifying information loss when approximating one distribution with another, in model selection, and in Bayesian inference methods. It's especially important in scenarios like variational autoencoders (VAEs) and reinforcement learning, where understanding the difference between the expected and actual outcomes can significantly impact the performance and decision-making process of AI models. By minimizing KL Divergence, we aim to make the model's predictions or learned distributions as close as possible to the true data distributions.
 
-- [Viterbi Algorithm](https://www.cis.upenn.edu/~cis262/notes/Example-Viterbi-DNA.pdf) - widely used in Natural Language Processing (NLP) & Speech. 
+- [Viterbi Algorithm](https://www.cis.upenn.edu/~cis262/notes/Example-Viterbi-DNA.pdf) - widely used in Natural Language Processing (NLP) & Speech.
 
   The Viterbi Algorithm is a dynamic programming algorithm used to find the most likely sequence of hidden states (called the Viterbi path) in a particular type of model known as a Hidden Markov Model (HMM). In the context of AI, particularly in Natural Language Processing (NLP) and speech recognition, the Viterbi Algorithm is used to decode the sequence of states (such as parts of speech or phonemes) that are most likely to have resulted in a given sequence of observed events (such as words in a sentence or sounds in speech).
 
   This algorithm is crucial for tasks like tagging words in sentences, understanding spoken language, and bioinformatics applications (like gene sequencing). It helps AI systems efficiently compute the best guess for the underlying sequence of states, improving the accuracy and effectiveness of language understanding and speech recognition models.
 
-- [Encoder-Decoder](https://hackernoon.com/information-theory-of-neural-networks-c96a0f0a8d9) - used in Machine Translation RNNs & other models. 
+- [Encoder-Decoder](https://hackernoon.com/information-theory-of-neural-networks-c96a0f0a8d9) - used in Machine Translation RNNs & other models.
 
   In the context of AI, the Encoder-Decoder framework is commonly used in machine translation and other sequence-to-sequence (seq2seq) tasks. This architecture consists of two main parts:
 
@@ -735,4 +683,149 @@ An important field that has made significant contributions to AI and Deep Learni
 
   This encoder-decoder structure allows neural networks, especially RNNs and their variants like LSTM and GRU, to handle variable-length input and output sequences, making it ideal for tasks like machine translation, text summarization, and speech recognition. The approach enables AI models to translate sentences, generate responses in chatbots, or create textual content by learning from large datasets of paired sequences.
 
-------
+## AI Explainability
+
+AI systems are explainable when everyday people, who do not have any special training in AI, can understand how and why the system came to a particular prediction or recommendation.
+
+Interpretability is the degree to which an observer can understand the cause of a decision.
+
+Explainability looks at how the AI system arrived at the result.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c99olceqlwhpcfz5pzrd.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ngq4i90esjheetg4xg17.png)
+
+White-box AI-systems are easy to explain.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/95rp03d12xhche5wrd7v.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/20v81ik80vx02w357iu7.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mrufgiu9f3wkloi2p45c.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/sifvulv59qln2qetpafu.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7jogmkpwqlpce1xiam7o.png)
+
+## AI Ethics
+
+### Fairness
+
+- In AI, fairness is the equitable treatment of individuals or groups of individuals.
+
+- Fairness is achieved when unwanted bias is mitigated.
+
+- Protected attributes separate populations into groups.
+
+- Groups that traditionally receive more favorable outcomes are called privileged groups.
+
+- Groups that traditionally receive less or no favorable outcomes are called unprivileged groups.
+
+- There isn’t a defined set of protected attributes.
+
+- Bias is a systematic error that, intentionally or not, might generate unfair decisions.
+
+  ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/a4jehzjnkf64aebb3clj.png)
+
+### Robustness
+
+- A robust AI system can effectively handle exceptional conditions, like abnormalities in input or malicious attacks, without causing unintentional harm.
+- Adversarial attacks are intentionally carried out on AI systems to accomplish a malicious end goal by exploiting AI system vulnerabilities.
+- Two types of adversarial attacks are **poisoning** and **evasion**.
+
+### Privacy
+
+- Personal and sensitive personal information can be used to train models, as long as privacy techniques are applied to the data to preserve the privacy of individuals whose data is included.
+
+- Many privacy techniques that can be applied to fortify AI against potential breaches of personal or sensitive data. Two that occur during model training are **model anonymization** and **differential privacy**. One that occurs after model training is data **minimization**.
+
+  ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/65pkeqqdjha5r9p76xqb.png)
+
+## Building an AI driven organization
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/l0h1ui88pbyl2xpssxn5.png)
+
+### AI Roadmap
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/395pu6bxy1160esyzpou.png)
+
+### Data strategy and governance
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jr53szv6w5qxez9me6wp.png)
+
+### AI infrastructure & resources
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/57jpgxc9j6qgc6gzgjsn.png)
+
+ML Ops:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/r29to6dh8lwaa6yk4wkj.png)
+
+## Measuring the success of the AI system
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/km9zdw6fif9jzzu3p7k4.png)
+
+### Measuring performance offline
+
+We save some of the data for testing, and measure success of the model.
+
+If our model performance is not as expected, we may have to improve it by fine-tuning it or by improving the quality of the training data, until it performs satisfactorily.
+
+(Algorithm vs Model)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/58d2251cq8cdltlpaw5c.png)
+
+### Measuring performance in production
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xyjwwbshn4tftnwultxy.png)
+
+## LLMs
+
+- - **Large Language Models (LLMs)**: Generative AI capable of producing human-like text, adaptable for specialized tasks with fine-tuning.
+  - **Foundational Models**: Encompass LLMs and extend to models that process images and audio, offering a broader application range.
+
+- **Architecture & Capabilities**:
+
+  - **Transformer Architecture**: Core to modern AI, enables processing of sequential data and underpins both LLMs and foundational models for scalable and efficient computation.
+  - **Training Cut-off**: LLMs do not update knowledge post-training, limiting real-time data access or external database retrieval.
+
+- **Application in Enterprise**:
+
+  - **Base LLMs**: Broadly capable but may lack task-specific precision in enterprise settings without additional training.
+  - **Instruction-based Usage**: Enhances performance through prompt engineering but doesn't expand core model capabilities.
+  - **Fine-tuning**: Improves task-specific performance but requires extra resources and risks overfitting.
+
+- **LLMs in Detail**:
+  - **General-purpose Use**: Capable of diverse tasks like question-answering, content generation, and translation without specific training.
+  - **Key Use Cases**: Include summarization, chatbots, content generation, translation, and more, powered by foundational models.
+  - **Types of LLMs**: Base, Instruction-based, and Fine-tuned, each with distinct advantages and considerations.
+  - **Concepts**: Include prompts, embeddings, tokens, model parameters, and transformer architecture.
+  - **Open-source vs. Commercial**: Commercial models often offer advanced performance; open-source models provide customization flexibility.
+  - **Small Language Models (SLMs)**: Emerging as lightweight alternatives, offering comparable capabilities to larger models in some cases.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fy4e9eb3swm9t6djmru1.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i4z7hmq5litcc8muv243.png)
+
+## Prompting
+
+Prompt engineering is the process of crafting prompt text to best effect for a given model and parameters.
+
+### Prompt elements
+
+**Instruction:** This is the explicit task or direction you give to the model.
+
+**Context:** This is information that provides additional background or details that help the model better understand the task.
+
+**Input data:** This refers to the specific information you want the model to process and generate insights or answers based on.
+
+**Output indicator:** The output indicator specifies the desired format or type of the model's response.
+
+### Prompt engineering techniques
+
+1. **Zero-shot Prompting**: This approach involves presenting a task to the AI model without any prior examples or training specific to that task. The model uses its pre-existing knowledge to generate a response. Zero-shot prompting is important because it tests the model's ability to apply its learned knowledge to new situations without any additional training, showcasing its generalization capabilities.
+2. **Few-shot Prompting**: In this method, the AI model is given a small number of examples (a "few shots") before being asked to perform a task. These examples serve as a context or guide for the model to understand the task at hand. Few-shot prompting is crucial because it helps the model quickly adapt to new tasks with minimal examples, making AI systems more efficient and practical for real-world applications where large datasets might not be available.
+3. **One-shot Prompting**: This technique provides the AI model with a single example to guide its understanding of the task before asking it to complete a similar task. One-shot prompting is important as it demonstrates the model's ability to learn from very limited information, reflecting a more human-like understanding and adaptability.
+4. **Chain-of-thought Prompting**: instead of directly answering a question or solving a problem, the AI is prompted to generate a step-by-step reasoning process that leads to the final answer or solution. It is important because it can significantly enhance the model's performance on complex tasks that require logic, reasoning, and understanding of context.
+5. **Generated-knowledge prompting**: a technique used to improve the knowledge and reasoning capabilities of AI language models. It involves providing these models with generated or simulated data as prompts, enabling them to learn from beyond their initial training datasets. This approach is crucial because it helps overcome the limitations of models that only rely on existing human-generated text, allowing them to provide more accurate, informed, and up-to-date responses, especially in areas where they may lack direct information or in rapidly evolving fields.
+6. **Retrieval-Augmented Generation**: (use browser) a method that combines the traditional neural language model's capabilities with an external information retrieval mechanism to enhance the model's ability to provide informed and contextually accurate responses. It matters because it significantly improves the quality of the generated text, particularly for knowledge-intensive tasks, by incorporating relevant external information into the response generation process, thus making AI outputs more factual and contextually rich.
