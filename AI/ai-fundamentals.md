@@ -807,6 +807,14 @@ If our model performance is not as expected, we may have to improve it by fine-t
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i4z7hmq5litcc8muv243.png)
 
+Imagine a LLM as a block of legos as the training data. LLM (ex: ChatGPT) is great at rebuilding that block by filling in the blanks. 
+
+Therefore the limitation of an LLM the training data; it can only be as vast and as current as the data it was trained on.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/984t2fd0ta5iimg62ksr.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/si9xuf34wke7yey15q5v.png)
+
 ## Prompting
 
 Prompt engineering is the process of crafting prompt text to best effect for a given model and parameters.
