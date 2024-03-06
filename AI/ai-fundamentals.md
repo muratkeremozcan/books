@@ -779,42 +779,6 @@ If our model performance is not as expected, we may have to improve it by fine-t
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xyjwwbshn4tftnwultxy.png)
 
-## LLMs
-
-- - **Large Language Models (LLMs)**: Generative AI capable of producing human-like text, adaptable for specialized tasks with fine-tuning.
-  - **Foundational Models**: Encompass LLMs and extend to models that process images and audio, offering a broader application range.
-
-- **Architecture & Capabilities**:
-
-  - **Transformer Architecture**: Core to modern AI, enables processing of sequential data and underpins both LLMs and foundational models for scalable and efficient computation.
-  - **Training Cut-off**: LLMs do not update knowledge post-training, limiting real-time data access or external database retrieval.
-
-- **Application in Enterprise**:
-
-  - **Base LLMs**: Broadly capable but may lack task-specific precision in enterprise settings without additional training.
-  - **Instruction-based Usage**: Enhances performance through prompt engineering but doesn't expand core model capabilities.
-  - **Fine-tuning**: Improves task-specific performance but requires extra resources and risks overfitting.
-
-- **LLMs in Detail**:
-  - **General-purpose Use**: Capable of diverse tasks like question-answering, content generation, and translation without specific training.
-  - **Key Use Cases**: Include summarization, chatbots, content generation, translation, and more, powered by foundational models.
-  - **Types of LLMs**: Base, Instruction-based, and Fine-tuned, each with distinct advantages and considerations.
-  - **Concepts**: Include prompts, embeddings, tokens, model parameters, and transformer architecture.
-  - **Open-source vs. Commercial**: Commercial models often offer advanced performance; open-source models provide customization flexibility.
-  - **Small Language Models (SLMs)**: Emerging as lightweight alternatives, offering comparable capabilities to larger models in some cases.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fy4e9eb3swm9t6djmru1.png)
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i4z7hmq5litcc8muv243.png)
-
-Imagine a LLM as a block of legos as the training data. LLM (ex: ChatGPT) is great at rebuilding that block by filling in the blanks. 
-
-Therefore the limitation of an LLM the training data; it can only be as vast and as current as the data it was trained on.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/984t2fd0ta5iimg62ksr.png)
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/si9xuf34wke7yey15q5v.png)
-
 ## Prompting
 
 Prompt engineering is the process of crafting prompt text to best effect for a given model and parameters.
@@ -837,3 +801,104 @@ Prompt engineering is the process of crafting prompt text to best effect for a g
 4. **Chain-of-thought Prompting**: instead of directly answering a question or solving a problem, the AI is prompted to generate a step-by-step reasoning process that leads to the final answer or solution. It is important because it can significantly enhance the model's performance on complex tasks that require logic, reasoning, and understanding of context.
 5. **Generated-knowledge prompting**: a technique used to improve the knowledge and reasoning capabilities of AI language models. It involves providing these models with generated or simulated data as prompts, enabling them to learn from beyond their initial training datasets. This approach is crucial because it helps overcome the limitations of models that only rely on existing human-generated text, allowing them to provide more accurate, informed, and up-to-date responses, especially in areas where they may lack direct information or in rapidly evolving fields.
 6. **Retrieval-Augmented Generation**: (use browser) a method that combines the traditional neural language model's capabilities with an external information retrieval mechanism to enhance the model's ability to provide informed and contextually accurate responses. It matters because it significantly improves the quality of the generated text, particularly for knowledge-intensive tasks, by incorporating relevant external information into the response generation process, thus making AI outputs more factual and contextually rich.
+
+## LLMs
+
+**Natural Language Processing (NLP)** is the technology that allows computers to understand, interpret, and generate human language in a meaningful way. This technology is often employed in applications such as translation services and chatbots. 
+
+**Large Language Models (LLMs)** are a subset of NLP that generate human-like text responses, making them integral to many areas of your life, from customer service to personalized education and entertainment.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lm7e0jy0mixtm9c222ia.png)
+
+Imagine a LLM as a block of legos as the training data. LLM (ex: ChatGPT) is great at rebuilding that block by filling in the blanks. 
+
+Therefore the limitation of an LLM the training data; it can only be as vast and as current as the data it was trained on.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/984t2fd0ta5iimg62ksr.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/si9xuf34wke7yey15q5v.png)
+
+### Single-task vs Multi-task learning
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q1oaff6o16a8l50ksi22.png)
+
+
+
+- **Foundational Models**: Encompass LLMs and extend to models that process images and audio, offering a broader application range.
+
+- **Architecture & Capabilities**:
+
+  - **Transformer Architecture**: Core to modern AI, enables processing of sequential data and underpins both LLMs and foundational models for scalable and efficient computation.
+  - **Training Cut-off**: LLMs do not update knowledge post-training, limiting real-time data access or external database retrieval.
+
+- **Application in Enterprise**:
+  - **Base LLMs**: Broadly capable but may lack task-specific precision in enterprise settings without additional training.
+  - **Instruction-based Usage**: Enhances performance through prompt engineering but doesn't expand core model capabilities.
+  - **Fine-tuning**: Improves task-specific performance but requires extra resources and risks overfitting.
+
+- **LLMs in Detail**:
+  - **General-purpose Use**: Capable of diverse tasks like question-answering, content generation, and translation without specific training.
+  - **Key Use Cases**: Include summarization, chatbots, content generation, translation, and more, powered by foundational models.
+  - **Types of LLMs**: Base, Instruction-based, and Fine-tuned, each with distinct advantages and considerations.
+  - **Concepts**: Include prompts, embeddings, tokens, model parameters, and transformer architecture.
+  - **Open-source vs. Commercial**: Commercial models often offer advanced performance; open-source models provide customization flexibility.
+  - **Small Language Models (SLMs)**: Emerging as lightweight alternatives, offering comparable capabilities to larger models in some cases.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fy4e9eb3swm9t6djmru1.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i4z7hmq5litcc8muv243.png)
+
+### Text pre-processing
+
+Now we will cover the key NLP techniques used to prepare text data into a machine-readable form for use in LLM.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1js9jou2b3mpc8t49k3e.png)
+
+**Tokenization:** splits text into individual tokens/words
+
+**Stop word removal**: remove words that don't add meaning (with, is, ...)
+
+**Lemmatization:** group slightly different words with similar meaning (talking, talked, talk)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xxrhlur6ci1k1ur4k5hd.png)
+
+### Text representation
+
+[n-grams (bag of words)](#n-grams-bag-of-words) limitations: does not capture order; can lead to incorrect interpretations, similar sentence but opposite meaning, does not capture semantics between the words
+
+**Word embeddings**: capture the semantic meanings as numbers
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ieces2x7np7fzvbjdhbp.png)
+
+Example: "The product is amazing, but the shipping was slow."
+
+Tokenization, stop word removal, lemmatization vs bag-of-words, word embeddings.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lpv4nrbuoudxnnhbsors.png)
+
+### Fine-tuning
+
+**Fine-tuning**: training a pre-trained model for a specific task.
+
+What if there is little to no labeled data? We use **N-shot learning**
+
+**Zero-shot** learning: no task-specific data
+
+**Few-shot** learning: little task-specific data
+
+**Multi-shot** learning: relatively more training data
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xmfwl95zccasmrmrfdh3.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f9z1ldt7q6kmwxpxfkwe.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f6bcd900xmkwvhmhoprj.png)
+
+### Pre-training
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/004289k8rk6hz78jzo67.png)
+
+Next word prediction:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0cco5zrf9fdanv5urfxe.png)
+
