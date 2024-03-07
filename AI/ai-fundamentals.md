@@ -848,7 +848,9 @@ Therefore the limitation of an LLM the training data; it can only be as vast and
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i4z7hmq5litcc8muv243.png)
 
-### Text pre-processing
+### Training LLMs
+
+#### Text pre-processing
 
 Now we will cover the key NLP techniques used to prepare text data into a machine-readable form for use in LLM.
 
@@ -862,7 +864,7 @@ Now we will cover the key NLP techniques used to prepare text data into a machin
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xxrhlur6ci1k1ur4k5hd.png)
 
-### Text representation
+#### Text representation
 
 [n-grams (bag of words)](#n-grams-bag-of-words) limitations: does not capture order; can lead to incorrect interpretations, similar sentence but opposite meaning, does not capture semantics between the words
 
@@ -876,7 +878,21 @@ Tokenization, stop word removal, lemmatization vs bag-of-words, word embeddings.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lpv4nrbuoudxnnhbsors.png)
 
-### Fine-tuning
+#### Pre-training
+
+Many organizations opt to fine-tune existing pre-trained models for their specific tasks rather than building a pre-trained model from scratch.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/004289k8rk6hz78jzo67.png)
+
+##### Next word prediction
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0cco5zrf9fdanv5urfxe.png)
+
+##### Masked language modeling
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ehpq7zj9c18yyiyif461.png)
+
+#### Fine-tuning
 
 **Fine-tuning**: training a pre-trained model for a specific task.
 
@@ -894,11 +910,32 @@ What if there is little to no labeled data? We use **N-shot learning**
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f6bcd900xmkwvhmhoprj.png)
 
-### Pre-training
+#### Advanced fine-tuning
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/004289k8rk6hz78jzo67.png)
+Reinforcement learning through human feedback (RLHF)
 
-Next word prediction:
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/naybwqn7qn3n566jr59s.png)
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0cco5zrf9fdanv5urfxe.png)
+Pre-training: 
 
+* Learns underlying language patterns
+* Doesn't capture context-specific complexities
+
+Fine-tuning:
+
+* Quality labeled data improves performance
+
+RLHF: 
+
+* Model output reviewed by a human
+* Updates model based on the feedback
+
+​	
+
+How does RLHF work?
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4opwaqnh9datwqnvv3ls.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ab7upzrfsh47uf3686du.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0cmeyqm148juzqifkh9m.png)
