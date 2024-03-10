@@ -988,3 +988,15 @@ Assess performance and effectiveness of a model.
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vd2rdrfe28n9jjbw34my.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6tj2x5lflaya2npzir6g.png)
+
+
+
+### GenAI limitations
+
+How do we make up for the limitations?
+
+* Augmentation
+* Collaboration
+* Replacement (mundane tasks)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8xglqxxvr83q3pj06jw7.png)
