@@ -1005,3 +1005,13 @@ How do we make up for the limitations?
 * Replacement (mundane tasks)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8xglqxxvr83q3pj06jw7.png)
+
+## AI Strategy  
+
+Meh.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5wvpr010dqv0omwdyung.png)
+
+Traditional vs AI software development:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/om22pji1b921exo59v9m.png)
