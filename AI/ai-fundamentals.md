@@ -1012,6 +1012,22 @@ Meh.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5wvpr010dqv0omwdyung.png)
 
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gkm2swbt4ddaotzn9tvf.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wvgps3x9do7r7kxy7788.png)
+
+AI strategist
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xm0c1f8grpyle15t75rz.png)
+
 Traditional vs AI software development:
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/om22pji1b921exo59v9m.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/uy2hzic5x7t0ww9dp6yn.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9i7qoyz8xw8nhx9bxq20.png)
+
+Phases of AI Implementation:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i1r8mgd8rqxsvuz3dqyj.png)
