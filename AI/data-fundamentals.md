@@ -63,3 +63,24 @@ Making decisions:
 - ﻿﻿Iterative process
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ycnzb27oe9cqlbmt5ca3.png)
+
+- 
+
+### Principles of data ethics
+
+1. ﻿﻿﻿Permission for data collection
+2. ﻿﻿﻿Transparency about the plan
+3. ﻿﻿﻿Privacy of data
+4. ﻿﻿﻿Good intentions
+5. ﻿﻿﻿Consider the outcome
+
+### What is the data life cycle?
+
+- ﻿﻿Planning and collecting
+- ﻿﻿Storing and managing
+- ﻿﻿Cleaning and processing
+- ﻿﻿Analyzing and visualizing
+- ﻿﻿Sharing
+- ﻿﻿Archiving/destroying
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/off9fgvju6c4zty14m30.png)
