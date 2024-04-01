@@ -1,5 +1,13 @@
 # Notes
 
+## Sources
+
+[Introduction to Data](https://app.datacamp.com/learn/courses/introduction-to-data)
+
+[Introduction to Data Culture](https://app.datacamp.com/learn/courses/introduction-to-data-culture)
+
+## [Introduction to Data](https://app.datacamp.com/learn/courses/introduction-to-data)
+
 ### Structured vs Unstructured data
 
 Customer info, Financial transactions vs Email, Video
@@ -84,3 +92,83 @@ Making decisions:
 - ﻿﻿Archiving/destroying
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/off9fgvju6c4zty14m30.png)
+
+## [Introduction to Data Culture](https://app.datacamp.com/learn/courses/introduction-to-data-culture)
+
+### Key components of data culture
+
+- Making data-driven decisions
+  - ﻿﻿Evaluate strategy
+  - ﻿﻿Identify opportunities
+  - ﻿﻿Measure success
+  - ﻿﻿Evidence over intuition or opinion
+- Prioritize data literacy: being able to read, interpret and analyze data
+- Continuous experimentation and development
+
+Benefits:
+
+- ﻿﻿Enhanced decision-making
+
+- ﻿﻿Improved operations
+
+- Efficiency boost
+
+  
+
+### Data challenges
+
+#### People related
+
+Data silos:
+
+- Occur when information is isolated within teams or departments
+- ﻿﻿Hamper collaboration, limit organizational understanding
+- ﻿﻿Example:
+  * Ford's siloed data storage
+- ﻿﻿Solutions:
+  * Centralized data team/data management system
+
+Data literacy:
+
+- ﻿﻿Reluctance to gain new skills and adapt to changing data trend
+- ﻿﻿Failure to invest in long-term commitment
+- ﻿﻿Example:
+  - ﻿﻿Assume all employees have the same level of data literacy
+- ﻿﻿Solutions:
+  - ﻿﻿Customized training program
+  - ﻿﻿Continuously monitoring and refining
+
+﻿﻿Data ethics:
+
+- ﻿﻿Responsible, fair, and transparent data usage
+- ﻿﻿Example:
+   o Amazon's biased hiring algorithm
+- ﻿﻿Solutions:
+  - ﻿﻿Establish clear ethical guidelines
+  - ﻿﻿Foster open discussion
+
+#### Process related
+
+Data quality:
+
+- ﻿﻿Data needs to be ﻿accurate, reliable, up-to-date
+
+* Example:
+  - ﻿﻿Uber's "Greyball" resulted in severe consequences
+
+* ﻿﻿Solutions:
+
+  * Implement data validation process
+
+  - ﻿﻿Leverage automated data cleansing tools
+
+Data privacy & security:
+
+- Extended data usage may lead to overlook of data privacy and data security
+- ﻿﻿Protecting sensitive information maintains customer trust and avoid potential breaches
+- ﻿﻿Example: 2017 Equifax data breach
+- ﻿﻿Solutions:
+  - ﻿﻿Implement access controls
+  - ﻿﻿Apply encryption techniques
+  - ﻿﻿Conduct regular security checks
+
