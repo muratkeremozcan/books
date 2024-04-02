@@ -172,3 +172,14 @@ Data privacy & security:
   - ﻿﻿Apply encryption techniques
   - ﻿﻿Conduct regular security checks
 
+### 5 level data maturity model
+
+1. Awareness: the organization knows that data is important but lacks a plan for how to understand and analyze its data.
+2. Adoption: some stakeholders within the organization have attempted to make data-informed decisions but the approach is often limited or siloed.
+3. Standardization: achieved by breaking through the siloes between different pockets of the organization and acting as one unified vision.
+4. Optimization: this is when the organizations try to improve efficiency by coordinating between different groups and data stream.
+5. Innovation: a data culture is born and data's value, importance, and utility is realized at every level.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6usj9omw2w8svqusypt6.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b8xrn213txy7hr5nsdme.png)
