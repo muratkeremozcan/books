@@ -6,6 +6,8 @@
 
 [Introduction to Data Culture](https://app.datacamp.com/learn/courses/introduction-to-data-culture)
 
+[Introduction to Data Quality](https://app.datacamp.com/learn/courses/introduction-to-data-quality)
+
 ## [Introduction to Data](https://app.datacamp.com/learn/courses/introduction-to-data)
 
 ### Structured vs Unstructured data
@@ -183,3 +185,39 @@ Data privacy & security:
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6usj9omw2w8svqusypt6.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b8xrn213txy7hr5nsdme.png)
+
+## [Introduction to Data Quality](https://app.datacamp.com/learn/courses/introduction-to-data-quality)
+
+**Critical for Decision-Making**: High-quality data is essential for informed business decisions, directly affecting trust and value in the data used.
+
+**Key Activities for Quality**: Maintaining good data quality requires monitoring, timely issue resolution, and awareness of data's value among those who handle it.
+
+**Benefits**: Good data quality provides competitive advantages and risk mitigation, enhancing customer service and preventing operational issues.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/v75kmlq6v9jrpv5cdqjd.png)
+
+### Data quality dimensions
+
+Data completeness example:
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vgpe5guycgeihtfoohfc.png)
+
+Data validity example:
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/g988lhlbo0igw5fjzrhd.png)
+
+Data uniqueness example:![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8d16pkmzgrtn9fr381zh.png)
+
+Data consistency example:![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dgsc4maosr3ylaq11667.png)
+
+Data accuracy example:![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xln47okyi4hnjtsh1ju7.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/an6hrr4ieckn4phsrw0u.png)
+
+### Data quality roles
+
+**Data Producers**: Individuals or systems responsible for creating, collecting, and managing data. Their duties include implementing and adhering to data quality rules, setting alerts for data issues, and fixing any identified problems.
+
+**Data Consumers**: Users or systems that utilize data for analysis, reporting, or operational purposes. They are tasked with evaluating the quality of data before use, providing feedback on data quality rules based on business needs, and reporting any data quality issues to producers.
+
+**Data Governance Team**: A group responsible for the oversight of the data quality program, including the establishment and enforcement of data quality policies and standards, monitoring data quality metrics, and ensuring the provision of necessary tools and training for maintaining data quality.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hjvukce5rytrsrewwn4g.png)
