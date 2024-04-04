@@ -212,6 +212,10 @@ Data accuracy example:![Image description](https://dev-to-uploads.s3.amazonaws.c
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/an6hrr4ieckn4phsrw0u.png)
 
+### Data quality rules examples
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cqmao5w1sjysvtugva3t.png)
+
 ### Data quality roles
 
 **Data Producers**: Individuals or systems responsible for creating, collecting, and managing data. Their duties include implementing and adhering to data quality rules, setting alerts for data issues, and fixing any identified problems.
@@ -221,3 +225,47 @@ Data accuracy example:![Image description](https://dev-to-uploads.s3.amazonaws.c
 **Data Governance Team**: A group responsible for the oversight of the data quality program, including the establishment and enforcement of data quality policies and standards, monitoring data quality metrics, and ensuring the provision of necessary tools and training for maintaining data quality.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hjvukce5rytrsrewwn4g.png)
+
+### Data profiling
+
+Data profiling: The activity of running statistics on a data set to better understand the data and field dependencies
+
+Examples:
+
+- ﻿﻿How many records are in the data set?
+- ﻿﻿What are the min and max values for a particular data element?
+- ﻿﻿How many records have a particular data element populated?
+- ﻿﻿When column A is populated, what other columns are also populated?
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c9gwnvabw67b966ntra6.png)
+
+### Metadata
+
+Attributes that describe data.
+
+- ﻿﻿Used to organize and understand datasets and data elements
+- ﻿﻿Used in the data quality process to determine the:
+   o definition of a field
+   o owner of a field
+   o field's last update date
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4p8p34gdvi1hpjub33k0.png)
+
+**Data lineage**: A representation of how data moves in a pipeline, from where the data is entered in the source through each step in the data pipeline, until it is consumed.
+
+- ﻿﻿Each layer has its own metadata
+- ﻿﻿Used in the data quality process to determine where to implement a data quality rule
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/08pdj26uwc50vbgdea6b.png)
+
+### Using Data lineage and Metadata
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nh66q5ot5pyheaxzorey.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/adgbvtckbjvkrp7nggqq.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nyy8o7ecilstty13yuf2.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f4k7ksneitdbyb6je0e0.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/j1itut6e9st4ze9c04qr.png)
