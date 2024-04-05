@@ -269,3 +269,34 @@ Attributes that describe data.
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f4k7ksneitdbyb6je0e0.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/j1itut6e9st4ze9c04qr.png)
+
+### Data quality rules in action
+
+**Detective data quality rule**: rule that monitors the data after it has already been loaded into the downstream target databases where it can be consumed. Ok if we can fix later and we can live with a low percentage of issues; we do not block data to be loaded.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/iq5ou6nmy3vbs17a0d2a.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kqhjpcliq1uvmbcas84s.png)
+
+**Preventative data quality rule:** stops the data from loading. Use it when the data is critical, or can be easily fixed, or impacts a high amount of records.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1p9yd18ki7x3e8a43j1y.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/l87outpvwv6dg9w00vyd.png)
+
+### Anomaly detection
+
+**Automated Data Monitoring**: Anomaly detection leverages machine learning algorithms to automatically identify potential data quality issues without needing constant human oversight, allowing for efficient monitoring of large datasets.
+
+**Scalability and Insight**: It offers the ability to monitor data at scale, requiring minimal initial business knowledge to set up. Over time, it can detect data drift and provide insights into non-obvious changes in data patterns that may not be immediately apparent to the business.
+
+**Complement to Traditional Rules**: While anomaly detection can automate and enhance data quality monitoring, especially in large datasets, it's most effective when used alongside traditional data quality rules, particularly in highly regulated industries that require rigorous data governance.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dxe6wz8hbkoudfdhzclr.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vzbiw1aievaq82egr73s.png)
+
+Anomaly threshold alert example:
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/j2qb9j42jwd3ilmdnfbv.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mpausekkz73fq189ho17.png)
