@@ -22,6 +22,7 @@ The following content represents a consolidated and streamlined compilation of n
 
 ## ToC
 
+
 - [Intro: AI, ML, DL, Gen AI](#intro-ai-ml-dl-gen-ai)
 - [AI](#ai)
   - [3 levels/types of AI](#3-levelstypes-of-ai)
@@ -46,11 +47,6 @@ The following content represents a consolidated and streamlined compilation of n
   - [Chatbots](#chatbots)
   - [Image recognition and **convolutional neural network (CNN)**](#image-recognition-and-convolutional-neural-network-cnn)
   - [Generative adversarial networks](#generative-adversarial-networks)
-- [Generative AI](#generative-ai)
-  - [Use cases for Generative AI](#use-cases-for-generative-ai)
-  - [Unified Approach for Implementing Generative AI in Enterprises:](#unified-approach-for-implementing-generative-ai-in-enterprises)
-  - [Rollout](#rollout)
-  - [Types of generative AI models](#types-of-generative-ai-models)
 - [Limits of machine learning](#limits-of-machine-learning)
 - [Acquiring Data](#acquiring-data)
   - [Machine learning](#machine-learning-1)
@@ -76,10 +72,34 @@ The following content represents a consolidated and streamlined compilation of n
 - [Measuring the success of the AI system](#measuring-the-success-of-the-ai-system)
   - [Measuring performance offline](#measuring-performance-offline)
   - [Measuring performance in production](#measuring-performance-in-production)
-- [LLMs](#llms)
 - [Prompting](#prompting)
   - [Prompt elements](#prompt-elements)
   - [Prompt engineering techniques](#prompt-engineering-techniques)
+- [LLMs](#llms)
+  - [Single-task vs Multi-task learning](#single-task-vs-multi-task-learning)
+  - [Training LLMs](#training-llms)
+    - [Text pre-processing](#text-pre-processing)
+    - [Text representation](#text-representation)
+    - [Pre-training](#pre-training)
+      - [Next word prediction](#next-word-prediction)
+      - [Masked language modeling](#masked-language-modeling)
+    - [Fine-tuning](#fine-tuning)
+    - [Advanced fine-tuning](#advanced-fine-tuning)
+- [Generative AI](#generative-ai)
+  - [Use cases for Generative AI](#use-cases-for-generative-ai)
+  - [Unified Approach for Implementing Generative AI in Enterprises:](#unified-approach-for-implementing-generative-ai-in-enterprises)
+  - [Rollout](#rollout)
+  - [Types of generative AI models](#types-of-generative-ai-models)
+  - [Developing a new generative AI Model](#developing-a-new-generative-ai-model)
+    - [Research and design](#research-and-design)
+    - [Training data collection](#training-data-collection)
+    - [Model training](#model-training)
+      - [Transfer learning and fine-tuning](#transfer-learning-and-fine-tuning)
+      - [\[RLHF\](#Advanced fine-tuning)](#rlhfadvanced-fine-tuning)
+      - [Custom embeddings](#custom-embeddings)
+    - [Model evaluation](#model-evaluation)
+  - [GenAI limitations](#genai-limitations)
+- [AI Strategy](#ai-strategy)
 
 ## Intro: AI, ML, DL, Gen AI
 
@@ -253,7 +273,14 @@ The 3rd neuron estimates distribution as a function of budget, advertising and t
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/s4wrnu5l1zj4ydpoyohg.png)
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jeqslwqjrwedaegv7mer.png)
+When to use deep learning?
+
+- ﻿﻿Lots of data
+- ﻿﻿Access to processing power
+- ﻿﻿Lack of domain knowledge
+- ﻿﻿Complex problems
+- ﻿﻿Computer vision
+- ﻿﻿Natural language processing
 
 In the real world, for tasks like predicting box office revenue, we often use machine learning models such as neural networks, decision trees, or ensemble methods like random forests or gradient boosting machines.
 
@@ -412,7 +439,7 @@ Datasets:
 
 ### Machine learning
 
-Once data has been acquired, almost every AI system relies on machine learning and deep learning techniques
+Once data has been acquired, almost every AI system relies on machine learning and deep learning techniques.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5mht62qsw0k4ra3aj4e1.png)
 
@@ -742,13 +769,13 @@ Prompt engineering is the process of crafting prompt text to best effect for a g
 
 ## LLMs
 
-**Natural Language Processing (NLP)** is the technology that allows computers to understand, interpret, and generate human language in a meaningful way. This technology is often employed in applications such as translation services and chatbots. 
+**Natural Language Processing (NLP)** is the technology that allows computers to understand, interpret, and generate human language in a meaningful way. This technology is often employed in applications such as translation services and chatbots.
 
 **Large Language Models (LLMs)** are a subset of NLP that generate human-like text responses, making them integral to many areas of your life, from customer service to personalized education and entertainment.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lm7e0jy0mixtm9c222ia.png)
 
-Imagine a LLM as a block of legos as the training data. LLM (ex: ChatGPT) is great at rebuilding that block by filling in the blanks. 
+Imagine a LLM as a block of legos as the training data. LLM (ex: ChatGPT) is great at rebuilding that block by filling in the blanks.
 
 Therefore the limitation of an LLM the training data; it can only be as vast and as current as the data it was trained on.
 
@@ -760,8 +787,6 @@ Therefore the limitation of an LLM the training data; it can only be as vast and
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q1oaff6o16a8l50ksi22.png)
 
-
-
 - **Foundational Models**: Encompass LLMs and extend to models that process images and audio, offering a broader application range.
 
 - **Architecture & Capabilities**:
@@ -770,6 +795,7 @@ Therefore the limitation of an LLM the training data; it can only be as vast and
   - **Training Cut-off**: LLMs do not update knowledge post-training, limiting real-time data access or external database retrieval.
 
 - **Application in Enterprise**:
+
   - **Base LLMs**: Broadly capable but may lack task-specific precision in enterprise settings without additional training.
   - **Instruction-based Usage**: Enhances performance through prompt engineering but doesn't expand core model capabilities.
   - **Fine-tuning**: Improves task-specific performance but requires extra resources and risks overfitting.
@@ -854,21 +880,21 @@ Reinforcement learning through human feedback (RLHF)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/naybwqn7qn3n566jr59s.png)
 
-Pre-training: 
+Pre-training:
 
-* Learns underlying language patterns
-* Doesn't capture context-specific complexities
+- Learns underlying language patterns
+- Doesn't capture context-specific complexities
 
 Fine-tuning:
 
-* Quality labeled data improves performance
+- Quality labeled data improves performance
 
-RLHF: 
+RLHF:
 
-* Model output reviewed by a human
-* Updates model based on the feedback
+- Model output reviewed by a human
+- Updates model based on the feedback
 
-​	
+
 
 How does RLHF work?
 
@@ -971,8 +997,8 @@ Fine-tuning is a type of transfer learning for a small dataset (Quality labeled 
 
 ##### [RLHF](#Advanced fine-tuning)
 
-* Model output reviewed by a human
-* Updates model based on the feedback
+- Model output reviewed by a human
+- Updates model based on the feedback
 
 ##### Custom embeddings
 
@@ -982,9 +1008,9 @@ Fine-tuning is a type of transfer learning for a small dataset (Quality labeled 
 
 Assess performance and effectiveness of a model.
 
-* Measure progress
-* Rigorous model comparison
-* Benchmark against human performance
+- Measure progress
+- Rigorous model comparison
+- Benchmark against human performance
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/yz180yker0g7lx5y5jzf.png)
 
@@ -994,19 +1020,17 @@ Assess performance and effectiveness of a model.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6tj2x5lflaya2npzir6g.png)
 
-
-
 ### GenAI limitations
 
 How do we make up for the limitations?
 
-* Augmentation
-* Collaboration
-* Replacement (mundane tasks)
+- Augmentation
+- Collaboration
+- Replacement (mundane tasks)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8xglqxxvr83q3pj06jw7.png)
 
-## AI Strategy  
+## AI Strategy
 
 Meh.
 
