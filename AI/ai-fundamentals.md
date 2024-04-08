@@ -844,7 +844,7 @@ Tokenization, stop word removal, lemmatization vs bag-of-words, word embeddings.
 
 #### Pre-training
 
-Many organizations opt to fine-tune existing pre-trained models for their specific tasks rather than building a pre-trained model from scratch.
+
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/004289k8rk6hz78jzo67.png)
 
@@ -854,9 +854,22 @@ Many organizations opt to fine-tune existing pre-trained models for their specif
 
 ##### Masked language modeling
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ehpq7zj9c18yyiyif461.png)
+- Hides a selective word
+- ﻿﻿Trained model predicts the masked word
+
+- ﻿﻿Original Text: "The quick brown fox jumps over the lazy dog."
+
+- ﻿﻿Masked Text: "The quick [MASK] fox jumps over the lazy dog."
+
+  
+
+- ﻿﻿Objective: predict the missing word
+
+- ﻿Based on learnings from training data
 
 #### Fine-tuning
+
+Many organizations opt to fine-tune existing pre-trained models for their specific tasks rather than building a pre-trained model from scratch.
 
 **Fine-tuning**: training a pre-trained model for a specific task.
 
@@ -874,7 +887,7 @@ What if there is little to no labeled data? We use **N-shot learning**
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f6bcd900xmkwvhmhoprj.png)
 
-#### Advanced fine-tuning
+#### Advanced fine-tuning: Reinforcement Learning through Human Feedback (RLHF)
 
 Reinforcement learning through human feedback (RLHF)
 
