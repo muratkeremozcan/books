@@ -8,6 +8,8 @@
 
 [Introduction to Data Quality](https://app.datacamp.com/learn/courses/introduction-to-data-quality)
 
+[Introduction to Data Security](https://app.datacamp.com/learn/courses/introduction-to-data-security)
+
 ## [Introduction to Data](https://app.datacamp.com/learn/courses/introduction-to-data)
 
 ### Structured vs Unstructured data
@@ -300,3 +302,93 @@ Anomaly threshold alert example:
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/j2qb9j42jwd3ilmdnfbv.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mpausekkz73fq189ho17.png)
+
+## [Introduction to Data Security](https://app.datacamp.com/learn/courses/introduction-to-data-security)
+
+**Data Security Fundamentals**: Data security involves protecting digital information from unauthorized access, alteration, or destruction, focusing on ensuring confidentiality, integrity, and availability of data.
+
+**Sensitive Data Identification**: Understanding and identifying sensitive data is crucial for effective data protection, guiding the selection of security controls and resource allocation.
+
+**Proactive Approach and Continuous Learning**: Data security is an evolving field, requiring a comprehensive and proactive approach that includes staying informed about current threats, learning from past breaches, and fostering a culture that values data protection and awareness.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ijyg7jhscc9jttiq51za.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tn393tpb2yu6xkzwdeif.png)
+
+### Compliance rules and regulations
+
+**Compliance Fundamentals**: adhering to both legal and regulatory requirements designed to protect data confidentiality, integrity, and availability, safeguard personal information, and ensure responsible data handling by companies.
+
+**Core Compliance Areas**: 
+
+* proper data collection and lawful processing, 
+* rights of individuals over their personal data, 
+* measures to protect data from unauthorized access or breaches. 
+
+**Key Regulations**: 
+
+	* **GDPR** in the EU focus on privacy and data subject rights, 
+	* **SOX** in the U.S. targets financial fraud and corporate accountability,
+ * **CISA** Act encourages public-private cooperation against cyber threats. 
+   Understanding these regulations helps in avoiding legal issues, protecting customer data, and maintaining trust.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5x9xq6kslaisu42acjyi.png)
+
+**Classifying Data by Sensitivity**: Data is classified into public, internal, confidential, and top-secret categories, based on the potential impact of unauthorized access.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1w9qtjwvk54n3m5kyuhm.png)
+
+### Voluntary regulatory frameworks
+
+**Voluntary vs. Mandatory Frameworks**: developed by government or industry bodies, provide flexible guidelines for organizations to tailor their data security processes, unlike mandatory regulations which are legally binding and prescriptive.
+
+**Examples of Frameworks**: 
+
+* COBIT, 
+
+* ISO 27001, 
+
+* NIST Cybersecurity Framework (NIST CSF), 
+
+  NIST CSF, in particular, is structured around five functions: identify, protect, detect, respond, and recover, offering a comprehensive approach to cybersecurity.
+
+**Choosing and Implementing Frameworks**: The best framework for an organization depends on its specific needs, such as size, data types handled, industry, and risk profile. Many organizations adopt elements from multiple frameworks to create a hybrid approach that meets their unique requirements.
+
+### Operational models 
+
+Operational models offer specific, internally defined processes and rules to enhance data security by addressing particular challenges and protecting types of data. Five key models include:
+
+1. **Zero Trust Architecture (ZTA)**: Adopts a "never trust, always verify" approach, emphasizing continuous verification and strict access controls to minimize unauthorized access.
+
+2. **Separation of Duties (SoD)**: Divides tasks and privileges to prevent concentration of control, enhancing checks and balances, especially important in financial sectors.
+
+3. **Principle of Least Privilege (PoLP)**: Limits user access to only what is necessary for their job functions, reducing security risks.
+
+4. **Data Loss Prevention (DLP)**: Employs tools and practices to protect sensitive information from unauthorized access or theft, using monitoring, detection, and blocking mechanisms.
+
+5. **Role-Based Control (RBC)**: Assigns access permissions based on job roles, streamlining access management and minimizing unauthorized access risks.
+
+### Data protection measures
+
+Data protection strategies are crucial for safeguarding sensitive information against unauthorized access or threats, structured within a comprehensive security ecosystem. Here's a summary:
+
+1. **Hierarchy of Data Security**: 
+
+   **Data protection measures** form the base, 
+
+   **Operational models** implement these measures, 
+
+   **Voluntary regulatory frameworks** offer guidance,
+
+   **Compliance with legal regulations** ensures adherence to mandatory standards.
+
+2. **Core Protection Measures**:
+
+   - **Access Controls**: Serve as the first defense line, limiting who can see or use specific data, bolstered by strong passwords and multi-factor authentication.
+   - **Encryption**: Essential for keeping data confidential, transforming readable data into a secure format that unauthorized users cannot understand.
+   - **Secure Hardware Management**: Involves maintaining hardware securely to prevent risks associated with physical devices, including proper disposal.
+
+3. **Special Considerations**:
+   - **Cloud Computing**: Requires selecting providers with strong security practices and Cloud Data Loss Prevention tools for monitoring and protecting data.
+   - **Generative AI**: Presents new data protection challenges, necessitating strategies to address risks like unintended data sharing or exposure.
+
