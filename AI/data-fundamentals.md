@@ -35,11 +35,15 @@ Customer info, Financial transactions vs Email, Video
 3. Knowledge
 4. Wisdom
 
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/m38nhp3xkoamfk4ly4p2.png)
+
 Start with raw data, organize it into information interpret it into knowledge & wisdom.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/307uvnuxqk92rl3yoc9k.png)
 
-Wisdom: Because it will probably rain tonight and make the park muddy, James' parents should plan some alternative games for their fifteen quests.
+Wisdom: Wisdom means applied knowledge. Because it will probably rain tonight and make the park muddy, James' parents should plan some alternative games for their fifteen quests.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bo8aw9duugmvvxo068ck.png)
 
 ### Data decision making
 
@@ -392,3 +396,19 @@ Data protection strategies are crucial for safeguarding sensitive information ag
    - **Cloud Computing**: Requires selecting providers with strong security practices and Cloud Data Loss Prevention tools for monitoring and protecting data.
    - **Generative AI**: Presents new data protection challenges, necessitating strategies to address risks like unintended data sharing or exposure.
 
+## Data literacy
+
+The ability to read, work with, analyze, and communicate insights with data.
+
+- ﻿﻿Reading data
+  - ﻿﻿Identify data sources
+  - ﻿﻿Collect data
+  - ﻿﻿Manage data
+- ﻿﻿Working with and analyzing data
+  - Turn data into insights
+  -  Data analytics:
+    - Descriptive analytics 
+    - Predictive analytics
+- ﻿﻿Communicating insights with data
+  - Demonstrate the insights
+  - Present possible actions
