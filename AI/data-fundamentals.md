@@ -412,3 +412,44 @@ The ability to read, work with, analyze, and communicate insights with data.
 - ﻿﻿Communicating insights with data
   - Demonstrate the insights
   - Present possible actions
+
+### Analytics
+
+
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qlx9pvxi8z1nam25r41t.png)
+
+#### Descriptive analytics
+
+- ﻿﻿Get to know the data
+- ﻿﻿Investigate relationships in the data
+- ﻿﻿Preparation for more advanced techniques
+
+#### Diagnostic analytics
+
+- ﻿﻿Find potential causes of events or reasons for behaviors
+- ﻿﻿Investigate causal relationships
+- ﻿﻿Suggest solutions based on the identified causes
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0xdnphxt7vte1eghh6yh.png)
+
+#### Predictive analytics
+
+- Anticipate most likely outcomes
+- ﻿﻿Forecast a process or sequence
+- ﻿﻿Estimate an unknown based on the information that is available
+
+![image-20240417075752093](/Users/murat/Library/Application Support/typora-user-images/image-20240417075752093.png)
+
+- Data is split into training and test set for building the predictive model
+- ﻿﻿Predictions are interpreted and evaluated on the test data, using pre-determined metrics like accuracy (percentage of correct predictions)
+
+#### Prescriptive analytics
+
+- ﻿﻿Make informed, data-driven decisions
+- ﻿﻿Optimize processes
+- ﻿﻿Mitigate risks
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9bet28yqk24cqm6f21et.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/p7b4j8py8s6sgn8coe1l.png)
