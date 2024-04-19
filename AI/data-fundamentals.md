@@ -10,6 +10,8 @@
 
 [Introduction to Data Security](https://app.datacamp.com/learn/courses/introduction-to-data-security)
 
+[Understanding Data Science](https://app.datacamp.com/learn/courses/understanding-data-science)
+
 ## [Introduction to Data](https://app.datacamp.com/learn/courses/introduction-to-data)
 
 ### Structured vs Unstructured data
@@ -396,7 +398,7 @@ Data protection strategies are crucial for safeguarding sensitive information ag
    - **Cloud Computing**: Requires selecting providers with strong security practices and Cloud Data Loss Prevention tools for monitoring and protecting data.
    - **Generative AI**: Presents new data protection challenges, necessitating strategies to address risks like unintended data sharing or exposure.
 
-## Data literacy
+## Introduction to Data literacy
 
 The ability to read, work with, analyze, and communicate insights with data.
 
@@ -453,3 +455,142 @@ The ability to read, work with, analyze, and communicate insights with data.
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9bet28yqk24cqm6f21et.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/p7b4j8py8s6sgn8coe1l.png)
+
+### Communicating insights
+
+#### Visualization
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6yp0kid1lwpfrb517l4v.png)
+
+McCandless technique
+
+1. ﻿﻿﻿Introduce the visualization
+2. ﻿﻿﻿Anticipate obvious questions
+3. ﻿﻿﻿State the central insight
+4. ﻿﻿﻿Provide supporting evidence
+5. ﻿﻿﻿Closing statement
+
+#### Storytelling
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mop428iyznouuugwesof.png)
+
+Elements of a narrative
+
+- ﻿﻿Characters: (﻿Stakeholders)
+- ﻿﻿Problem: (Business problem)
+- ﻿﻿Setting: (﻿Relevant background)
+- ﻿﻿Plot: (﻿Central and supporting insights)
+- ﻿﻿Resolution: (﻿Solution and recommendations)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/22juttfs90ojxvd6zd20.png)
+
+#### 3 keys to communicating effectively
+
+**Focus**
+
+- ﻿﻿Select the right data
+- ﻿﻿Select the right visualizations
+- ﻿﻿Keep your central message in mind
+
+Building your central message; describe in a few sentences the take-home message:
+
+1. ﻿﻿﻿Problem
+
+2. ﻿﻿﻿Insights
+
+3. ﻿﻿﻿Impact
+
+   
+
+    *(Problem) Average math scores of students at University A are in decline for the last three years.*
+    *(Insights) Data analysis indicates that more students enroll with a weaker starting knowledge of mathematics.*
+    *(Impact) By organizing math summer schools, University A can help students better prepare for the expected knowledge level of mathematics.*
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pydze9lhmx6a7a16eebf.png)
+
+
+
+**Structure**
+
+- Use structuring techniques like storytelling and McCandless
+- ﻿﻿Think about visual structure in the lay-out
+- ﻿﻿Prepare an outline in advance and use this as a blueprint
+
+Crafting an outline:
+
+1. Introduction
+
+   - ﻿﻿Data problem statement
+
+   - ﻿﻿Context
+
+   - Objectives
+
+2. Body 
+   * Data
+   * Analysis 
+   * Key findings
+
+3. Conclusions
+
+- ﻿﻿Insights
+- ﻿﻿Recommendations
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3k01g7r23xbntkor4r7x.png)
+
+**Form**
+
+- ﻿﻿Medium: oral vs. written communication
+- ﻿﻿Language: technical vs. non-technical
+- ﻿﻿Scope: short- vs. long-form
+
+To find the appropriate format: think about the purpose of your communication and its audience.
+
+Thinking about your audience
+
+- ﻿﻿Who are they?
+- ﻿﻿What do they need to know?
+- ﻿﻿What do they want?
+
+*The University board:*
+
+- ﻿﻿*Non-technical managers*
+- ﻿﻿*Need to know key findings*
+- ﻿﻿*Want specific recommendations*
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xhjezsgkyh32lygm8f7u.png)
+
+## [Understanding Data Science](https://app.datacamp.com/learn/courses/understanding-data-science)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9l0po6md4murxdz2hkkx.png)
+
+**Data engineer tools:**
+
+- ﻿﻿SQL: ﻿to store and organize data
+- ﻿﻿Java, Scala, or Python: to process data
+- ﻿﻿Shell / Command line: to automate and run tasks
+- ﻿﻿Cloud computing: ﻿﻿AWS, Azure, Google Cloud Platform
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/x29mrua4t0zb8ydbdmt5.png)
+
+**Data analyst tools:**
+
+- ﻿﻿SQL: retrieve and aggregate data
+- Excel or Google Sheets: simple analysis
+- ﻿﻿BI tools (Tableau, Power BI, Looker): dashboards and visualizations
+- ﻿﻿May have Python or R: to clean and analyze data
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zy5oumtte4i4poy073hz.png)
+
+**Data scientist tools**: 
+
+- ﻿﻿SQL: retrieve and aggregate data
+- ﻿﻿Python and/or R: data science libraries, e.g., pandas (Python) and tidyverse (R)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/o9elpak2eyue4wgxfnyg.png)
+
+**Machine learning tools**:
+
+- ﻿﻿Python and/or R: ﻿﻿Machine learning libraries, e.g. TensorFlow or Spark
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xeqoldu553tigol3yuoo.png)
