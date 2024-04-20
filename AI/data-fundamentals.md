@@ -594,3 +594,73 @@ Thinking about your audience
 - ﻿﻿Python and/or R: ﻿﻿Machine learning libraries, e.g. TensorFlow or Spark
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xeqoldu553tigol3yuoo.png)
+
+### Data collection
+
+- **Data Collection Importance:** Data is collected from various sources including web interactions, financial transactions, and through surveys to support data-driven decisions.
+- **Sources of Data:** Includes both internal company data and external open data, accessible via methods like APIs and public records.
+- **Utilization and Examples:** Data from sources like Twitter's API can be used for analyses such as sentiment tracking, while public records provide wide-ranging sectoral data.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pkb5nxr6j9xdvo8u7db5.png)
+
+**Different data types**
+
+- ﻿﻿Quantitative data
+- ﻿﻿Qualitative data
+- ﻿﻿Image data
+- ﻿﻿Text data
+- ﻿﻿Geospatial data
+- ﻿﻿Network data
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jns81ccuygtntkj0bqux.png)
+
+#### Database examples: relational vs document
+
+**Relational Database examples**
+
+- The dates, times, subjects, and recipient addresses for all emails you ever sent
+- Customer information for all students of a university, such as name, phone number, and location
+- Sales data with customer IDs, dates, and purchase amounts for each transaction.
+- Inventory lists with product IDs, descriptions, prices, and stock levels.
+- Employee records with employee IDs, names, positions, salaries, and department codes.
+
+**Document Database Examples**
+
+- Text from various emails sent and received by you
+- Images of different traffic events, including metadata about the image’s contents
+- Blog posts with the text, author information, embedded images, and comments.
+- Social media user profiles including user bio, posts, connections, and messages.
+- Product catalog entries for an online store with detailed descriptions, reviews, and product specifications.
+
+#### **Data pipeline**
+
+- ﻿﻿Moves data into defined stages
+
+- ﻿﻿Automated collection and storage
+
+  - ﻿﻿Scheduled hourly, daily, weekly, etc
+  - ﻿﻿Triggered by an event
+
+- ﻿﻿Monitored with generated alerts
+
+- ﻿﻿Necessary for big data projects
+
+- ﻿﻿Data engineers work to customize solutions
+
+- **Data Pipeline Mechanism**: ingestion, loading into a database, monitoring and customizing pipelines for efficient data flow, including the use of ETL (Extract, Transform, Load) frameworks.
+
+  
+
+TL example- Smart Home:** 
+
+-  APIs and IoT devices are used to collect various data points for a smart home
+- extracting data from different sources
+- transforming it for consistency and relevance,
+  - ﻿﻿Joining data sources into one data set
+  - ﻿﻿Converting data structures to fit database schemas
+  - ﻿﻿Removing irrelevant data
+-  Loading it into a database for analysis.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/suf4to0n10tjxnwfdilk.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kjww7u3axxksvgrteagk.png)
