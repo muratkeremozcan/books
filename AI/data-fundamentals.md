@@ -664,3 +664,19 @@ TL example- Smart Home:**
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/suf4to0n10tjxnwfdilk.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kjww7u3axxksvgrteagk.png)
+
+### Data preparation
+
+Raw data often contains errors, inconsistencies, and discrepancies that can distort analysis outcomes. Clean and well-structured data is essential to ensure accuracy and reliability in data analysis and decision-making.
+
+- **Removing Duplicates:** Highlights the removal of duplicate data entries.
+- **Assigning Unique IDs:** Suggests assigning unique identifiers to distinguish between similar entries.
+- **Ensuring Homogeneity:** Stresses the importance of standardizing measurements and categorizations across the dataset.
+- **Handling Missing Values:** Discusses methods to deal with missing data, including substitution with mean or median values, dropping, or ignoring if the algorithm permits.
+- **Tidying Data:** Describes tidying as arranging data into a structure with observations as rows and variables as columns, 
+
+**Exploratory Data Analysis (EDA**) involves previewing data, understanding data types, calculating descriptive statistics, identifying outliers, and visualizing trends to gain insights, 
+
+**Visualization:** 
+
+Interactive dashboards enhance data visualization by aggregating multiple graphs, allowing for comprehensive insights at a glance, and they can be created with BI tools without programming knowledge. These dashboards should be designed with purposeful use of color, consideration for colorblindness, readable fonts, and clear labeling to ensure clarity and avoid misleading representations. Interactivity adds a level of user engagement, allowing for personalized data exploration.
