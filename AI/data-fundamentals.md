@@ -677,6 +677,53 @@ Raw data often contains errors, inconsistencies, and discrepancies that can dist
 
 **Exploratory Data Analysis (EDA**) involves previewing data, understanding data types, calculating descriptive statistics, identifying outliers, and visualizing trends to gain insights, 
 
-**Visualization:** 
+### Exploration & Visualization
 
 Interactive dashboards enhance data visualization by aggregating multiple graphs, allowing for comprehensive insights at a glance, and they can be created with BI tools without programming knowledge. These dashboards should be designed with purposeful use of color, consideration for colorblindness, readable fonts, and clear labeling to ensure clarity and avoid misleading representations. Interactivity adds a level of user engagement, allowing for personalized data exploration.
+
+### Experimentation & Prediction
+
+#### A/B testing
+
+A/B Testing in data science is a controlled experiment involving two variants, A and B, to make decisions based on statistical evidence. 
+
+1. Formulating a hypothesis, 
+2. Collecting data, 
+3. Running the test to a pre-determined sample size for robust results, 
+4. Performing statistical tests to determine if observed differences are significant, not due to chance. If results are not statistically significant, it suggests that any differences in the tested variants are too small to be deemed important for the decision-making process.
+
+#### Time series forecasting
+
+Time series forecasting involves using historical data to predict future values over time, with models that may range from simple linear equations to complex deep learning algorithms. 
+
+* commonly applied to metrics like unemployment rates, stock prices, or even social media trends. 
+* Identify patterns such as seasonality, where certain trends repeat over time, and use statistical or machine learning techniques to create predictive models. 
+* Confidence intervals are essential in these forecasts, providing a range within which future values are likely to fall, helping to buffer decisions against the unexpected.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3zhmry2x6kpn6tg6snun.png)
+
+#### Supervised machine learning
+
+- ﻿﻿Make a prediction based on data
+- ﻿﻿Data has features and labels 
+  - Label: what we want to predict
+  - Features: data that might predict the label
+- ﻿﻿Trained model can make predictions
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nynrghuump7rldzbdy7h.png)
+
+![image-20240422082720597](/Users/murat/Library/Application Support/typora-user-images/image-20240422082720597.png)
+
+#### Clustering
+
+Clustering is a form of unsupervised machine learning that groups data into clusters without predefined labels, allowing patterns to be identified in datasets. 
+
+Unlike supervised learning that uses labeled data, clustering only requires data features, making it suitable when little is known about the dataset. 
+
+The process involves selecting features, determining an initial number of clusters, and adjusting based on data insights and domain knowledge. 
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/esy8lh9xd4q5646yjhpj.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hik28c0evag2vu30mqv1.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dz136t94hu6lj5fxmm8n.png)
