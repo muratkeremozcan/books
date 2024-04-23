@@ -12,6 +12,8 @@
 
 [Understanding Data Science](https://app.datacamp.com/learn/courses/understanding-data-science)
 
+[Understanding Data Engineering](https://app.datacamp.com/learn/courses/understanding-data-engineering)
+
 ## [Introduction to Data](https://app.datacamp.com/learn/courses/introduction-to-data)
 
 ### Structured vs Unstructured data
@@ -562,6 +564,8 @@ Thinking about your audience
 
 ## [Understanding Data Science](https://app.datacamp.com/learn/courses/understanding-data-science)
 
+Data workflow (KEY):
+
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9l0po6md4murxdz2hkkx.png)
 
 **Data engineer tools:**
@@ -727,3 +731,51 @@ The process involves selecting features, determining an initial number of cluste
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hik28c0evag2vu30mqv1.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dz136t94hu6lj5fxmm8n.png)
+
+## [Understanding Data Engineering](https://app.datacamp.com/learn/courses/understanding-data-engineering)
+
+Data engineers deliver:
+
+- ﻿﻿the correct data
+- ﻿﻿in the right form
+- ﻿﻿to the right people
+- ﻿﻿as efficiently as possible
+
+A data engineer's responsibilities:
+
+- ﻿﻿Ingest data from different sources
+- ﻿﻿Optimize databases for analysis
+- ﻿﻿Remove corrupted data
+- ﻿﻿Develop, construct, test and maintain data architectures
+
+The five Vs of big data:
+
+- ﻿﻿Volume (how much?)
+- ﻿﻿Variety (what kind?)
+- ﻿﻿Velocity (how frequent?)
+- ﻿﻿Veracity (how accurate?)
+- ﻿﻿Value (how useful?)
+
+Data engineer vs data scientist responsibilities:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fh0lxll62ggwngxgtlrq.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2vk0axo18xl9h3bdorsa.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vn41l2i4u64hlwuqcej4.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/we8gqtiya8r4trfq6glu.png)
+
+ETL
+
+- ﻿﻿Popular framework for designing data pipelines
+- ﻿﻿1) Extract data
+- ﻿﻿2) Transform extracted data
+- ﻿﻿3) Load transformed data to another database
+
+Data pipelines
+
+- ﻿﻿Move data from one system to another
+- ﻿﻿May follow ETL
+- ﻿﻿Data may not be transformed
+- ﻿﻿Data may be directly loaded in applications
