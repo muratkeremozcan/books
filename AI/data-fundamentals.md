@@ -562,6 +562,145 @@ Thinking about your audience
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xhjezsgkyh32lygm8f7u.png)
 
+
+
+## [Understanding Data Engineering](https://app.datacamp.com/learn/courses/understanding-data-engineering)
+
+Data workflow (KEY):
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9l0po6md4murxdz2hkkx.png)
+
+Data engineers deliver:
+
+- ﻿﻿the correct data
+- ﻿﻿in the right form
+- ﻿﻿to the right people
+- ﻿﻿as efficiently as possible
+
+A data engineer's responsibilities:
+
+- ﻿﻿Ingest data from different sources
+- ﻿﻿Optimize databases for analysis
+- ﻿﻿Remove corrupted data
+- ﻿﻿Develop, construct, test and maintain data architectures
+
+The five Vs of big data:
+
+- ﻿﻿Volume (how much?)
+- ﻿﻿Variety (what kind?)
+- ﻿﻿Velocity (how frequent?)
+- ﻿﻿Veracity (how accurate?)
+- ﻿﻿Value (how useful?)
+
+Data engineer vs data scientist responsibilities:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fh0lxll62ggwngxgtlrq.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2vk0axo18xl9h3bdorsa.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vn41l2i4u64hlwuqcej4.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/we8gqtiya8r4trfq6glu.png)
+
+ETL
+
+- ﻿﻿Popular framework for designing data pipelines
+- ﻿﻿1) Extract data
+- ﻿﻿2) Transform extracted data
+- ﻿﻿3) Load transformed data to another database
+
+Data pipelines
+
+- ﻿﻿Move data from one system to another
+- ﻿﻿May follow ETL
+- ﻿﻿Data may not be transformed
+- ﻿﻿Data may be directly loaded in applications
+
+### Data storage
+
+Here's a brief summary of structured, semi-structured, and unstructured data, along with their differences:
+
+1. **Structured Data**:
+   - **Description**: Highly organized and easily searchable, structured data follows a strict schema, such as tables with defined columns and types. It's commonly stored in relational databases.
+   - **Example**: Employee tables where each row is an employee and each column holds specific data (like team or role).
+   - **Querying**: Utilizes languages such as SQL.
+
+2. **Semi-Structured Data**:
+   - **Description**: This data type is less rigid than structured data but still has some organizational properties. It does not fit neatly into tables as structured data does, but contains tags or markers to separate semantic elements and enforce hierarchies of records and fields.
+   - **Example**: JSON files where each object can have a different number of fields or nested structures.
+   - **Querying**: Typically managed in NoSQL databases, leveraging formats like JSON, XML, or YAML.
+
+3. **Unstructured Data**:
+   - **Description**: Lacks a predefined format or structure, making it more difficult to collect, process, and analyze. It includes formats like text, images, videos, and audio.
+   - **Example**: Media files, texts, or social media posts.
+   - **Storage and Analysis**: Often stored in data lakes, and requires advanced techniques like machine learning for processing and analysis.
+
+**Differences**:
+
+- **Schema and Organization**: Structured data is highly organized with a fixed schema, semi-structured data has a flexible schema with some organizational traits, and unstructured data has no specific format or structure.
+- **Storage Systems**: Different storage systems are used for each, with structured data often in relational databases, semi-structured in NoSQL databases, and unstructured in data lakes or specialized file systems.
+- **Processing Needs**: Structured data is easiest to work with using standard database management tools, semi-structured data requires more flexible processing approaches, and unstructured data often needs sophisticated techniques like machine learning to extract useful information.
+
+
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wjz9exsc07rnzxqob8ss.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qcgfrpianynqsjo4j0xs.png)
+
+
+
+### SQL Databases:
+
+- **Function**: SQL (Structured Query Language) is crucial in data engineering, primarily used in relational database management systems (RDBMS) to query and manipulate structured data.
+
+* **Usage in Data Engineering and Data Science**:
+
+  - **Data Engineers**: Use SQL to create and manage database schemas, including defining table structures and data types. Example commands include `CREATE TABLE` where various columns are defined with specific data constraints.
+
+  - **Data Scientists**: Utilize SQL to perform queries on these databases to extract, analyze, and manipulate data based on specific criteria. For instance, querying employee names from a table where their roles include "data".
+
+* **Database Schema**:
+
+   - **Structure**: Databases in an RDBMS are structured with multiple tables connected through relationships, such as linking albums, artists, and songs via unique IDs.
+   - **Relational Nature**: These relationships allow for complex queries across multiple tables, illustrating the interconnectedness of data within an RDBMS.
+
+
+
+### Data lake vs Data warehouse
+
+Data lake:
+
+- ﻿﻿Stores all the raw data
+- ﻿﻿Can be petabytes (1 million GBs)
+- ﻿﻿Stores all data structures
+- ﻿﻿Cost-effective
+- ﻿﻿Difficult to analyze
+- ﻿﻿Requires an up-to-date data catalog
+- ﻿﻿Used by data scientists
+- ﻿﻿Big data, real-time analytics
+
+Data warehouse:
+
+- ﻿﻿Specific data for specific use
+- ﻿﻿Relatively small
+- ﻿﻿Stores mainly structured data
+- ﻿﻿More costly to update
+- ﻿﻿Optimized for data analysis
+- ﻿﻿Also used by data analysts and business analysts
+- ﻿﻿Ad-hoc, read-only queries
+
+Data catalog for data lakes:
+
+- ﻿﻿What is the source of this data?
+- ﻿﻿Where is this data used?
+- ﻿﻿Who is the owner of the data?
+- ﻿﻿How often is this data updated?
+- ﻿﻿Good practice in terms of data governance
+- ﻿﻿Ensures reproducibility
+- ﻿﻿No catalog --> data swamp
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n15ywleqwsk8up8l4dz4.png)
+
 ## [Understanding Data Science](https://app.datacamp.com/learn/courses/understanding-data-science)
 
 Data workflow (KEY):
@@ -732,50 +871,3 @@ The process involves selecting features, determining an initial number of cluste
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dz136t94hu6lj5fxmm8n.png)
 
-## [Understanding Data Engineering](https://app.datacamp.com/learn/courses/understanding-data-engineering)
-
-Data engineers deliver:
-
-- ﻿﻿the correct data
-- ﻿﻿in the right form
-- ﻿﻿to the right people
-- ﻿﻿as efficiently as possible
-
-A data engineer's responsibilities:
-
-- ﻿﻿Ingest data from different sources
-- ﻿﻿Optimize databases for analysis
-- ﻿﻿Remove corrupted data
-- ﻿﻿Develop, construct, test and maintain data architectures
-
-The five Vs of big data:
-
-- ﻿﻿Volume (how much?)
-- ﻿﻿Variety (what kind?)
-- ﻿﻿Velocity (how frequent?)
-- ﻿﻿Veracity (how accurate?)
-- ﻿﻿Value (how useful?)
-
-Data engineer vs data scientist responsibilities:
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fh0lxll62ggwngxgtlrq.png)
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2vk0axo18xl9h3bdorsa.png)
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vn41l2i4u64hlwuqcej4.png)
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/we8gqtiya8r4trfq6glu.png)
-
-ETL
-
-- ﻿﻿Popular framework for designing data pipelines
-- ﻿﻿1) Extract data
-- ﻿﻿2) Transform extracted data
-- ﻿﻿3) Load transformed data to another database
-
-Data pipelines
-
-- ﻿﻿Move data from one system to another
-- ﻿﻿May follow ETL
-- ﻿﻿Data may not be transformed
-- ﻿﻿Data may be directly loaded in applications
