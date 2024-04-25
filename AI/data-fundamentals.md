@@ -701,6 +701,47 @@ Data catalog for data lakes:
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n15ywleqwsk8up8l4dz4.png)
 
+### Data processing
+
+The act of converting raw data into meaningful, actionable information.
+
+**Why Process Data?**
+
+- **Cost Efficiency**: Processing optimizes storage, processing, and network costs by removing unnecessary data and compressing what remains.
+- **Usability**: Transforms data into formats more useful for business operations, such as converting high-quality audio files into more network-friendly formats.
+
+**Examples**:
+
+- Artists upload high-quality audio files which are then converted to a lighter, slightly lower quality format for streaming.
+- Metadata from music files is extracted and stored for easy access by analysts.
+- Employee data is structured according to specific schemas for clarity and efficiency.
+
+**Role of Data Engineers**:
+
+- **Responsibilities**: Includes data manipulation, cleaning, and organizing to ensure data is ready for analysis. This involves rejecting corrupt files, managing missing metadata, and maintaining structured databases.
+- **Optimization**: Improving database performance, e.g., by indexing data for quicker retrieval.
+
+### Scheduling
+
+Scheduling is crucial for automating and organizing the execution of tasks within a data pipeline. It involves setting up tasks to run at specific times or under certain conditions to efficiently manage data updates and processes. 
+
+Understanding scheduling helps optimize the flow of data updates and processing, ensuring data systems are current and functional.
+
+Key points include:
+
+- **Types of Scheduling**: Tasks can be triggered manually, at scheduled times, or in response to certain conditions (sensor scheduling).
+- **Data Pipeline Examples**: Updates to databases can be scheduled daily or triggered by specific events, such as the addition of a new employee.
+- **Batch vs. Stream Processing**: Data can be processed in batches at set intervals or streamed in real time, depending on the need for immediacy.
+- **Scheduling Tools**: Tools like Apache Airflow and Luigi help manage these tasks.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/x79c9m26faj33tv0nymk.png)
+
+### Parallel computing
+
+Parallel computing, or parallel processing, is a method used in modern data engineering to enhance memory management and processing power. It involves dividing a large task into smaller subtasks, which are then executed simultaneously across multiple computers.
+
+This approach not only speeds up the process but also reduces the memory load on individual computers. However, it has some drawbacks, such as the cost of moving data and the time required to manage communication between the processes. 
+
 ## [Understanding Data Science](https://app.datacamp.com/learn/courses/understanding-data-science)
 
 Data workflow (KEY):
