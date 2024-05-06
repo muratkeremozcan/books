@@ -10,9 +10,11 @@
 
 [Introduction to Data Security](https://app.datacamp.com/learn/courses/introduction-to-data-security)
 
+[Understanding Data Engineering](https://app.datacamp.com/learn/courses/understanding-data-engineering)
+
 [Understanding Data Science](https://app.datacamp.com/learn/courses/understanding-data-science)
 
-[Understanding Data Engineering](https://app.datacamp.com/learn/courses/understanding-data-engineering)
+[Understanding Data Visualization](https://app.datacamp.com/learn/courses/understanding-data-visualization)
 
 ## [Introduction to Data](https://app.datacamp.com/learn/courses/introduction-to-data)
 
@@ -911,4 +913,53 @@ The process involves selecting features, determining an initial number of cluste
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hik28c0evag2vu30mqv1.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dz136t94hu6lj5fxmm8n.png)
+
+## [Understanding Data Visualization](https://app.datacamp.com/learn/courses/understanding-data-visualization)
+
+### Visualizing distributions
+
+#### Continuous and categorical variables
+
+Continuous: usually numbers
+
+• heights, temperatures, revenues
+
+Categorical: usually text
+
+• eye colors, countries, industry
+
+Can be either
+
+- ﻿﻿age is continuous, but age group is categorical
+- ﻿﻿time is continuous, month of year is categorical
+
+##### Histograms
+
+When should you use a histogram?
+
+1. ﻿﻿﻿If you have a single continuous variable.
+2. ﻿﻿﻿You want to ask questions about the shape of its distribution.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/d2yvdsxbm66kmh1omoat.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/phu2n3zzplpsdilp2x21.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/x33uap9c8ft0nkcx6kh4.png)
+
+### Box plots
+
+When should you use a box plot?
+
+1. ﻿﻿﻿When you have a continuous variable, split by a categorical variable.
+2. ﻿﻿﻿When you want to compare the distributions of the continuous variable for each category.
+
+Inter-quartile range (IQR) measures the variation in the "middle half" of the population (from the 25th percentile to the 75th percentile). That means that sorting by the IQR makes it easier to answer questions about how much variation there was among the "typical" population.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qfef3vcbbmcmtovhfzuc.png)
+
+Box plots are useful when we want to compare many distributions at once.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/whxqx3c7y2o0v57nvsjh.png)
+
+### Scatter plots
 
