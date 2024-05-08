@@ -963,3 +963,64 @@ Box plots are useful when we want to compare many distributions at once.
 
 ### Scatter plots
 
+When should you use a scatter plot?
+
+1. ﻿﻿﻿You have two continuous variables.
+2. ﻿﻿﻿You want to answer questions about the relationship between the two variables.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fwndqiqo2lmxpw50qzel.png)
+
+### Line plots
+
+When should you use a line plot?
+
+1. ﻿﻿﻿You have two continuous variables.
+2. ﻿﻿﻿You want to answer questions about their relationship.
+3. ﻿﻿﻿Consecutive observations are connected somehow.
+
+Usually, but not always, the x-axis is dates or times.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/54tlnol9l8p8p1y80jyf.png)
+
+### Bar plots
+
+When should you use a bar plot?
+
+Most common cases:
+
+1. ﻿﻿﻿You have a categorical variable.
+2. ﻿﻿﻿You want counts or percentages for each category.
+
+Occasionally:
+
+1. You want another numeric score for each category, and need to include zero in the plot.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/txqsmqtxmf40h1ogawd5.png)
+
+### Dot plots
+
+When should you use a dot plot?
+
+1. ﻿﻿﻿You have a categorical variable.
+2. ﻿﻿﻿You want to display numeric scores for each category on a log scale, or
+3. ﻿﻿﻿You want to display multiple numeric scores for each category.
+4. ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ocn4mpgin0pnuvm60gxc.png)
+
+### Higher dimensions
+
+× and y are not the only dimensions
+
+Points also have these dimensions
+
+- ﻿﻿color (best)
+- ﻿﻿size
+- ﻿﻿transparency
+- ﻿﻿shape
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qzb2q4voq6q6227oivbb.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qxwlbrc8tiksvwchrmja.png)
+
+Pie plots are generally a bad idea, except when the 360 angle is based on direction or time of day. Bar graph is almost always a better choice vs pie graph.
+
+Dual axes are misleading; don't want 2 ys or 2 xs. Just use multiple panels instead.
