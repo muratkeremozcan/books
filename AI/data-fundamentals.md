@@ -1024,3 +1024,25 @@ Points also have these dimensions
 Pie plots are generally a bad idea, except when the 360 angle is based on direction or time of day. Bar graph is almost always a better choice vs pie graph.
 
 Dual axes are misleading; don't want 2 ys or 2 xs. Just use multiple panels instead.
+
+## [Data Communication Concepts](https://app.datacamp.com/learn/courses/data-communication-concepts)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fzrp6p1pnj8xj5frqub1.png)
+
+- ﻿﻿Data storytelling is important
+  - ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6n5vi7jzgdz5q75h2edv.png)
+  - Narrative:![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8rgunuofcskltzknr373.png) 
+- ﻿﻿Translate results for non-technical stakeholders
+- Craft stories that impact the decision-making process
+- Select right data and statistics
+- ﻿﻿Audience persona
+- ﻿﻿Choose appropriate visualization
+- Types of reports
+- ﻿﻿How to structure a clear report
+- ﻿﻿Reproducibility
+- Planning and building a presentation
+- ﻿﻿Importance of practicing and rehearsing
+- ﻿﻿Best practices and common mistakes when delivering a presentation
+
+## [Data Storytelling Concepts](https://app.datacamp.com/learn/courses/data-storytelling-concepts)
+
