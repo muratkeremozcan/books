@@ -961,7 +961,11 @@ Box plots are useful when we want to compare many distributions at once.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/whxqx3c7y2o0v57nvsjh.png)
 
-### Scatter plots
+### Scatter plot  Scatter plot
+
+- Scatter plots best represent the relationship between two quantitative variables
+- ﻿﻿Plot the observations using an X-axis and Y-axis
+- ﻿﻿Scatter plots show if the relationship between two variables is positive, negative, or relatively neutral.
 
 When should you use a scatter plot?
 
@@ -970,7 +974,11 @@ When should you use a scatter plot?
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fwndqiqo2lmxpw50qzel.png)
 
-### Line plots
+### Line plots / Line chart
+
+- Line charts work well with time series data
+- ﻿﻿Compare and contrast performance over time
+- ﻿﻿Trends become easy to spot and analyze
 
 When should you use a line plot?
 
@@ -982,7 +990,11 @@ Usually, but not always, the x-axis is dates or times.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/54tlnol9l8p8p1y80jyf.png)
 
-### Bar plots
+### Bar chart / Bar plot
+
+- Show counts and frequency by category
+- ﻿﻿When a pie chart is used, try a bar chart instead
+- ﻿﻿Bar charts require less effort from your audience
 
 When should you use a bar plot?
 
@@ -997,7 +1009,7 @@ Occasionally:
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/txqsmqtxmf40h1ogawd5.png)
 
-### Dot plots
+### Dot plot 
 
 When should you use a dot plot?
 
@@ -1046,3 +1058,13 @@ Dual axes are misleading; don't want 2 ys or 2 xs. Just use multiple panels inst
 
 ## [Data Storytelling Concepts](https://app.datacamp.com/learn/courses/data-storytelling-concepts)
 
+1. Problem
+   * ﻿﻿The problem itself
+   * ﻿﻿An implied method of taking on the problem
+   * ﻿﻿The scope of a problem
+2. Rising action
+3. Climax
+4. Falling action
+5. Resolution / Conclusion
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n6ums5e121i4b1irxaaw.png)
