@@ -1068,3 +1068,18 @@ Dual axes are misleading; don't want 2 ys or 2 xs. Just use multiple panels inst
 5. Resolution / Conclusion
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n6ums5e121i4b1irxaaw.png)
+
+## [Data Governance Concepts](https://app.datacamp.com/learn/courses/data-governance-concepts)
+
+Data governance pillars:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c7dn5rka6k71pe3c3j6p.png)
+
+Data governance benefits
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mpn8qkx25n1v1arouw92.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ipp6ercdgz21s0oon4v.png)
+
+DCAM rating scale
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8pc2hzrumqo5h3apl44z.png)
