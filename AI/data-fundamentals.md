@@ -1073,12 +1073,22 @@ Dual axes are misleading; don't want 2 ys or 2 xs. Just use multiple panels inst
 
 Data governance pillars:
 
+How data governance leverages people, processes, and technology to drive business value.
+
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c7dn5rka6k71pe3c3j6p.png)
 
 Data governance benefits
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mpn8qkx25n1v1arouw92.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ipp6ercdgz21s0oon4v.png)
+
+Data governance frameworks, their six components, principles, and the importance of data management maturity.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4lp1fareidxeynjd9ssu.png)
+
+Data governance roles and responsibilities and how the data lifecycle compares to a food supply chain.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/u52jmp5dmg2yo2mi3gg8.png)
 
 DCAM rating scale
 
