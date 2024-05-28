@@ -16,6 +16,8 @@
 
 [Understanding Data Visualization](https://app.datacamp.com/learn/courses/understanding-data-visualization)
 
+[Intro to statistics](https://app.datacamp.com/learn/courses/introduction-to-statistics)
+
 ## [Introduction to Data](https://app.datacamp.com/learn/courses/introduction-to-data)
 
 ### Structured vs Unstructured data
@@ -1093,3 +1095,132 @@ Data governance roles and responsibilities and how the data lifecycle compares t
 DCAM rating scale
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8pc2hzrumqo5h3apl44z.png)
+
+## [Intro to statistics](https://app.datacamp.com/learn/courses/introduction-to-statistics)
+
+### 2 main branches of statistics
+
+Descriptive / Summary statistics: describe or summarize.
+
+Inferential statistics:
+
+- ﻿﻿Use a sample to draw conclusions about a population
+- ﻿﻿How many people purchase clothing following social media advertising?
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3iqklv0mt2qsc9b0z1v6.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ilq6bbtz0mtbciorsnpt.png)
+
+### 2 main types of data
+
+Numeric data: continuous vs count
+
+Categorical data: nominal vs ordinal
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ycqo56h7298ftxsandul.png)
+
+### Measures of center
+
+[Basic Statistics](https://www.dummies.com/education/math/statistics/statistics-for-dummies-cheat-sheet/) - Mean, median, mode, variance, covariance.
+
+Assume we have the following set of numbers: **4, 8, 3, 8, 9**
+
+Mean is plain average: 6.4
+
+**Median**:
+To find the median, we first sort the numbers in ascending order: 3, 4, 8, 8, 9. Since there is an odd number of numbers, the median is the middle one, which is **8**.
+
+**Mode**:
+In this set, the number **8** appears twice while all others appear only once. Therefore, 8 is the mode since it's the most frequent number.
+
+### Measures of spread
+
+**Range**: highest - lowest
+
+**Variance**:
+
+1. Find the mean (average): (4 + 8 + 3 + 8 + 9) / 5 = 6.4
+2. Calculate the squared differences from the mean: (4 - 6.4)², (8 - 6.4)², (3 - 6.4)², (8 - 6.4)², (9 - 6.4)² = 5.76, 2.56, 11.56, 2.56, 6.76
+3. Find the average of these squared differences: (5.76 + 2.56 + 11.56 + 2.56 + 6.76) / 5 = 5.84. So, the variance is **5.84**.
+
+Variance is in square units, so we use **Standard deviation**, which shows how spread out the data is from the mean.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/533efym8fak4qp9u8n9p.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/u5cmwy3f5bhyc5j8ho0h.png)
+
+Quartile
+
+- Suppose you have the numbers: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.
+- To find the quartiles, you'd:
+  - Q1 (25th percentile): Between 2 and 3 (so roughly 2.5)
+  - Q2 (50th percentile or median): 5.5 (middle value)
+  - Q3 (75th percentile): Between 7 and 8 (so roughly 7.5)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kk0yok31j9h8clq94o6c.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jvuhbl087uuop8qtg4y3.png)
+
+### Probability
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f692pwkdw1qtt9r43bsh.png)
+
+Independent probability: probability of an event does not change based on the outcome of a previous event.
+
+Conditional probability: outcome of the first event effects the seconds
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ft80ao3hveai4e0b4no8.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4eemy2cncclzd0hbi3bl.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/v0tkvkfeglkd4qnzwfwx.png)
+
+
+
+
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/iiohsiu6lzfs0zb0n94b.png)
+
+Orders over $150, that are kitchen sales
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/97vo7a7kiflj8ni39lr1.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gnlm4xzoqi1bf95r1h2k.png)
+
+### Probability distribution
+
+#### Discrete distribution
+
+A **discrete distribution** describes scenarios where the possible outcomes are distinct and separate values. You can't have in-between values (like rolling a 1.5 on a die). Each outcome is distinct and countable.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hbrhib8ykm8t0zup3w75.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/51zbdf5ic3nxhsnvneu3.png)
+
+#### Continuous distribution
+
+1. **Continuous Data**: Data that can take any value (like 1.5, 2.75, etc.).
+2. **Infinite Values**: Unlike countable data, continuous data can have endless values.
+3. **Probability Curve**: Probabilities are shown as areas under a curve on a graph.
+4. **Total Area = 1**: The whole area under the curve equals 1, meaning 100% chance.
+
+**Examples**:
+
+- **Uniform Distribution**: Waiting time for a bus between 0 and 12 minutes, all times equally likely.
+- **Normal Distribution**: Heights or test scores that form a bell-shaped curve.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/60n3qd8wiwlq2kpij4ui.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9utr00ubdup2xkh2ai5z.png)
+
+Bimodal distribution
+
+![image-20240528072255935](/Users/murat/Library/Application Support/typora-user-images/image-20240528072255935.png)
+
+Normal distribution
+
+![image-20240528072353228](/Users/murat/Library/Application Support/typora-user-images/image-20240528072353228.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kjkou7oyuqj0unzuz8um.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/drbatfskqcg25pcq24qq.png)
