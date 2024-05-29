@@ -1197,7 +1197,7 @@ A **discrete distribution** describes scenarios where the possible outcomes are 
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/51zbdf5ic3nxhsnvneu3.png)
 
-#### Continuous distribution
+#### Continuous, normal, bimodal distributions
 
 1. **Continuous Data**: Data that can take any value (like 1.5, 2.75, etc.).
 2. **Infinite Values**: Unlike countable data, continuous data can have endless values.
@@ -1217,10 +1217,80 @@ Bimodal distribution
 
 ![image-20240528072255935](/Users/murat/Library/Application Support/typora-user-images/image-20240528072255935.png)
 
-Normal distribution
+Normal distribution: symmetrical, area = 1, curve never hits 0
 
 ![image-20240528072353228](/Users/murat/Library/Application Support/typora-user-images/image-20240528072353228.png)
+
+Skewness:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gw57kzj2zji9h240qrko.png)
+
+
+
+Kurtosis:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9bmfuxglx6gw565alwad.png)
+
+
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lg0ml8bi56ldzv824tna.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kjkou7oyuqj0unzuz8um.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/drbatfskqcg25pcq24qq.png)
+
+#### Binomial distribution
+
+Heads or tails.
+
+﻿﻿Probability distribution of the number of successes in a sequence of independent events.
+
+﻿﻿For example, the number of heads in a sequence of coin flips.
+
+﻿﻿Described by n and p:
+
+- ﻿﻿n: total number of events
+- ﻿﻿p: probability of success
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/646bz6o9qgvr7xlb0q7d.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/g0k7yyojrjnfmfuyuhaw.png)
+
+
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8qf2qd58ijmm36cvhq7c.png)
+
+The distributions shows 𝑛 equals 12 as there are a maximum 12 possible sales per week, and eight is the most likely outcome, meaning 𝑝 can be found through dividing 8 by 12, resulting in 0.67.
+
+#### Central limit theorem
+
+Generally needs 30+ samples.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/s9bj5cosj4gbw3262nme.png)
+
+#### The law of large numbers
+
+The results of random events will average out to their expected value.
+
+If you roll a fair six-sided die many times, the average of the rolls will get closer to 3.5 (the expected value) as you roll it more times.
+
+#### Poisson distribution
+
+The Poisson distribution helps predict the probability of a number of random events occurring within a fixed time or space, given a known average rate.
+
+1. **Random Events**: It deals with events that happen randomly but at a known average rate.
+2. **Examples**: Number of emails you get in an hour, number of cars passing a street in a day.
+3. **Key Value (Lambda, λ)**: Represents the average number of events in that time or space.
+
+**How it works**:
+
+- If you know the average rate (λ), you can find the probability of a certain number of events happening.
+- For instance, if a store gets 20 customers per hour on average (λ = 20), the Poisson distribution can tell you the probability of getting exactly 15 customers in an hour.
+
+In short, t
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2ypa1gzpfs033tve28w6.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1tjb3vmgzko0jdj59jzp.png)
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vnkqhuoy1fsbfznt43f4.png)
