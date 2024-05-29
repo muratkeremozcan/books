@@ -1294,3 +1294,129 @@ In short, t
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1tjb3vmgzko0jdj59jzp.png)
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vnkqhuoy1fsbfznt43f4.png)
+
+### Hypothesis testing
+
+Hypothesis testing is a method to compare populations and determine if there are differences between them. Hypothesis testing helps in making informed decisions based on data, by comparing groups and determining if observed differences are statistically significant.
+
+**Why It’s Important**: Used in various industries to make decisions, such as testing if a price change affects revenue or if a medication works.
+
+**Basic Steps**:
+
+1. **Null Hypothesis (H0)**: Assume no difference exists (e.g., no difference in birth ratios with or without vitamin C).
+2. **Alternative Hypothesis (H1)**: Assume there is a difference (e.g., more female births with vitamin C).
+
+**Workflow**:
+
+1. **Identify Populations**: Decide on the groups to compare.
+2. **Form Hypotheses**: Null (no effect) and alternative (effect exists).
+3. **Collect Data**: Gather sample data from both groups.
+4. **Perform Statistical Tests**: Analyze the data to test the hypotheses.
+5. **Draw Conclusions**: Determine if the sample data supports the null or alternative hypothesis.
+
+**Sample Size**: Larger samples give more reliable results, but collecting them can be resource-intensive. Use similar research as a benchmark for sample size.
+
+**Variables**:
+
+- **Independent Variable**: The factor you manipulate (e.g., vitamin C intake).
+- **Dependent Variable**: The outcome you measure (e.g., birth gender ratio).
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/t2k9pl7gt98pp5ccrcy1.png)
+
+#### Experiments
+
+**Definition**: Experiments are a type of hypothesis testing used to understand the effect of a treatment (independent variable) on a response (dependent variable).
+
+**Key Components**:
+- **Treatment and Control**: Treatment group gets the variable being tested (e.g., an advertisement), while the control group does not.
+- **Randomization**: Participants are randomly assigned to groups to eliminate bias.
+- **Blinding**: Participants (and sometimes experimenters) do not know which group they are in to avoid bias.
+
+**Types**:
+- **Controlled Experiments**: Compare treatment and control groups.
+- **Randomized Controlled Trials (RCTs)**: Gold standard; uses randomization and blinding.
+- **A/B Testing**: Simple form of RCT used in industries, typically comparing two groups.
+
+**Purpose**: To determine if the treatment has a significant effect on the response by minimizing biases.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/eb6i6kc40pu07ricxudk.png)
+
+#### Correlation
+
+**Definition**: Correlation measures the strength and direction of a relationship between two variables.
+
+**Key Tool**:
+
+- Pearson Correlation Coefficient
+
+  : A value between -1 and 1.
+
+  - **+1**: Perfect positive relationship.
+  - **-1**: Perfect negative relationship.
+  - **0**: No relationship.
+
+**Usage**:
+
+- **Linear Relationships**: Only measures linear relationships (proportional changes).
+- **Scatter Plot**: Visualize data points and trendlines to see relationships.
+
+**Strength Indicators**:
+
+- **0.9 to 1**: Very strong relationship.
+- **0.7 to 0.9**: Strong relationship.
+- **0.5 to 0.7**: Moderate relationship.
+- **0.2 to 0.5**: Weak relationship.
+- **0 to 0.2**: Very weak or no relationship.
+
+**Direction Indicators**:
+
+- **Positive Sign**: As one variable increases, so does the other.
+- **Negative Sign**: As one variable increases, the other decreases.
+
+**Important Note**:
+
+- **Correlation Does Not Equal Causation**: A relationship does not mean one variable causes the other.
+- **Confounding Variables**: Other factors may influence the relationship.
+
+In short, correlation helps identify and measure the relationship between two variables but does not imply causation.
+
+#### Interpreting Hypothesis Test Results
+
+Interpreting hypothesis test results involves comparing sample data, calculating p-values, setting significance levels, and considering the possibility of errors to draw conclusions about the populations being studied.
+
+**1. Hypothesis Testing Example**:
+
+- Testing if there is a difference in life expectancy between Chicago and Bangkok.
+- **Null Hypothesis (H0)**: No difference in life expectancy.
+- **Alternative Hypothesis (H1)**: Chicago residents have a longer life expectancy.
+
+**2. Sample Data**:
+
+- Collect data from 100 residents in each city.
+- Calculate sample means (e.g., Chicago: 79.3 years, Bangkok: 73.9 years).
+- Different samples can give different results.
+
+**3. Sampling Distribution**:
+- Perform repeated sampling to create distributions of mean life expectancy for each city.
+- Compare these distributions.
+
+**4. p-value**:
+- **p-value**: Probability of obtaining results as extreme as observed if H0 is true.
+- For example, probability of a mean of 82 for Chicago given population mean of 79.3.
+- Small p-value (e.g., 0.037) suggests observed result is unlikely under H0.
+
+**5. Significance Level (α)**:
+- Set a threshold (e.g., α = 0.05) to reduce the risk of false conclusions.
+- If p-value ≤ α, reject H0.
+- Results are statistically significant if the p-value is less than α.
+
+**6. Type I and Type II Errors**:
+- **Type I Error**: Wrongly rejecting a true null hypothesis.
+- **Type II Error**: Wrongly accepting a false null hypothesis.
+- Correct conclusions: Correctly accepting or rejecting the null hypothesis.
+
+**7. Drawing a Conclusion**:
+- Compare p-value with α.
+- If overlap of distributions is less than α, reject H0.
+- Conclude that the mean life expectancy in Chicago is higher than in Bangkok if p-value < α.
+
