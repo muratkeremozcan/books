@@ -447,7 +447,7 @@ The ability to read, work with, analyze, and communicate insights with data.
 - ﻿﻿Forecast a process or sequence
 - ﻿﻿Estimate an unknown based on the information that is available
 
-![image-20240417075752093](/Users/murat/Library/Application Support/typora-user-images/image-20240417075752093.png)
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mjrrbbrzld4sybjxg23z.png)
 
 - Data is split into training and test set for building the predictive model
 - ﻿﻿Predictions are interpreted and evaluated on the test data, using pre-determined metrics like accuracy (percentage of correct predictions)
@@ -839,7 +839,7 @@ Data workflow (KEY):
 
   
 
-TL example- Smart Home:** 
+**ETL example- Smart Home:** 
 
 -  APIs and IoT devices are used to collect various data points for a smart home
 - extracting data from different sources
@@ -963,7 +963,7 @@ Box plots are useful when we want to compare many distributions at once.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/whxqx3c7y2o0v57nvsjh.png)
 
-### Scatter plot  Scatter plot
+### Scatter plot
 
 - Scatter plots best represent the relationship between two quantitative variables
 - ﻿﻿Plot the observations using an X-axis and Y-axis
