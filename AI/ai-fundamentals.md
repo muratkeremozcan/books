@@ -859,13 +859,11 @@ Tokenization, stop word removal, lemmatization vs bag-of-words, word embeddings.
 
 - ﻿﻿Original Text: "The quick brown fox jumps over the lazy dog."
 
-- ﻿﻿Masked Text: "The quick [MASK] fox jumps over the lazy dog."
+- Masked Text: "The quick [MASK] fox jumps over the lazy dog."
 
-  
+- Objective: predict the missing word
 
-- ﻿﻿Objective: predict the missing word
-
-- ﻿Based on learnings from training data
+- ﻿﻿Based on learnings from training data
 
 #### Fine-tuning
 
