@@ -61,6 +61,7 @@ This chapter provides a deep dive into the core concepts, tools, and approaches 
 **Key Points:**
 
 1. **Core Concepts:**
+
    - **Consumer:** The service user that makes requests to another service, driving the contract in CDCT.
    - **Provider:** The service that responds to the consumer's requests, verifying the contract against its implementation.
    - **Contract:** A JSON object detailing the interactions between the consumer and provider, including request details and expected responses.
@@ -82,4 +83,67 @@ This chapter provides a deep dive into the core concepts, tools, and approaches 
 4. **Communication Types Supported:**
    - **GraphQL:** Supported through a specific wrapper in Pact, allowing flexible data requests.
    - **Event-Driven Systems:** Supported by abstracting the message body from the messaging technology, enabling contract testing in systems using asynchronous messaging.
+
+## Chapter 4: Implementing Consumer-Driven Contract Testing for Web Applications
+
+Guidelines for Writing Consumer Contract Tests:
+
+- **Focus:** Consumer contract tests should focus solely on ensuring that the consumer’s expectations match the provider’s responses, without delving into the provider’s internal functionality.
+- **Loose Matchers:** Use loose matchers to avoid high coupling, allowing flexibility in the data returned by the provider and reducing the risk of flaky tests.
+- **Isolated Tests:** Contract tests should be isolated, meaning they don’t depend on the outcomes of previous tests, to avoid brittleness.
+- **Using can-i-deploy:** The can-i-deploy tool in Pact helps verify whether changes are safe to deploy, ensuring that the provider has successfully verified the contract before deployment.
+- **Mocks vs. Stubs:** Mocks should be used instead of stubs to accurately validate the interactions between the consumer and provider, ensuring that the test fails if expectations aren’t met.
+
+**Stub:** Provides a simple, fixed response based on a predefined script. It doesn’t validate how it's used.
+
+**Mock:** More advanced than a stub; it imitates a real object’s behavior and validates interactions, such as method calls and arguments, making it more suitable for scenarios like contract testing.
+
+```typescript
+// Define the ApiClient interface
+interface ApiClient {
+  fetchUser(userId: number): { id: number; name: string } | null;
+}
+
+// The UserService depends on the ApiClient to fetch user data
+class UserService {
+  private apiClient: ApiClient;
+
+  constructor(apiClient: ApiClient) {
+    this.apiClient = apiClient;
+  }
+
+  getUser(userId: number): { id: number; name: string } | null {
+    return this.apiClient.fetchUser(userId);
+  }
+}
+
+////// STUB
+const apiClientStub: ApiClient = {
+  fetchUser: (userId: number) => {
+    return { id: userId, name: 'John Doe' }; // Predetermined response
+  },
+};
+
+// same in both 
+const userService = new UserService(apiClientStub);
+const user = userService.getUser(1);
+console.log(user); // { id: 1, name: 'John Doe' }
+
+/////// MOCK
+const apiClientMock: ApiClient = {
+  fetchUser: jest.fn((userId: number) => {
+    if (userId === 1) {
+      return { id: 1, name: 'John Doe' };
+    }
+    return null;
+  }),
+};
+
+// same in both 
+const userService = new UserService(apiClientMock);
+const user = userService.getUser(1);
+console.log(user); // { id: 1, name: 'John Doe' }
+// KEY: verify that fetchUser was called with the correct argument
+expect(apiClientMock.fetchUser).toHaveBeenCalledWith(1);
+```
 
