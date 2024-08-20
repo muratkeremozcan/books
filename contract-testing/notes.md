@@ -153,3 +153,6 @@ expect(apiClientMock.fetchUser).toHaveBeenCalledWith(1);
 - Register the consumer's expectations against the (mock) provider
 - Call the consumer against the mock provider
 - Verify the consumer test and generate the contract
+
+## Ch 6
+
