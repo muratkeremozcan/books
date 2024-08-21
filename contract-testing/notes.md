@@ -154,5 +154,23 @@ expect(apiClientMock.fetchUser).toHaveBeenCalledWith(1);
 - Call the consumer against the mock provider
 - Verify the consumer test and generate the contract
 
-## Ch 6
+## Ch 6 Provider contract tests
 
+- **Importance of Provider Tests**:
+  - Provider tests are crucial for verifying that the provider adheres to the consumer-generated contract.
+  - While consumer teams do most of the work, provider tests are necessary to complete the contract testing lifecycle.
+
+- **Guidelines for Provider Contract Tests**:
+  - **Focus**: Provider tests should verify the relevant aspects of the contract, not test all business logic.
+  - **Provider States**: Ensure the provider is in the correct state before verifying interactions to avoid flaky tests.
+  - **Can-I-Deploy Tool**: Use this tool to verify that the provider changes can be safely deployed to production.
+
+- **Provider State Handlers**:
+  - Provider states help maintain the correct data setup before verification.
+  - State handlers must match the provider states defined in consumer tests.
+
+- **Running Provider Tests**:
+  - Provider tests are executed to verify interactions and ensure the contract is fulfilled.
+  - Results are published to a Pact broker for verification.
+
+  - Proper versioning is recommended when making contract changes to avoid unreliable results.
