@@ -156,21 +156,66 @@ expect(apiClientMock.fetchUser).toHaveBeenCalledWith(1);
 
 ## Ch 6 Provider contract tests
 
-- **Importance of Provider Tests**:
+- Importance of Provider Tests**:
   - Provider tests are crucial for verifying that the provider adheres to the consumer-generated contract.
   - While consumer teams do most of the work, provider tests are necessary to complete the contract testing lifecycle.
-
 - **Guidelines for Provider Contract Tests**:
   - **Focus**: Provider tests should verify the relevant aspects of the contract, not test all business logic.
-  - **Provider States**: Ensure the provider is in the correct state before verifying interactions to avoid flaky tests.
+  - **Provider States**:  We can simulate certain states of the api (like an empty or non-empty db) in order to cover different scenarios
   - **Can-I-Deploy Tool**: Use this tool to verify that the provider changes can be safely deployed to production.
-
 - **Provider State Handlers**:
   - Provider states help maintain the correct data setup before verification.
   - State handlers must match the provider states defined in consumer tests.
-
 - **Running Provider Tests**:
   - Provider tests are executed to verify interactions and ensure the contract is fulfilled.
   - Results are published to a Pact broker for verification.
 
   - Proper versioning is recommended when making contract changes to avoid unreliable results.
+
+## Ch9 Storing, hosting, and securing the contracts
+
+Why do we need a pact broker:
+
+1. Sharing contracts: it is what binds the repositories together, without needing a common deployment.
+2. Coordination: it can coordinate contracts and releases between branches, environments and teams.
+3. CI: the pact broker provides a CLI which offers easy access to provider verification status and webhooks to trigger dependent CI pipelines.
+
+Pact broker flow:
+
+1. The Consumer pushes the consumer contracts to the Pact broker.
+2. The provider pulls the contracts from the Pact broker.
+3. The provider publishes the verification status of the contract to the Pact broker.
+4. The consumer pulls the verification status from the Pact broker to check if they can deploy their app.
+
+### Example new release scenario:
+
+Imagine you have a **Movies API** that serves different clients, such as a web application and a mobile app. These clients are at different stages of development and are deployed in different environments (e.g., Staging and Production).
+
+#### Environments:
+
+- **Staging Environment:** Running version **v1.2.0** of the Movies API.
+- **Production Environment:** Running version **v1.1.0** of the Movies API.
+
+#### Pact Broker's Role:
+
+- A new version of the API, **v2.0.1**, has been developed to fix some bugs.
+- Before this version can be deployed, the Pact Broker checks it against the existing consumer contracts (which specify how clients interact with the API) to ensure it won't break any current implementations.
+- The Pact Broker verifies the contract against **v1.2.0** in the Staging environment and **v1.1.0** in the Production environment.
+- The checkmarks indicate that both environments successfully verified the new contract, meaning **v2.0.1** can be safely integrated into either environment.
+
+### **SaaS (PactFlow) vs. Self-Hosted Pact Broker**
+
+**SaaS (PactFlow) Solution:**
+- **Cost:** SaaS cost, but no setup or maintenance effort.
+- **Maintenance:** none.
+- **Features:** Offers advanced features like **Can I Deploy**, **API token-based security**, and support for **Provider driven contracts** (e.g., OpenAPI).
+- **Ease of Use:** Easy to set up, with a user-friendly interface and seamless third-party integrations.
+- **Support:** Dedicated support from the PactFlow team.
+
+**Self-Hosted Pact Broker:**
+- **Cost:** Lower running costs, but requires infrastructure setup and residual maintenance.
+- **Maintenance:** Requires ongoing management of security patches and updates.
+- **Features:** Provides core functionality with basic **username/password security**.
+- **Setup Complexity:** More complex setup, especially when using Docker or Kubernetes.
+- **Support:** Relies on community support, which may be less consistent.
+
