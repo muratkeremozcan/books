@@ -219,3 +219,28 @@ Imagine you have a **Movies API** that serves different clients, such as a web a
 - **Setup Complexity:** More complex setup, especially when using Docker or Kubernetes.
 - **Support:** Relies on community support, which may be less consistent.
 
+## Ch 10 CI setup
+
+To make the flow work when separating the consumer and provider into different repositories, the integration between them primarily hinges on the use of Pact Broker and webhooks. Here's how the process works:
+
+### Workflow Overview:
+1. **Consumer Repository:**
+   - The consumer runs its contract tests, generates a pact file, and publishes it to the Pact Broker.
+   - After publishing, the Pact Broker triggers a webhook that notifies the provider repository that a new or updated pact has been published and requires verification.
+
+2. **Provider Repository:**
+   - The provider repository, upon receiving the webhook trigger, runs the provider verification tests against the newly published pact.
+   - If the tests pass, the provider publishes the verification results back to the Pact Broker.
+   - This process ensures that both the consumer and provider are in sync, and the contracts are verified automatically whenever there are changes.
+
+### Key Features:
+- **Webhooks:** Webhooks are essential in this setup to automatically trigger the provider verification tests when the consumer publishes a new pact.
+- **Can-I-Deploy:** Before deploying any changes to production, the `can-i-deploy` tool checks the matrix in the Pact Broker to ensure that the consumer and provider versions are compatible and successfully verified. This step is crucial to prevent deploying incompatible versions.
+
+### Summary:
+- **Consumer Workflow:** Generates pacts and publishes them to the Pact Broker.
+- **Pact Broker:** Acts as the intermediary, holding contracts and managing verification statuses. It triggers provider tests via webhooks.
+- **Provider Workflow:** Runs verification tests based on triggers from the Pact Broker and reports results back.
+- **Can-I-Deploy:** Ensures that only verified and compatible versions are deployed to production environments.
+
+This setup facilitates continuous contract verification and automated deployments, ensuring that both the consumer and provider are aligned with each other throughout the development lifecycle.
