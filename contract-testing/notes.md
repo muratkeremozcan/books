@@ -219,28 +219,44 @@ Imagine you have a **Movies API** that serves different clients, such as a web a
 - **Setup Complexity:** More complex setup, especially when using Docker or Kubernetes.
 - **Support:** Relies on community support, which may be less consistent.
 
-## Ch 10 CI setup
+## Chapter 10: Setting up Contract Testing in a CI/CD Pipeline
 
-To make the flow work when separating the consumer and provider into different repositories, the integration between them primarily hinges on the use of Pact Broker and webhooks. Here's how the process works:
+**Key Points:**
 
-### Workflow Overview:
-1. **Consumer Repository:**
-   - The consumer runs its contract tests, generates a pact file, and publishes it to the Pact Broker.
-   - After publishing, the Pact Broker triggers a webhook that notifies the provider repository that a new or updated pact has been published and requires verification.
+1. **Environment Variables:**
+   - Use environment variables like `GITHUB_SHA` (Git commit ID) and `GITHUB_BRANCH` (branch name) to manage and trace contract versions automatically. These variables help identify which version of the code generated a specific contract and ensure that the correct contracts are verified in the CI/CD pipeline. In the optimal setup both the consumer and provider now contain the  `GITHUB_SHA`  as unique versions.
 
-2. **Provider Repository:**
-   - The provider repository, upon receiving the webhook trigger, runs the provider verification tests against the newly published pact.
-   - If the tests pass, the provider publishes the verification results back to the Pact Broker.
-   - This process ensures that both the consumer and provider are in sync, and the contracts are verified automatically whenever there are changes.
+     ` --consumer-app-version=$GITHUB_SHA --branch=$GITHUB_BRANCH` 
 
-### Key Features:
-- **Webhooks:** Webhooks are essential in this setup to automatically trigger the provider verification tests when the consumer publishes a new pact.
-- **Can-I-Deploy:** Before deploying any changes to production, the `can-i-deploy` tool checks the matrix in the Pact Broker to ensure that the consumer and provider versions are compatible and successfully verified. This step is crucial to prevent deploying incompatible versions.
+     On the provider side Pact verifies all the relevant versions that are compatible:
 
-### Summary:
-- **Consumer Workflow:** Generates pacts and publishes them to the Pact Broker.
-- **Pact Broker:** Acts as the intermediary, holding contracts and managing verification statuses. It triggers provider tests via webhooks.
-- **Provider Workflow:** Runs verification tests based on triggers from the Pact Broker and reports results back.
-- **Can-I-Deploy:** Ensures that only verified and compatible versions are deployed to production environments.
+     ```js
+     // provider spec file
+     
+     const options = {
+       // ...
+       providerVersion: process.env.GITHUB_SHA,
+       providerVersionBranch: process.env.GITHUB_BRANCH, // represents which contracts the provider should verify against
+       consumerVersionSelectors = [
+           { mainBranch: true },  // tests against consumer's main branch
+           { matchingBranch: true }, // tests against consumer's currently deployed and currently released versions
+           { deployedOrReleased: true } // Used for coordinated development between consumer and provider teams using matching feature branch names
+         ]
+     }
+     ```
 
-This setup facilitates continuous contract verification and automated deployments, ensuring that both the consumer and provider are aligned with each other throughout the development lifecycle.
+     
+
+2. **Advanced CI/CD Features:**
+   - **Versioning and Branches:** Automate versioning using Git commit IDs and branches. Ensure that provider tests verify the correct contract versions, especially when working on feature branches.
+   - **Environments:** Record the environment in which a version is deployed (e.g., dev, staging, production). This ensures that Pact knows where each version is active, aiding in the decision to deploy new changes.
+
+3. **Can-I-Deploy Tool:**
+
+   - The `can-i-deploy` tool queries the Pact Broker to ensure that the consumer and provider versions are compatible before deployment. This tool provides an extra layer of safety, preventing the deployment of incompatible versions.on.
+
+4. **Webhooks:**
+
+   - If the consumer and provider are in separate GitHub projects and separate workflows, when the consumer makes changes to the contract, the relevant provider verification job will not be triggered automatically, which can cause the consumer workflow to fail on the can-i-deploy job. This happens because Pact can’t “pre-verify” the contract since the contract has changed.
+   -  We’d like the provider verification job to be triggered automatically when the consumer has changed something in the contract. We don’t need to rerun the entire provider pipeline; we want to run just the provider verification job and publish the results to our Pact Broker
+
