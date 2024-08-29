@@ -291,3 +291,49 @@ The key difference in this approach is that instead of the provider running the 
 
 **CDCT-Like Use**: The generated contract can be used in a similar fashion to a Consumer-Driven Contract Testing (CDCT) setup. You can publish this contract to a Pact Broker and have your provider verify it, ensuring that the provider meets the consumer's expectations.
 `"bi:consumer:cy:publish": "pact-broker publish ./cypress/pacts --consumer-app-version=$GITHUB_SHA --branch=$GITHUB_BRANCH --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN",`
+
+## Ch 12 CDCT vs e2e vs integration
+
+### Testing Lambda Handlers (Unit or Integration Tests)
+
+- **Fast Feedback Loop**:
+  - **Quick Iterations**: Enables rapid feedback through tests directly on the Lambda handler.
+  - **Easier Debugging**: Isolates the Lambda function, simplifying the debugging process.
+- **Partial Coverage**:
+  - **Integration Points**: Can test Lambda interactions with services like DynamoDB Local, KMS, Kafka, etc., within a Docker environment. (This is the distinction between unit and integration.)
+  - **Error Simulation**: Allows for controlled simulations of various edge cases and failure conditions.
+- **Drawbacks**:
+  - **Less Realistic**: Does not test the entire request-response lifecycle, potentially missing configuration or integration issues outside the Lambda function.
+  - **Requires Mocks for Some Scenarios**: Dependency isolation may necessitate mocks, which could lead to false positives.
+  - **Other**: Lacks testing for build & configuration, deployments, IAM, or interactions with external services.
+
+### Testing Deployments via HTTP (Temporary Stack, Dev, Stage)
+
+- **Build & Configuration**: Validates that all cloud resources, including CDK/Serverless infra as code, environment variables, secrets, and services (API Gateway, Lambda, S3), are correctly operational.
+- **IAM Permissions**: Ensures that the IAM roles and permissions are correctly configured.
+- **Comprehensive Coverage**: Tests the entire system, including authentication mechanisms and integrations with other services.
+- **Drawbacks**:
+  - Requires deployment, which adds complexity.
+  - Results in a slower feedback loop due to the deployment process.
+
+### Testing Local Endpoints via HTTP (Local)
+
+- **Consistency**: Same tests can be run locally as in deployment environments, offering low-cost testing.
+- **Ease of Implementation**: Simple to test API interactions before development using tools like REST clients or Postman.
+- **Network Mocking**: Easy to configure network mocks with tools like Mockoon, without code changes.
+- **No Deployment Drawbacks**: Avoids deployment, providing fast feedback.
+- **Caveats**: Lacks testing for build & configuration, deployments, IAM, or interactions with external services.
+
+### CDCT (Contract-Driven Contract Testing)
+
+- **External Service Interaction Coverage**: Addresses a major caveat of local testing by ensuring compatibility with external services.
+- **Fast Feedback**: Similar to local testing, CDCT avoids deployment and provides rapid feedback.
+- **Caveats**: Does not cover build & configuration, deployments, IAM, or full end-to-end interactions.
+
+## What kind of e2e testing would you replace with contract testing?
+
+- **Replicate what contract tests cover or are overly simple**: If an e2e test simply checks basic API functionality—like whether an API responds with the correct status code or data structure—and this is already thoroughly covered by a contract test, the e2e test may be redundant. This is especially true if the e2e test doesn't involve multi-step interactions, such as getting a response and then performing additional actions based on that response. In such cases, contract tests might provide the necessary coverage, making the e2e test unnecessary.
+- **Have low value for effort**: Tests that are complex to maintain but provide little value, such as those that test non-critical paths or scenarios unlikely to change, could be candidates for removal.
+- **Streamline Redundant Coverage build, config, deployment etc. coverage**: If your contract tests are comprehensive and your existing e2e tests already cover key build & configuration, deployment, infrastructure, and IAM, you consider trimming or removing overlapping e2e tests
+- **Optimize Deployment Strategy**: You can consider skipping temporary stacks or ephemeral environments for PRs and instead focus on deployment testing in the dev environment. This strategy can save costs associated with deployments from scratch. However, be mindful that this may delay the discovery of issues related to build & configuration, deployment, or IAM until later stages. It's a tradeoff between cost efficiency and early detection.
+- **Minimize the need for synchronized service versions covered bye 2e**: In traditional testing setups, you might rely on running e2e tests across multiple services in later environments like dev or staging to ensure that changes to Service A don't break Services B, C; deploy A (run e2e for A), but also run e2e for BC. With contract tests, this need is significantly reduced, as they ensure compatibility between services at the contract level. 
