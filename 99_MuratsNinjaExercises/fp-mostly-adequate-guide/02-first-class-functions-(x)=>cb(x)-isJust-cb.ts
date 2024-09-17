@@ -1,6 +1,6 @@
 const hi = (name: string) => `Hi ${name}`
 
-// (x) => cb(x) isJust cb
+// (x) => cb(x) isJust cb (shorthand)
 // these two are the same, try toggling
 // const greeting = (name: string) => hi(name)
 const greeting = hi

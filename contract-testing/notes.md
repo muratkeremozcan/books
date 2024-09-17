@@ -417,3 +417,106 @@ There is a potential gap in Provider-Driven Contract Testing where the OpenAPI s
 Optic offers a low-cost, quick solution for schema validation by focusing solely on the OpenAPI specification, catching discrepancies early in the development process. On the other hand, Provider-Driven Contract Testing with Pact validates the interactions between consumers and the provider's OpenAPI spec, ensuring that the API's behavior aligns with consumer expectations.
 
 By combining Optic for upfront schema validation and Pact for deeper contract verification, you can achieve a more comprehensive approach to API testing.
+
+## Message Queue testing
+
+The distinction between what you're doing in your sample consumer and provider repositories (which involve standard HTTP interactions) and what Pact refers to with **Message Queues** revolves around different forms of communication.
+
+### Standard Pact (HTTP Requests)
+Until now:
+- **Consumer**: A service that makes HTTP requests to the provider and verifies that the provider returns the expected responses (contracts for APIs).
+- **Provider**: The service that receives HTTP requests and responds with the appropriate data.
+  
+
+This works well for HTTP APIs where the consumer and provider interact directly via HTTP request-response cycles.
+
+### Message Queues in Pact
+Message-based testing, like the one described in the [Pact documentation on message queues](https://docs.pact.io/implementation_guides/javascript/docs/messages), is meant for systems that communicate asynchronously using **message queues** instead of direct HTTP requests. Examples of message-based systems include RabbitMQ, Kafka, or AWS SQS.
+
+Here’s the difference:
+
+1. **Consumer-Driven Contract Testing (Standard Pact)**:
+   - Focuses on direct HTTP requests (e.g., REST API).
+   - The consumer sends a request and expects the provider to respond directly.
+   - The contract defines these interactions (e.g., "When I make a GET request to `/movies`, I expect a response with a list of movies").
+
+2. **Message Queue Testing (Pact with Messaging)**:
+   - Instead of HTTP requests, services exchange messages via a message queue (asynchronous).
+   - **Consumer** in this context is the service **consuming messages from a queue** (not making requests to the provider).
+   - **Provider** is the service **publishing messages to the queue**.
+   - The contract defines what messages the provider is expected to send or receive, but there is no direct request-response. It’s about verifying the structure and content of the messages flowing through the queue.
+   - Example: Instead of sending a request to get data, the consumer might subscribe to a message topic or queue, and the provider sends messages through that queue.
+
+### Purpose of Message Queue Testing
+You care about message queues when:
+- **Asynchronous Communication**: The consumer and provider don’t talk directly through HTTP requests but communicate through a third party (e.g., RabbitMQ or Kafka).
+- **Event-Driven Architecture**: Systems using event-driven patterns often use queues. The provider might broadcast events like “Order Placed” or “Movie Created,” and the consumer listens for those events.
+- **Ensuring Decoupled Communication**: Just as with direct HTTP contract testing, message queue testing ensures that the consumer and provider agree on the format and content of messages exchanged, even though they’re not communicating synchronously.
+
+### Why You Might Not Have Considered It Yet
+If your current application uses synchronous HTTP APIs, you don’t need message queue testing because you are testing direct request-response interactions. Message queues come into play when the architecture relies on asynchronous messaging systems (e.g., microservices communicating through a message bus).
+
+### Example Scenario:
+Imagine a system where:
+- **Provider** (e.g., a payment service) doesn’t respond to HTTP requests directly but publishes a message to a queue saying, “Payment Processed.”
+- **Consumer** (e.g., an order system) listens to this queue for a message saying, “Payment Processed,” and takes action when it receives that message.
+
+In this case, you'd want to test that:
+1. The **provider** correctly publishes the "Payment Processed" message in the right format.
+2. The **consumer** knows how to handle that message and react accordingly.
+
+This is where Pact’s message testing comes in handy.
+
+### Key Takeaway:
+- **Standard Pact** is for request-response contracts (HTTP APIs).
+- **Pact Message Queues** are for asynchronous messaging systems where the contract verifies messages sent or received through a queue (e.g., event-driven systems).
+
+If your system only uses direct HTTP interactions, message queue testing might not be relevant to you. However, it becomes critical in systems that rely on event-based communication or decoupled microservices using message brokers.
+
+## Breaking changes
+
+You have really have 2 good options, and an additional workaround.
+
+**Coordinating Matching PRs:** When a breaking change is needed, both teams (provider and consumer) collaborate in tandem. They create matching feature branches or PRs, ensuring that the consumer can adopt the new changes as the provider introduces them. This prevents downtime or breaking of functionality and ensures that both services are always compatible.
+
+**Backward Compatibility:** If synchronizing changes isn't feasible, the provider introduces a backward-compatible update that supports both the old and the new versions of the contract. This allows the consumer to gradually adopt the new behavior while the old functionality is deprecated over time. Once the consumer has fully migrated to the new behavior, the old behavior can safely be removed.
+
+### Real-World Scenario:
+
+- **Coordinated matching PRs (preferred)**: If both consumer and provider teams communicate and align changes in their respective services, this should be your go-to approach. It's clean, avoids breaking things, and is more controlled.
+- **Backward compatibility (fallback)**: If immediate synchronization isn't possible, backward compatibility ensures the system continues to function as expected until the consumer adopts the new features.
+- **Pending pacts (safety net)**: This is more of a failsafe that might protect you in a more chaotic development environment or when there's an unexpected lack of coordination. It's there to prevent unnecessary test failures if a consumer inadvertently introduces a breaking change without proper alignment. It essentially provides a "grace period" to allow providers time to adapt without blocking deployment, particularly useful in larger, less-coordinated teams or projects with complex dependencies.
+
+
+
+
+
+---
+
+### Breaking Changes
+
+You have really two good options, and additional workarounds, depending on the coordination and maturity of your teams.
+
+**Coordinating Matching PRs:** When a breaking change is needed, both teams (provider and consumer) collaborate in tandem. They create matching feature branches or PRs, ensuring that the consumer can adopt the new changes as the provider introduces them. This prevents downtime or breaking of functionality and ensures that both services are always compatible.
+
+**Backward Compatibility:** If synchronizing changes isn't feasible, the provider introduces a backward-compatible update that supports both the old and the new versions of the contract. This allows the consumer to gradually adopt the new behavior while the old functionality is deprecated over time. Once the consumer has fully migrated to the new behavior, the old behavior can safely be removed.
+
+#### Real-World Scenarios
+
+- **Coordinated matching PRs (preferred)**: If both consumer and provider teams communicate and align changes in their respective services, this should be your go-to approach. It's clean, avoids breaking things, and is more controlled.
+  
+- **Backward compatibility (fallback)**: If immediate synchronization isn't possible, backward compatibility ensures the system continues to function as expected until the consumer adopts the new features.
+
+#### Workarounds (to blasphemy)
+
+- **Pending pacts (safety net)** `enablePending`:  It's there to prevent unnecessary test failures if a consumer inadvertently introduces a breaking change without proper alignment. It essentially provides a "grace period" to allow providers time to adapt without blocking deployment, particularly useful in larger, less-coordinated teams or projects with complex dependencies.
+
+- **WIP pacts (experimental features)** `includeWipPactsSince` : WIP pacts come into play when consumers are working on experimental or long-running feature branches that haven't yet been finalized. WIP pacts give providers a heads-up that the consumer is working on something new, but **won't block the provider's build if they don't support it yet**. Think of it as a way to handle feature branches that are in progress but haven’t been fully integrated. This is useful when teams are working on new features in parallel but aren't ready to fully verify everything against the provider yet. The provider can continue working without failing for pacts that aren't fully baked. It gets removed before the merge to main.
+
+##### Pending vs. WIP Pacts 
+
+- **Pending Pacts** are for **unexpected or uncoordinated breaking changes**. They provide a temporary buffer where the provider tests won’t fail immediately if a consumer introduces breaking changes, allowing the provider time to catch up.
+
+- **WIP Pacts** are for **work-in-progress or experimental features** in long-running feature branches. The provider acknowledges that the consumer is working on something but doesn’t yet block the provider from progressing with their build if those changes aren’t supported yet.
+
+Both are "workarounds" but solve slightly different problems in chaotic or asynchronous environments. In well-coordinated environments, you should not need either of these.
