@@ -357,7 +357,7 @@ Here is how it goes:
 
 1) **Generate the OpeAPI spec at the provider**
 
-   Automate this step using tools like `zod-to-openapi` or `swagger-jsdoc`. Manual spec writing is the last resort..
+   Automate this step using tools like `zod-to-openapi`,  `swagger-jsdoc`,  [generating OpenAPI documentation directly from TypeScript types, or generating the OpenAPI spec from e2e tests (using Optic)](https://dev.to/muratkeremozcan/automating-api-documentation-a-journey-from-typescript-to-openapi-and-schema-governence-with-optic-ge4). Manual spec writing is the last resort..
 
 2) **Ensure that the spec matches the real API**
 
@@ -365,7 +365,7 @@ Here is how it goes:
 
    Optic: lint the schema and/or run the e2e suite against the OpenAPI spec through the Optic proxy.
 
-   Dredd: executes its own tests against your openapi spec (eeds your local server, has hooks for things like auth.)
+   Dredd: executes its own tests (magic!) against your openapi spec (eeds your local server, has hooks for things like auth.)
 
 3) **Publish the OpenAPI spec to the pact broker**.
 
