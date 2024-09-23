@@ -334,11 +334,9 @@ npm run record:consumer:deployment # (5)
 
 ## Provider-driven (bi-directional) contract testing
 
-Consumer-Driven Contract Testing is highly effective when the consumer has a close relationship with the provider, typically within the same organization. However, when dealing with third-party providers, especially those who might not be aware of or prioritize the specific needs of any single consumer, this approach becomes unfeasible.
+Consumer-Driven Contract Testing is highly effective when the consumer has a close relationship with the provider, typically within the same organization. However, when dealing with third-party providers, especially those who might not be aware of or prioritize the specific needs of any single consumer, this approach becomes unfeasible. It might also happen that the provider is not testable locally, which makes running the tests from the consumer impossible on the provider side.
 
-**Unknown Consumers**: In some cases, a third-party provider may not even know who all of their consumers are. They provide a public API, and various clients may interact with it. In such scenarios, it’s impractical for the provider to tailor their API to specific consumer-driven contracts.
-
-**Provider-Driven Contract Testing** makes more sense in these situations. The provider defines the contract (API specification), and it’s up to the consumers to align with this specification. This shifts the responsibility to the consumer to ensure that they are compatible with the provider’s API, rather than the other way around.
+**Provider-Driven Contract Testing** makes more sense in these situations. The provider defines the contract (OpenAPI specification), and it’s up to the consumers to align with this specification. This shifts the responsibility to the consumer to ensure that they are compatible with the provider’s API, rather than the other way around.
 
 The flow:
 
@@ -351,7 +349,47 @@ The key difference in this approach is that instead of the provider running the 
 
 **Caveat**: **Risk of False Confidence**: Since the testing is based on the OpenAPI spec of the provider rather than the actually running the consumer tests (the contract) on the provider side, there's a risk that the contract might not fully capture the nuances of the provider's implementation. This could lead to scenarios where a contract is deemed compatible even though the actual service could fail in production. This risk emphasizes the importance of maintaining up-to-date and accurate contracts.
 
-(This gap could be addressed with [generating OpenAPI docs from types](https://dev.to/muratkeremozcan/automating-api-documentation-a-journey-from-typescript-to-openapi-and-schema-governence-with-optic-ge4), or generating OpenAPI spec from e2e (an Optic feature))
+(This gap could be addressed with [generating OpenAPI docs from types](https://dev.to/muratkeremozcan/automating-api-documentation-a-journey-from-typescript-to-openapi-and-schema-governence-with-optic-ge4), or Zod-to-openapi (`@asteasolutions/zod-to-openapi`) or generating OpenAPI spec from e2e (an Optic feature)). We can also test the schema via a Cypress plugin `cypress-ajv-schema-validator` chaining on to already existing api calls.
+
+With bi-directional contract testing, the consumer and the provider workflows are detached; the provider independently publishes their OpenAPI spec (to main) and the consumer tests against it.
+
+Here is how it goes:
+
+1) **Generate the OpeAPI spec at the provider**
+
+   Automate this step using tools like `zod-to-openapi` or `swagger-jsdoc`. Manual spec writing is the last resort..
+
+2) **Ensure that the spec matches the real API**
+
+   `cypress-ajv-schema-validator`: if you already have cy e2e and you want to easily chain on to the existing calls.
+
+   Optic: lint the schema and/or run the e2e suite against the OpenAPI spec through the Optic proxy.
+
+   Dredd: executes its own tests against your openapi spec (eeds your local server, has hooks for things like auth.)
+
+3) **Publish the OpenAPI spec to the pact broker**.
+
+   ```bash
+   pactflow publish-provider-contract 
+     src/api-docs/openapi.json # path to OpenAPI spec
+     # if you also have classic CDCT in the same provider, 
+     # make sure to label the Bi-directional provider name differently
+     --provider MoviesAPI-bi-directional 
+     --provider-app-version=$GITHUB_SHA # best practice
+     --branch=$GITHUB_BRANCH # best practice
+     --content-type application/json # yml ok too if you prefer
+     --verification-exit-code=0 # needs it
+      # can be anything, we just generate a file on e2e success to make Pact happy
+     --verification-results ./cypress/verification-result.txt
+     --verification-results-content-type text/plain # can be anything
+     --verifier cypress # can be anything
+   ```
+
+   Note that verification arguments are optional, and without them you get a warning at Pact broker that the OpenAPI spec is untested.
+
+4) **Execute the consumer contract tests**
+
+As you can notice, there is nothing about running the consumer tests on the provider side ( `test:provider`), can-i-deploy checks (`can:i:deploy:provider`), or recording the pact deployment (`record:provider:deployment`).
 
 ### Cypress adapter in a nutshell
 
