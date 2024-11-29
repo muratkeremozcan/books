@@ -74,7 +74,7 @@
         "environs": "0.4.5",
         "express": "^4.16.2",
         "firebase": "^4.8.0",
-        "firebase-admin": "^5.5.1",
+        "firebase-admin": "^11.5.0",
         "font-awesome": "4.7.0",
         "helmet": "^3.9.0",
         "history": "4.7.2",
